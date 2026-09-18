@@ -1,6 +1,8 @@
 import type { CollectionConfig } from 'payload'
 
 import { elevesChampSensible, elevesRead, elevesWrite } from '../../access/eleves'
+import { validerConsentement } from '../../hooks/validerConsentement'
+import { VERSION_POLITIQUE } from '../../utilities/rgpdConfig'
 
 export const niveauOptions = [
   { label: 'CP', value: 'CP' },
@@ -101,6 +103,16 @@ export const Eleves: CollectionConfig = {
         read: elevesChampSensible,
         update: elevesChampSensible,
       },
+      name: 'consentementRetire',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Consentement retiré',
+    },
+    {
+      access: {
+        read: elevesChampSensible,
+        update: elevesChampSensible,
+      },
       name: 'dateConsentement',
       type: 'date',
       admin: {
@@ -111,6 +123,39 @@ export const Eleves: CollectionConfig = {
       },
       label: 'Date du consentement',
     },
+    {
+      access: {
+        read: elevesChampSensible,
+        update: elevesChampSensible,
+      },
+      name: 'versionConsentement',
+      type: 'text',
+      admin: {
+        description: 'Version de la politique acceptée',
+        readOnly: true,
+      },
+      defaultValue: VERSION_POLITIQUE,
+      label: 'Version du consentement',
+    },
+    {
+      access: {
+        read: elevesChampSensible,
+        update: elevesChampSensible,
+      },
+      name: 'dateFinAdhesion',
+      type: 'date',
+      admin: {
+        date: {
+          displayFormat: 'dd/MM/yyyy',
+          pickerAppearance: 'dayOnly',
+        },
+        description: 'Renseigner quand l’élève quitte l’association (déclenche la rétention)',
+      },
+      label: 'Fin d’adhésion',
+    },
   ],
+  hooks: {
+    beforeValidate: [validerConsentement],
+  },
   timestamps: true,
 }
