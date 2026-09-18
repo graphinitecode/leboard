@@ -1,0 +1,32 @@
+@media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .rapport section {
+    break-inside: avoid-page;
+  }
+
+  .rapport header,
+  .rapport footer {
+    break-inside: avoid;
+  }
+
+  .rapport a[href] {
+    text-decoration: none;
+    color: #000;
+  }
+
+  nav,
+  button,
+  .no-print {
+    display: none !important;
+  }
+}
+
+@media screen {
+  .rapport section {
+    margin-bottom: 1.5rem;
+  }
+}
