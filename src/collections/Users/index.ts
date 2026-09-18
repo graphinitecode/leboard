@@ -1,17 +1,22 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
+import { usersAdmin, usersCreate, usersDelete, usersRead, usersUpdate } from '../../access/users'
 
-export const roleOptions = ['admin', 'prof', 'benevole-bibliotheque', 'parent'] as const
+export const roleOptions = [
+  { label: 'Admin', value: 'admin' },
+  { label: 'Prof', value: 'prof' },
+  { label: 'Bénévole bibliothèque', value: 'benevole-bibliotheque' },
+  { label: 'Parent', value: 'parent' },
+]
 
 export const Users: CollectionConfig = {
   slug: 'users',
   access: {
-    admin: authenticated,
-    create: authenticated,
-    delete: authenticated,
-    read: authenticated,
-    update: authenticated,
+    admin: usersAdmin,
+    create: usersCreate,
+    delete: usersDelete,
+    read: usersRead,
+    update: usersUpdate,
   },
   admin: {
     defaultColumns: ['name', 'email', 'role'],
@@ -26,16 +31,14 @@ export const Users: CollectionConfig = {
     },
     {
       name: 'role',
-      type: 'select',
+      access: {
+        update: ({ req: { user } }) => user?.role === 'admin',
+      },
       defaultValue: 'prof',
-      options: [
-        { label: 'Admin', value: 'admin' },
-        { label: 'Prof', value: 'prof' },
-        { label: 'Bénévole bibliothèque', value: 'benevole-bibliotheque' },
-        { label: 'Parent', value: 'parent' },
-      ],
+      options: roleOptions,
       required: true,
       saveToJWT: true,
+      type: 'select',
     },
     {
       name: 'telephone',

@@ -1,16 +1,20 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
+import {
+  presencesDelete,
+  presencesRead,
+  presencesWrite,
+} from '../../access/presences'
 import { preCreerPresencesSeance } from '../../hooks/preCreerPresencesSeance'
 import { verifierUnicitePresence } from '../../hooks/verifierUnicitePresence'
 
 export const Presences: CollectionConfig = {
   slug: 'presences',
   access: {
-    create: authenticated,
-    delete: authenticated,
-    read: authenticated,
-    update: authenticated,
+    create: presencesWrite,
+    delete: presencesDelete,
+    read: presencesRead,
+    update: presencesWrite,
   },
   admin: {
     defaultColumns: ['seance', 'eleve', 'present'],

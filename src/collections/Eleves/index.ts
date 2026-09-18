@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
+import { elevesChampSensible, elevesRead, elevesWrite } from '../../access/eleves'
 
 export const niveauOptions = [
   { label: 'CP', value: 'CP' },
@@ -20,10 +20,10 @@ export const niveauOptions = [
 export const Eleves: CollectionConfig = {
   slug: 'eleves',
   access: {
-    create: authenticated,
-    delete: authenticated,
-    read: authenticated,
-    update: authenticated,
+    create: elevesWrite,
+    delete: elevesWrite,
+    read: elevesRead,
+    update: elevesWrite,
   },
   admin: {
     defaultColumns: ['nom', 'prenom', 'niveau', 'groupe', 'profReferent'],
@@ -72,6 +72,10 @@ export const Eleves: CollectionConfig = {
       },
     },
     {
+      access: {
+        read: elevesChampSensible,
+        update: elevesChampSensible,
+      },
       name: 'parents',
       hasMany: true,
       relationTo: 'users',
@@ -83,12 +87,20 @@ export const Eleves: CollectionConfig = {
       },
     },
     {
+      access: {
+        read: elevesChampSensible,
+        update: elevesChampSensible,
+      },
       name: 'consentementRGPD',
       type: 'checkbox',
       defaultValue: false,
       label: 'Consentement RGPD',
     },
     {
+      access: {
+        read: elevesChampSensible,
+        update: elevesChampSensible,
+      },
       name: 'dateConsentement',
       type: 'date',
       admin: {
