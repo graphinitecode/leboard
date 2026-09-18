@@ -67,6 +67,9 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    eleves: Eleve;
+    seances: Seance;
+    presences: Presence;
     pages: Page;
     posts: Post;
     media: Media;
@@ -89,6 +92,9 @@ export interface Config {
     };
   };
   collectionsSelect: {
+    eleves: ElevesSelect<false> | ElevesSelect<true>;
+    seances: SeancesSelect<false> | SeancesSelect<true>;
+    presences: PresencesSelect<false> | PresencesSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -150,6 +156,101 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "eleves".
+ */
+export interface Eleve {
+  id: number;
+  prenom: string;
+  nom: string;
+  dateNaissance: string;
+  niveau: 'CP' | 'CE1' | 'CE2' | 'CM1' | 'CM2' | '6e' | '5e' | '4e' | '3e' | '2nde' | '1ere' | 'Terminale';
+  groupe?: string | null;
+  profReferent?: (number | null) | User;
+  parents?: (number | User)[] | null;
+  consentementRGPD?: boolean | null;
+  dateConsentement?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name: string;
+  role: 'admin' | 'prof' | 'benevole-bibliotheque' | 'parent';
+  telephone?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seances".
+ */
+export interface Seance {
+  id: number;
+  date: string;
+  matiere: 'maths' | 'francais' | 'anglais' | 'autre';
+  groupe?: (number | Eleve)[] | null;
+  prof: number | User;
+  /**
+   * Durée en minutes
+   */
+  duree?: number | null;
+  retour?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "presences".
+ */
+export interface Presence {
+  id: number;
+  seance: number | Seance;
+  eleve: number | Eleve;
+  present: 'present' | 'absent' | 'absent-justifie';
+  /**
+   * Motif factuel uniquement (ex. maladie), pas de détail médical.
+   */
+  commentaire?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -412,33 +513,6 @@ export interface Category {
     | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  name?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  resetPasswordRequestedAt?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -964,6 +1038,18 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'eleves';
+        value: number | Eleve;
+      } | null)
+    | ({
+        relationTo: 'seances';
+        value: number | Seance;
+      } | null)
+    | ({
+        relationTo: 'presences';
+        value: number | Presence;
+      } | null)
+    | ({
         relationTo: 'pages';
         value: number | Page;
       } | null)
@@ -1044,6 +1130,49 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "eleves_select".
+ */
+export interface ElevesSelect<T extends boolean = true> {
+  prenom?: T;
+  nom?: T;
+  dateNaissance?: T;
+  niveau?: T;
+  groupe?: T;
+  profReferent?: T;
+  parents?: T;
+  consentementRGPD?: T;
+  dateConsentement?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seances_select".
+ */
+export interface SeancesSelect<T extends boolean = true> {
+  date?: T;
+  matiere?: T;
+  groupe?: T;
+  prof?: T;
+  duree?: T;
+  retour?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "presences_select".
+ */
+export interface PresencesSelect<T extends boolean = true> {
+  seance?: T;
+  eleve?: T;
+  present?: T;
+  commentaire?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1331,6 +1460,8 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  role?: T;
+  telephone?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
