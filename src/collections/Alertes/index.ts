@@ -40,12 +40,11 @@ export const Alertes: CollectionConfig = {
       relationTo: 'eleves',
       type: 'relationship',
     },
-    // Champ `pret` (relation → prets) : à activer avec la Spec 04 (bibliothèque)
-    // {
-    //   name: 'pret',
-    //   relationTo: 'prets',
-    //   type: 'relationship',
-    // },
+    {
+      name: 'pret',
+      relationTo: 'prets',
+      type: 'relationship',
+    },
     {
       name: 'message',
       required: true,

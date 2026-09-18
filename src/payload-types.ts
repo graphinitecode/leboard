@@ -71,6 +71,9 @@ export interface Config {
     eleves: Eleve;
     seances: Seance;
     presences: Presence;
+    livres: Livre;
+    exemplaires: Exemplaire;
+    prets: Pret;
     pages: Page;
     posts: Post;
     media: Media;
@@ -97,6 +100,9 @@ export interface Config {
     eleves: ElevesSelect<false> | ElevesSelect<true>;
     seances: SeancesSelect<false> | SeancesSelect<true>;
     presences: PresencesSelect<false> | PresencesSelect<true>;
+    livres: LivresSelect<false> | LivresSelect<true>;
+    exemplaires: ExemplairesSelect<false> | ExemplairesSelect<true>;
+    prets: PretsSelect<false> | PretsSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -171,6 +177,7 @@ export interface Alerte {
   id: number;
   type: 'decrochage' | 'retard-bibliotheque' | 'rappel-retour' | 'rgpd-retention';
   eleve?: (number | null) | Eleve;
+  pret?: (number | null) | Pret;
   message: string;
   statut: 'nouvelle' | 'vue' | 'traitee';
   dateCreation: string;
@@ -237,6 +244,72 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "prets".
+ */
+export interface Pret {
+  id: number;
+  exemplaire: number | Exemplaire;
+  eleve: number | Eleve;
+  dateEmprunt?: string | null;
+  /**
+   * Défaut : +21 jours
+   */
+  dateRetourPrevue?: string | null;
+  /**
+   * Renseigner pour clôturer le prêt
+   */
+  dateRetourEffective?: string | null;
+  /**
+   * État constaté au retour (optionnel)
+   */
+  etatRetour?: ('bon' | 'use' | 'hs') | null;
+  commentaireRetour?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exemplaires".
+ */
+export interface Exemplaire {
+  id: number;
+  livre: number | Livre;
+  /**
+   * Laisser vide pour générer automatiquement (ex. LPV-0001)
+   */
+  code?: string | null;
+  etat?: ('neuf' | 'bon' | 'use' | 'hs') | null;
+  /**
+   * État constaté, notes d’entretien
+   */
+  commentaire?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "livres".
+ */
+export interface Livre {
+  id: number;
+  titre: string;
+  auteur?: string | null;
+  /**
+   * ISBN-10 ou ISBN-13 (optionnel)
+   */
+  isbn?: string | null;
+  niveau?: ('primaire' | 'college' | 'lycee') | null;
+  categorie?: ('lecture' | 'methodologie' | 'anglais' | 'manuel' | 'autre') | null;
+  editeur?: string | null;
+  /**
+   * Préférer l’archivage à la suppression : un livre avec historique de prêts ne peut pas être supprimé.
+   */
+  archived?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1088,6 +1161,18 @@ export interface PayloadLockedDocument {
         value: number | Presence;
       } | null)
     | ({
+        relationTo: 'livres';
+        value: number | Livre;
+      } | null)
+    | ({
+        relationTo: 'exemplaires';
+        value: number | Exemplaire;
+      } | null)
+    | ({
+        relationTo: 'prets';
+        value: number | Pret;
+      } | null)
+    | ({
         relationTo: 'pages';
         value: number | Page;
       } | null)
@@ -1176,6 +1261,7 @@ export interface PayloadMigration {
 export interface AlertesSelect<T extends boolean = true> {
   type?: T;
   eleve?: T;
+  pret?: T;
   message?: T;
   statut?: T;
   dateCreation?: T;
@@ -1227,6 +1313,48 @@ export interface PresencesSelect<T extends boolean = true> {
   eleve?: T;
   present?: T;
   commentaire?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "livres_select".
+ */
+export interface LivresSelect<T extends boolean = true> {
+  titre?: T;
+  auteur?: T;
+  isbn?: T;
+  niveau?: T;
+  categorie?: T;
+  editeur?: T;
+  archived?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exemplaires_select".
+ */
+export interface ExemplairesSelect<T extends boolean = true> {
+  livre?: T;
+  code?: T;
+  etat?: T;
+  commentaire?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "prets_select".
+ */
+export interface PretsSelect<T extends boolean = true> {
+  exemplaire?: T;
+  eleve?: T;
+  dateEmprunt?: T;
+  dateRetourPrevue?: T;
+  dateRetourEffective?: T;
+  etatRetour?: T;
+  commentaireRetour?: T;
   updatedAt?: T;
   createdAt?: T;
 }

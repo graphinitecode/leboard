@@ -7,10 +7,13 @@ import { fileURLToPath } from 'url'
 import { Categories } from './collections/Categories'
 import { Alertes } from './collections/Alertes'
 import { Eleves } from './collections/Eleves'
+import { Exemplaires } from './collections/Exemplaires'
+import { Livres } from './collections/Livres'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Presences } from './collections/Presences'
+import { Prets } from './collections/Prets'
 import { Seances } from './collections/Seances'
 import { Users } from './collections/Users'
 import { PolitiqueRgpd } from './globals/PolitiqueRgpd'
@@ -73,6 +76,9 @@ export default buildConfig({
     Eleves,
     Seances,
     Presences,
+    Livres,
+    Exemplaires,
+    Prets,
     // Collections du template (site vitrine, à retirer plus tard)
     Pages,
     Posts,
