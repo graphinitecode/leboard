@@ -1,6 +1,12 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
+import {
+  detecterDecrochage,
+  detecterRappelsPreventifs,
+  detecterRetardsBibliotheque,
+  resoudreAlertesPretsRendus,
+} from '@/utilities/alertes'
 import { detecterFinRetention } from '@/utilities/detecterFinRetention'
 
 export const runtime = 'nodejs'
@@ -15,12 +21,25 @@ export async function GET(req: Request) {
 
   const payload = await getPayload({ config })
 
-  const rgpdRetention = await detecterFinRetention(payload)
+  // Résolutions d'abord : évite de recréer une alerte pour une cause déjà disparue
+  const resoluesAuto = await resoudreAlertesPretsRendus(payload)
 
-  payload.logger.info({ msg: 'cron alertes exécuté', rgpdRetention })
+  const [decrochage, retards, rappels, rgpdRetention] = await Promise.all([
+    detecterDecrochage(payload),
+    detecterRetardsBibliotheque(payload),
+    detecterRappelsPreventifs(payload),
+    detecterFinRetention(payload),
+  ])
+
+  payload.logger.info({
+    msg: 'cron alertes exécuté',
+    creees: { decrochage, retards, rappels, rgpdRetention },
+    resoluesAuto,
+  })
 
   return Response.json({
     ok: true,
-    alertes: { rgpdRetention },
+    creees: { decrochage, retards, rappels, rgpdRetention },
+    resoluesAuto,
   })
 }
