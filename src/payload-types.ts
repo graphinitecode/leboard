@@ -71,6 +71,8 @@ export interface Config {
     eleves: Eleve;
     seances: Seance;
     presences: Presence;
+    progressions: Progression;
+    competences: Competence;
     livres: Livre;
     exemplaires: Exemplaire;
     prets: Pret;
@@ -91,6 +93,10 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {
+    eleves: {
+      progressions: 'progressions';
+      presences: 'presences';
+    };
     'payload-folders': {
       documentsAndFolders: 'payload-folders' | 'media';
     };
@@ -100,6 +106,8 @@ export interface Config {
     eleves: ElevesSelect<false> | ElevesSelect<true>;
     seances: SeancesSelect<false> | SeancesSelect<true>;
     presences: PresencesSelect<false> | PresencesSelect<true>;
+    progressions: ProgressionsSelect<false> | ProgressionsSelect<true>;
+    competences: CompetencesSelect<false> | CompetencesSelect<true>;
     livres: LivresSelect<false> | LivresSelect<true>;
     exemplaires: ExemplairesSelect<false> | ExemplairesSelect<true>;
     prets: PretsSelect<false> | PretsSelect<true>;
@@ -213,6 +221,22 @@ export interface Eleve {
    * Renseigner quand l’élève quitte l’association (déclenche la rétention)
    */
   dateFinAdhesion?: string | null;
+  /**
+   * Timeline des compétences travaillées
+   */
+  progressions?: {
+    docs?: (number | Progression)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Historique des présences
+   */
+  presences?: {
+    docs?: (number | Presence)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -244,6 +268,91 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "progressions".
+ */
+export interface Progression {
+  id: number;
+  eleve: number | Eleve;
+  competence: number | Competence;
+  /**
+   * Copiée depuis la compétence (lecture seule)
+   */
+  matiere?: ('maths' | 'francais' | 'anglais' | 'autre') | null;
+  niveau: 'acquis' | 'en-cours' | 'a-revoir';
+  date: string;
+  /**
+   * Optionnel — lier à la séance d’origine
+   */
+  seance?: (number | null) | Seance;
+  /**
+   * Observation courte, visible par la famille (portail)
+   */
+  commentaire?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "competences".
+ */
+export interface Competence {
+  id: number;
+  label: string;
+  matiere: 'maths' | 'francais' | 'anglais' | 'autre';
+  cycle?: ('cycle-2' | 'cycle-3' | 'cycle-4' | 'lycee') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seances".
+ */
+export interface Seance {
+  id: number;
+  date: string;
+  matiere: 'maths' | 'francais' | 'anglais' | 'autre';
+  groupe?: (number | Eleve)[] | null;
+  prof: number | User;
+  /**
+   * Durée en minutes
+   */
+  duree?: number | null;
+  retour?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "presences".
+ */
+export interface Presence {
+  id: number;
+  seance: number | Seance;
+  eleve: number | Eleve;
+  present: 'present' | 'absent' | 'absent-justifie';
+  /**
+   * Motif factuel uniquement (ex. maladie), pas de détail médical.
+   */
+  commentaire?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -308,54 +417,6 @@ export interface Livre {
    * Préférer l’archivage à la suppression : un livre avec historique de prêts ne peut pas être supprimé.
    */
   archived?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "seances".
- */
-export interface Seance {
-  id: number;
-  date: string;
-  matiere: 'maths' | 'francais' | 'anglais' | 'autre';
-  groupe?: (number | Eleve)[] | null;
-  prof: number | User;
-  /**
-   * Durée en minutes
-   */
-  duree?: number | null;
-  retour?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "presences".
- */
-export interface Presence {
-  id: number;
-  seance: number | Seance;
-  eleve: number | Eleve;
-  present: 'present' | 'absent' | 'absent-justifie';
-  /**
-   * Motif factuel uniquement (ex. maladie), pas de détail médical.
-   */
-  commentaire?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1161,6 +1222,14 @@ export interface PayloadLockedDocument {
         value: number | Presence;
       } | null)
     | ({
+        relationTo: 'progressions';
+        value: number | Progression;
+      } | null)
+    | ({
+        relationTo: 'competences';
+        value: number | Competence;
+      } | null)
+    | ({
         relationTo: 'livres';
         value: number | Livre;
       } | null)
@@ -1287,6 +1356,8 @@ export interface ElevesSelect<T extends boolean = true> {
   dateConsentement?: T;
   versionConsentement?: T;
   dateFinAdhesion?: T;
+  progressions?: T;
+  presences?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1313,6 +1384,32 @@ export interface PresencesSelect<T extends boolean = true> {
   eleve?: T;
   present?: T;
   commentaire?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "progressions_select".
+ */
+export interface ProgressionsSelect<T extends boolean = true> {
+  eleve?: T;
+  competence?: T;
+  matiere?: T;
+  niveau?: T;
+  date?: T;
+  seance?: T;
+  commentaire?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "competences_select".
+ */
+export interface CompetencesSelect<T extends boolean = true> {
+  label?: T;
+  matiere?: T;
+  cycle?: T;
   updatedAt?: T;
   createdAt?: T;
 }
