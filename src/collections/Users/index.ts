@@ -44,6 +44,41 @@ export const Users: CollectionConfig = {
       name: 'telephone',
       type: 'text',
     },
+    {
+      name: 'disponibilites',
+      type: 'array',
+      admin: {
+        condition: (data) => data?.role === undefined || data?.role === 'prof',
+        description: 'Créneaux hebdomadaires de disponibilité (pour le planning)',
+      },
+      fields: [
+        {
+          name: 'jour',
+          options: [
+            { label: 'Lundi', value: 'lundi' },
+            { label: 'Mardi', value: 'mardi' },
+            { label: 'Mercredi', value: 'mercredi' },
+            { label: 'Jeudi', value: 'jeudi' },
+            { label: 'Vendredi', value: 'vendredi' },
+            { label: 'Samedi', value: 'samedi' },
+          ],
+          required: true,
+          type: 'select',
+        },
+        {
+          name: 'heureDebut',
+          required: true,
+          type: 'text',
+          admin: { description: 'Format HH:mm (ex. 17:30)' },
+        },
+        {
+          name: 'heureFin',
+          required: true,
+          type: 'text',
+          admin: { description: 'Format HH:mm (ex. 19:00)' },
+        },
+      ],
+    },
   ],
   timestamps: true,
 }
