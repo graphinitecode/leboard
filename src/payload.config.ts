@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
 import { Alertes } from './collections/Alertes'
+import { Competences } from './collections/Competences'
 import { Eleves } from './collections/Eleves'
 import { Exemplaires } from './collections/Exemplaires'
 import { Livres } from './collections/Livres'
@@ -14,6 +15,7 @@ import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Presences } from './collections/Presences'
 import { Prets } from './collections/Prets'
+import { Progressions } from './collections/Progressions'
 import { Seances } from './collections/Seances'
 import { Users } from './collections/Users'
 import { PolitiqueRgpd } from './globals/PolitiqueRgpd'
@@ -76,6 +78,8 @@ export default buildConfig({
     Eleves,
     Seances,
     Presences,
+    Progressions,
+    Competences,
     Livres,
     Exemplaires,
     Prets,

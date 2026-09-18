@@ -153,6 +153,28 @@ export const Eleves: CollectionConfig = {
       },
       label: 'Fin d’adhésion',
     },
+    {
+      name: 'progressions',
+      type: 'join',
+      collection: 'progressions',
+      on: 'eleve',
+      admin: {
+        allowCreate: true,
+        defaultColumns: ['date', 'competence', 'niveau', 'commentaire'],
+        description: 'Timeline des compétences travaillées',
+      },
+    },
+    {
+      name: 'presences',
+      type: 'join',
+      collection: 'presences',
+      on: 'eleve',
+      admin: {
+        allowCreate: false,
+        defaultColumns: ['seance', 'present', 'commentaire'],
+        description: 'Historique des présences',
+      },
+    },
   ],
   hooks: {
     beforeValidate: [validerConsentement],
