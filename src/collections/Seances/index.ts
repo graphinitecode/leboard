@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
+import { seancesCreate, seancesDelete, seancesRead, seancesWrite } from '../../access/seances'
 
 export const matiereOptions = [
   { label: 'Maths', value: 'maths' },
@@ -12,10 +12,10 @@ export const matiereOptions = [
 export const Seances: CollectionConfig = {
   slug: 'seances',
   access: {
-    create: authenticated,
-    delete: authenticated,
-    read: authenticated,
-    update: authenticated,
+    create: seancesCreate,
+    delete: seancesDelete,
+    read: seancesRead,
+    update: seancesWrite,
   },
   admin: {
     defaultColumns: ['date', 'matiere', 'prof', 'groupe'],
