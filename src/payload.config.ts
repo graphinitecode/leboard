@@ -5,6 +5,7 @@ import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
+import { Alertes } from './collections/Alertes'
 import { Eleves } from './collections/Eleves'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
@@ -12,6 +13,7 @@ import { Posts } from './collections/Posts'
 import { Presences } from './collections/Presences'
 import { Seances } from './collections/Seances'
 import { Users } from './collections/Users'
+import { PolitiqueRgpd } from './globals/PolitiqueRgpd'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
@@ -67,6 +69,7 @@ export default buildConfig({
   }),
   collections: [
     // Collections métier (association)
+    Alertes,
     Eleves,
     Seances,
     Presences,
@@ -78,7 +81,7 @@ export default buildConfig({
     Users,
   ],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, PolitiqueRgpd],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

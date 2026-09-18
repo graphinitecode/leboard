@@ -67,6 +67,7 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    alertes: Alerte;
     eleves: Eleve;
     seances: Seance;
     presences: Presence;
@@ -92,6 +93,7 @@ export interface Config {
     };
   };
   collectionsSelect: {
+    alertes: AlertesSelect<false> | AlertesSelect<true>;
     eleves: ElevesSelect<false> | ElevesSelect<true>;
     seances: SeancesSelect<false> | SeancesSelect<true>;
     presences: PresencesSelect<false> | PresencesSelect<true>;
@@ -118,10 +120,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'politique-rgpd': PolitiqueRgpd;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'politique-rgpd': PolitiqueRgpdSelect<false> | PolitiqueRgpdSelect<true>;
   };
   locale: null;
   widgets: {
@@ -158,6 +162,27 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Alertes générées par le cron nocturne (décrochage, retards, rétention RGPD)
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "alertes".
+ */
+export interface Alerte {
+  id: number;
+  type: 'decrochage' | 'retard-bibliotheque' | 'rappel-retour' | 'rgpd-retention';
+  eleve?: (number | null) | Eleve;
+  message: string;
+  statut: 'nouvelle' | 'vue' | 'traitee';
+  dateCreation: string;
+  dateTraitement?: string | null;
+  /**
+   * Action réalisée (ex. parent appelé, profil anonymisé)
+   */
+  resolution?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "eleves".
  */
@@ -171,7 +196,16 @@ export interface Eleve {
   profReferent?: (number | null) | User;
   parents?: (number | User)[] | null;
   consentementRGPD?: boolean | null;
+  consentementRetire?: boolean | null;
   dateConsentement?: string | null;
+  /**
+   * Version de la politique acceptée
+   */
+  versionConsentement?: string | null;
+  /**
+   * Renseigner quand l’élève quitte l’association (déclenche la rétention)
+   */
+  dateFinAdhesion?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1038,6 +1072,10 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'alertes';
+        value: number | Alerte;
+      } | null)
+    | ({
         relationTo: 'eleves';
         value: number | Eleve;
       } | null)
@@ -1133,6 +1171,21 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "alertes_select".
+ */
+export interface AlertesSelect<T extends boolean = true> {
+  type?: T;
+  eleve?: T;
+  message?: T;
+  statut?: T;
+  dateCreation?: T;
+  dateTraitement?: T;
+  resolution?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "eleves_select".
  */
 export interface ElevesSelect<T extends boolean = true> {
@@ -1144,7 +1197,10 @@ export interface ElevesSelect<T extends boolean = true> {
   profReferent?: T;
   parents?: T;
   consentementRGPD?: T;
+  consentementRetire?: T;
   dateConsentement?: T;
+  versionConsentement?: T;
+  dateFinAdhesion?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1814,6 +1870,37 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
+ * Politique de protection des données, affichée publiquement sur /rgpd
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "politique-rgpd".
+ */
+export interface PolitiqueRgpd {
+  id: number;
+  /**
+   * Ex. v1 — référencée par les consentements des élèves
+   */
+  version: string;
+  datePublication: string;
+  contenu: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -1855,6 +1942,18 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "politique-rgpd_select".
+ */
+export interface PolitiqueRgpdSelect<T extends boolean = true> {
+  version?: T;
+  datePublication?: T;
+  contenu?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
