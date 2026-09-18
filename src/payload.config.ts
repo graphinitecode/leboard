@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url'
 import { Categories } from './collections/Categories'
 import { Alertes } from './collections/Alertes'
 import { Competences } from './collections/Competences'
+import { Creneaux } from './collections/Creneaux'
 import { Eleves } from './collections/Eleves'
 import { Exemplaires } from './collections/Exemplaires'
 import { Livres } from './collections/Livres'
@@ -83,6 +84,7 @@ export default buildConfig({
     Livres,
     Exemplaires,
     Prets,
+    Creneaux,
     // Collections du template (site vitrine, à retirer plus tard)
     Pages,
     Posts,

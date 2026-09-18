@@ -76,6 +76,7 @@ export interface Config {
     livres: Livre;
     exemplaires: Exemplaire;
     prets: Pret;
+    creneaux: Creneau;
     pages: Page;
     posts: Post;
     media: Media;
@@ -111,6 +112,7 @@ export interface Config {
     livres: LivresSelect<false> | LivresSelect<true>;
     exemplaires: ExemplairesSelect<false> | ExemplairesSelect<true>;
     prets: PretsSelect<false> | PretsSelect<true>;
+    creneaux: CreneauxSelect<false> | CreneauxSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -249,6 +251,23 @@ export interface User {
   name: string;
   role: 'admin' | 'prof' | 'benevole-bibliotheque' | 'parent';
   telephone?: string | null;
+  /**
+   * Créneaux hebdomadaires de disponibilité (pour le planning)
+   */
+  disponibilites?:
+    | {
+        jour: 'lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi';
+        /**
+         * Format HH:mm (ex. 17:30)
+         */
+        heureDebut: string;
+        /**
+         * Format HH:mm (ex. 19:00)
+         */
+        heureFin: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -417,6 +436,29 @@ export interface Livre {
    * Préférer l’archivage à la suppression : un livre avec historique de prêts ne peut pas être supprimé.
    */
   archived?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "creneaux".
+ */
+export interface Creneau {
+  id: number;
+  jour: 'lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi';
+  /**
+   * Format HH:mm (ex. 17:30)
+   */
+  heureDebut: string;
+  /**
+   * Format HH:mm (ex. 19:00)
+   */
+  heureFin: string;
+  salle?: string | null;
+  matiere: 'maths' | 'francais' | 'anglais' | 'autre';
+  prof?: (number | null) | User;
+  groupe?: (number | Eleve)[] | null;
+  actif?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1242,6 +1284,10 @@ export interface PayloadLockedDocument {
         value: number | Pret;
       } | null)
     | ({
+        relationTo: 'creneaux';
+        value: number | Creneau;
+      } | null)
+    | ({
         relationTo: 'pages';
         value: number | Page;
       } | null)
@@ -1452,6 +1498,22 @@ export interface PretsSelect<T extends boolean = true> {
   dateRetourEffective?: T;
   etatRetour?: T;
   commentaireRetour?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "creneaux_select".
+ */
+export interface CreneauxSelect<T extends boolean = true> {
+  jour?: T;
+  heureDebut?: T;
+  heureFin?: T;
+  salle?: T;
+  matiere?: T;
+  prof?: T;
+  groupe?: T;
+  actif?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1743,6 +1805,14 @@ export interface UsersSelect<T extends boolean = true> {
   name?: T;
   role?: T;
   telephone?: T;
+  disponibilites?:
+    | T
+    | {
+        jour?: T;
+        heureDebut?: T;
+        heureFin?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   email?: T;
