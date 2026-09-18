@@ -13,6 +13,23 @@ Le projet suit strictement le gitflow :
 - Releases : branche `release/<version>` depuis `develop`, fusionnée dans `main` et `develop` (tag sur `main`).
 - Jamais de commit direct sur `main` ou `develop` (hors fusions de branches gitflow).
 
+## Version (SemVer)
+
+Le projet suit le versionnage sémantique `MAJOR.MINOR.PATCH` (0.x pendant le développement initial) :
+
+- **MAJOR** : changement cassant (API, schéma de données sans migration compatible, suppression de fonctionnalité) → commit avec `!` ou footer `BREAKING CHANGE:`
+- **MINOR** : nouvelle fonctionnalité rétrocompatible (ex. une spec implémentée)
+- **PATCH** : correctif sans changement fonctionnel
+
+Règles :
+
+- Le numéro de version courant vit dans `package.json` (`"version"`).
+- Une release passe par une branche `release/<version>` (ex. `release/0.2.0`) : bump de version + tag annoté `v<version>` sur `main` lors de la fusion.
+- Conventional Commits alimentent la version : `fix` → PATCH, `feat` → MINOR, `feat`/`fix` avec `BREAKING CHANGE` (ou `!`) → MAJOR.
+- Pendant 0.x (pré-1.0) : les breaking changes sont tolérés en MINOR ; à partir de 1.0.0, les breaking changes montent le MAJOR.
+- Les tags : `git tag -a vX.Y.Z -m "Release vX.Y.Z"`, uniquement sur `main`.
+- Chaque release est documentée par ses notes (GitHub Release ou `CHANGELOG.md`).
+
 ## Commits (Conventional Commits)
 
 Format obligatoire : `<type>(<scope>): titre`

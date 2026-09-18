@@ -45,18 +45,20 @@ export const seed = async ({
 
   // clear the database
   await Promise.all(
-    globals.map((global) =>
-      payload.updateGlobal({
+    globals.map((global) => {
+      const data: Record<string, unknown> = {}
+      if (global === 'header' || global === 'footer') {
+        data.navItems = []
+      }
+      return payload.updateGlobal({
         slug: global,
-        data: {
-          navItems: [],
-        },
+        data: data as never,
         depth: 0,
         context: {
           disableRevalidate: true,
         },
-      }),
-    ),
+      })
+    }),
   )
 
   await Promise.all(
@@ -105,6 +107,7 @@ export const seed = async ({
         name: 'Demo Author',
         email: 'demo-author@example.com',
         password: 'password',
+        role: 'prof',
       },
     }),
     payload.create({

@@ -5,10 +5,21 @@ import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
+import { Alertes } from './collections/Alertes'
+import { Competences } from './collections/Competences'
+import { Creneaux } from './collections/Creneaux'
+import { Eleves } from './collections/Eleves'
+import { Exemplaires } from './collections/Exemplaires'
+import { Livres } from './collections/Livres'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { Presences } from './collections/Presences'
+import { Prets } from './collections/Prets'
+import { Progressions } from './collections/Progressions'
+import { Seances } from './collections/Seances'
 import { Users } from './collections/Users'
+import { PolitiqueRgpd } from './globals/PolitiqueRgpd'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
@@ -62,9 +73,27 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [
+    // Collections métier (association)
+    Alertes,
+    Eleves,
+    Seances,
+    Presences,
+    Progressions,
+    Competences,
+    Livres,
+    Exemplaires,
+    Prets,
+    Creneaux,
+    // Collections du template (site vitrine, à retirer plus tard)
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Users,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, PolitiqueRgpd],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

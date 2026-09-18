@@ -67,6 +67,16 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    alertes: Alerte;
+    eleves: Eleve;
+    seances: Seance;
+    presences: Presence;
+    progressions: Progression;
+    competences: Competence;
+    livres: Livre;
+    exemplaires: Exemplaire;
+    prets: Pret;
+    creneaux: Creneau;
     pages: Page;
     posts: Post;
     media: Media;
@@ -84,11 +94,25 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {
+    eleves: {
+      progressions: 'progressions';
+      presences: 'presences';
+    };
     'payload-folders': {
       documentsAndFolders: 'payload-folders' | 'media';
     };
   };
   collectionsSelect: {
+    alertes: AlertesSelect<false> | AlertesSelect<true>;
+    eleves: ElevesSelect<false> | ElevesSelect<true>;
+    seances: SeancesSelect<false> | SeancesSelect<true>;
+    presences: PresencesSelect<false> | PresencesSelect<true>;
+    progressions: ProgressionsSelect<false> | ProgressionsSelect<true>;
+    competences: CompetencesSelect<false> | CompetencesSelect<true>;
+    livres: LivresSelect<false> | LivresSelect<true>;
+    exemplaires: ExemplairesSelect<false> | ExemplairesSelect<true>;
+    prets: PretsSelect<false> | PretsSelect<true>;
+    creneaux: CreneauxSelect<false> | CreneauxSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -112,10 +136,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'politique-rgpd': PolitiqueRgpd;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'politique-rgpd': PolitiqueRgpdSelect<false> | PolitiqueRgpdSelect<true>;
   };
   locale: null;
   widgets: {
@@ -150,6 +176,291 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
+}
+/**
+ * Alertes générées par le cron nocturne (décrochage, retards, rétention RGPD)
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "alertes".
+ */
+export interface Alerte {
+  id: number;
+  type: 'decrochage' | 'retard-bibliotheque' | 'rappel-retour' | 'rgpd-retention';
+  eleve?: (number | null) | Eleve;
+  pret?: (number | null) | Pret;
+  message: string;
+  statut: 'nouvelle' | 'vue' | 'traitee';
+  dateCreation: string;
+  dateTraitement?: string | null;
+  /**
+   * Action réalisée (ex. parent appelé, profil anonymisé)
+   */
+  resolution?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "eleves".
+ */
+export interface Eleve {
+  id: number;
+  prenom: string;
+  nom: string;
+  dateNaissance: string;
+  niveau: 'CP' | 'CE1' | 'CE2' | 'CM1' | 'CM2' | '6e' | '5e' | '4e' | '3e' | '2nde' | '1ere' | 'Terminale';
+  groupe?: string | null;
+  profReferent?: (number | null) | User;
+  parents?: (number | User)[] | null;
+  consentementRGPD?: boolean | null;
+  consentementRetire?: boolean | null;
+  dateConsentement?: string | null;
+  /**
+   * Version de la politique acceptée
+   */
+  versionConsentement?: string | null;
+  /**
+   * Renseigner quand l’élève quitte l’association (déclenche la rétention)
+   */
+  dateFinAdhesion?: string | null;
+  /**
+   * Timeline des compétences travaillées
+   */
+  progressions?: {
+    docs?: (number | Progression)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Historique des présences
+   */
+  presences?: {
+    docs?: (number | Presence)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name: string;
+  role: 'admin' | 'prof' | 'benevole-bibliotheque' | 'parent';
+  telephone?: string | null;
+  /**
+   * Créneaux hebdomadaires de disponibilité (pour le planning)
+   */
+  disponibilites?:
+    | {
+        jour: 'lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi';
+        /**
+         * Format HH:mm (ex. 17:30)
+         */
+        heureDebut: string;
+        /**
+         * Format HH:mm (ex. 19:00)
+         */
+        heureFin: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "progressions".
+ */
+export interface Progression {
+  id: number;
+  eleve: number | Eleve;
+  competence: number | Competence;
+  /**
+   * Copiée depuis la compétence (lecture seule)
+   */
+  matiere?: ('maths' | 'francais' | 'anglais' | 'autre') | null;
+  niveau: 'acquis' | 'en-cours' | 'a-revoir';
+  date: string;
+  /**
+   * Optionnel — lier à la séance d’origine
+   */
+  seance?: (number | null) | Seance;
+  /**
+   * Observation courte, visible par la famille (portail)
+   */
+  commentaire?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "competences".
+ */
+export interface Competence {
+  id: number;
+  label: string;
+  matiere: 'maths' | 'francais' | 'anglais' | 'autre';
+  cycle?: ('cycle-2' | 'cycle-3' | 'cycle-4' | 'lycee') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seances".
+ */
+export interface Seance {
+  id: number;
+  date: string;
+  matiere: 'maths' | 'francais' | 'anglais' | 'autre';
+  groupe?: (number | Eleve)[] | null;
+  prof: number | User;
+  /**
+   * Durée en minutes
+   */
+  duree?: number | null;
+  retour?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "presences".
+ */
+export interface Presence {
+  id: number;
+  seance: number | Seance;
+  eleve: number | Eleve;
+  present: 'present' | 'absent' | 'absent-justifie';
+  /**
+   * Motif factuel uniquement (ex. maladie), pas de détail médical.
+   */
+  commentaire?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "prets".
+ */
+export interface Pret {
+  id: number;
+  exemplaire: number | Exemplaire;
+  eleve: number | Eleve;
+  dateEmprunt?: string | null;
+  /**
+   * Défaut : +21 jours
+   */
+  dateRetourPrevue?: string | null;
+  /**
+   * Renseigner pour clôturer le prêt
+   */
+  dateRetourEffective?: string | null;
+  /**
+   * État constaté au retour (optionnel)
+   */
+  etatRetour?: ('bon' | 'use' | 'hs') | null;
+  commentaireRetour?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exemplaires".
+ */
+export interface Exemplaire {
+  id: number;
+  livre: number | Livre;
+  /**
+   * Laisser vide pour générer automatiquement (ex. LPV-0001)
+   */
+  code?: string | null;
+  etat?: ('neuf' | 'bon' | 'use' | 'hs') | null;
+  /**
+   * État constaté, notes d’entretien
+   */
+  commentaire?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "livres".
+ */
+export interface Livre {
+  id: number;
+  titre: string;
+  auteur?: string | null;
+  /**
+   * ISBN-10 ou ISBN-13 (optionnel)
+   */
+  isbn?: string | null;
+  niveau?: ('primaire' | 'college' | 'lycee') | null;
+  categorie?: ('lecture' | 'methodologie' | 'anglais' | 'manuel' | 'autre') | null;
+  editeur?: string | null;
+  /**
+   * Préférer l’archivage à la suppression : un livre avec historique de prêts ne peut pas être supprimé.
+   */
+  archived?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "creneaux".
+ */
+export interface Creneau {
+  id: number;
+  jour: 'lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi';
+  /**
+   * Format HH:mm (ex. 17:30)
+   */
+  heureDebut: string;
+  /**
+   * Format HH:mm (ex. 19:00)
+   */
+  heureFin: string;
+  salle?: string | null;
+  matiere: 'maths' | 'francais' | 'anglais' | 'autre';
+  prof?: (number | null) | User;
+  groupe?: (number | Eleve)[] | null;
+  actif?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -412,33 +723,6 @@ export interface Category {
     | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  name?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  resetPasswordRequestedAt?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -964,6 +1248,46 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'alertes';
+        value: number | Alerte;
+      } | null)
+    | ({
+        relationTo: 'eleves';
+        value: number | Eleve;
+      } | null)
+    | ({
+        relationTo: 'seances';
+        value: number | Seance;
+      } | null)
+    | ({
+        relationTo: 'presences';
+        value: number | Presence;
+      } | null)
+    | ({
+        relationTo: 'progressions';
+        value: number | Progression;
+      } | null)
+    | ({
+        relationTo: 'competences';
+        value: number | Competence;
+      } | null)
+    | ({
+        relationTo: 'livres';
+        value: number | Livre;
+      } | null)
+    | ({
+        relationTo: 'exemplaires';
+        value: number | Exemplaire;
+      } | null)
+    | ({
+        relationTo: 'prets';
+        value: number | Pret;
+      } | null)
+    | ({
+        relationTo: 'creneaux';
+        value: number | Creneau;
+      } | null)
+    | ({
         relationTo: 'pages';
         value: number | Page;
       } | null)
@@ -1044,6 +1368,154 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "alertes_select".
+ */
+export interface AlertesSelect<T extends boolean = true> {
+  type?: T;
+  eleve?: T;
+  pret?: T;
+  message?: T;
+  statut?: T;
+  dateCreation?: T;
+  dateTraitement?: T;
+  resolution?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "eleves_select".
+ */
+export interface ElevesSelect<T extends boolean = true> {
+  prenom?: T;
+  nom?: T;
+  dateNaissance?: T;
+  niveau?: T;
+  groupe?: T;
+  profReferent?: T;
+  parents?: T;
+  consentementRGPD?: T;
+  consentementRetire?: T;
+  dateConsentement?: T;
+  versionConsentement?: T;
+  dateFinAdhesion?: T;
+  progressions?: T;
+  presences?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seances_select".
+ */
+export interface SeancesSelect<T extends boolean = true> {
+  date?: T;
+  matiere?: T;
+  groupe?: T;
+  prof?: T;
+  duree?: T;
+  retour?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "presences_select".
+ */
+export interface PresencesSelect<T extends boolean = true> {
+  seance?: T;
+  eleve?: T;
+  present?: T;
+  commentaire?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "progressions_select".
+ */
+export interface ProgressionsSelect<T extends boolean = true> {
+  eleve?: T;
+  competence?: T;
+  matiere?: T;
+  niveau?: T;
+  date?: T;
+  seance?: T;
+  commentaire?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "competences_select".
+ */
+export interface CompetencesSelect<T extends boolean = true> {
+  label?: T;
+  matiere?: T;
+  cycle?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "livres_select".
+ */
+export interface LivresSelect<T extends boolean = true> {
+  titre?: T;
+  auteur?: T;
+  isbn?: T;
+  niveau?: T;
+  categorie?: T;
+  editeur?: T;
+  archived?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exemplaires_select".
+ */
+export interface ExemplairesSelect<T extends boolean = true> {
+  livre?: T;
+  code?: T;
+  etat?: T;
+  commentaire?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "prets_select".
+ */
+export interface PretsSelect<T extends boolean = true> {
+  exemplaire?: T;
+  eleve?: T;
+  dateEmprunt?: T;
+  dateRetourPrevue?: T;
+  dateRetourEffective?: T;
+  etatRetour?: T;
+  commentaireRetour?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "creneaux_select".
+ */
+export interface CreneauxSelect<T extends boolean = true> {
+  jour?: T;
+  heureDebut?: T;
+  heureFin?: T;
+  salle?: T;
+  matiere?: T;
+  prof?: T;
+  groupe?: T;
+  actif?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1331,6 +1803,16 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  role?: T;
+  telephone?: T;
+  disponibilites?:
+    | T
+    | {
+        jour?: T;
+        heureDebut?: T;
+        heureFin?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1683,6 +2165,37 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
+ * Politique de protection des données, affichée publiquement sur /rgpd
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "politique-rgpd".
+ */
+export interface PolitiqueRgpd {
+  id: number;
+  /**
+   * Ex. v1 — référencée par les consentements des élèves
+   */
+  version: string;
+  datePublication: string;
+  contenu: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -1724,6 +2237,18 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "politique-rgpd_select".
+ */
+export interface PolitiqueRgpdSelect<T extends boolean = true> {
+  version?: T;
+  datePublication?: T;
+  contenu?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
