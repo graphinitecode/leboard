@@ -14,9 +14,11 @@ export function TexteAvertissement({
 }) {
   return (
     <div className="lpv-avertissement">
-      <span aria-hidden="true" className="lpv-avertissement__icone">
-        <Icon classe="lpv-avertissement__icone-svg" icone="rivet-icons:exclamation-mark" taille={16} />
-      </span>
+      <Icon
+        classe="lpv-avertissement__icone-svg"
+        icone="rivet-icons:exclamation-mark-circle-solid"
+        taille={32}
+      />
       <strong className="lpv-avertissement__texte">
         <span className="lpv-visually-hidden">{libelleCache} : </span>
         {children}
