@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 import { useState } from 'react'
 
 import { Bouton } from '@/components/atoms/Bouton'
@@ -66,7 +68,7 @@ export function LoginForm({
         value={password}
       />
       <p className="lpv-login__oublie">
-        Mot de passe oublié ? <a href="/admin/forgot-password">Réinitialiser ici</a>
+        Mot de passe oublié ? <Link href="/admin/forgot-password">Réinitialiser ici</Link>
       </p>
       <Bouton disabled={loading} type="submit">
         {loading ? 'Connexion…' : 'Se connecter'}

@@ -1,16 +1,11 @@
 'use client'
-import type { RefObject } from 'react'
 
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef } from 'react'
 
-type UseClickableCardType<T extends HTMLElement> = {
-  card: {
-    ref: RefObject<T | null>
-  }
-  link: {
-    ref: RefObject<HTMLAnchorElement | null>
-  }
+type UseClickableCardType = {
+  setCardRef: (node: HTMLElement | null) => void
+  setLinkRef: (node: HTMLAnchorElement | null) => void
 }
 
 interface Props {
@@ -19,13 +14,13 @@ interface Props {
   scroll?: boolean
 }
 
-function useClickableCard<T extends HTMLElement>({
+function useClickableCard({
   external = false,
   newTab = false,
   scroll = true,
-}: Props): UseClickableCardType<T> {
+}: Props): UseClickableCardType {
   const router = useRouter()
-  const card = useRef<T>(null)
+  const card = useRef<HTMLElement>(null)
   const link = useRef<HTMLAnchorElement>(null)
   const timeDown = useRef<number>(0)
   const hasActiveParent = useRef<boolean>(false)
@@ -95,14 +90,17 @@ function useClickableCard<T extends HTMLElement>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [card, link, router])
 
-  return {
-    card: {
-      ref: card,
-    },
-    link: {
-      ref: link,
-    },
-  }
+  const setCardRef = useCallback((node: HTMLElement | null) => {
+    card.current = node
+  }, [])
+  const setLinkRef = useCallback((node: HTMLAnchorElement | null) => {
+    link.current = node
+  }, [])
+
+  // Seuls les callbacks ref sont exposés : exposer l'objet ref lui-même fait
+  // croire à la règle react-hooks/refs qu'il est lu pendant le render du
+  // composant consommateur.
+  return { setCardRef, setLinkRef }
 }
 
 export default useClickableCard
