@@ -4,10 +4,9 @@ import type { ChangeEvent } from 'react'
 
 import { ErrorMessage, Hint, Label } from '@/components/atoms/Champ'
 
-type TypeChamp = 'input' | 'textarea' | 'select'
-
 // Molécule : champ de formulaire complet (Label + Hint + Erreur + contrôle).
-// Réunit les anciens ChampTexte / ChampTexteLong / ChampSelect.
+// Convention : `optionnel` affiche « (optionnel) » dans le label ; un champ
+// sans cette mention est obligatoire (attribut required appliqué au contrôle).
 export function ChampFormulaire({
   as = 'input',
   label,
@@ -16,7 +15,7 @@ export function ChampFormulaire({
   id,
   type = 'text',
   autoComplete,
-  required,
+  optionnel = false,
   name,
   defaultValue,
   value,
@@ -32,7 +31,7 @@ export function ChampFormulaire({
   id: string
   type?: string
   autoComplete?: string
-  required?: boolean
+  optionnel?: boolean
   name?: string
   defaultValue?: string
   value?: string
@@ -45,12 +44,13 @@ export function ChampFormulaire({
     .filter(Boolean)
     .join(' ')
 
+  const required = !optionnel
   const classeErreur = erreur ? ' lpv-input--error' : ''
   const groupeClasse = `lpv-form-group${erreur ? ' lpv-form-group--error' : ''}`
 
   return (
     <div className={groupeClasse}>
-      <Label htmlFor={id} requis={required}>
+      <Label htmlFor={id} optionnel={optionnel}>
         {label}
       </Label>
       {hint ? <Hint id={`${id}-hint`}>{hint}</Hint> : null}

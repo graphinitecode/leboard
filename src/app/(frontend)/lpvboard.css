@@ -270,6 +270,12 @@
   margin-bottom: 0.25rem;
 }
 
+.lpv-label__optionnel {
+  color: var(--lpv-text-muted);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
 .lpv-hint {
   color: var(--lpv-text-muted);
   font-size: 1rem;
