@@ -90,7 +90,7 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
     <>
       <BackLink href="/profs">Tableau de bord</BackLink>
       <h1 className="lpv-h1">
-        {eleve.prenom} {eleve.nom} <Tag couleur="violet">{eleve.niveau}</Tag>
+        {eleve.prenom} {eleve.nom} <Tag couleur="bleu">{eleve.niveau}</Tag>
       </h1>
 
       <SummaryList

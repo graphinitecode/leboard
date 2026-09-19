@@ -1,10 +1,10 @@
-// Atome : logo LPV Board (coeur bleu) avec nom du service
+// Atome : logo LPV Board (coeur bleu) avec nom du service — utilisé en pied de page
 export function LogoLPV({ libelle = 'LPV Board' }: { libelle?: string }) {
   return (
     <span style={{ alignItems: 'center', display: 'inline-flex', gap: '0.5rem' }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img alt="" className="lpv-entete__logo-img" src="/lpv-logo.svg" />
-      <span>{libelle}</span>
+      <img alt="" style={{ height: '2.25rem', width: 'auto' }} src="/lpv-logo.svg" />
+      <span style={{ fontWeight: 700 }}>{libelle}</span>
     </span>
   )
 }

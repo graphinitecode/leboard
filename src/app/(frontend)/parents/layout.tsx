@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: 'Espace parents — LPV Board',
 }
 
-// Layout du portail parents : shell unique (entête + contenu + pied).
+// Layout du portail parents : entête bleue fusionnée avec le hero (visuels LPV).
 export default async function ParentsLayout({ children }: { children: ReactNode }) {
   const user = await getMeUserServer()
 
@@ -23,9 +23,17 @@ export default async function ParentsLayout({ children }: { children: ReactNode 
       entete={
         <EnteteService
           deconnexion={Boolean(user)}
-          libelleService="Espace parents"
+          heroTexte="Le suivi de votre enfant : présences, retours et prêts."
+          heroTitre="Espace parents"
+          legales={[
+            { href: '/rgpd', libelle: 'Politique de confidentialité' },
+            { href: '/rgpd', libelle: 'Politique générale' },
+          ]}
           nomUtilisateur={user?.name ?? null}
-          liens={[{ href: '/rgpd', libelle: 'Protection des données' }]}
+          services={[
+            { href: '/parents', libelle: 'Espace parents' },
+            { href: '/rgpd', libelle: 'Protection des données' },
+          ]}
         />
       }
       liensPied={[{ href: '/parents/login', libelle: 'Connexion' }]}

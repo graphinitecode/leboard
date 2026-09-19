@@ -87,7 +87,7 @@ export default async function SeanceProfPage({ params }: { params: Promise<{ id:
           day: 'numeric',
           month: 'long',
         })}{' '}
-        <Tag couleur="violet">{seance.matiere}</Tag>
+        <Tag couleur="bleu">{seance.matiere}</Tag>
       </h1>
 
       <section>

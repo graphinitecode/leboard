@@ -6,20 +6,18 @@
    les variables ci-dessous — pas de couleur en dur dans les composants. */
 
 :root {
-  /* Charte LPV Board */
-  --lpv-blue: #3d9eff;         /* marque : boutons, liens, focus secondaire */
+  /* Charte LPV Board (visuel officiel) */
+  --lpv-blue: #3d9eff;         /* Dodger Blue — marque : entête, hero, boutons, liens */
   --lpv-blue-dark: #1877d2;    /* hover boutons / liens (contraste AA sur blanc) */
-  --lpv-sky: #63d0ff;          /* surfaces mises en avant (panel du jour) */
-  --lpv-sky-soft: #eaf7ff;     /* fond clair dérivé du bleu clair */
-  --lpv-violet: #7d3ff0;       /* accent secondaire */
-  --lpv-green: #1f8a4c;        /* succès / présent */
-  --lpv-green-soft: #e3f5ea;
-  --lpv-yellow: #b98900;       /* absent justifié (foncé pour contraste) */
-  --lpv-yellow-soft: #fff8dc;
-  --lpv-orange: #c05e21;       /* « retour à faire » */
-  --lpv-orange-soft: #fdeee3;
-  --lpv-red: #d43b2b;          /* absent / erreur */
-  --lpv-red-soft: #fdebe9;
+  --lpv-blue-soft: #eaf5ff;    /* fond clair dérivé du bleu de marque */
+  --lpv-green: #00af54;        /* Medium Jungle — succès / présent */
+  --lpv-green-soft: #e2f7ec;
+  --lpv-orange: #f96900;       /* Pumpkin Spice — « retour à faire », avertissements */
+  --lpv-orange-soft: #feefe4;
+  --lpv-yellow: #f4d35e;       /* Royal Gold — absent justifié (texte foncé sur fond) */
+  --lpv-yellow-soft: #fdf6e0;
+  --lpv-red: #ff5154;          /* Vibrant Coral — absent / erreur */
+  --lpv-red-soft: #ffeaeb;
 
   /* Neutres */
   --lpv-text: #0f1419;
@@ -50,9 +48,169 @@
   margin: 0.5rem 0 1rem;
 }
 
-/* --- Hero façon GOV.UK ------------------------------------------------------ */
-/* Bandeau bleu pleine largeur avec gros titre blanc, comme la page d'accueil
-   GOV.UK. Le hero vit dans le shell portail, sous l'entête de service. */
+/* --- Entête bleue + hero fusionnés (visuels LPV) ---------------------------- */
+/* Bande bleue pleine largeur : logo blanc + Menu dépliant en haut,
+   gros titre blanc du portail en dessous (comme la home GOV.UK). */
+
+.lpv-entete-bleue {
+  background-color: var(--lpv-blue);
+  color: var(--lpv-surface);
+  margin-bottom: 2rem;
+}
+
+.lpv-entete-bleue__inner {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-inline: auto;
+  max-width: var(--lpv-container);
+  padding: 1rem;
+}
+
+.lpv-entete-bleue__logo {
+  align-items: center;
+  color: var(--lpv-surface);
+  display: flex;
+  gap: 0.6rem;
+  text-decoration: none;
+}
+
+.lpv-entete-bleue__logo-img {
+  height: 2.75rem;
+  width: auto;
+}
+
+.lpv-entete-bleue__logo-texte {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.lpv-entete-bleue__logo-texte small {
+  font-size: 0.8rem;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.lpv-entete-bleue__logo-texte strong {
+  font-size: 1rem;
+}
+
+.lpv-entete-bleue__actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.lpv-entete-bleue__user {
+  align-items: center;
+  display: inline-flex;
+  font-weight: 400;
+}
+
+.lpv-entete-bleue__user::before {
+  background-color: var(--lpv-surface);
+  border-radius: 50%;
+  content: '';
+  display: inline-block;
+  height: 0.55rem;
+  margin-right: 0.4rem;
+  width: 0.55rem;
+}
+
+.lpv-menu-bouton {
+  background: transparent;
+  border: 0;
+  color: var(--lpv-surface);
+  cursor: pointer;
+  font-size: 1.125rem;
+  font-weight: 700;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+}
+
+.lpv-menu-bouton:hover {
+  text-decoration: underline;
+}
+
+.lpv-menu-panneau {
+  background-color: var(--lpv-surface);
+  border-bottom: 4px solid var(--lpv-blue);
+  box-shadow: 0 6px 12px rgb(15 20 25 / 15%);
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr 1fr;
+  padding: 1.5rem 1rem;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  width: min(48rem, 100vw);
+  z-index: 50;
+}
+
+@media (max-width: 639px) {
+  .lpv-menu-panneau {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lpv-menu-panneau__titre {
+  border-bottom: 1px solid var(--lpv-grey-border);
+  font-size: 1.125rem;
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.5rem;
+}
+
+.lpv-menu-panneau__colonne ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lpv-menu-panneau__colonne li {
+  margin-bottom: 0.75rem;
+}
+
+.lpv-menu-panneau__colonne li a {
+  color: var(--lpv-blue-dark);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.lpv-menu-panneau__colonne li p {
+  color: var(--lpv-text-muted);
+  font-size: 0.9rem;
+  margin: 0.15rem 0 0;
+}
+
+.lpv-entete-bleue__hero {
+  margin-inline: auto;
+  max-width: var(--lpv-container);
+  padding: 1.5rem 1rem 2rem;
+}
+
+.lpv-entete-bleue__hero-titre {
+  color: var(--lpv-surface);
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin: 0 0 0.5rem;
+  max-width: 22ch;
+}
+
+.lpv-entete-bleue__hero-texte {
+  color: var(--lpv-surface);
+  font-size: 1.125rem;
+  line-height: 1.4;
+  margin: 0;
+  max-width: 46ch;
+}
+
+/* --- Ancien hero (remplacé par l'entête bleue fusionnée) ------------------- */
 
 .lpv-hero {
   background-color: var(--lpv-blue);
@@ -237,10 +395,10 @@ a:focus {
 }
 
 .lpv-tag--vert { background-color: var(--lpv-green); }
-.lpv-tag--jaune { background-color: var(--lpv-yellow); }
+.lpv-tag--jaune { background-color: var(--lpv-yellow); color: var(--lpv-text); }
 .lpv-tag--orange { background-color: var(--lpv-orange); }
 .lpv-tag--rouge { background-color: var(--lpv-red); }
-.lpv-tag--violet { background-color: var(--lpv-violet); }
+.lpv-tag--bleu { background-color: var(--lpv-blue); }
 
 /* --- Résumé des erreurs -------------------------------------------------- */
 
@@ -284,15 +442,15 @@ a:focus {
 
 .lpv-inset {
   background-color: var(--lpv-grey-bg);
-  border-left: 6px solid var(--lpv-sky);
+  border-left: 6px solid var(--lpv-blue);
   border-radius: 0 var(--lpv-radius) var(--lpv-radius) 0;
   margin: 1rem 0;
   padding: 0.85rem 1rem;
 }
 
 .lpv-panel {
-  background-color: var(--lpv-sky-soft);
-  border: 2px solid var(--lpv-sky);
+  background-color: var(--lpv-blue-soft);
+  border: 2px solid var(--lpv-blue);
   border-radius: var(--lpv-radius);
   margin-bottom: 1.5rem;
   padding: 1.25rem;
@@ -306,96 +464,33 @@ a:focus {
   margin-top: 0;
 }
 
-/* --- Navigation de service ----------------------------------------------- */
+/* --- Page de connexion (visuels LPV) ---------------------------------------- */
 
-.lpv-entete {
-  background-color: var(--lpv-surface);
-  border-bottom: 4px solid var(--lpv-blue);
-  margin-bottom: 1.5rem;
+.lpv-login {
+  margin-inline: auto;
+  max-width: 28rem;
+  padding: 2rem 0 4rem;
 }
 
-.lpv-entete__inner {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-}
-
-.lpv-entete__logo {
-  align-items: center;
-  color: var(--lpv-text);
-  display: flex;
+.lpv-login__titre {
+  font-size: 2rem;
   font-weight: 700;
-  gap: 0.5rem;
-  text-decoration: none;
+  margin: 0 0 0.5rem;
 }
 
-.lpv-entete__logo-img {
-  height: 2.25rem;
-  width: auto;
+.lpv-login__sous-titre {
+  font-size: 1.125rem;
+  line-height: 1.4;
+  margin: 0 0 2rem;
 }
 
-.lpv-entete__nav {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.25rem;
+.lpv-login__oublie {
+  margin: 0.5rem 0 1.5rem;
 }
 
-.lpv-entete__nav a {
-  align-items: center;
+.lpv-login__oublie a {
   color: var(--lpv-blue-dark);
-  display: inline-flex;
   font-weight: 700;
-  min-height: 44px;
-  text-decoration: none;
-}
-
-.lpv-entete__nav .lpv-bouton {
-  box-shadow: none;
-  font-size: 1rem;
-  min-height: 44px;
-  padding-bottom: 0.5rem;
-}
-
-.lpv-entete__nav a:hover {
-  text-decoration: underline;
-}
-
-.lpv-entete__user {
-  align-items: center;
-  color: var(--lpv-text);
-  display: inline-flex;
-  font-weight: 400;
-  min-height: 44px;
-}
-
-.lpv-entete__user::before {
-  background-color: var(--lpv-sky);
-  border-radius: 50%;
-  content: '';
-  display: inline-block;
-  height: 0.55rem;
-  margin-right: 0.4rem;
-  width: 0.55rem;
-}
-
-.lpv-skip-link {
-  background: var(--lpv-surface);
-  border: 2px solid var(--lpv-blue);
-  border-radius: var(--lpv-radius);
-  left: -9999px;
-  padding: 0.5rem 1rem;
-  position: absolute;
-  z-index: 100;
-}
-
-.lpv-skip-link:focus {
-  left: 1rem;
-  position: fixed;
-  top: 1rem;
 }
 
 /* --- Listes structurées --------------------------------------------------- */

@@ -14,10 +14,15 @@ export default async function RGPDPage() {
 
   return (
     <ContenuPage
-      entete={<EnteteService libelleService="LPV Board" liens={[]} />}
+      entete={
+        <EnteteService
+          heroTitre="Politique de protection des données"
+          legales={[{ href: '/rgpd', libelle: 'Protection des données' }]}
+          services={[{ href: '/rgpd', libelle: 'Protection des données' }]}
+        />
+      }
       liensPied={[]}
     >
-      <h1 className="lpv-h1">Politique de protection des données</h1>
       {politique?.contenu ? (
         <RichText data={politique.contenu} />
       ) : (

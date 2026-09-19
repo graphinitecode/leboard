@@ -62,7 +62,7 @@ export default async function EnfantPage({ params }: { params: Promise<{ id: str
   return (
     <>
       <h1 className="lpv-h1">
-        {enfant.prenom} {enfant.nom} <Tag couleur="violet">{enfant.niveau}</Tag>
+        {enfant.prenom} {enfant.nom} <Tag couleur="bleu">{enfant.niveau}</Tag>
       </h1>
 
       <section>

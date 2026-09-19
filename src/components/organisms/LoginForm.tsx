@@ -1,18 +1,18 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
 
 import { Bouton } from '@/components/atoms/Bouton'
 import { ChampFormulaire, ResumeErreurs } from '@/components/molecules'
 
 export function LoginForm({
   cible,
-  libelleService,
-  note,
+  sousTitre,
+  titre = 'Connexion',
 }: {
   cible: string
-  libelleService: string
-  note?: string
+  sousTitre?: string
+  titre?: string
 }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -45,15 +45,15 @@ export function LoginForm({
   }
 
   return (
-    <form onSubmit={submit} style={{ maxWidth: 420 }}>
-      <h1 className="lpv-h1">{libelleService}</h1>
-      {note ? <p className="lpv-muted">{note}</p> : null}
+    <form className="lpv-login" onSubmit={submit}>
+      <h1 className="lpv-login__titre">{titre}</h1>
+      {sousTitre ? <p className="lpv-login__sous-titre">{sousTitre}</p> : null}
       <ResumeErreurs erreurs={erreur ? [erreur] : []} />
       <ChampFormulaire
         autoComplete="email"
         erreur={erreur ?? undefined}
         id="email"
-        label="Adresse email"
+        label="Adresse e-mail"
         onChange={(e) => setEmail(e.target.value)}
         required
         type="email"
@@ -69,12 +69,12 @@ export function LoginForm({
         type="password"
         value={password}
       />
+      <p className="lpv-login__oublie">
+        Mot de passe oublié ? <a href="/admin/forgot-password">Réinitialiser ici</a>
+      </p>
       <Bouton disabled={loading} type="submit">
         {loading ? 'Connexion…' : 'Se connecter'}
       </Bouton>
-      <p style={{ marginTop: '1rem' }}>
-        <a href="/admin/forgot-password">Mot de passe oublié</a>
-      </p>
     </form>
   )
 }

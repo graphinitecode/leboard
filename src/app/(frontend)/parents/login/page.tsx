@@ -1,7 +1,10 @@
 import { redirect } from 'next/navigation'
 
 import { LoginForm } from '@/components/organisms/LoginForm'
+import { ContenuPage, EnteteService } from '@/components/molecules/EnteteService'
 import { getMeUserServer } from '@/utilities/parentAuth'
+
+import '../lpvboard.css'
 
 export const dynamic = 'force-dynamic'
 
@@ -12,10 +15,27 @@ export default async function LoginPage() {
   }
 
   return (
-    <LoginForm
-      cible="/parents"
-      libelleService="Espace parents"
-      note="Vous voyez uniquement les informations concernant votre enfant."
-    />
+    <ContenuPage
+      entete={
+        <EnteteService
+          heroTexte="Connectez pour accéder à l'espace parents."
+          heroTitre="Espace parents"
+          legales={[
+            { href: '/rgpd', libelle: 'Politique de confidentialité' },
+            { href: '/rgpd', libelle: 'Politique générale' },
+          ]}
+          services={[
+            { href: '/parents', libelle: 'Espace parents' },
+            { href: '/rgpd', libelle: 'Protection des données' },
+          ]}
+        />
+      }
+      liensPied={[]}
+    >
+      <LoginForm
+        cible="/parents"
+        sousTitre="Connectez pour accéder à l'espace parents."
+      />
+    </ContenuPage>
   )
 }
