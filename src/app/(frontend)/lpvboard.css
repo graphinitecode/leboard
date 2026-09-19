@@ -201,6 +201,28 @@
   margin: 0.15rem 0 0;
 }
 
+/* --- Skip link (accessibilité clavier) -------------------------------------- */
+/* Hors écran par défaut ; apparaît en bandeau fixe en haut à gauche au focus
+   (Tab) — pratique GOV.UK. Invisible à la souris, conforme RGAA 11.10. */
+
+.lpv-skip-link {
+  background: var(--lpv-surface);
+  border: 2px solid var(--lpv-blue);
+  border-radius: 0 0 var(--lpv-radius) var(--lpv-radius);
+  color: var(--lpv-blue-dark);
+  font-weight: 700;
+  left: 1rem;
+  padding: 0.5rem 1rem;
+  position: fixed;
+  text-decoration: none;
+  top: -9999px;
+  z-index: 100;
+}
+
+.lpv-skip-link:focus {
+  top: 0;
+}
+
 .lpv-entete-bleue__hero {
   margin-inline: auto;
   max-width: var(--lpv-container);
