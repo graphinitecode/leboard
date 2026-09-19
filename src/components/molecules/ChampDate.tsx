@@ -68,7 +68,9 @@ export function ChampDate({
                 className={`lpv-input lpv-champ-date__input lpv-input--width-2${jourErreur ? ' lpv-input--error' : ''}`}
                 id={`${id}-jour`}
                 inputMode="numeric"
+                maxLength={2}
                 name={`${prefix}-jour`}
+                pattern="[0-9]*"
                 type="text"
                 defaultValue={valeurs?.jour}
               />
@@ -84,7 +86,9 @@ export function ChampDate({
                 className={`lpv-input lpv-champ-date__input lpv-input--width-2${moisErreur ? ' lpv-input--error' : ''}`}
                 id={`${id}-mois`}
                 inputMode="numeric"
+                maxLength={2}
                 name={`${prefix}-mois`}
+                pattern="[0-9]*"
                 type="text"
                 defaultValue={valeurs?.mois}
               />
@@ -100,7 +104,9 @@ export function ChampDate({
                 className={`lpv-input lpv-champ-date__input lpv-input--width-4${anneeErreur ? ' lpv-input--error' : ''}`}
                 id={`${id}-annee`}
                 inputMode="numeric"
+                maxLength={4}
                 name={`${prefix}-annee`}
+                pattern="[0-9]*"
                 type="text"
                 defaultValue={valeurs?.annee}
               />
