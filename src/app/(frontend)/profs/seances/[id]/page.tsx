@@ -6,7 +6,7 @@ import configPromise from '@payload-config'
 import { requireProf } from '@/utilities/profAuth'
 
 import { FormProgression, FormRetour } from './Formulaires'
-import { SelecteurPresence } from './SelecteurPresence'
+import { TogglePresence } from './TogglePresence'
 
 export const dynamic = 'force-dynamic'
 
@@ -107,9 +107,12 @@ export default async function SeanceProfPage({ params }: { params: Promise<{ id:
                     padding: '0.5rem 0',
                   }}
                 >
-                  <span>{nomEleve(eleve)}</span>
+                  <span>
+                    <Link href={`/profs/eleves/${eleve.id}`}>{nomEleve(eleve)}</Link>
+                  </span>
                   {presence ? (
-                    <SelecteurPresence
+                    <TogglePresence
+                      nomEleve={nomEleve(eleve)}
                       presenceId={presence.id}
                       statutInitial={presence.present}
                     />
