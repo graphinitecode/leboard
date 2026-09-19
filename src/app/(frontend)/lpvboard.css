@@ -56,6 +56,7 @@
   background-color: var(--lpv-blue);
   color: var(--lpv-surface);
   margin-bottom: 2rem;
+  position: relative;
 }
 
 .lpv-entete-bleue__inner {
@@ -143,11 +144,11 @@
   display: grid;
   gap: 2rem;
   grid-template-columns: 1fr 1fr;
+  left: 0;
   padding: 1.5rem 1rem;
   position: absolute;
-  right: 0;
   top: 100%;
-  width: min(48rem, 100vw);
+  width: 100%;
   z-index: 50;
 }
 
