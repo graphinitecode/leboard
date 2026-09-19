@@ -2,53 +2,78 @@
 
 import { useState, useTransition } from 'react'
 
+import {
+  BandeauNotification,
+  BoutonPrincipal,
+  ChampSelect,
+  ChampTexte,
+  ResumeErreurs,
+} from '@/components/govuk/Formulaires'
+
 import { ajouterDisponibilite, supprimerDisponibilite } from './actions'
+
+const OPTIONS_JOUR = [
+  { label: 'Lundi', value: 'lundi' },
+  { label: 'Mardi', value: 'mardi' },
+  { label: 'Mercredi', value: 'mercredi' },
+  { label: 'Jeudi', value: 'jeudi' },
+  { label: 'Vendredi', value: 'vendredi' },
+  { label: 'Samedi', value: 'samedi' },
+]
 
 export function FormDispo() {
   const [pending, startTransition] = useTransition()
-  const [message, setMessage] = useState<string | null>(null)
+  const [succes, setSucces] = useState<string | null>(null)
+  const [erreur, setErreur] = useState<string | null>(null)
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
-        setMessage(null)
+        setSucces(null)
+        setErreur(null)
         startTransition(async () => {
           const result = await ajouterDisponibilite(formData)
           if (result.ok) {
             ;(e.target as HTMLFormElement).reset()
-            setMessage('Disponibilité ajoutée')
+            setSucces('Disponibilité ajoutée')
           } else {
-            setMessage(result.erreur ?? 'Échec')
+            setErreur(result.erreur ?? 'La disponibilité n’a pas pu être enregistrée.')
           }
         })
       }}
-      style={{ alignItems: 'end', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}
     >
-      <label>
-        Jour
-        <select name="jour" required defaultValue="mercredi">
-          <option value="lundi">Lundi</option>
-          <option value="mardi">Mardi</option>
-          <option value="mercredi">Mercredi</option>
-          <option value="jeudi">Jeudi</option>
-          <option value="vendredi">Vendredi</option>
-          <option value="samedi">Samedi</option>
-        </select>
-      </label>
-      <label>
-        De
-        <input name="heureDebut" pattern="\d{2}:\d{2}" placeholder="17:30" required />
-      </label>
-      <label>
-        À
-        <input name="heureFin" pattern="\d{2}:\d{2}" placeholder="19:00" required />
-      </label>
-      <button disabled={pending} type="submit">
-        {pending ? '…' : 'Ajouter'}
-      </button>
-      {message && <span>{message}</span>}
+      {succes && <BandeauNotification titre={succes} type="succes" />}
+      <ResumeErreurs erreurs={erreur ? [erreur] : []} />
+      <div style={{ alignItems: 'end', display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+        <ChampSelect
+          id="dispo-jour"
+          label="Jour"
+          name="jour"
+          options={OPTIONS_JOUR}
+          required
+        />
+        <ChampTexte
+          hint="Format 24h, par exemple 17:30"
+          id="dispo-debut"
+          label="De"
+          name="heureDebut"
+          pattern="\d{2}:\d{2}"
+          required
+        />
+        <ChampTexte
+          hint="Format 24h, par exemple 19:00"
+          id="dispo-fin"
+          label="À"
+          name="heureFin"
+          pattern="\d{2}:\d{2}"
+          required
+        />
+        <BoutonPrincipal disabled={pending} type="submit">
+          {pending ? 'Enregistrement…' : 'Ajouter'}
+        </BoutonPrincipal>
+      </div>
     </form>
   )
 }
@@ -65,6 +90,14 @@ export function BoutonSupprimerDispo({ index }: { index: number }) {
           await supprimerDisponibilite(index)
         })
       }
+      style={{
+        background: 'none',
+        border: '1px solid #0b0c0c',
+        borderRadius: 0,
+        cursor: 'pointer',
+        minHeight: 44,
+        minWidth: 44,
+      }}
       type="button"
     >
       {pending ? '…' : '✕'}

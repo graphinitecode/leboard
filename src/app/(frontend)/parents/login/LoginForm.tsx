@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 
+import { BoutonPrincipal, ChampTexte, ResumeErreurs } from '@/components/govuk/Formulaires'
+
 export default function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -27,40 +29,43 @@ export default function LoginForm() {
 
       window.location.href = '/parents'
     } catch {
-      setErreur('Erreur de connexion. Réessayez.')
+      setErreur('Désolé, il y a un problème technique. Réessayez dans quelques instants.')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <form onSubmit={submit} style={{ display: 'grid', gap: '0.75rem', maxWidth: 320 }}>
+    <form onSubmit={submit} style={{ maxWidth: 360 }}>
       <h1>Espace parents</h1>
-      <label>
-        Email
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          autoComplete="email"
-        />
-      </label>
-      <label>
-        Mot de passe
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          autoComplete="current-password"
-        />
-      </label>
-      {erreur && <p style={{ color: 'crimson' }}>{erreur}</p>}
-      <button type="submit" disabled={loading}>
+      <p>Vous voyez uniquement les informations concernant votre enfant.</p>
+      <ResumeErreurs erreurs={erreur ? [erreur] : []} />
+      <ChampTexte
+        autoComplete="email"
+        erreur={erreur ?? undefined}
+        id="email"
+        label="Adresse email"
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        type="email"
+        value={email}
+      />
+      <ChampTexte
+        autoComplete="current-password"
+        erreur={erreur ?? undefined}
+        id="motdepasse"
+        label="Mot de passe"
+        onChange={(e) => setPassword(e.target.value)}
+        required
+        type="password"
+        value={password}
+      />
+      <BoutonPrincipal disabled={loading} type="submit">
         {loading ? 'Connexion…' : 'Se connecter'}
-      </button>
-      <small>Vous voyez uniquement les informations concernant votre enfant.</small>
+      </BoutonPrincipal>
+      <p style={{ marginTop: '1rem' }}>
+        <a href="/admin/forgot-password">Mot de passe oublié</a>
+      </p>
     </form>
   )
 }
