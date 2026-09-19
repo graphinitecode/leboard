@@ -19,8 +19,10 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Champ mot de passe : bouton œil pour afficher/masquer la saisie
 - Cases à cocher et boutons radio avec style dédié (surbrillance au survol, coche/point blanc à la sélection)
 - Nouvelles couleurs de marque : tags (vert #00A14C, orange #FF6B00, rouge #FF0004, bleu #0080FF), panel info (fond bleu nuit, texte bleu clair), bannière de succès (fond vert foncé)
+- Page design system : démonstration du summary list avec actions par ligne (Modifier ; Ajouter | Modifier | Supprimer séparées par un trait vertical ; valeur manquante en lien « Renseigner… »)
 
 ### Modifié
+- Icône d'avertissement agrandie (32px, version circulaire pleine) plus visible dans les encadrés d'alerte
 - Tags en style doux : texte coloré sur fond subtil avec bordure gauche assortie (fond éclairci et texte assombri en mode clair, fond assombri et texte éclairci en mode sombre)
 - Tags sans arrondi (rectangulaires) et trois nouvelles couleurs : violet, magenta et sarcelle
 - Pagination repensée (motif GOV.UK) : la page courante est un bloc plein inversé non cliquable marqué « (page actuelle) » pour les lecteurs d'écran, « Précédent », les numéros et « Suivant » sont alignés sur une même ligne, « Précédent » disparaît en première page et « Suivant » en dernière page
@@ -33,10 +35,8 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - BackLink : ajout de la prop `onClick`, styles en classe CSS `lpv-back-link`
 - FormulairesDispo : modale et toast extraits en composants réutilisables (Modale, Toast)
 
-### Ajouté
-- Page design system : démonstration du summary list avec actions par ligne (Modifier ; Ajouter | Modifier | Supprimer séparées par un trait vertical ; valeur manquante en lien « Renseigner… »)
-
 ### Corrigé
+- Résumé d'erreurs des formulaires : marges resserrées, titre moins gras, liens plus lisibles (rouges en mode sombre, survol en couleur du texte en mode clair)
 - Cases à cocher et boutons radio restaurés à leur apparence native (44px)
 - Texte des tags et bannières blanc en mode sombre (sauf « En attente » : texte foncé)
 - Chevrons agrandis (24px) et flèches (20px), centrés avec leurs libellés
