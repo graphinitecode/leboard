@@ -39,7 +39,10 @@
   --lpv-focus: #fd0;
 
   --lpv-radius: 6px;
+  --lpv-radius-lg: 12px;
   --lpv-container: 960px;
+  --lpv-shadow: 0 1px 2px rgb(15 20 25 / 6%), 0 4px 16px rgb(15 20 25 / 7%);
+  --lpv-shadow-hover: 0 2px 4px rgb(15 20 25 / 8%), 0 8px 24px rgb(15 20 25 / 10%);
 }
 
 /* Portail profs : bleu (défaut) */
@@ -363,14 +366,22 @@
 .lpv-select,
 .lpv-textarea {
   appearance: none;
-  border: 2px solid var(--lpv-text);
-  border-radius: var(--lpv-radius);
+  background-color: var(--lpv-surface);
+  border: 2px solid var(--lpv-grey-border);
+  border-radius: var(--lpv-radius-lg);
   box-sizing: border-box;
   display: block;
   font-size: 1.125rem;
   line-height: 1.4;
-  padding: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
   width: 100%;
+}
+
+.lpv-input:hover,
+.lpv-select:hover,
+.lpv-textarea:hover {
+  border-color: var(--lpv-text-muted);
 }
 
 .lpv-textarea {
@@ -379,7 +390,7 @@
 }
 
 .lpv-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%230f1419' d='M23.1 5.6 12 16.7.9 5.6l1.3-1.3L12 14.1 21.8 4.3z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%235a6369' d='M23.1 5.6 12 16.7.9 5.6l1.3-1.3L12 14.1 21.8 4.3z'/%3E%3C/svg%3E");
   background-position: right 0.5rem center;
   background-repeat: no-repeat;
   background-size: 1rem;
@@ -492,6 +503,12 @@ a:focus {
   margin: 0.25rem 0;
 }
 
+.lpv-error-summary li a {
+  color: var(--lpv-red);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
 /* --- Bannières & encadrés ------------------------------------------------ */
 
 .lpv-banner {
@@ -528,6 +545,167 @@ a:focus {
 
 .lpv-panel h2 {
   margin-top: 0;
+}
+
+/* --- Cards & stats (moderne doux) ----------------------------------------- */
+
+.lpv-card {
+  background-color: var(--lpv-grey-bg);
+  border-radius: var(--lpv-radius-lg);
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+}
+
+.lpv-card__titre {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+}
+
+.lpv-card__lignes {
+  margin: -0.35rem -0.5rem;
+}
+
+.lpv-card__lignes .lpv-ligne {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.lpv-cards-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 480px) {
+  .lpv-cards-grid--2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 720px) {
+  .lpv-cards-grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .lpv-cards-grid--2 {
+    gap: 1.5rem;
+  }
+}
+
+.lpv-stat {
+  display: block;
+}
+
+.lpv-stat__valeur {
+  color: var(--lpv-portail);
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.lpv-stat__valeur--alerte {
+  color: var(--lpv-orange);
+}
+
+.lpv-stat__libelle {
+  color: var(--lpv-text-muted);
+  font-size: 0.95rem;
+  margin-top: 0.25rem;
+}
+
+.lpv-stat__detail {
+  color: var(--lpv-text-muted);
+  font-size: 0.85rem;
+  margin-top: 0.4rem;
+}
+
+/* --- Chips & avatars ------------------------------------------------------ */
+
+.lpv-chip {
+  background-color: var(--lpv-portail-soft);
+  border-radius: 999px;
+  color: var(--lpv-portail-dark);
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.1rem 0.6rem;
+  white-space: nowrap;
+}
+
+.lpv-avatar {
+  align-items: center;
+  background-color: var(--lpv-portail-soft);
+  border-radius: 50%;
+  color: var(--lpv-portail-dark);
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  height: 2.75rem;
+  justify-content: center;
+  width: 2.75rem;
+}
+
+/* --- Grille de cards élèves ------------------------------------------------ */
+
+.lpv-eleves-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 480px) {
+  .lpv-eleves-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 720px) {
+  .lpv-eleves-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-bottom: 2rem;
+  }
+}
+
+.lpv-eleve-card {
+  background-color: var(--lpv-grey-bg);
+  border-radius: var(--lpv-radius-lg);
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.lpv-eleve-card:hover {
+  background-color: var(--lpv-grey-border);
+}
+
+.lpv-eleve-card__haut {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.lpv-eleve-card__nom {
+  font-weight: 700;
+}
+
+.lpv-eleve-card__detail {
+  color: var(--lpv-text-muted);
+  font-size: 0.9rem;
+}
+
+.lpv-eleve-card__lien {
+  color: var(--lpv-portail-dark);
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-top: auto;
 }
 
 /* --- Page de connexion (visuels LPV) ---------------------------------------- */
@@ -570,7 +748,7 @@ a:focus {
   flex-wrap: wrap;
   gap: 0.75rem;
   justify-content: space-between;
-  padding: 0.75rem 0;
+  padding: 0.9rem 0.25rem;
   text-align: left;
   width: 100%;
 }
@@ -587,7 +765,7 @@ a.lpv-ligne {
 }
 
 a.lpv-ligne:hover {
-  background-color: var(--lpv-grey-bg);
+  background-color: var(--lpv-portail-soft);
 }
 
 .lpv-summary-list {
@@ -612,6 +790,73 @@ a.lpv-ligne:hover {
 
 .lpv-summary-list__value {
   flex: 1;
+}
+
+/* Rows sans action : bordure pleine largeur (convention GOV.UK) */
+.lpv-summary-list__row--no-actions {
+  padding-right: 0;
+}
+
+/* Colonne d'actions d'une row (pattern GOV.UK) */
+.lpv-summary-list__actions {
+  align-items: flex-start;
+  display: flex;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+/* Liste d'actions multiples, séparées par un trait vertical */
+.lpv-summary-list__actions-list {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lpv-summary-list__actions-list-item {
+  padding: 0 0.6rem;
+}
+
+/* Trait vertical entre les actions (motif GOV.UK actions-list) */
+.lpv-summary-list__actions-list-item + .lpv-summary-list__actions-list-item {
+  border-left: 1px solid var(--lpv-grey-border);
+}
+
+/* Actions de row : liens stylés, sans gras. Rouge réservé au destructif. */
+.lpv-summary-list__actions a,
+.lpv-summary-list__actions button,
+.lpv-summary-list__actions-list a,
+.lpv-summary-list__actions-list button {
+  background: none;
+  border: 0;
+  color: var(--lpv-portail-dark);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 400;
+  min-height: 44px;
+  padding: 0 0.25rem;
+  text-decoration: underline;
+}
+
+.lpv-summary-list__actions a:hover,
+.lpv-summary-list__actions button:hover,
+.lpv-summary-list__actions-list a:hover,
+.lpv-summary-list__actions-list button:hover {
+  color: var(--lpv-text);
+}
+
+.lpv-summary-list__actions .lpv-action--danger,
+.lpv-summary-list__actions-list .lpv-action--danger {
+  color: var(--lpv-red);
+}
+
+.lpv-summary-list__actions .lpv-action--danger:hover,
+.lpv-summary-list__actions-list .lpv-action--danger:hover {
+  color: var(--lpv-red);
+  text-decoration-thickness: 2px;
 }
 
 /* --- Champs en ligne (formulaire sur une ligne) ----------------------------- */
@@ -682,6 +927,25 @@ a.lpv-ligne:hover {
   }
 }
 
+/* --- Bouton icône (suppression) --------------------------------------------- */
+
+.lpv-bouton-icone {
+  background: var(--lpv-surface);
+  border: 1px solid var(--lpv-grey-border);
+  border-radius: var(--lpv-radius);
+  color: var(--lpv-text-muted);
+  cursor: pointer;
+  min-height: 44px;
+  min-width: 44px;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.lpv-bouton-icone:hover {
+  background-color: var(--lpv-red-soft);
+  border-color: var(--lpv-red);
+  color: var(--lpv-red);
+}
+
 /* --- Toggle segmenté ------------------------------------------------------ */
 
 .lpv-toggle {
@@ -694,10 +958,12 @@ a.lpv-ligne:hover {
   border: 2px solid var(--lpv-text);
   border-radius: var(--lpv-radius);
   cursor: pointer;
-  font-size: 1.125rem;
+  font-size: 0.95rem;
   font-weight: 400;
   min-height: 44px;
   min-width: 44px;
+  padding: 0.25rem 0.5rem;
+  white-space: nowrap;
 }
 
 .lpv-toggle-option--actif {
@@ -733,19 +999,20 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 /* --- Pied de page --------------------------------------------------------- */
 
 .lpv-pied {
-  background-color: var(--lpv-grey-bg);
+  background-color: var(--lpv-surface);
   border-top: 1px solid var(--lpv-grey-border);
-  margin-top: 3rem;
+  margin-top: 4rem;
 }
 
 .lpv-pied__inner {
+  align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 1.5rem 2rem;
   justify-content: space-between;
   margin-inline: auto;
   max-width: var(--lpv-container);
-  padding: 1.5rem 1rem;
+  padding: 2.25rem 1rem;
 }
 
 .lpv-pied__logo {
@@ -755,24 +1022,297 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 .lpv-pied__mention {
   color: var(--lpv-text-muted);
   font-size: 0.9rem;
-  margin: 0.5rem 0 0;
+  margin: 0.35rem 0 0;
 }
 
 .lpv-pied__nav {
+  align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  align-items: flex-start;
+  gap: 0.5rem;
 }
 
 .lpv-pied__nav a {
-  color: var(--lpv-portail-dark);
+  border-radius: 999px;
+  color: var(--lpv-text-muted);
   font-size: 0.95rem;
+  padding: 0.4rem 0.85rem;
   text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .lpv-pied__nav a:hover {
-  text-decoration: underline;
+  background-color: var(--lpv-portail-soft);
+  color: var(--lpv-portail-dark);
+}
+
+/* --- Summary list (disponibilités, pattern GOV.UK) ------------------------- */
+
+/* --- Summary list des disponibilités (variante espacée) --------------------- */
+
+.lpv-summary-list--dispos {
+  margin-bottom: 1.5rem;
+}
+
+.lpv-summary-list--dispos .lpv-summary-list__row {
+  gap: 0.5rem 1.5rem;
+  padding: 0.85rem 0;
+}
+
+.lpv-summary-list--dispos .lpv-summary-list__row:last-child {
+  border-bottom: 0;
+}
+
+.lpv-summary-list--dispos .lpv-summary-list__key {
+  color: var(--lpv-text);
+  text-transform: capitalize;
+}
+
+/* --- Tableau des disponibilités -------------------------------------------- */
+
+.lpv-table {
+  background-color: var(--lpv-grey-bg);
+  border-collapse: separate;
+  border-radius: var(--lpv-radius-lg);
+  border-spacing: 0;
+  width: 100%;
+}
+
+.lpv-table th {
+  color: var(--lpv-text-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 0.75rem 1rem 0.5rem;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.lpv-table td {
+  padding: 0.85rem 1rem;
+  vertical-align: middle;
+}
+
+.lpv-table tbody tr:not(:last-child) td {
+  border-bottom: 1px solid var(--lpv-grey-border);
+}
+
+.lpv-table__jour {
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.lpv-table tr.lpv-table__nouvelle,
+.lpv-summary-list .lpv-table__nouvelle {
+  animation: lpv-ligne-nouvelle 1.5s ease-out;
+}
+
+@keyframes lpv-ligne-nouvelle {
+  0% {
+    background-color: var(--lpv-portail-soft);
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  70% {
+    background-color: var(--lpv-portail-soft);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* --- Bouton d'ajout (bordure pointillée) ------------------------------------ */
+/* Réservé aux endroits où le flux invite à créer depuis une liste vide. */
+
+.lpv-bouton-ajout {
+  background: transparent;
+  border: 2px dashed var(--lpv-portail);
+  border-radius: var(--lpv-radius-lg);
+  color: var(--lpv-portail-dark);
+  cursor: pointer;
+  font-size: 1.125rem;
+  font-weight: 700;
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.15s ease;
+  width: 100%;
+}
+
+.lpv-bouton-ajout:hover {
+  background-color: var(--lpv-portail-soft);
+}
+
+/* --- Assistant d'ajout (stepper) --------------------------------------------- */
+
+.lpv-stepper__etape {
+  color: var(--lpv-text-muted);
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+
+.lpv-stepper__question {
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+}
+
+.lpv-stepper__hint {
+  color: var(--lpv-text-muted);
+  margin: -0.5rem 0 1rem;
+}
+
+.lpv-choix-jour {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (min-width: 640px) {
+  .lpv-choix-jour {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.lpv-choix-jour__option {
+  background-color: var(--lpv-surface);
+  border: 2px solid var(--lpv-grey-border);
+  border-radius: var(--lpv-radius-lg);
+  cursor: pointer;
+  font-size: 1.125rem;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  text-align: center;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.lpv-choix-jour__option:hover {
+  border-color: var(--lpv-text-muted);
+}
+
+.lpv-choix-jour__option--actif {
+  background-color: var(--lpv-portail-soft);
+  border-color: var(--lpv-portail);
+  color: var(--lpv-portail-dark);
+  font-weight: 700;
+}
+
+.lpv-stepper__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-start;
+  margin-top: 1.5rem;
+}
+
+/* Bouton « Modifier » (orange) */
+.lpv-bouton--avertissement {
+  background-color: var(--lpv-orange);
+  box-shadow: 0 2px 0 var(--lpv-orange-soft);
+  color: var(--lpv-text);
+}
+
+.lpv-bouton--avertissement:hover {
+  background-color: #d94e00;
+}
+
+.lpv-recap {
+  background-color: var(--lpv-surface);
+  border-radius: var(--lpv-radius);
+  padding: 0.85rem 1rem;
+}
+
+.lpv-recap__ligne {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+}
+
+.lpv-recap__cle {
+  color: var(--lpv-text-muted);
+  font-weight: 700;
+}
+
+/* --- Modale de confirmation ------------------------------------------------- */
+
+.lpv-modale-fond {
+  align-items: center;
+  background-color: rgb(15 20 25 / 50%);
+  display: flex;
+  inset: 0;
+  position: fixed;
+  z-index: 200;
+}
+
+.lpv-modale {
+  background-color: var(--lpv-surface);
+  border-radius: var(--lpv-radius-lg);
+  box-shadow: 0 12px 32px rgb(15 20 25 / 30%);
+  margin-inline: auto;
+  max-width: 28rem;
+  padding: 1.5rem;
+  width: calc(100% - 2rem);
+}
+
+.lpv-modale__titre {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.lpv-modale__texte {
+  color: var(--lpv-text-muted);
+  margin: 0 0 1.25rem;
+}
+
+.lpv-modale__actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.lpv-bouton--danger {
+  background-color: var(--lpv-red);
+  box-shadow: 0 2px 0 #cc3a3d;
+  color: var(--lpv-surface);
+}
+
+.lpv-bouton--danger:hover {
+  background-color: #e04245;
+}
+
+/* --- Toast pleine largeur ---------------------------------------------------- */
+
+.lpv-toast {
+  animation: lpv-toast-entree 0.3s ease-out;
+  background-color: var(--lpv-green);
+  color: var(--lpv-surface);
+  font-weight: 700;
+  left: 0;
+  padding: 0.75rem 1rem;
+  position: fixed;
+  right: 0;
+  text-align: center;
+  top: 0;
+  z-index: 300;
+}
+
+.lpv-toast--erreur {
+  background-color: var(--lpv-red);
+}
+
+@keyframes lpv-toast-entree {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 /* --- Rétrocompatibilité (transition) -------------------------------------- */

@@ -3,7 +3,7 @@ import configPromise from '@payload-config'
 
 import { requireProf } from '@/utilities/profAuth'
 import { InsetText } from '@/components/atoms'
-import { FormDispo, BoutonSupprimerDispo } from '@/components/organisms/FormulairesDispo'
+import { ListeDispos } from '@/components/organisms/FormulairesDispo'
 
 export const dynamic = 'force-dynamic'
 
@@ -35,25 +35,13 @@ export default async function DisponibilitesPage() {
 
       {dispos.length === 0 ? (
         <InsetText>Aucune disponibilité déclarée.</InsetText>
-      ) : (
-        <div>
-          {dispos.map((dispo, index) => (
-            <div className="lpv-ligne" key={`${dispo.jour}-${dispo.heureDebut}-${index}`}>
-              <span style={{ textTransform: 'capitalize' }}>
-                <strong>{dispo.jour}</strong>
-                <span style={{ color: 'var(--lpv-text-muted)' }}>
-                  {' '}
-                  · {dispo.heureDebut} → {dispo.heureFin}
-                </span>
-              </span>
-              <BoutonSupprimerDispo index={index} />
-            </div>
-          ))}
-        </div>
-      )}
+      ) : null}
 
-      <h2 className="lpv-h2">Ajouter</h2>
-      <FormDispo />
+      <ListeDispos dispos={dispos.map((dispo) => ({
+        heureDebut: dispo.heureDebut,
+        heureFin: dispo.heureFin,
+        jour: dispo.jour,
+      }))} />
     </>
   )
 }

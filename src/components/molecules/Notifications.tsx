@@ -1,19 +1,59 @@
-// Molécule : résumé des erreurs en tête de formulaire (role alert)
+'use client'
+
+import { useEffect, useRef } from 'react'
+
+function LienErreur({ champId, texte }: { champId: string; texte: string }) {
+  return (
+    <a
+      href={`#${champId}`}
+      onClick={(e) => {
+        e.preventDefault()
+        document.getElementById(champId)?.focus()
+      }}
+    >
+      {texte}
+    </a>
+  )
+}
+
+// Molécule : résumé des erreurs en tête de formulaire (role alert).
+// Convention GOV.UK : chaque item est un lien vers le champ en erreur
+// (id optionnel) ; le summary prend le focus quand il apparaît.
 export function ResumeErreurs({
   erreurs,
   titre = 'Il y a un problème',
 }: {
-  erreurs: string[]
+  erreurs: (string | { champId: string; texte: string })[]
   titre?: string
 }) {
-  if (erreurs.length === 0) return null
+  const ref = useRef<HTMLDivElement>(null)
+
+  const items: { champId?: string; texte: string }[] = erreurs.map((erreur) =>
+    typeof erreur === 'string' ? { texte: erreur } : erreur,
+  )
+
+  // Prend le focus quand le summary apparaît (déjà tabbable via tabIndex -1)
+  useEffect(() => {
+    if (items.length > 0) {
+      ref.current?.focus()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [erreurs])
+
+  if (items.length === 0) return null
 
   return (
-    <div aria-labelledby="resume-erreurs-titre" className="lpv-error-summary" role="alert" tabIndex={-1}>
+    <div aria-labelledby="resume-erreurs-titre" className="lpv-error-summary" ref={ref} role="alert" tabIndex={-1}>
       <h2 id="resume-erreurs-titre">{titre}</h2>
       <ul>
-        {erreurs.map((erreur) => (
-          <li key={erreur}>{erreur}</li>
+        {items.map((item) => (
+          <li key={item.texte}>
+            {item.champId ? (
+              <LienErreur champId={item.champId} texte={item.texte} />
+            ) : (
+              item.texte
+            )}
+          </li>
         ))}
       </ul>
     </div>

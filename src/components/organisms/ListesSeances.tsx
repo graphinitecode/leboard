@@ -1,4 +1,4 @@
-import { InsetText, Panel, Tag } from '@/components/atoms'
+import { InsetText, Tag } from '@/components/atoms'
 
 export interface SeanceResumee {
   id: number | string
@@ -15,32 +15,29 @@ function jour(date: Date): string {
   return date.toLocaleDateString('fr-FR')
 }
 
-// Organisme : bloc « Aujourd'hui » du dashboard prof
+// Organisme : bloc « Aujourd'hui » du dashboard prof (card avec chips d'heure)
 export function ResumeJournee({ seances }: { seances: SeanceResumee[] }) {
   if (seances.length === 0) {
     return <InsetText>Aucune séance aujourd&rsquo;hui.</InsetText>
   }
 
   return (
-    <Panel>
-      <h2 style={{ marginTop: 0 }}>Aujourd&rsquo;hui</h2>
-      <div>
+    <section>
+      <h2 className="lpv-card__titre" style={{ marginBottom: 0 }}>
+        Aujourd&rsquo;hui
+      </h2>
+      <div className="lpv-card__lignes">
         {seances.map((seance) => (
-          <a
-            className="lpv-ligne"
-            href={`/profs/seances/${seance.id}`}
-            key={String(seance.id)}
-            style={{ borderBottomColor: 'var(--lpv-grey-border)' }}
-          >
+          <a className="lpv-ligne" href={`/profs/seances/${seance.id}`} key={String(seance.id)}>
             <span>
-              <span className="lpv-ligne__titre">{heure(seance.date)}</span>
-              <span style={{ color: 'var(--lpv-text-muted)' }}> · {seance.matiere}</span>
+              <span className="lpv-chip">{heure(seance.date)}</span>{' '}
+              <span className="lpv-ligne__titre">{seance.matiere}</span>
             </span>
             {!seance.retourPresent && <Tag couleur="orange">Retour à faire</Tag>}
           </a>
         ))}
       </div>
-    </Panel>
+    </section>
   )
 }
 
@@ -52,15 +49,13 @@ export function ListeSeances({ seances, titre }: { seances: SeanceResumee[]; tit
       {seances.length === 0 ? (
         <InsetText>Aucune séance à afficher.</InsetText>
       ) : (
-        <div>
+        <div className="lpv-card lpv-card__lignes" style={{ padding: '0.5rem 0.75rem' }}>
           {seances.map((seance) => (
             <a className="lpv-ligne" href={`/profs/seances/${seance.id}`} key={String(seance.id)}>
               <span>
-                <span className="lpv-ligne__titre">{jour(seance.date)}</span>
-                <span style={{ color: 'var(--lpv-text-muted)' }}>
-                  {' '}
-                  · {heure(seance.date)} · {seance.matiere}
-                </span>
+                <span className="lpv-chip">{jour(seance.date)}</span>{' '}
+                <span className="lpv-ligne__titre">{heure(seance.date)}</span>
+                <span style={{ color: 'var(--lpv-text-muted)' }}> · {seance.matiere}</span>
               </span>
               {!seance.retourPresent && <Tag couleur="orange">Retour à faire</Tag>}
             </a>

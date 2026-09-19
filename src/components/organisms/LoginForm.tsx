@@ -48,10 +48,9 @@ export function LoginForm({
     <form className="lpv-login" onSubmit={submit}>
       <h1 className="lpv-login__titre">{titre}</h1>
       {sousTitre ? <p className="lpv-login__sous-titre">{sousTitre}</p> : null}
-      <ResumeErreurs erreurs={erreur ? [erreur] : []} />
+      <ResumeErreurs erreurs={erreur ? [{ champId: 'email', texte: erreur }] : []} />
       <ChampFormulaire
         autoComplete="email"
-        erreur={erreur ?? undefined}
         id="email"
         label="Adresse e-mail"
         onChange={(e) => setEmail(e.target.value)}
@@ -60,7 +59,6 @@ export function LoginForm({
       />
       <ChampFormulaire
         autoComplete="current-password"
-        erreur={erreur ?? undefined}
         id="motdepasse"
         label="Mot de passe"
         onChange={(e) => setPassword(e.target.value)}
