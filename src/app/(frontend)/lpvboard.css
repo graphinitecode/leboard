@@ -38,6 +38,12 @@
   /* Focus : jaune, conservé du GOV.UK pour la visibilité maximale */
   --lpv-focus: #fd0;
 
+  --lpv-orange-hover: #d94e00;
+  --lpv-red-shadow: #cc3a3d;
+  --lpv-red-hover: #e04245;
+  --lpv-overlay: rgb(15 20 25 / 50%);
+  --lpv-overlay-heavy: rgb(15 20 25 / 30%);
+
   --lpv-radius: 6px;
   --lpv-radius-lg: 4px;
   --lpv-container: 960px;
@@ -57,6 +63,38 @@
   --lpv-portail: var(--lpv-violet);
   --lpv-portail-dark: var(--lpv-violet-dark);
   --lpv-portail-soft: var(--lpv-violet-soft);
+}
+
+/* --- Mode sombre ---------------------------------------------------------- */
+/* Surcharges quand data-theme="dark" est posé sur <html>.
+   Les variables portail (bleu/violet) sont réinjectées en clair
+   pour que liens et hover restent lisibles sur fond sombre. */
+
+html[data-theme='dark'] {
+  --lpv-text: #f2eef2;
+  --lpv-text-muted: #a3adb3;
+  --lpv-grey-bg: #1e1a1e;
+  --lpv-grey-border: #3a343a;
+  --lpv-surface: #161216;
+
+  --lpv-blue-dark: #66b5ff;
+  --lpv-blue-soft: #0d2137;
+  --lpv-violet-dark: #c04fd8;
+  --lpv-violet-soft: #2d1435;
+  --lpv-orange-soft: #3a1d0a;
+  --lpv-yellow-soft: #3a3015;
+  --lpv-green-soft: #0d3b24;
+  --lpv-red-soft: #3a1215;
+
+  --lpv-orange-hover: #f97b1a;
+  --lpv-red-shadow: #8a2528;
+  --lpv-red-hover: #ff6b6e;
+  --lpv-overlay: rgb(0 0 0 / 60%);
+  --lpv-overlay-heavy: rgb(0 0 0 / 40%);
+  --lpv-shadow: 0 1px 2px rgb(0 0 0 / 20%), 0 4px 16px rgb(0 0 0 / 25%);
+  --lpv-shadow-hover: 0 2px 4px rgb(0 0 0 / 30%), 0 8px 24px rgb(0 0 0 / 35%);
+
+  color-scheme: dark;
 }
 
 /* --- Typographie -------------------------------------------------------- */
@@ -1218,7 +1256,7 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 }
 
 .lpv-bouton--avertissement:hover {
-  background-color: #d94e00;
+  background-color: var(--lpv-orange-hover);
 }
 
 .lpv-recap {
@@ -1242,7 +1280,7 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 
 .lpv-modale-fond {
   align-items: center;
-  background-color: rgb(15 20 25 / 50%);
+  background-color: var(--lpv-overlay);
   display: flex;
   inset: 0;
   position: fixed;
@@ -1252,7 +1290,7 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 .lpv-modale {
   background-color: var(--lpv-surface);
   border-radius: var(--lpv-radius-lg);
-  box-shadow: 0 12px 32px rgb(15 20 25 / 30%);
+  box-shadow: 0 12px 32px var(--lpv-overlay-heavy);
   margin-inline: auto;
   max-width: 28rem;
   padding: 1.5rem;
@@ -1278,12 +1316,12 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 
 .lpv-bouton--danger {
   background-color: var(--lpv-red);
-  box-shadow: 0 2px 0 #cc3a3d;
+  box-shadow: 0 2px 0 var(--lpv-red-shadow);
   color: var(--lpv-surface);
 }
 
 .lpv-bouton--danger:hover {
-  background-color: #e04245;
+  background-color: var(--lpv-red-hover);
 }
 
 /* --- Toast pleine largeur ---------------------------------------------------- */
@@ -2218,4 +2256,30 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
   font-size: 1.25rem;
   font-weight: 700;
   margin: 1.5rem 0 0.75rem;
+}
+
+/* --- Bascule de thème ------------------------------------------------------ */
+
+.lpv-bascule-theme {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.25rem;
+}
+
+.lpv-bascule-theme:hover {
+  opacity: 0.8;
+}
+
+.lpv-bascule-theme:focus {
+  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
+  outline: none;
+}
+
+.lpv-bascule-theme__icone {
+  display: block;
 }

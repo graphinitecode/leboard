@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { LogoLPV } from '@/components/atoms/LogoLPV'
 
 // Pied de page des portails LPV Board (cohérent avec EnteteService).
-// data-theme="light" pour rester lisible quel que soit le thème du site vitrine.
+// Hérite du thème dark/light depuis <html> data-theme.
 export function PiedPage({
   liens = [],
   mention = 'Association Les Pierres Vivantes — cours de soutien',
@@ -12,7 +12,7 @@ export function PiedPage({
   mention?: string
 }) {
   return (
-    <footer className="lpv-pied" data-theme="light">
+    <footer className="lpv-pied">
       <div className="lpv-pied__inner">
         <div>
           <span className="lpv-pied__logo">

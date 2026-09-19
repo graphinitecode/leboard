@@ -2,6 +2,7 @@ import Link from 'next/link'
 import type { ReactNode } from 'react'
 
 import { PiedPage } from '@/components/molecules/PiedPage'
+import { BasculeTheme } from '@/components/molecules/BasculeTheme'
 
 import { seDeconnecter } from './seDeconnecter'
 import { MenuDepliant } from './MenuDepliant'
@@ -27,7 +28,7 @@ export function EnteteService({
   legales: { href: string; libelle: string; description?: string }[]
 }) {
   return (
-    <header className="lpv-entete-bleue" data-theme="light">
+    <header className="lpv-entete-bleue">
       <div className="lpv-entete-bleue__inner">
         <Link className="lpv-entete-bleue__logo" href="/">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -54,6 +55,7 @@ export function EnteteService({
               </button>
             </form>
           )}
+          <BasculeTheme />
           <MenuDepliant services={services} legales={legales} />
         </div>
       </div>
@@ -86,7 +88,6 @@ export function ContenuPage({
     <div
       className="lpv-shell"
       data-lpv-portail={portail}
-      data-theme="light"
       style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
     >
       <a className="lpv-skip-link" href="#contenu-principal">
