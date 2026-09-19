@@ -1,9 +1,10 @@
-import Link from 'next/link'
+import { requireProf } from '@/utilities/profAuth'
+import { chargerElevesDuProf } from '@/utilities/chargerElevesDuProf'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
-import { chargerElevesDuProf } from '@/utilities/chargerElevesDuProf'
-import { requireProf } from '@/utilities/profAuth'
+import { ResumeJournee, ListeSeances } from '@/components/organisms/ListesSeances'
+import { ListeEleves } from '@/components/organisms/ListeEleves'
 
 export const dynamic = 'force-dynamic'
 
@@ -30,8 +31,6 @@ export default async function ProfsDashboard() {
     user,
   })
 
-  // Élèves visibles : référents + élèves des séances du prof (périmètre en code,
-  // cf. Spec 02 — la clause DB inverse n'est pas supportée par l'adapter PG)
   const eleves = await chargerElevesDuProf(payload, user)
 
   const aVenir = seances.docs
@@ -46,98 +45,38 @@ export default async function ProfsDashboard() {
     (s) => new Date(String(s.date)).toDateString() !== maintenant.toDateString(),
   )
 
+  const versSeance = (s: { id: number | string; date: string; matiere: string; retour?: unknown }) => ({
+    id: s.id,
+    date: new Date(s.date),
+    matiere: s.matiere,
+    retourPresent: Boolean(s.retour),
+  })
+
+  const retards = [...aujourdhui, ...resteSemaine, ...passees].filter((s) => !s.retour).length
+
   return (
-    <main style={{ maxWidth: 720, margin: '2rem auto', padding: '0 1rem' }}>
-      <h1>Tableau de bord</h1>
-      <p style={{ float: 'right' }}>
-        <Link href="/profs/disponibilites">Mes disponibilités</Link>
+    <>
+      <h1 className="lpv-h1">Tableau de bord</h1>
+      <p className="lpv-muted">
+        {maintenant.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}
+        {retards > 0 && (
+          <>
+            {' '}
+            — <strong style={{ color: 'var(--lpv-orange)' }}>{retards} séance(s) attendent un retour</strong>
+          </>
+        )}
       </p>
 
-      <section>
-        <h2>Aujourd&rsquo;hui</h2>
-        {aujourdhui.length === 0 ? (
-          <p>Aucune séance aujourd&rsquo;hui.</p>
-        ) : (
-          <ul>
-            {aujourdhui.map((seance) => (
-              <li key={String(seance.id)}>
-                <Link href={`/profs/seances/${seance.id}`}>
-                  {new Date(String(seance.date)).toLocaleTimeString('fr-FR', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}{' '}
-                  · {seance.matiere}
-                </Link>
-                {!seance.retour && (
-                  <span style={{ color: 'orange', marginLeft: '0.5rem' }}>⏳ Retour à faire</span>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      <section>
-        <h2>Cette semaine</h2>
-        {resteSemaine.length === 0 ? (
-          <p>Rien d&rsquo;autre cette semaine.</p>
-        ) : (
-          <ul>
-            {resteSemaine.map((seance) => (
-              <li key={String(seance.id)}>
-                <Link href={`/profs/seances/${seance.id}`}>
-                  {new Date(String(seance.date)).toLocaleDateString('fr-FR')} ·{' '}
-                  {new Date(String(seance.date)).toLocaleTimeString('fr-FR', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}{' '}
-                  · {seance.matiere}
-                </Link>
-                {!seance.retour && (
-                  <span style={{ color: 'orange', marginLeft: '0.5rem' }}>⏳ Retour à faire</span>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      <section>
-        <h2>Passées récentes</h2>
-        {passees.length === 0 ? (
-          <p>Aucune séance passée récemment.</p>
-        ) : (
-          <ul>
-            {passees.map((seance) => (
-              <li key={String(seance.id)}>
-                <Link href={`/profs/seances/${seance.id}`}>
-                  {new Date(String(seance.date)).toLocaleDateString('fr-FR')} · {seance.matiere}
-                </Link>
-                {!seance.retour && (
-                  <span style={{ color: 'orange', marginLeft: '0.5rem' }}>⏳ Retour à faire</span>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      <section>
-        <h2>Mes élèves ({eleves.length})</h2>
-        {eleves.length === 0 ? (
-          <p>Aucun élève référent.</p>
-        ) : (
-          <ul>
-            {eleves.map((eleve) => (
-              <li key={String(eleve.id)}>
-                <Link href={`/profs/eleves/${eleve.id}`}>
-                  {eleve.prenom} {eleve.nom} ({eleve.niveau})
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-    </main>
+      <ResumeJournee seances={aujourdhui.map(versSeance)} />
+      <ListeSeances seances={resteSemaine.map(versSeance)} titre="Cette semaine" />
+      <ListeSeances seances={passees.map(versSeance)} titre="Passées récentes" />
+      <ListeEleves eleves={eleves.map((eleve) => ({
+        id: eleve.id,
+        prenom: eleve.prenom,
+        nom: eleve.nom,
+        niveau: eleve.niveau,
+        groupe: eleve.groupe,
+      }))} />
+    </>
   )
 }

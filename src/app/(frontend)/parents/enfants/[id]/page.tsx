@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 
+import { Tag } from '@/components/atoms'
 import { requireParent } from '@/utilities/parentAuth'
 import { getPayloadInstance, verifierParentEleve } from '@/utilities/parentPortal'
 
@@ -59,15 +60,15 @@ export default async function EnfantPage({ params }: { params: Promise<{ id: str
   const taux = presences.totalDocs > 0 ? Math.round((presentes / presences.totalDocs) * 100) : null
 
   return (
-    <main style={{ maxWidth: 720, margin: '2rem auto', padding: '0 1rem' }}>
-      <h1>
-        {enfant.prenom} {enfant.nom} <small>({enfant.niveau})</small>
+    <>
+      <h1 className="lpv-h1">
+        {enfant.prenom} {enfant.nom} <Tag couleur="violet">{enfant.niveau}</Tag>
       </h1>
 
       <section>
-        <h2>Présences {taux !== null && `— ${taux}%`}</h2>
+        <h2 className="lpv-h2">Présences {taux !== null && `— ${taux}%`}</h2>
         {presences.docs.length === 0 ? (
-          <p>Aucune séance enregistrée pour le moment.</p>
+          <p className="lpv-muted">Aucune séance enregistrée pour le moment.</p>
         ) : (
           <ul>
             {presences.docs.map((presence) => {
@@ -95,14 +96,14 @@ export default async function EnfantPage({ params }: { params: Promise<{ id: str
       </section>
 
       <section>
-        <h2>Retours de séance</h2>
+        <h2 className="lpv-h2">Retours de séance</h2>
         {seances.docs.length === 0 ? (
-          <p>Aucun retour pour le moment.</p>
+          <p className="lpv-muted">Aucun retour pour le moment.</p>
         ) : (
           seances.docs.map((seance) => (
             <article
               key={String(seance.id)}
-              style={{ borderTop: '1px solid #eee', padding: '0.5rem 0' }}
+              style={{ borderBottom: '1px solid var(--lpv-grey-border)', padding: '0.5rem 0' }}
             >
               <strong>
                 {new Date(String(seance.date)).toLocaleDateString('fr-FR')} · {seance.matiere}
@@ -114,9 +115,9 @@ export default async function EnfantPage({ params }: { params: Promise<{ id: str
       </section>
 
       <section>
-        <h2>Progressions</h2>
+        <h2 className="lpv-h2">Progressions</h2>
         {progressionsDocsVide(progressions.docs.length) ? (
-          <p>Aucune progression enregistrée pour le moment.</p>
+          <p className="lpv-muted">Aucune progression enregistrée pour le moment.</p>
         ) : (
           <ul>
             {progressions.docs.map((progression) => (
@@ -134,9 +135,9 @@ export default async function EnfantPage({ params }: { params: Promise<{ id: str
       </section>
 
       <section>
-        <h2>Prêts</h2>
+        <h2 className="lpv-h2">Prêts</h2>
         {prets.docs.length === 0 ? (
-          <p>Aucun prêt enregistré.</p>
+          <p className="lpv-muted">Aucun prêt enregistré.</p>
         ) : (
           <ul>
             {prets.docs.map((pret) => (
@@ -149,7 +150,7 @@ export default async function EnfantPage({ params }: { params: Promise<{ id: str
           </ul>
         )}
       </section>
-    </main>
+    </>
   )
 }
 

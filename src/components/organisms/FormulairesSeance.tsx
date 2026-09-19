@@ -2,16 +2,17 @@
 
 import { useState, useTransition } from 'react'
 
+import { Bouton } from '@/components/atoms/Bouton'
 import {
-  BandeauNotification,
-  BoutonPrincipal,
-  ChampSelect,
-  ChampTexte,
-  ChampTexteLong,
+  ChampFormulaire,
+  NotificationBanner,
   ResumeErreurs,
-} from '@/components/govuk/Formulaires'
+} from '@/components/molecules'
 
-import { ajouterProgression, enregistrerRetour } from './actions'
+import {
+  ajouterProgression,
+  enregistrerRetour,
+} from '@/app/(frontend)/profs/seances/[id]/actions'
 
 const OPTIONS_NIVEAU = [
   { label: 'Acquis', value: 'acquis' },
@@ -41,9 +42,10 @@ export function FormRetour({ seanceId, initial }: { seanceId: number | string; i
         })
       }}
     >
-      {succes && <BandeauNotification titre="Retour enregistré" type="succes" />}
+      {succes && <NotificationBanner titre="Retour enregistré" type="succes" />}
       <ResumeErreurs erreurs={erreur ? [erreur] : []} />
-      <ChampTexteLong
+      <ChampFormulaire
+        as="textarea"
         hint="Texte libre. Ce retour sera visible par les parents."
         id="retour"
         label="Retour de séance"
@@ -51,9 +53,9 @@ export function FormRetour({ seanceId, initial }: { seanceId: number | string; i
         rows={4}
         value={texte}
       />
-      <BoutonPrincipal disabled={pending} type="submit">
+      <Bouton disabled={pending} type="submit">
         {pending ? 'Enregistrement…' : 'Enregistrer le retour'}
-      </BoutonPrincipal>
+      </Bouton>
     </form>
   )
 }
@@ -67,16 +69,16 @@ export function FormProgression({
   eleves: { id: number | string; label: string }[]
   competences: { id: number | string; label: string; matiere?: string }[]
 }) {
-  const [message, setMessage] = useState<{ succes?: boolean; texte?: string } | null>(null)
+  const [succes, setSucces] = useState<string | null>(null)
   const [pending, startTransition] = useTransition()
   const [ouvert, setOuvert] = useState(false)
   const [erreurFormulaire, setErreurFormulaire] = useState<string | null>(null)
 
   if (!ouvert) {
     return (
-      <BoutonPrincipal onClick={() => setOuvert(true)} type="button">
+      <Bouton onClick={() => setOuvert(true)} type="button">
         Ajouter une progression
-      </BoutonPrincipal>
+      </Bouton>
     )
   }
 
@@ -86,23 +88,24 @@ export function FormProgression({
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
         formData.set('seance', String(seanceId))
-        setMessage(null)
+        setSucces(null)
         setErreurFormulaire(null)
         startTransition(async () => {
           const result = await ajouterProgression(formData)
           if (result.ok) {
-            setMessage({ succes: true, texte: 'Progression enregistrée' })
+            setSucces('Progression enregistrée')
             setOuvert(false)
           } else {
             setErreurFormulaire(result.erreur ?? 'La progression n’a pas pu être enregistrée.')
           }
         })
       }}
-      style={{ border: '1px solid #b1b4b6', padding: '1rem' }}
+      style={{ border: '1px solid var(--lpv-grey-border)', borderRadius: 'var(--lpv-radius)', padding: '1rem' }}
     >
-      {message?.succes && <BandeauNotification titre={message.texte!} type="succes" />}
+      {succes && <NotificationBanner titre={succes} type="succes" />}
       <ResumeErreurs erreurs={erreurFormulaire ? [erreurFormulaire] : []} />
-      <ChampSelect
+      <ChampFormulaire
+        as="select"
         hint="Seuls les élèves de cette séance sont proposés."
         id="eleve-progression"
         label="Élève"
@@ -110,7 +113,8 @@ export function FormProgression({
         options={eleves.map((eleve) => ({ label: eleve.label, value: String(eleve.id) }))}
         required
       />
-      <ChampSelect
+      <ChampFormulaire
+        as="select"
         hint="Liste gérée par l’association."
         id="competence-progression"
         label="Compétence"
@@ -121,26 +125,20 @@ export function FormProgression({
         }))}
         required
       />
-      <ChampSelect
-        id="niveau-progression"
-        label="Niveau"
-        name="niveau"
-        options={OPTIONS_NIVEAU}
-        required
-      />
-      <ChampTexte
+      <ChampFormulaire as="select" id="niveau-progression" label="Niveau" name="niveau" options={OPTIONS_NIVEAU} required />
+      <ChampFormulaire
         hint="Observation courte, visible par la famille."
         id="commentaire-progression"
         label="Commentaire"
         name="commentaire"
       />
       <div style={{ display: 'flex', gap: '0.75rem' }}>
-        <BoutonPrincipal disabled={pending} type="submit">
+        <Bouton disabled={pending} type="submit">
           {pending ? 'Enregistrement…' : 'Enregistrer'}
-        </BoutonPrincipal>
-        <button className="govfr-bouton govfr-bouton--secondaire" onClick={() => setOuvert(false)} type="button">
+        </Bouton>
+        <Bouton onClick={() => setOuvert(false)} type="button" variante="secondaire">
           Annuler
-        </button>
+        </Bouton>
       </div>
     </form>
   )

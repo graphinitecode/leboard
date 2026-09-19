@@ -1,10 +1,19 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 
-import { BoutonPrincipal, ChampTexte, ResumeErreurs } from '@/components/govuk/Formulaires'
+import { Bouton } from '@/components/atoms/Bouton'
+import { ChampFormulaire, ResumeErreurs } from '@/components/molecules'
 
-export default function ProfLoginForm() {
+export function LoginForm({
+  cible,
+  libelleService,
+  note,
+}: {
+  cible: string
+  libelleService: string
+  note?: string
+}) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [erreur, setErreur] = useState<string | null>(null)
@@ -27,7 +36,7 @@ export default function ProfLoginForm() {
         return
       }
 
-      window.location.href = '/profs'
+      window.location.href = cible
     } catch {
       setErreur('Désolé, il y a un problème technique. Réessayez dans quelques instants.')
     } finally {
@@ -36,10 +45,11 @@ export default function ProfLoginForm() {
   }
 
   return (
-    <form onSubmit={submit} style={{ maxWidth: 360 }}>
-      <h1>Espace profs</h1>
+    <form onSubmit={submit} style={{ maxWidth: 420 }}>
+      <h1 className="lpv-h1">{libelleService}</h1>
+      {note ? <p className="lpv-muted">{note}</p> : null}
       <ResumeErreurs erreurs={erreur ? [erreur] : []} />
-      <ChampTexte
+      <ChampFormulaire
         autoComplete="email"
         erreur={erreur ?? undefined}
         id="email"
@@ -49,7 +59,7 @@ export default function ProfLoginForm() {
         type="email"
         value={email}
       />
-      <ChampTexte
+      <ChampFormulaire
         autoComplete="current-password"
         erreur={erreur ?? undefined}
         id="motdepasse"
@@ -59,9 +69,9 @@ export default function ProfLoginForm() {
         type="password"
         value={password}
       />
-      <BoutonPrincipal disabled={loading} type="submit">
+      <Bouton disabled={loading} type="submit">
         {loading ? 'Connexion…' : 'Se connecter'}
-      </BoutonPrincipal>
+      </Bouton>
       <p style={{ marginTop: '1rem' }}>
         <a href="/admin/forgot-password">Mot de passe oublié</a>
       </p>
