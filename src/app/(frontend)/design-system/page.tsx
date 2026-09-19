@@ -126,6 +126,9 @@ export default function DesignSystemPage() {
           <Tag couleur="orange">À faire</Tag>
           <Tag couleur="rouge">Urgent</Tag>
           <Tag couleur="bleu">Info</Tag>
+          <Tag couleur="violet">Réservé</Tag>
+          <Tag couleur="magenta">Nouveau</Tag>
+          <Tag couleur="sarcelle">Archivé</Tag>
         </div>
         <h3 className="lpv-h3" style={{ marginTop: '1rem' }}>Toggle segmenté</h3>
         <DemoToggle />
