@@ -44,34 +44,43 @@ export function FormDispo() {
     >
       {succes && <NotificationBanner titre={succes} type="succes" />}
       <ResumeErreurs erreurs={erreur ? [erreur] : []} />
-      <div style={{ alignItems: 'end', display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-        <ChampFormulaire
-          as="select"
-          id="dispo-jour"
-          label="Jour"
-          name="jour"
-          options={OPTIONS_JOUR}
-          required
-        />
-        <ChampFormulaire
-          hint="Format 24h, par exemple 17:30"
-          id="dispo-debut"
-          label="De"
-          name="heureDebut"
-          pattern="\d{2}:\d{2}"
-          required
-        />
-        <ChampFormulaire
-          hint="Format 24h, par exemple 19:00"
-          id="dispo-fin"
-          label="À"
-          name="heureFin"
-          pattern="\d{2}:\d{2}"
-          required
-        />
-        <Bouton disabled={pending} type="submit">
-          {pending ? 'Enregistrement…' : 'Ajouter'}
-        </Bouton>
+      <div className="lpv-champs-inline">
+        <div className="lpv-champs-inline__champ" style={{ maxWidth: '12rem' }}>
+          <ChampFormulaire
+            as="select"
+            hint=" "
+            id="dispo-jour"
+            label="Jour"
+            name="jour"
+            options={OPTIONS_JOUR}
+            required
+          />
+        </div>
+        <div className="lpv-champs-inline__champ" style={{ maxWidth: '12rem' }}>
+          <ChampFormulaire
+            hint="par exemple 17:30"
+            id="dispo-debut"
+            label="De"
+            name="heureDebut"
+            pattern="\d{2}:\d{2}"
+            required
+          />
+        </div>
+        <div className="lpv-champs-inline__champ" style={{ maxWidth: '12rem' }}>
+          <ChampFormulaire
+            hint="par exemple 19:00"
+            id="dispo-fin"
+            label="À"
+            name="heureFin"
+            pattern="\d{2}:\d{2}"
+            required
+          />
+        </div>
+        <div className="lpv-champs-inline__champ" style={{ alignSelf: 'end' }}>
+          <Bouton disabled={pending} type="submit">
+            {pending ? 'Enregistrement…' : 'Ajouter'}
+          </Bouton>
+        </div>
       </div>
     </form>
   )
