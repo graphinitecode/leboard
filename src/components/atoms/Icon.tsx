@@ -52,8 +52,13 @@ export function Icon({
     return null
   }
 
-  // Iconify : largeur par défaut = hauteur (set carré 24)
-  const largeur = donnees.width ?? collection.width ?? collection.height ?? 24
+  // Iconify : hauteur par défaut d'un set = 16 (convention Iconify quand
+  // height est absent). Largeur = largeur de l'icône si définie, sinon
+  // largeur du set, sinon carrée (= hauteur). rivet-icons est 16x16,
+  // boxicons 24x24.
+  const hauteurSet = collection.height ?? 16
+  const largeurSet = collection.width ?? hauteurSet
+  const largeur = donnees.width ?? largeurSet
 
   return (
     <svg
@@ -65,8 +70,8 @@ export function Icon({
       height={taille}
       role={libelle ? 'img' : undefined}
       style={style}
-      viewBox={`0 0 ${largeur} 24`}
-      width={taille}
+      viewBox={`0 0 ${largeur} ${hauteurSet}`}
+      width={(taille * largeur) / hauteurSet}
       xmlns="http://www.w3.org/2000/svg"
     />
   )
