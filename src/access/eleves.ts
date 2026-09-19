@@ -4,23 +4,17 @@ import { isAdmin } from './roles'
 
 // Lecture des élèves :
 // - admin : tout
-// - prof : ses élèves référents + les élèves de ses séances
+// - prof : Where clause sur profReferent ; le périmètre « élèves de ses séances »
+//   est appliqué en code serveur (portail profs requête les séances puis le groupe)
+//   car une clause DB inverse ou dénormalisée sur Eleves s'est révélée fragile
+//   (requêtes relationnelles croisées non supportées par l'adapter PG, Spec 02 §8)
 // - benevole-bibliotheque : tout (nécessaire pour gérer les prêts, Spec 04)
 // - parent : ses enfants (portail, Spec 06)
-//
-// Le périmètre « élèves de ses séances » est porté par le champ dénormalisé
-// profsDesSeances (hook beforeChange sur seances — cf. Spec 02, fallback
-// dénormalisation : la requête inverse 'seances.prof' n'est pas supportée).
 export const elevesRead: Access = ({ req: { user } }) => {
   if (!user) return false
   if (isAdmin(user) || user.role === 'benevole-bibliotheque') return true
   if (user.role === 'prof') {
-    return {
-      or: [
-        { profReferent: { equals: user.id } },
-        { profsDesSeances: { equals: user.id } },
-      ],
-    } as never
+    return { profReferent: { equals: user.id } } as never
   }
   if (user.role === 'parent') {
     return {

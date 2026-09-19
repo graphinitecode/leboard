@@ -211,10 +211,6 @@ export interface Eleve {
   niveau: 'CP' | 'CE1' | 'CE2' | 'CM1' | 'CM2' | '6e' | '5e' | '4e' | '3e' | '2nde' | '1ere' | 'Terminale';
   groupe?: string | null;
   profReferent?: (number | null) | User;
-  /**
-   * Profs des séances auxquelles cet élève est inscrit (dénormalisé)
-   */
-  profsDesSeances?: (number | User)[] | null;
   parents?: (number | User)[] | null;
   consentementRGPD?: boolean | null;
   consentementRetire?: boolean | null;
@@ -1400,7 +1396,6 @@ export interface ElevesSelect<T extends boolean = true> {
   niveau?: T;
   groupe?: T;
   profReferent?: T;
-  profsDesSeances?: T;
   parents?: T;
   consentementRGPD?: T;
   consentementRetire?: T;
