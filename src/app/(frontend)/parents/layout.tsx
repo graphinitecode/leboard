@@ -37,6 +37,7 @@ export default async function ParentsLayout({ children }: { children: ReactNode 
         />
       }
       liensPied={[{ href: '/parents/login', libelle: 'Connexion' }]}
+      portail="parents"
     >
       {children}
     </ContenuPage>

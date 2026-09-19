@@ -7,9 +7,13 @@
 
 :root {
   /* Charte LPV Board (visuel officiel) */
-  --lpv-blue: #3d9eff;         /* Dodger Blue — marque : entête, hero, boutons, liens */
+  --lpv-blue: #3d9eff;         /* Dodger Blue — portail profs */
   --lpv-blue-dark: #1877d2;    /* hover boutons / liens (contraste AA sur blanc) */
   --lpv-blue-soft: #eaf5ff;    /* fond clair dérivé du bleu de marque */
+  --lpv-violet: #9000b3;       /* portail parents */
+  --lpv-violet-dark: #6b0087;  /* hover violet (contraste AA sur blanc) */
+  --lpv-violet-soft: #f6e8fb;  /* fond clair dérivé du violet */
+  --lpv-orange-portail: #e4572e; /* portail élèves (à venir) */
   --lpv-green: #00af54;        /* Medium Jungle — succès / présent */
   --lpv-green-soft: #e2f7ec;
   --lpv-orange: #f96900;       /* Pumpkin Spice — « retour à faire », avertissements */
@@ -20,17 +24,36 @@
   --lpv-red-soft: #ffeaeb;
 
   /* Neutres */
-  --lpv-text: #0f1419;
+  --lpv-text: #241623;         /* noir du projet */
   --lpv-text-muted: #5a6369;
   --lpv-grey-bg: #f4f5f6;
   --lpv-grey-border: #d8dadc;
   --lpv-surface: #ffffff;
+
+  /* Couleur du portail courant (surchargée par data-lpv-portail) */
+  --lpv-portail: var(--lpv-blue);
+  --lpv-portail-dark: var(--lpv-blue-dark);
+  --lpv-portail-soft: var(--lpv-blue-soft);
 
   /* Focus : jaune, conservé du GOV.UK pour la visibilité maximale */
   --lpv-focus: #fd0;
 
   --lpv-radius: 6px;
   --lpv-container: 960px;
+}
+
+/* Portail profs : bleu (défaut) */
+.lpv-shell[data-lpv-portail='profs'] {
+  --lpv-portail: var(--lpv-blue);
+  --lpv-portail-dark: var(--lpv-blue-dark);
+  --lpv-portail-soft: var(--lpv-blue-soft);
+}
+
+/* Portail parents : violet */
+.lpv-shell[data-lpv-portail='parents'] {
+  --lpv-portail: var(--lpv-violet);
+  --lpv-portail-dark: var(--lpv-violet-dark);
+  --lpv-portail-soft: var(--lpv-violet-soft);
 }
 
 /* --- Typographie -------------------------------------------------------- */
@@ -53,7 +76,7 @@
    gros titre blanc du portail en dessous (comme la home GOV.UK). */
 
 .lpv-entete-bleue {
-  background-color: var(--lpv-blue);
+  background-color: var(--lpv-portail);
   color: var(--lpv-surface);
   margin-bottom: 2rem;
 }
@@ -141,7 +164,7 @@
 
 .lpv-menu-panneau {
   background-color: var(--lpv-surface);
-  border-bottom: 4px solid var(--lpv-blue);
+  border-bottom: 4px solid var(--lpv-portail);
   box-shadow: 0 12px 24px rgb(15 20 25 / 20%);
   left: 50%;
   position: absolute;
@@ -190,7 +213,7 @@
 
 .lpv-menu-panneau__colonne li a,
 .lpv-menu-panneau__colonne li a:visited {
-  color: var(--lpv-blue-dark);
+  color: var(--lpv-portail-dark);
   font-weight: 700;
   text-decoration: underline;
 }
@@ -207,9 +230,9 @@
 
 .lpv-skip-link {
   background: var(--lpv-surface);
-  border: 2px solid var(--lpv-blue);
+  border: 2px solid var(--lpv-portail);
   border-radius: 0 0 var(--lpv-radius) var(--lpv-radius);
-  color: var(--lpv-blue-dark);
+  color: var(--lpv-portail-dark);
   font-weight: 700;
   left: 1rem;
   padding: 0.5rem 1rem;
@@ -250,7 +273,7 @@
 /* --- Ancien hero (remplacé par l'entête bleue fusionnée) ------------------- */
 
 .lpv-hero {
-  background-color: var(--lpv-blue);
+  background-color: var(--lpv-portail);
   color: var(--lpv-surface);
   margin-bottom: 1.5rem;
   padding: 1.5rem 1rem 2rem;
@@ -385,10 +408,10 @@ a:focus {
 /* --- Boutons ------------------------------------------------------------ */
 
 .lpv-bouton {
-  background-color: var(--lpv-blue);
+  background-color: var(--lpv-portail);
   border: 2px solid transparent;
   border-radius: var(--lpv-radius);
-  box-shadow: 0 2px 0 var(--lpv-blue-dark);
+  box-shadow: 0 2px 0 var(--lpv-portail-dark);
   color: var(--lpv-surface);
   cursor: pointer;
   display: inline-block;
@@ -401,7 +424,7 @@ a:focus {
 }
 
 .lpv-bouton:hover {
-  background-color: var(--lpv-blue-dark);
+  background-color: var(--lpv-portail-dark);
 }
 
 .lpv-bouton:active {
@@ -472,7 +495,7 @@ a:focus {
 /* --- Bannières & encadrés ------------------------------------------------ */
 
 .lpv-banner {
-  background-color: var(--lpv-blue);
+  background-color: var(--lpv-portail);
   border-radius: var(--lpv-radius);
   color: var(--lpv-surface);
   margin-bottom: 1.5rem;
@@ -485,15 +508,15 @@ a:focus {
 
 .lpv-inset {
   background-color: var(--lpv-grey-bg);
-  border-left: 6px solid var(--lpv-blue);
+  border-left: 6px solid var(--lpv-portail);
   border-radius: 0 var(--lpv-radius) var(--lpv-radius) 0;
   margin: 1rem 0;
   padding: 0.85rem 1rem;
 }
 
 .lpv-panel {
-  background-color: var(--lpv-blue-soft);
-  border: 2px solid var(--lpv-blue);
+  background-color: var(--lpv-portail-soft);
+  border: 2px solid var(--lpv-portail);
   border-radius: var(--lpv-radius);
   margin-bottom: 1.5rem;
   padding: 1.25rem;
@@ -532,7 +555,7 @@ a:focus {
 }
 
 .lpv-login__oublie a {
-  color: var(--lpv-blue-dark);
+  color: var(--lpv-portail-dark);
   font-weight: 700;
 }
 
@@ -553,7 +576,7 @@ a:focus {
 }
 
 .lpv-ligne__titre {
-  color: var(--lpv-blue-dark);
+  color: var(--lpv-portail-dark);
   font-weight: 700;
 }
 
@@ -701,9 +724,9 @@ a.lpv-ligne:hover {
    On masque le Header, le Footer et la barre d'admin Payload du site vitrine
    quand le shell portail est présent dans le body. */
 
-body:has(.lpv-shell[data-lpv-portail='true']) > header,
-body:has(.lpv-shell[data-lpv-portail='true']) > footer,
-body:has(.lpv-shell[data-lpv-portail='true']) > .admin-bar {
+body:has(.lpv-shell[data-lpv-portail]) > header,
+body:has(.lpv-shell[data-lpv-portail]) > footer,
+body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
   display: none !important;
 }
 
@@ -743,7 +766,7 @@ body:has(.lpv-shell[data-lpv-portail='true']) > .admin-bar {
 }
 
 .lpv-pied__nav a {
-  color: var(--lpv-blue-dark);
+  color: var(--lpv-portail-dark);
   font-size: 0.95rem;
   text-decoration: none;
 }
