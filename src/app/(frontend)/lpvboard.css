@@ -638,14 +638,19 @@ html[data-theme='dark'] .lpv-tag--sarcelle { background-color: var(--lpv-tag-sar
   padding: 1rem;
 }
 
+html[data-theme='dark'] .lpv-error-summary {
+  border-color: var(--lpv-tag-rouge);
+}
+
 .lpv-error-summary h2 {
   font-size: 1.25rem;
-  margin: 0 0 0.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0.5rem;
 }
 
 .lpv-error-summary ul {
   margin: 0;
-  padding-left: 1.25rem;
+  padding-left: 0.5rem;
 }
 
 .lpv-error-summary li {
@@ -654,8 +659,23 @@ html[data-theme='dark'] .lpv-tag--sarcelle { background-color: var(--lpv-tag-sar
   margin: 0.25rem 0;
 }
 
+html[data-theme='dark'] .lpv-error-summary li a {
+  color: var(--lpv-tag-rouge);
+}
+
+html[data-theme='dark'] .lpv-error-summary li a:hover {
+  text-underline-offset: 3px;
+  text-decoration-thickness: 4px;
+}
+
 .lpv-error-summary li a {
   color: var(--lpv-red);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.lpv-error-summary li a:hover {
+  color: var(--lpv-text);
   font-weight: 700;
   text-decoration: underline;
 }
