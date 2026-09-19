@@ -24,10 +24,13 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
 
-  useEffect(() => {
+  // Ajustement pendant le render (pattern React « derived state ») : évite un
+  // setState dans un effet qui déclencherait un rendu en cascade.
+  const [prevHeaderTheme, setPrevHeaderTheme] = useState<string | null>(null)
+  if (headerTheme !== prevHeaderTheme) {
+    setPrevHeaderTheme(headerTheme ?? null)
     if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headerTheme])
+  }
 
   return (
     <header className="container relative z-20   " {...(theme ? { 'data-theme': theme } : {})}>

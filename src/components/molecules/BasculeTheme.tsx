@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Icon } from '@/components/atoms/Icon'
 
@@ -10,7 +10,11 @@ import { Icon } from '@/components/atoms/Icon'
 export function BasculeTheme() {
   const [theme, setTheme] = useState<'dark' | 'light' | null>(null)
 
-  useEffect(() => {
+  // Lecture du thème après hydratation : localStorage n'existe pas côté serveur ;
+  // le premier rendu sert d'état initial cohérent avec le SSR.
+  const [initialise, setInitialise] = useState(false)
+  if (!initialise) {
+    setInitialise(true)
     const stored = window.localStorage.getItem('payload-theme')
     if (stored === 'dark' || stored === 'light') {
       setTheme(stored)
@@ -18,7 +22,7 @@ export function BasculeTheme() {
       const mql = window.matchMedia('(prefers-color-scheme: dark)')
       setTheme(mql.matches ? 'dark' : 'light')
     }
-  }, [])
+  }
 
   function basculer() {
     const nouveau = theme === 'dark' ? 'light' : 'dark'

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 
 import { ErrorMessage, Hint, Label } from '@/components/atoms/Champ'
 
@@ -43,16 +43,9 @@ export function CompteurCaracteres({
 }) {
   const [texte, setTexte] = useState(valeur ?? '')
   const [aDepasseSeuil, setADepasseSeuil] = useState(false)
-  const refCompte = useRef<HTMLDivElement>(null)
   const maxAtteint = type === 'caracteres' ? texte.length >= limite : (texte.trim().split(/\s+/).filter(Boolean).length >= limite)
   const nbActuel = type === 'caracteres' ? texte.length : texte.trim().split(/\s+/).filter(Boolean).length
   const nbRestant = limite - nbActuel
-
-  useEffect(() => {
-    if (refCompte.current) {
-      refCompte.current.textContent = messageCompte()
-    }
-  }, [texte, limite, type, seuil])
 
   function messageCompte(): string {
     if (maxAtteint) {
@@ -111,11 +104,8 @@ export function CompteurCaracteres({
         aria-live="polite"
         className={`lpv-hint lpv-compteur__message${maxAtteint ? ' lpv-compteur__message--erreur' : ''}`}
         id={`${id}-compte`}
-        ref={refCompte}
       >
-        {type === 'caracteres'
-          ? `Vous pouvez saisir jusqu'à ${limite} caractères`
-          : `Vous pouvez saisir jusqu'à ${limite} mots`}
+        {messageCompte()}
       </div>
     </div>
   )

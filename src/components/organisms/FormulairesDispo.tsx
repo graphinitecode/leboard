@@ -145,6 +145,7 @@ export function ListeDispos({ dispos }: { dispos: DispoItem[] }) {
       )}
       <FormulaireDispoSteps
         editionDe={cibleEdition}
+        key={cibleEdition ? cleDispo(cibleEdition) : 'nouveau'}
         onFerme={() => {
           setAssistantOuvert(false)
           setCibleEdition(null)
@@ -171,24 +172,12 @@ export function FormulaireDispoSteps({
   editionDe?: DispoItem | null
 }) {
   const [etape, setEtape] = useState(1)
-  const [jour, setJour] = useState('')
-  const [heureDebut, setHeureDebut] = useState('')
-  const [heureFin, setHeureFin] = useState('')
+  const [jour, setJour] = useState(editionDe?.jour ?? '')
+  const [heureDebut, setHeureDebut] = useState(editionDe?.heureDebut ?? '')
+  const [heureFin, setHeureFin] = useState(editionDe?.heureFin ?? '')
   const [pending, startTransition] = useTransition()
   const [erreur, setErreur] = useState<string | null>(null)
-  const [precedente, setPrecedente] = useState<DispoItem | null>(null)
-
-  // Passage en mode édition : pré-remplit les valeurs de la dispo ciblée
-  useEffect(() => {
-    if (ouvert && editionDe) {
-      setEtape(1)
-      setJour(editionDe.jour)
-      setHeureDebut(editionDe.heureDebut)
-      setHeureFin(editionDe.heureFin)
-      setPrecedente(editionDe)
-      setErreur(null)
-    }
-  }, [ouvert, editionDe])
+  const [precedente, setPrecedente] = useState<DispoItem | null>(editionDe ?? null)
 
   function reinitialiser() {
     onFerme()

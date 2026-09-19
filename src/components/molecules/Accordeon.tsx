@@ -62,16 +62,19 @@ export function Accordeon({
   const allOpen = Object.values(ouverts).every(Boolean) && Object.keys(ouverts).length > 0
   const ref = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    if (!souvenirOuverture) return
+  // Lecture de la mémorisation après hydratation : sessionStorage n'existe pas
+  // côté serveur ; le premier rendu sert d'état initial cohérent avec le SSR.
+  const [initialise, setInitialise] = useState(!souvenirOuverture)
+  if (!initialise) {
+    setInitialise(true)
     try {
       const stored = sessionStorage.getItem(`lpv-accordeon-${id}`)
       if (stored) {
         const parsed = JSON.parse(stored) as Record<string, boolean>
-        setOuverts(parsed)
+        if (parsed && typeof parsed === 'object') setOuverts(parsed)
       }
     } catch {}
-  }, [id, souvenirOuverture])
+  }
 
   useEffect(() => {
     if (!souvenirOuverture) return
