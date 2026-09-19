@@ -14,7 +14,11 @@ export const elevesRead: Access = ({ req: { user } }) => {
   if (!user) return false
   if (isAdmin(user) || user.role === 'benevole-bibliotheque') return true
   if (user.role === 'prof') {
-    return { profReferent: { equals: user.id } } as never
+    return {
+      profReferent: {
+        equals: user.id,
+      },
+    } as never
   }
   if (user.role === 'parent') {
     return {
