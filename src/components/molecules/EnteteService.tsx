@@ -46,16 +46,18 @@ export function EnteteService({
 }
 
 // Molécule : conteneur principal des pages portail.
-// Regroupe entête + contenu + pied de page dans un seul shell :
+// Regroupe entête + hero optionnel + contenu + pied de page dans un seul shell :
 // la classe .lpv-shell permet au CSS de masquer le header/footer du site vitrine
-// (body:has(.lpv-shell) > header, > footer, > .admin-bar) sans toucher au nôtre.
+// (body:has(.lpv-shell) > header, > footer, > .admin-bar).
 export function ContenuPage({
   children,
   entete,
+  hero,
   liensPied,
 }: {
   children: ReactNode
   entete?: ReactNode
+  hero?: ReactNode
   liensPied?: { href: string; libelle: string }[]
 }) {
   return (
@@ -69,6 +71,7 @@ export function ContenuPage({
         Aller au contenu principal
       </a>
       {entete}
+      {hero}
       <main className="lpv-container" id="contenu-principal" style={{ flex: 1 }}>
         {children}
       </main>
