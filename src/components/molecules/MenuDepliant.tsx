@@ -32,7 +32,7 @@ export function MenuDepliant({
   }, [])
 
   return (
-    <div ref={ref} style={{ position: 'relative' }}>
+    <div ref={ref}>
       <button
         aria-expanded={ouvert}
         className="lpv-menu-bouton"
