@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react'
 
 import rivetIcons from '@iconify-json/rivet-icons/icons.json'
-import boxicons from '@iconify-json/boxicons'
+import boxicons from '@iconify-json/boxicons/icons.json'
 
 type Collection = 'rivet-icons' | 'boxicons'
 
