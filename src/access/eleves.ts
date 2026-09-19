@@ -7,6 +7,10 @@ import { isAdmin } from './roles'
 // - prof : ses élèves référents + les élèves de ses séances
 // - benevole-bibliotheque : tout (nécessaire pour gérer les prêts, Spec 04)
 // - parent : ses enfants (portail, Spec 06)
+//
+// Le périmètre « élèves de ses séances » est porté par le champ dénormalisé
+// profsDesSeances (hook beforeChange sur seances — cf. Spec 02, fallback
+// dénormalisation : la requête inverse 'seances.prof' n'est pas supportée).
 export const elevesRead: Access = ({ req: { user } }) => {
   if (!user) return false
   if (isAdmin(user) || user.role === 'benevole-bibliotheque') return true
@@ -14,10 +18,7 @@ export const elevesRead: Access = ({ req: { user } }) => {
     return {
       or: [
         { profReferent: { equals: user.id } },
-        {
-          // élèves inscrits à au moins une séance dont ce prof est titulaire
-          'seances.prof': { equals: user.id },
-        },
+        { profsDesSeances: { equals: user.id } },
       ],
     } as never
   }

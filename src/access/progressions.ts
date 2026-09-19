@@ -5,7 +5,8 @@ import { isAdmin } from './roles'
 // Un prof lit/écrit les progressions de ses élèves :
 // - élèves dont il est référent (champ profReferent dupliqué sur la progression
 //   au beforeChange — requêtage direct sans join, cf. Spec 02)
-// - élèves de ses séances (via la relation seance)
+// - élèves de ses séances (idem via seance.prof dénormalisé : le champ prof
+//   est une relation directe sur la progression → requête forward supportée)
 export const progressionsRead: Access = ({ req: { user } }) => {
   if (!user) return false
   if (isAdmin(user)) return true
