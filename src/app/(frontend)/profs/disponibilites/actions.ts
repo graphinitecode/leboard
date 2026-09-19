@@ -20,6 +20,14 @@ export async function ajouterDisponibilite(formData: FormData) {
     return { ok: false, erreur: 'Tous les champs sont requis.' }
   }
 
+  if (!/^\d{2}:\d{2}$/.test(heureDebut) || !/^\d{2}:\d{2}$/.test(heureFin)) {
+    return { ok: false, erreur: 'Les heures doivent être au format HH:mm.' }
+  }
+
+  if (heureFin <= heureDebut) {
+    return { ok: false, erreur: 'L’heure de fin doit être après l’heure de début.' }
+  }
+
   const payload = await getPayload({ config: configPromise })
 
   try {
