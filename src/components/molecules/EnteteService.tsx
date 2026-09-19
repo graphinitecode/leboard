@@ -6,8 +6,7 @@ import { LogoLPV } from '@/components/atoms/LogoLPV'
 import { PiedPage } from '@/components/molecules/PiedPage'
 
 // Molécule : entête de service des portails (logo + navigation + identité + déconnexion).
-// Thème clair forcé : data-theme="light" sur le conteneur.
-// `nomUtilisateur` : affiche « Connecté en tant que … » ; si null, rien (page login).
+// `nomUtilisateur` : affiche le nom connecté ; si null, rien (page login).
 export function EnteteService({
   liens,
   libelleService = 'LPV Board',
@@ -46,10 +45,19 @@ export function EnteteService({
   )
 }
 
-// Molécule : conteneur principal des pages portail (contenu + pied de page).
-// La classe lpv-shell + data-lpv-portail permettent au CSS de masquer le
-// header/footer du site vitrine.
-export function ContenuPage({ children, liensPied }: { children: ReactNode; liensPied?: { href: string; libelle: string }[] }) {
+// Molécule : conteneur principal des pages portail.
+// Regroupe entête + contenu + pied de page dans un seul shell :
+// la classe .lpv-shell permet au CSS de masquer le header/footer du site vitrine
+// (body:has(.lpv-shell) > header, > footer, > .admin-bar) sans toucher au nôtre.
+export function ContenuPage({
+  children,
+  entete,
+  liensPied,
+}: {
+  children: ReactNode
+  entete?: ReactNode
+  liensPied?: { href: string; libelle: string }[]
+}) {
   return (
     <div
       className="lpv-shell"
@@ -60,6 +68,7 @@ export function ContenuPage({ children, liensPied }: { children: ReactNode; lien
       <a className="lpv-skip-link" href="#contenu-principal">
         Aller au contenu principal
       </a>
+      {entete}
       <main className="lpv-container" id="contenu-principal" style={{ flex: 1 }}>
         {children}
       </main>
