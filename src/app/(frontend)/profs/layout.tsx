@@ -19,6 +19,7 @@ export default function ProfsLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <EnteteService
+        deconnexion
         libelleService="Espace profs"
         liens={[
           { href: '/profs', libelle: 'Tableau de bord' },

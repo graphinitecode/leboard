@@ -423,13 +423,14 @@ a.lpv-ligne:hover {
   border-color: var(--lpv-red);
 }
 
-/* --- Neutralisation des header/footer du template sur les portails --------- */
+/* --- Neutralisation du chrome du site vitrine sur les portails ------------- */
 /* Les portails fournissent leur propre entête (EnteteService) et pied (PiedPage).
-   Le Header (avant) et le Footer (après) du site vitrine ne doivent pas apparaître
-   en doublon : on les masque quand le shell portail est présent dans le body. */
+   On masque le Header, le Footer et la barre d'admin Payload du site vitrine
+   quand le shell portail est présent dans le body. */
 
 body:has(.lpv-shell[data-lpv-portail='true']) > header,
-body:has(.lpv-shell[data-lpv-portail='true']) > footer {
+body:has(.lpv-shell[data-lpv-portail='true']) > footer,
+body:has(.lpv-shell[data-lpv-portail='true']) > .admin-bar {
   display: none !important;
 }
 
