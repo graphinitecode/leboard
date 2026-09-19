@@ -60,6 +60,12 @@
   --lpv-overlay: rgb(15 20 25 / 50%);
   --lpv-overlay-heavy: rgb(15 20 25 / 30%);
 
+  /* Boutons aux couleurs des tags */
+  --lpv-bouton-primaire: #0080ff;
+  --lpv-bouton-primaire-hover: #0066cc;
+  --lpv-bouton-primaire-ombre: #0052a3;
+  --lpv-bouton-avertissement-ombre: #cc5600;
+
   --lpv-radius: 6px;
   --lpv-radius-lg: 4px;
   --lpv-container: 960px;
@@ -112,6 +118,13 @@ html[data-theme='dark'] {
   --lpv-tag-orange: #ff6b00;
   --lpv-tag-rouge: #ff0004;
   --lpv-tag-bleu: #0080ff;
+
+  /* Boutons : fond tag identique, ombre assombrie pour le fond sombre */
+  --lpv-bouton-primaire: #0080ff;
+  --lpv-bouton-primaire-hover: #3399ff;
+  --lpv-bouton-primaire-ombre: #004080;
+  --lpv-bouton-avertissement-ombre: #803300;
+
   --lpv-overlay: rgb(0 0 0 / 60%);
   --lpv-overlay-heavy: rgb(0 0 0 / 40%);
   --lpv-shadow: 0 1px 2px rgb(0 0 0 / 20%), 0 4px 16px rgb(0 0 0 / 25%);
@@ -480,11 +493,11 @@ a:focus {
 /* --- Boutons ------------------------------------------------------------ */
 
 .lpv-bouton {
-  background-color: var(--lpv-portail);
+  background-color: var(--lpv-bouton-primaire);
   border: 2px solid transparent;
   border-radius: var(--lpv-radius);
-  box-shadow: 0 2px 0 var(--lpv-portail-dark);
-  color: var(--lpv-surface);
+  box-shadow: 0 2px 0 var(--lpv-bouton-primaire-ombre);
+  color: #ffffff;
   cursor: pointer;
   display: inline-block;
   font-size: 1.125rem;
@@ -496,7 +509,7 @@ a:focus {
 }
 
 .lpv-bouton:hover {
-  background-color: var(--lpv-portail-dark);
+  background-color: var(--lpv-bouton-primaire-hover);
 }
 
 .lpv-bouton:active {
@@ -1278,11 +1291,11 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
   margin-top: 1.5rem;
 }
 
-/* Bouton « Modifier » (orange) */
+/* Bouton « Modifier » (orange, couleur du tag « À faire ») */
 .lpv-bouton--avertissement {
-  background-color: var(--lpv-orange);
-  box-shadow: 0 2px 0 var(--lpv-orange-soft);
-  color: var(--lpv-text);
+  background-color: var(--lpv-tag-orange);
+  box-shadow: 0 2px 0 var(--lpv-bouton-avertissement-ombre);
+  color: #ffffff;
 }
 
 .lpv-bouton--avertissement:hover {
@@ -1345,9 +1358,9 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 }
 
 .lpv-bouton--danger {
-  background-color: var(--lpv-red);
+  background-color: var(--lpv-tag-rouge);
   box-shadow: 0 2px 0 var(--lpv-red-shadow);
-  color: var(--lpv-surface);
+  color: #ffffff;
 }
 
 .lpv-bouton--danger:hover {
