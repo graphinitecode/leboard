@@ -416,21 +416,36 @@ a.lpv-ligne:hover {
 }
 
 /* --- Champs en ligne (formulaire sur une ligne) ----------------------------- */
-/* Chaque champ vit dans une cellule flex column : labels alignés en haut,
-   inputs alignés sur une même ligne même si les hints diffèrent. */
+/* Mobile-first : jour pleine largeur, De/À côte à côte, bouton pleine largeur.
+   ≥ 640px : les quatre éléments tiennent sur une ligne alignée. */
 
 .lpv-champs-inline {
   align-items: stretch;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 0 1rem;
 }
 
-.lpv-champs-inline__champ {
-  flex: 1 1 0;
-  min-width: 9rem;
+.lpv-champs-inline__pleine {
+  flex: 1 1 100%;
 }
 
+.lpv-champs-inline__pleine .lpv-bouton {
+  width: 100%;
+}
+
+.lpv-champs-inline__moitie {
+  flex: 1 1 50%;
+}
+
+.lpv-champs-inline__champ,
+.lpv-champs-inline__pleine,
+.lpv-champs-inline__moitie {
+  min-width: 0;
+}
+
+.lpv-champs-inline__pleine .lpv-form-group,
+.lpv-champs-inline__moitie .lpv-form-group,
 .lpv-champs-inline__champ .lpv-form-group {
   display: flex;
   flex-direction: column;
@@ -438,9 +453,34 @@ a.lpv-ligne:hover {
   margin-bottom: 1.25rem;
 }
 
+.lpv-champs-inline__pleine .lpv-select,
+.lpv-champs-inline__pleine .lpv-input,
+.lpv-champs-inline__moitie .lpv-select,
+.lpv-champs-inline__moitie .lpv-input,
 .lpv-champs-inline__champ .lpv-select,
 .lpv-champs-inline__champ .lpv-input {
   margin-top: auto;
+}
+
+@media (min-width: 640px) {
+  .lpv-champs-inline {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .lpv-champs-inline__pleine {
+    flex: 1 1 0;
+  }
+
+  .lpv-champs-inline__pleine .lpv-bouton {
+    width: auto;
+    align-self: end;
+    margin-bottom: 1.25rem;
+  }
+
+  .lpv-champs-inline__moitie {
+    flex: 1 1 0;
+  }
 }
 
 /* --- Toggle segmenté ------------------------------------------------------ */

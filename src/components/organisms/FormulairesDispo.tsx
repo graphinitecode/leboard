@@ -19,6 +19,9 @@ const OPTIONS_JOUR = [
   { label: 'Samedi', value: 'samedi' },
 ]
 
+// Organisme : ajout/suppression de disponibilités hebdomadaires.
+// Structure mobile-first : jour en pleine largeur, De/À côte à côte (time pickers
+// natifs), bouton pleine largeur. Sur desktop, tout tient sur une ligne alignée.
 export function FormDispo() {
   const [pending, startTransition] = useTransition()
   const [succes, setSucces] = useState<string | null>(null)
@@ -44,11 +47,11 @@ export function FormDispo() {
     >
       {succes && <NotificationBanner titre={succes} type="succes" />}
       <ResumeErreurs erreurs={erreur ? [erreur] : []} />
+
       <div className="lpv-champs-inline">
-        <div className="lpv-champs-inline__champ" style={{ maxWidth: '12rem' }}>
+        <div className="lpv-champs-inline__pleine">
           <ChampFormulaire
             as="select"
-            hint=" "
             id="dispo-jour"
             label="Jour"
             name="jour"
@@ -56,27 +59,27 @@ export function FormDispo() {
             required
           />
         </div>
-        <div className="lpv-champs-inline__champ" style={{ maxWidth: '12rem' }}>
+        <div className="lpv-champs-inline__moitie">
           <ChampFormulaire
-            hint="par exemple 17:30"
+            hint="Heure de début"
             id="dispo-debut"
             label="De"
             name="heureDebut"
-            pattern="\d{2}:\d{2}"
             required
+            type="time"
           />
         </div>
-        <div className="lpv-champs-inline__champ" style={{ maxWidth: '12rem' }}>
+        <div className="lpv-champs-inline__moitie">
           <ChampFormulaire
-            hint="par exemple 19:00"
+            hint="Heure de fin"
             id="dispo-fin"
             label="À"
             name="heureFin"
-            pattern="\d{2}:\d{2}"
             required
+            type="time"
           />
         </div>
-        <div className="lpv-champs-inline__champ" style={{ alignSelf: 'end' }}>
+        <div className="lpv-champs-inline__pleine">
           <Bouton disabled={pending} type="submit">
             {pending ? 'Enregistrement…' : 'Ajouter'}
           </Bouton>
