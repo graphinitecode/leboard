@@ -4,6 +4,14 @@ Tous les changements notables de LPV Board sont documentés ici.
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le versionnage suit [SemVer](https://semver.org/lang/fr/) (0.x pendant le développement initial).
 
+## [Unreleased]
+
+### Ajouté
+- Composants de design system inspirés de GOV.UK : Accordéon, Fil d'Ariane, Cases à cocher (avec révélation conditionnelle), Champ date, Compteur de caractères, Détails (disclosure), Ensemble de champs (fieldset), Onglets, Liste de tâches, Pagination, Boutons radio (avec révélation conditionnelle), Tableau, Téléversement (file upload), Texte d'avertissement
+- Label et légende avec tailles (l/m/s) et option `isPageHeading` (guide GOV.UK « Making labels and legends headings »)
+- Message d'erreur avec préfixe lecteur d'écran « Erreur : »
+- Utilitaire `lpv-visually-hidden` pour l'accessibilité
+
 ## [0.2.0] — 2026-09-19
 
 Implémentation des 9 specs métier (voir `specs/`).

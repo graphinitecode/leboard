@@ -1329,3 +1329,861 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
     display: none !important;
   }
 }
+
+/* --- Utilitaire d'accessibilité --------------------------------------------- */
+
+.lpv-visually-hidden {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+/* --- Labels & légendes (guide GOV.UK labels-legends-headings) ------------- */
+
+.lpv-label-wrapper {
+  margin: 0 0 0.25rem;
+}
+
+.lpv-label--m {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.lpv-label--s {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.lpv-label--l {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* --- Fieldset & légendes -------------------------------------------------- */
+
+.lpv-fieldset {
+  border: 0;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+}
+
+.lpv-fieldset__legende {
+  box-sizing: border-box;
+  color: var(--lpv-text);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+  padding: 0;
+}
+
+.lpv-fieldset__legende--m {
+  font-size: 1.125rem;
+}
+
+.lpv-fieldset__legende--s {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.lpv-fieldset__titre {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+}
+
+/* --- Texte d'avertissement (Warning text) --------------------------------- */
+
+.lpv-avertissement {
+  align-items: center;
+  border-left: 5px solid var(--lpv-text);
+  display: flex;
+  font-weight: 700;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+}
+
+.lpv-avertissement__icone {
+  align-items: center;
+  background-color: var(--lpv-text);
+  border-radius: 50%;
+  color: var(--lpv-surface);
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  height: 2rem;
+  justify-content: center;
+  line-height: 1;
+  min-height: 44px;
+  min-width: 44px;
+  width: 2rem;
+}
+
+.lpv-avertissement__texte {
+  flex: 1;
+}
+
+/* --- Fil d'Ariane (Breadcrumbs) ------------------------------------------- */
+
+.lpv-fil-ariane {
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.lpv-fil-ariane__liste {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lpv-fil-ariane__item {
+  align-items: center;
+  display: flex;
+}
+
+.lpv-fil-ariane__item + .lpv-fil-ariane__item::before {
+  content: ' / ';
+  color: var(--lpv-text-muted);
+}
+
+.lpv-fil-ariane__lien {
+  color: var(--lpv-portail-dark);
+  text-decoration: underline;
+}
+
+.lpv-fil-ariane__lien:hover {
+  color: var(--lpv-text);
+  text-decoration: underline;
+}
+
+.lpv-fil-ariane__lien:focus {
+  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
+  outline: none;
+}
+
+.lpv-fil-ariane__actuel {
+  color: var(--lpv-text);
+}
+
+.lpv-fil-ariane--replier .lpv-fil-ariane__item:not(:first-child):not(:last-child) {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .lpv-fil-ariane--replier .lpv-fil-ariane__item:not(:first-child):not(:last-child) {
+    display: flex;
+  }
+}
+
+.lpv-fil-ariane--inverse .lpv-fil-ariane__lien {
+  color: var(--lpv-surface);
+}
+
+.lpv-fil-ariane--inverse .lpv-fil-ariane__item + .lpv-fil-ariane__item::before {
+  color: var(--lpv-surface);
+  opacity: 0.7;
+}
+
+.lpv-fil-ariane--inverse .lpv-fil-ariane__actuel {
+  color: var(--lpv-surface);
+}
+
+/* --- Details (disclosure) -------------------------------------------------- */
+
+.lpv-details {
+  border-left: 5px solid var(--lpv-portail);
+  margin: 1rem 0;
+  padding: 0.5rem 1rem 0.5rem 1.25rem;
+}
+
+.lpv-details[open] {
+  padding-bottom: 1rem;
+}
+
+.lpv-details__resume {
+  color: var(--lpv-portail-dark);
+  cursor: pointer;
+  font-size: 1.125rem;
+  font-weight: 700;
+  list-style: none;
+}
+
+.lpv-details__resume::-webkit-details-marker {
+  display: none;
+}
+
+.lpv-details__resume::marker {
+  content: '';
+  display: none;
+}
+
+.lpv-details__resume-texte {
+  display: inline;
+}
+
+.lpv-details__resume::before {
+  content: '▶ ';
+  display: inline-block;
+  font-size: 0.75rem;
+  transition: transform 0.2s ease;
+}
+
+.lpv-details[open] > .lpv-details__resume::before {
+  content: '▼ ';
+}
+
+.lpv-details__texte {
+  margin-top: 0.75rem;
+}
+
+.lpv-details__resume:focus {
+  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
+  outline: none;
+}
+
+/* --- File upload ----------------------------------------------------------- */
+
+.lpv-file-upload {
+  font-size: 1.125rem;
+}
+
+.lpv-file-upload--error {
+  border-color: var(--lpv-red);
+  border-width: 3px;
+}
+
+/* --- Cases à cocher (Checkboxes) ----------------------------------------- */
+
+.lpv-cases {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lpv-cases__item {
+  align-items: flex-start;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.lpv-cases__input {
+  flex-shrink: 0;
+  height: 2.5ex;
+  margin-top: 0.15em;
+  min-height: 44px;
+  min-width: 44px;
+  width: 2.5ex;
+}
+
+.lpv-cases__label {
+  cursor: pointer;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.lpv-cases__hint {
+  color: var(--lpv-text-muted);
+  font-size: 1rem;
+  line-height: 1.4;
+  margin: 0 0 0 2.5ex;
+}
+
+.lpv-cases__divider {
+  color: var(--lpv-text-muted);
+  font-size: 1rem;
+  margin: 0.25rem 0;
+  text-align: center;
+}
+
+.lpv-cases__conditionnel {
+  margin-left: 2.5ex;
+  padding: 0.5rem 0;
+}
+
+.lpv-cases__conditionnel--hidden {
+  display: none;
+}
+
+/* --- Boutons radio -------------------------------------------------------- */
+
+.lpv-radios {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lpv-radios--inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+@media (max-width: 639px) {
+  .lpv-radios--inline {
+    flex-direction: column;
+  }
+}
+
+.lpv-radios--small .lpv-radios__input {
+  height: 2ex;
+  min-height: 36px;
+  min-width: 36px;
+  width: 2ex;
+}
+
+.lpv-radios--small .lpv-radios__label {
+  font-size: 1rem;
+}
+
+.lpv-radios__item {
+  align-items: flex-start;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.lpv-radios__input {
+  flex-shrink: 0;
+  height: 2.5ex;
+  margin-top: 0.15em;
+  min-height: 44px;
+  min-width: 44px;
+  width: 2.5ex;
+}
+
+.lpv-radios__label {
+  cursor: pointer;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.lpv-radios__hint {
+  color: var(--lpv-text-muted);
+  font-size: 1rem;
+  line-height: 1.4;
+  margin: 0 0 0 2.5ex;
+}
+
+.lpv-radios__diviseur {
+  color: var(--lpv-text-muted);
+  font-size: 1rem;
+  margin: 0.25rem 0;
+  text-align: center;
+}
+
+.lpv-radios__conditionnel {
+  margin-left: 2.5ex;
+  padding: 0.5rem 0;
+}
+
+.lpv-radios__conditionnel--hidden {
+  display: none;
+}
+
+/* --- Champ de date -------------------------------------------------------- */
+
+.lpv-champ-date {
+  display: flex;
+  gap: 1rem;
+}
+
+.lpv-champ-date__item {
+  min-width: 0;
+}
+
+.lpv-champ-date__label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.lpv-champ-date__input {
+  appearance: none;
+  background-color: var(--lpv-surface);
+  border: 2px solid var(--lpv-grey-border);
+  border-radius: var(--lpv-radius-lg);
+  box-sizing: border-box;
+  display: block;
+  font-size: 1.125rem;
+  line-height: 1.4;
+  min-height: 44px;
+  padding: 0.6rem 0.75rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  width: 4.5em;
+}
+
+.lpv-champ-date__input--width-2 {
+  width: 4.5em;
+}
+
+.lpv-champ-date__input--width-4 {
+  width: 6.5em;
+}
+
+.lpv-champ-date__input:hover {
+  border-color: var(--lpv-text-muted);
+}
+
+.lpv-champ-date__input:focus {
+  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
+  outline: none;
+}
+
+.lpv-champ-date__input--error {
+  border-color: var(--lpv-red);
+  border-width: 3px;
+}
+
+/* --- Compteur de caractères ----------------------------------------------- */
+
+.lpv-compteur {
+  position: relative;
+}
+
+.lpv-compteur__message {
+  color: var(--lpv-text-muted);
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-top: 0.25rem;
+}
+
+.lpv-compteur__message--erreur {
+  color: var(--lpv-red);
+  font-weight: 700;
+}
+
+/* --- Accordéon ------------------------------------------------------------ */
+
+.lpv-accordeon {
+  margin-bottom: 1.5rem;
+}
+
+.lpv-accordeon__bouton-tout {
+  background: transparent;
+  border: 0;
+  color: var(--lpv-portail-dark);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0;
+  text-decoration: underline;
+}
+
+.lpv-accordeon__bouton-tout:hover {
+  color: var(--lpv-text);
+}
+
+.lpv-accordeon__bouton-tout:focus {
+  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
+  outline: none;
+}
+
+.lpv-accordeon__section {
+  border-bottom: 1px solid var(--lpv-grey-border);
+  margin: 0;
+}
+
+.lpv-accordeon__section-en-tete {
+  margin: 0;
+  padding: 0;
+}
+
+.lpv-accordeon__titre {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.lpv-accordeon__bouton {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--lpv-portail-dark);
+  cursor: pointer;
+  display: flex;
+  font-size: 1.125rem;
+  font-weight: 700;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.75rem 0;
+  text-align: left;
+  width: 100%;
+}
+
+.lpv-accordeon__bouton:hover {
+  color: var(--lpv-text);
+  text-decoration: underline;
+}
+
+.lpv-accordeon__bouton:focus {
+  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
+  outline: none;
+}
+
+.lpv-accordeon__icone {
+  flex-shrink: 0;
+  font-size: 0.875rem;
+}
+
+.lpv-accordeon__texte-bouton {
+  flex: 1;
+}
+
+.lpv-accordeon__resume {
+  color: var(--lpv-text-muted);
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0.25rem 0 0 1.25rem;
+}
+
+.lpv-accordeon__contenu {
+  padding: 0.5rem 0 1rem;
+}
+
+.lpv-accordeon__contenu--cache {
+  display: none;
+}
+
+.lpv-accordeon__section--ouvert .lpv-accordeon__contenu {
+  display: block;
+}
+
+/* --- Onglets (Tabs) ------------------------------------------------------- */
+
+.lpv-onglets {
+  margin-bottom: 2rem;
+}
+
+.lpv-onglets__titre {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .lpv-onglets__titre {
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+  }
+}
+
+.lpv-onglets__liste {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+}
+
+.lpv-onglets__item {
+  border-bottom: 2px solid transparent;
+  margin: 0 0.25rem -2px;
+}
+
+@media (max-width: 639px) {
+  .lpv-onglets__liste {
+    display: none;
+  }
+}
+
+.lpv-onglets__onglet {
+  color: var(--lpv-portail-dark);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.lpv-onglets__onglet:hover {
+  color: var(--lpv-text);
+  text-decoration: underline;
+}
+
+.lpv-onglets__onglet:focus {
+  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
+  outline: none;
+}
+
+.lpv-onglets__item--selectionne {
+  border-bottom-color: var(--lpv-portail);
+}
+
+.lpv-onglets__onglet--actif {
+  color: var(--lpv-text);
+  text-decoration: none;
+}
+
+.lpv-onglets__panneau {
+  padding: 1rem 0;
+}
+
+.lpv-onglets__panneau--cache {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .lpv-onglets__panneau {
+    border-top: 2px solid var(--lpv-grey-border);
+    display: block !important;
+    margin-bottom: 1.5rem;
+    padding-top: 0.75rem;
+  }
+}
+
+.lpv-onglets__panneau-titre {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .lpv-onglets__panneau-titre {
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+  }
+}
+
+/* --- Liste de tâches (Task list) ------------------------------------------ */
+
+.lpv-liste-taches {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lpv-liste-taches__item {
+  align-items: baseline;
+  border-bottom: 1px solid var(--lpv-grey-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+}
+
+.lpv-liste-taches__item--avec-lien .lpv-liste-taches__lien:hover {
+  text-decoration: underline;
+}
+
+.lpv-liste-taches__nom-et-hint {
+  flex: 1;
+  min-width: 0;
+}
+
+.lpv-liste-taches__lien {
+  color: var(--lpv-portail-dark);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.lpv-liste-taches__lien:focus {
+  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
+  outline: none;
+}
+
+.lpv-liste-taches__hint {
+  color: var(--lpv-text-muted);
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-top: 0.25rem;
+}
+
+.lpv-liste-taches__statut {
+  flex-shrink: 0;
+}
+
+/* --- Tableau (Table) ------------------------------------------------------ */
+
+.lpv-tableau {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.lpv-tableau__legende {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.lpv-tableau__legende--s {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.lpv-tableau__legende--l {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.lpv-tableau__legende--xl {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.lpv-tableau__tete {
+  border-bottom: 2px solid var(--lpv-text);
+}
+
+.lpv-tableau__entete {
+  color: var(--lpv-text-muted);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 0.75rem 1rem 0.5rem;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.lpv-tableau__entete--numerique {
+  text-align: right;
+}
+
+.lpv-tableau__corps {
+  vertical-align: top;
+}
+
+.lpv-tableau__ligne:nth-child(even) {
+  background-color: var(--lpv-grey-bg);
+}
+
+.lpv-tableau__cellule {
+  border-bottom: 1px solid var(--lpv-grey-border);
+  padding: 0.75rem 1rem;
+  vertical-align: top;
+}
+
+.lpv-tableau__cellule--numerique {
+  text-align: right;
+}
+
+/* --- Pagination ----------------------------------------------------------- */
+
+.lpv-pagination {
+  margin: 2rem 0;
+}
+
+.lpv-pagination__liste {
+  display: flex;
+  gap: 0.25rem;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lpv-pagination__item {
+  display: inline-flex;
+}
+
+.lpv-pagination__item--courant {
+  font-weight: 700;
+}
+
+.lpv-pagination__item--ellipsis {
+  align-items: center;
+  display: inline-flex;
+  min-height: 44px;
+  padding: 0 0.5rem;
+}
+
+.lpv-pagination__lien {
+  color: var(--lpv-portail-dark);
+  display: inline-flex;
+  font-weight: 700;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  text-decoration: underline;
+}
+
+.lpv-pagination__lien:hover {
+  color: var(--lpv-text);
+}
+
+.lpv-pagination__lien:focus {
+  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
+  outline: none;
+}
+
+.lpv-pagination__precedent,
+.lpv-pagination__suivant {
+  display: inline-flex;
+}
+
+.lpv-pagination__icone {
+  display: inline-block;
+  height: 0.65rem;
+  width: 0.65rem;
+}
+
+.lpv-pagination__icone--precedent {
+  margin-right: 0.25rem;
+}
+
+.lpv-pagination__icone--suivant {
+  margin-left: 0.25rem;
+}
+
+.lpv-pagination__lien-titre {
+  text-decoration: underline;
+}
+
+.lpv-pagination__lien-libelle {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.lpv-pagination--bloc .lpv-pagination__precedent,
+.lpv-pagination--bloc .lpv-pagination__suivant {
+  margin-bottom: 0.5rem;
+}
+
+/* --- Téléversement (File upload) ------------------------------------------ */
+
+.lpv-file-upload {
+  appearance: none;
+  background-color: var(--lpv-surface);
+  border: 2px solid var(--lpv-grey-border);
+  border-radius: var(--lpv-radius-lg);
+  box-sizing: border-box;
+  font-size: 1.125rem;
+  line-height: 1.4;
+  max-width: 40rem;
+  min-height: 44px;
+  padding: 0.3rem 0.5rem;
+}
+
+.lpv-file-upload:hover {
+  border-color: var(--lpv-text-muted);
+}
+
+.lpv-file-upload:focus {
+  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
+  outline: none;
+}
+
+.lpv-file-upload--error {
+  border-color: var(--lpv-red);
+  border-width: 3px;
+}
