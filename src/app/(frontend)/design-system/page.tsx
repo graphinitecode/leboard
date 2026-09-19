@@ -269,6 +269,46 @@ export default function DesignSystemPage() {
             { cle: 'Niveau', valeur: '6e' },
           ]}
         />
+
+        <h3 className="lpv-h3">SummaryList avec actions</h3>
+        <p className="lpv-muted" style={{ marginTop: 0 }}>
+          Une action par row (Modifier), plusieurs actions séparées par un trait vertical
+          (Ajouter | Modifier | Supprimer). Le rouge est réservé à l&apos;action destructive.
+          Une valeur manquante se présente comme un lien « Renseigner… » dans la colonne valeur.
+        </p>
+        <SummaryList
+          items={[
+            {
+              cle: 'Élève',
+              valeur: 'Marie Dupont',
+              actions: [<a href="#modifier" key="mod">Modifier</a>],
+            },
+            {
+              cle: 'Adresse',
+              valeur: (
+                <>
+                  12 rue des Lilas
+                  <br />
+                  75011 Paris
+                </>
+              ),
+              actions: [<a href="#modifier" key="mod">Modifier</a>],
+            },
+            {
+              cle: 'Créneau',
+              valeur: 'Lundi 14h → 16h',
+              actions: [
+                <a href="#ajouter" key="aj">Ajouter</a>,
+                <a href="#modifier" key="mod">Modifier</a>,
+                <a className="lpv-action--danger" href="#supprimer" key="sup">Supprimer</a>,
+              ],
+            },
+            {
+              cle: 'Certificat médical',
+              valeur: <a href="#renseigner">Renseigner…</a>,
+            },
+          ]}
+        />
       </section>
 
       <section id="surfaces" style={{ marginBottom: '3rem' }}>

@@ -30,6 +30,9 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - BackLink : ajout de la prop `onClick`, styles en classe CSS `lpv-back-link`
 - FormulairesDispo : modale et toast extraits en composants réutilisables (Modale, Toast)
 
+### Ajouté
+- Page design system : démonstration du summary list avec actions par ligne (Modifier ; Ajouter | Modifier | Supprimer séparées par un trait vertical ; valeur manquante en lien « Renseigner… »)
+
 ### Corrigé
 - Cases à cocher et boutons radio restaurés à leur apparence native (44px)
 - Texte des tags et bannières blanc en mode sombre (sauf « En attente » : texte foncé)
