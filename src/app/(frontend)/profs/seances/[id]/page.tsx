@@ -101,7 +101,7 @@ export default async function SeanceProfPage({ params }: { params: Promise<{ id:
               return (
                 <div className="lpv-ligne" key={String(eleve.id)}>
                   <span>
-                    <a href={`/profs/eleves/${eleve.id}`} style={{ color: 'var(--lpv-blue-dark)', fontWeight: 700 }}>
+                    <a href={`/profs/eleves/${eleve.id}`} style={{ color: 'var(--lpv-portail-dark)', fontWeight: 700 }}>
                       {nomEleve(eleve)}
                     </a>
                   </span>

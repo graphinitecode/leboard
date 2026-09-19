@@ -53,9 +53,11 @@ export function FormRetour({ seanceId, initial }: { seanceId: number | string; i
         rows={4}
         value={texte}
       />
-      <Bouton disabled={pending} type="submit">
-        {pending ? 'Enregistrement…' : 'Enregistrer le retour'}
-      </Bouton>
+      <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+        <Bouton disabled={pending} type="submit">
+          {pending ? 'Enregistrement…' : 'Enregistrer le retour'}
+        </Bouton>
+      </div>
     </form>
   )
 }
@@ -84,6 +86,7 @@ export function FormProgression({
 
   return (
     <form
+      className="lpv-card"
       onSubmit={(e) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
@@ -100,7 +103,6 @@ export function FormProgression({
           }
         })
       }}
-      style={{ border: '1px solid var(--lpv-grey-border)', borderRadius: 'var(--lpv-radius)', padding: '1rem' }}
     >
       {succes && <NotificationBanner titre={succes} type="succes" />}
       <ResumeErreurs erreurs={erreurFormulaire ? [erreurFormulaire] : []} />
@@ -133,7 +135,7 @@ export function FormProgression({
         name="commentaire"
         optionnel
       />
-      <div style={{ display: 'flex', gap: '0.75rem' }}>
+      <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-start' }}>
         <Bouton disabled={pending} type="submit">
           {pending ? 'Enregistrement…' : 'Enregistrer'}
         </Bouton>

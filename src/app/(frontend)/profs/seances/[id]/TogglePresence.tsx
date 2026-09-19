@@ -7,9 +7,9 @@ import { ToggleSegmentes, type OptionSegmentee } from '@/components/molecules/To
 import { changerPresence } from './actions'
 
 const OPTIONS: OptionSegmentee[] = [
-  { label: 'P', libelle: 'Présent', value: 'present' },
-  { label: 'A', libelle: 'Absent', value: 'absent' },
-  { label: 'J', libelle: 'Absent (justifié)', value: 'absent-justifie' },
+  { label: 'Présent', libelle: 'Présent', value: 'present' },
+  { label: 'Absent', libelle: 'Absent', value: 'absent' },
+  { label: 'Justifié', libelle: 'Absent (justifié)', value: 'absent-justifie' },
 ]
 
 // Toggle à un tap : boutons segmentés LPV Board (cibles ≥ 44 px, aria-pressed,

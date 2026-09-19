@@ -1,10 +1,18 @@
 import type { ReactNode } from 'react'
 
-type Variante = 'primaire' | 'secondaire'
+type Variante = 'primaire' | 'secondaire' | 'avertissement' | 'danger'
+
+const CLASSES: Record<Variante, string> = {
+  avertissement: 'lpv-bouton lpv-bouton--avertissement',
+  danger: 'lpv-bouton lpv-bouton--danger',
+  primaire: 'lpv-bouton',
+  secondaire: 'lpv-bouton lpv-bouton--secondaire',
+}
 
 // Atome : bouton du design system LPV Board
 export function Bouton({
   children,
+  className,
   disabled,
   onClick,
   type = 'button',
@@ -13,14 +21,15 @@ export function Bouton({
   titre,
 }: {
   children: ReactNode
+  className?: string
   disabled?: boolean
   onClick?: () => void
   type?: 'button' | 'submit'
-  variante?: 'primaire' | 'secondaire'
+  variante?: Variante
   href?: string
   titre?: string
 }) {
-  const classe = `lpv-bouton${variante === 'secondaire' ? ' lpv-bouton--secondaire' : ''}`
+  const classe = `${CLASSES[variante]}${className ? ` ${className}` : ''}`
 
   if (href) {
     return (

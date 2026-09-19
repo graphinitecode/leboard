@@ -30,23 +30,149 @@ Règles :
 - Les tags : `git tag -a vX.Y.Z -m "Release vX.Y.Z"`, uniquement sur `main`.
 - Chaque release est documentée par ses notes (GitHub Release ou `CHANGELOG.md`).
 
-## Commits (Conventional Commits)
+## Format des commits (obligatoire)
 
-Format obligatoire : `<type>(<scope>): titre`
-
-- Types : `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `style`, `perf`, `ci`, `build`
-- Le scope est court et en anglais (ex. `collections`, `access`, `alerts`, `biblio`, `planning`, `reports`)
-- Titre : impératif, court, sans point final, en anglais (ex. `feat(collections): add presences collection`)
-- Un corps facultatif peut détailler le pourquoi (séparé du titre par une ligne vide)
-- Optionnel : footer `Refs: <issue>` ; pour les changements cassants, `BREAKING CHANGE:` dans le corps
-
-Exemples :
+Chaque commit suit le format [Conventional Commits](https://www.conventionalcommits.org/) :
 
 ```
-feat(collections): add seances and presences collections
-fix(alerts): dedupe open alerts in cron job
-docs: describe gitflow and commit conventions
+<type>(<portée>): <sujet>
+
+<description>
+
+<footer>
 ```
+
+### Type (obligatoire)
+
+| Type | Usage |
+|------|-------|
+| `feat` | Ajout d'une fonctionnalité |
+| `fix` | Correction de bogue |
+| `perf` | Amélioration des performances |
+| `refactor` | Changement de code sans changement de comportement |
+| `style` | Changement de style du code (sans changer la logique) |
+| `test` | Modification des tests |
+| `docs` | Documentation |
+| `build` | Système de build (gulp, webpack, npm, etc.) |
+| `ci` | Intégration continue (Travis, Circle, BrowserStack, SauceLabs, etc.) |
+| `chore` | Tâches diverses ne rentrant pas dans les catégories ci-dessus (outillage, dépendances, processus) |
+
+### Portée (optionnelle)
+
+Partie de l'application/librairie affectée — `feat(reader): …`, `fix(strong): …`,
+`docs(agent): …`. Sans portée : `docs: …`. Suivie d'un `:` puis d'une espace.
+
+### Sujet
+
+- Description **succincte** des changements.
+- **Impératif présent** : « change », pas « changed » ni « changes ».
+- **Pas de majuscule** au début.
+- **Pas de point** à la fin.
+- ≤ ~50 caractères idéalement.
+
+### Description (corps)
+
+- Détaille les **motivations** derrière le changement (le « pourquoi »), pas seulement le « quoi ».
+- Mêmes règles que le sujet : impératif présent, pas de majuscule, pas de point à la fin de chaque
+  ligne/paragraphe.
+- Laisser une **ligne vide** entre le sujet et la description.
+
+### Footer
+
+- **Breaking Changes** : préfixer `BREAKING CHANGE:` puis l'explication. Le type peut aussi porter
+  un `!` : `feat(api)!: …`.
+- **Références** : `Closes #123`, `Refs #42`, `Fixes #7` (issues GitHub/GitLab).
+- Laisser une **ligne vide** entre la description et le footer.
+
+### Exemples
+
+```
+feat(reader): ajouter le mode focus
+
+le mode focus masque la topbar et le dock tant que la touche Escape
+n'est pas pressée, pour réduire les distractions pendant la lecture
+
+Closes #14
+```
+
+```
+fix(strong): gérer l'absence de code strong sur la version lsg
+
+la concordance repliait vers un état vide quand le code strong etait
+invalide ; on affiche maintenant un message explicite
+```
+
+```
+docs(agent): formaliser le format des commits conventionnels
+
+ajoute la section 10 a AGENT.md decrivant le format type(portee): sujet
+plus description et footer, ainsi que les regles de typographie
+```
+
+> Les **commits de merge** Git Flow suivent un format libre :
+> `Merge feature/<slug> into develop` (cf. §4 étape 4).
+
+## Rédaction du CHANGELOG (obligatoire)
+
+Le `CHANGELOG.md` est rendu **tel quel** sur la page publique `/nouveautes`. Il ne doit donc
+contenir **que des changements perceptibles par l'utilisateur** — jamais d'information interne
+ou de sécurité. La conformité est vérifiée par `pnpm changelog:check`
+(skill `changelog-check`, cf. `.claude/skills/changelog-check/SKILL.md`).
+
+### Ton : utilisateur uniquement
+
+- Décrire **ce que voit l'utilisateur** (feature, UX, correctif visible), pas le « comment ».
+- Un item se lit en une phrase, sans jargon d'implémentation.
+
+### Contenu interdit (fuite d'information)
+
+❌ Aucun de ces éléments ne doit apparaître dans une entrée changelog :
+
+- **Crypto** : `PBKDF2`, `AES-GCM`, `SHA-256`, `256-bit`, `non-extractable`, `DEK`, `KEK`,
+  `enveloppe`, `master key`, `nonce`, `ciphertext`.
+- **DB / schéma** : `BYTEA`, `neon_auth`, `user_data`, `schéma public`, `ON CONFLICT`,
+  `updated_at`, `FK`, `pg.Pool`, `pooler`.
+- **API** : routes internes (`/api/sync`, `/api/account`, `GET/PUT/POST/DELETE /api…`).
+- **Identifiants internes** : noms de fonctions (`upgradeLegacyToEnvelope`, `pushKind`…),
+  clés `localStorage` (`bym:nav-history`, `bibleReaderPrefs`), mécanique sync (`LWW`,
+  `meta[kind]`, `dated 0`).
+- **Récit de bug interne** (postmortem) : « ne pousse plus », « était ignoré »… → reformuler
+  en correctif utilisateur (« certaines données n'apparaissaient pas sur un second appareil ;
+  corrigé »).
+- **Provider / env** : `send.shemaproject.org`, `BETTER_AUTH_SECRET`, `DATABASE_URL`,
+  `RESEND_API_KEY`, `baseURL dérivé`…
+- **Références spec** : `spec 22`, `(spec 28)`… — un numéro de spec est un repère interne,
+  jamais visible côté utilisateur.
+
+✅ Sont **user-facing** et donc autorisés : « clé de récupération », « mot de passe »,
+« synchronisation chiffrée », « compte facultatif », « concordance Strong »…
+
+### Sections autorisées
+
+`### Ajouté` · `### Modifié` · `### Corrigé` · `### Retiré` · `### Sécurisé` (+ alias EN
+`Added`/`Changed`/`Fixed`/`Removed`/`Security`). Tout autre titre (`Processus`, `Architecture`,
+`Fonctionnalités`, `… (spec NN)`, `Changements`, `Ajouts`, `Correctifs`) est **interdit**.
+
+### SemVer vs contenu
+
+Le bump doit refléter le contenu de la section (vérifié par `changelog:check`, règle S2) :
+
+| Contenu de la section | Bump attendu |
+|---|---|
+| `Ajouté` (nouvelle feature) | `MINEUR` (ou `MAJEUR` si breaking) |
+| seulement `Corrigé` | `CORRECTIF` |
+| `Retiré` / `Sécurisé` / item breaking | `MAJEUR` |
+| seulement `Modifié` (cosmétique) | `CORRECTIF` ou `MINEUR` |
+
+### Boucle de travail
+
+- À chaque merge de feature : ajouter l'item sous `## [Unreleased]` dans la bonne section.
+- Lancer `pnpm changelog:check` avant de pousser sur `develop`.
+- À la release (§5) : renommer `## [Unreleased]` en `## [X.Y.Z] : YYYY-MM-DD`, recréer un
+  `## [Unreleased]` vide, puis `pnpm changelog:check` avant le tag.
+- Exception historique figée (version déjà publiée non retaggable) : documentée dans
+  `.changelog-allowlist.json` avec un `reason`.
+
 
 ## Workflow
 

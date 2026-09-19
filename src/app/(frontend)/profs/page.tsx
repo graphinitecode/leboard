@@ -54,17 +54,39 @@ export default async function ProfsDashboard() {
 
   const retards = [...aujourdhui, ...resteSemaine, ...passees].filter((s) => !s.retour).length
 
+  const aujourdhuiCount = aujourdhui.length
+  const semaineCount = aujourdhuiCount + resteSemaine.length
+
   return (
     <>
-      <p className="lpv-muted">
-        {maintenant.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}
-        {retards > 0 && (
-          <>
-            {' '}
-            — <strong style={{ color: 'var(--lpv-orange)' }}>{retards} séance(s) attendent un retour</strong>
-          </>
-        )}
-      </p>
+      <div className="lpv-cards-grid lpv-cards-grid--4">
+        <div className="lpv-card lpv-stat">
+          <span className="lpv-stat__valeur">{aujourdhuiCount}</span>
+          <div className="lpv-stat__libelle">Séance(s) aujourd&rsquo;hui</div>
+          {retards > 0 && (
+            <div className="lpv-stat__detail" style={{ color: 'var(--lpv-orange)' }}>
+              {retards} retour(s) en attente
+            </div>
+          )}
+        </div>
+        <div className="lpv-card lpv-stat">
+          <span className="lpv-stat__valeur">{semaineCount}</span>
+          <div className="lpv-stat__libelle">Cette semaine</div>
+          {aujourdhuiCount > 0 && (
+            <div className="lpv-stat__detail">dont {aujourdhuiCount} aujourd&rsquo;hui</div>
+          )}
+        </div>
+        <div className="lpv-card lpv-stat">
+          <span className="lpv-stat__valeur">
+            {seances.docs.filter((s) => new Date(String(s.date)) < maintenant).length}
+          </span>
+          <div className="lpv-stat__libelle">Passées récentes</div>
+        </div>
+        <div className="lpv-card lpv-stat">
+          <span className="lpv-stat__valeur">{eleves.length}</span>
+          <div className="lpv-stat__libelle">Mes élèves</div>
+        </div>
+      </div>
 
       <ResumeJournee seances={aujourdhui.map(versSeance)} />
       <ListeSeances seances={resteSemaine.map(versSeance)} titre="Cette semaine" />
