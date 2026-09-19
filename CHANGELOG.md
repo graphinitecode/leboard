@@ -21,6 +21,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Nouvelles couleurs de marque : tags (vert #00A14C, orange #FF6B00, rouge #FF0004, bleu #0080FF), panel info (fond bleu nuit, texte bleu clair), bannière de succès (fond vert foncé)
 
 ### Modifié
+- Tags en style doux : texte coloré sur fond subtil avec bordure gauche assortie (fond éclairci et texte assombri en mode clair, fond assombri et texte éclairci en mode sombre)
 - Tags sans arrondi (rectangulaires) et trois nouvelles couleurs : violet, magenta et sarcelle
 - Pagination repensée (motif GOV.UK) : la page courante est un bloc plein inversé non cliquable marqué « (page actuelle) » pour les lecteurs d'écran, « Précédent », les numéros et « Suivant » sont alignés sur une même ligne, « Précédent » disparaît en première page et « Suivant » en dernière page
 - En mode sombre, les boutons reprennent les couleurs des tags : primaire bleu #0080FF, « Modifier » orange #FF6B00, danger rouge #FF0004 (texte blanc). En mode clair, les boutons, tags, panel et bannière de succès conservent leurs couleurs d'origine ; ils prennent les couleurs de marque en mode sombre

@@ -48,6 +48,24 @@
   --lpv-tag-magenta: #c62991;
   --lpv-tag-sarcelle: #007c8c;
 
+  /* Tags doux : fond subtil + texte coloré (light : fond éclairci, texte assombri) */
+  --lpv-tag-vert-bg: #e2f7ec;
+  --lpv-tag-vert-texte: #00703c;
+  --lpv-tag-jaune-bg: #fdf6e0;
+  --lpv-tag-jaune-texte: #8a6d00;
+  --lpv-tag-orange-bg: #feefe4;
+  --lpv-tag-orange-texte: #d94e00;
+  --lpv-tag-rouge-bg: #ffeaeb;
+  --lpv-tag-rouge-texte: #cc3a3d;
+  --lpv-tag-bleu-bg: #eaf5ff;
+  --lpv-tag-bleu-texte: #1877d2;
+  --lpv-tag-violet-bg: #f6e8fb;
+  --lpv-tag-violet-texte: #6b0087;
+  --lpv-tag-magenta-bg: #fbe4f2;
+  --lpv-tag-magenta-texte: #a82278;
+  --lpv-tag-sarcelle-bg: #e0f2f4;
+  --lpv-tag-sarcelle-texte: #006470;
+
   /* Panel info : fond bleu nuit, texte bleu clair */
   --lpv-panel-bg: #002549;
   --lpv-panel-texte: #3d9eff;
@@ -118,6 +136,24 @@ html[data-theme='dark'] {
   --lpv-tag-violet: #9000b3;
   --lpv-tag-magenta: #c62991;
   --lpv-tag-sarcelle: #007c8c;
+
+  /* Tags doux en dark : fond assombri, texte éclairci */
+  --lpv-tag-vert-bg: #0d3b24;
+  --lpv-tag-vert-texte: #4cd98a;
+  --lpv-tag-jaune-bg: #3a3015;
+  --lpv-tag-jaune-texte: #f4d35e;
+  --lpv-tag-orange-bg: #3a1d0a;
+  --lpv-tag-orange-texte: #ff9c4d;
+  --lpv-tag-rouge-bg: #3a1215;
+  --lpv-tag-rouge-texte: #ff8083;
+  --lpv-tag-bleu-bg: #0d2137;
+  --lpv-tag-bleu-texte: #66b5ff;
+  --lpv-tag-violet-bg: #2d1435;
+  --lpv-tag-violet-texte: #c04fd8;
+  --lpv-tag-magenta-bg: #331122;
+  --lpv-tag-magenta-texte: #e06db8;
+  --lpv-tag-sarcelle-bg: #0a2a30;
+  --lpv-tag-sarcelle-texte: #4dc3d4;
 
   /* Boutons : fond tag identique, ombre assombrie pour le fond sombre */
   --lpv-bouton-primaire-ombre: #004080;
@@ -565,7 +601,7 @@ a:focus {
 /* --- Tags de statut ------------------------------------------------------ */
 
 .lpv-tag {
-  color: #ffffff;
+  border-left: 3px solid currentColor;
   display: inline-block;
   font-size: 0.875rem;
   letter-spacing: 0.02em;
@@ -573,24 +609,24 @@ a:focus {
   white-space: nowrap;
 }
 
-.lpv-tag--vert { background-color: var(--lpv-green); }
-.lpv-tag--jaune { background-color: var(--lpv-yellow); color: #241623; }
-.lpv-tag--orange { background-color: var(--lpv-orange); }
-.lpv-tag--rouge { background-color: var(--lpv-red); }
-.lpv-tag--bleu { background-color: var(--lpv-blue); }
-.lpv-tag--violet { background-color: var(--lpv-tag-violet); }
-.lpv-tag--magenta { background-color: var(--lpv-tag-magenta); }
-.lpv-tag--sarcelle { background-color: var(--lpv-tag-sarcelle); }
+.lpv-tag--vert { background-color: var(--lpv-tag-vert-bg); color: var(--lpv-tag-vert-texte); }
+.lpv-tag--jaune { background-color: var(--lpv-tag-jaune-bg); color: var(--lpv-tag-jaune-texte); }
+.lpv-tag--orange { background-color: var(--lpv-tag-orange-bg); color: var(--lpv-tag-orange-texte); }
+.lpv-tag--rouge { background-color: var(--lpv-tag-rouge-bg); color: var(--lpv-tag-rouge-texte); }
+.lpv-tag--bleu { background-color: var(--lpv-tag-bleu-bg); color: var(--lpv-tag-bleu-texte); }
+.lpv-tag--violet { background-color: var(--lpv-tag-violet-bg); color: var(--lpv-tag-violet-texte); }
+.lpv-tag--magenta { background-color: var(--lpv-tag-magenta-bg); color: var(--lpv-tag-magenta-texte); }
+.lpv-tag--sarcelle { background-color: var(--lpv-tag-sarcelle-bg); color: var(--lpv-tag-sarcelle-texte); }
 
 /* Tags en mode sombre : couleurs de marque */
-html[data-theme='dark'] .lpv-tag--vert { background-color: var(--lpv-tag-vert); }
-html[data-theme='dark'] .lpv-tag--jaune { background-color: var(--lpv-tag-jaune); }
-html[data-theme='dark'] .lpv-tag--orange { background-color: var(--lpv-tag-orange); }
-html[data-theme='dark'] .lpv-tag--rouge { background-color: var(--lpv-tag-rouge); }
-html[data-theme='dark'] .lpv-tag--bleu { background-color: var(--lpv-tag-bleu); }
-html[data-theme='dark'] .lpv-tag--violet { background-color: var(--lpv-tag-violet); }
-html[data-theme='dark'] .lpv-tag--magenta { background-color: var(--lpv-tag-magenta); }
-html[data-theme='dark'] .lpv-tag--sarcelle { background-color: var(--lpv-tag-sarcelle); }
+html[data-theme='dark'] .lpv-tag--vert { background-color: var(--lpv-tag-vert-bg); color: var(--lpv-tag-vert-texte); }
+html[data-theme='dark'] .lpv-tag--jaune { background-color: var(--lpv-tag-jaune-bg); color: var(--lpv-tag-jaune-texte); }
+html[data-theme='dark'] .lpv-tag--orange { background-color: var(--lpv-tag-orange-bg); color: var(--lpv-tag-orange-texte); }
+html[data-theme='dark'] .lpv-tag--rouge { background-color: var(--lpv-tag-rouge-bg); color: var(--lpv-tag-rouge-texte); }
+html[data-theme='dark'] .lpv-tag--bleu { background-color: var(--lpv-tag-bleu-bg); color: var(--lpv-tag-bleu-texte); }
+html[data-theme='dark'] .lpv-tag--violet { background-color: var(--lpv-tag-violet-bg); color: var(--lpv-tag-violet-texte); }
+html[data-theme='dark'] .lpv-tag--magenta { background-color: var(--lpv-tag-magenta-bg); color: var(--lpv-tag-magenta-texte); }
+html[data-theme='dark'] .lpv-tag--sarcelle { background-color: var(--lpv-tag-sarcelle-bg); color: var(--lpv-tag-sarcelle-texte); }
 
 /* --- Résumé des erreurs -------------------------------------------------- */
 
