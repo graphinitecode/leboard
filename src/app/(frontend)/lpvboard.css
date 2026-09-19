@@ -2327,6 +2327,7 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 /* --- Champ mot de passe (œil afficher/masquer) ------------------------------ */
 
 .lpv-password {
+  max-width: 30rem;
   position: relative;
 }
 
