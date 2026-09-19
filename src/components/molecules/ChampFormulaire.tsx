@@ -23,6 +23,8 @@ export function ChampFormulaire({
   pattern,
   rows = 4,
   options,
+  isPageHeading,
+  taille,
 }: {
   as?: 'input' | 'textarea' | 'select'
   label: string
@@ -39,6 +41,8 @@ export function ChampFormulaire({
   pattern?: string
   rows?: number
   options?: { label: string; value: string }[]
+  isPageHeading?: boolean
+  taille?: 'l' | 'm' | 's'
 }) {
   const describedBy = [hint ? `${id}-hint` : null, erreur ? `${id}-error` : null]
     .filter(Boolean)
@@ -50,7 +54,7 @@ export function ChampFormulaire({
 
   return (
     <div className={groupeClasse}>
-      <Label htmlFor={id} optionnel={optionnel}>
+      <Label htmlFor={id} optionnel={optionnel} isPageHeading={isPageHeading} taille={taille}>
         {label}
       </Label>
       {hint ? <Hint id={`${id}-hint`}>{hint}</Hint> : null}
