@@ -4,7 +4,6 @@ import { LoginForm } from '@/components/organisms/LoginForm'
 import { ContenuPage, EnteteService } from '@/components/molecules/EnteteService'
 import { getMeUserServer } from '@/utilities/parentAuth'
 
-import '../lpvboard.css'
 
 export const dynamic = 'force-dynamic'
 
