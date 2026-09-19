@@ -55,7 +55,6 @@ export function LoginForm({
         id="email"
         label="Adresse e-mail"
         onChange={(e) => setEmail(e.target.value)}
-        required
         type="email"
         value={email}
       />
@@ -65,7 +64,6 @@ export function LoginForm({
         id="motdepasse"
         label="Mot de passe"
         onChange={(e) => setPassword(e.target.value)}
-        required
         type="password"
         value={password}
       />

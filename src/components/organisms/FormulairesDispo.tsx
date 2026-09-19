@@ -56,7 +56,7 @@ export function FormDispo() {
             label="Jour"
             name="jour"
             options={OPTIONS_JOUR}
-            required
+
           />
         </div>
         <div className="lpv-champs-inline__moitie">
@@ -65,7 +65,7 @@ export function FormDispo() {
             id="dispo-debut"
             label="De"
             name="heureDebut"
-            required
+
             type="time"
           />
         </div>
@@ -75,7 +75,7 @@ export function FormDispo() {
             id="dispo-fin"
             label="À"
             name="heureFin"
-            required
+
             type="time"
           />
         </div>

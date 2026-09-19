@@ -111,7 +111,7 @@ export function FormProgression({
         label="Élève"
         name="eleve"
         options={eleves.map((eleve) => ({ label: eleve.label, value: String(eleve.id) }))}
-        required
+
       />
       <ChampFormulaire
         as="select"
@@ -123,14 +123,15 @@ export function FormProgression({
           label: competence.matiere ? `${competence.label} (${competence.matiere})` : competence.label,
           value: String(competence.id),
         }))}
-        required
+
       />
-      <ChampFormulaire as="select" id="niveau-progression" label="Niveau" name="niveau" options={OPTIONS_NIVEAU} required />
+      <ChampFormulaire as="select" id="niveau-progression" label="Niveau" name="niveau" options={OPTIONS_NIVEAU} />
       <ChampFormulaire
         hint="Observation courte, visible par la famille."
         id="commentaire-progression"
         label="Commentaire"
         name="commentaire"
+        optionnel
       />
       <div style={{ display: 'flex', gap: '0.75rem' }}>
         <Bouton disabled={pending} type="submit">
