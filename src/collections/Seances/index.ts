@@ -1,7 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
 import { seancesCreate, seancesDelete, seancesRead, seancesWrite } from '../../access/seances'
-import { synchroProfsApresSeance } from '../../hooks/synchroProfsDesSeances'
 
 export const matiereOptions = [
   { label: 'Maths', value: 'maths' },
@@ -72,8 +71,5 @@ export const Seances: CollectionConfig = {
       label: 'Retour du prof',
     },
   ],
-  hooks: {
-    afterChange: [synchroProfsApresSeance],
-  },
   timestamps: true,
 }

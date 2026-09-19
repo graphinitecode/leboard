@@ -74,22 +74,6 @@ export const Eleves: CollectionConfig = {
       },
     },
     {
-      name: 'profsDesSeances',
-      type: 'relationship',
-      hasMany: true,
-      relationTo: 'users',
-      admin: {
-        description: 'Profs des séances auxquelles cet élève est inscrit (dénormalisé)',
-        disabled: true,
-        readOnly: true,
-      },
-      filterOptions: {
-        role: {
-          in: ['admin', 'prof'],
-        },
-      },
-    },
-    {
       access: {
         read: elevesChampSensible,
         update: elevesChampSensible,

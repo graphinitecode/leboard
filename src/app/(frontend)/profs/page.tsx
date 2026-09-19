@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
+import { chargerElevesDuProf } from '@/utilities/chargerElevesDuProf'
 import { requireProf } from '@/utilities/profAuth'
 
 export const dynamic = 'force-dynamic'
@@ -29,14 +30,9 @@ export default async function ProfsDashboard() {
     user,
   })
 
-  const eleves = await payload.find({
-    collection: 'eleves',
-    depth: 0,
-    limit: 0,
-    where: { profReferent: { equals: user.id } },
-    overrideAccess: false,
-    user,
-  })
+  // Élèves visibles : référents + élèves des séances du prof (périmètre en code,
+  // cf. Spec 02 — la clause DB inverse n'est pas supportée par l'adapter PG)
+  const eleves = await chargerElevesDuProf(payload, user)
 
   const aVenir = seances.docs
     .filter((s) => new Date(String(s.date)) >= maintenant)
@@ -127,12 +123,12 @@ export default async function ProfsDashboard() {
       </section>
 
       <section>
-        <h2>Mes élèves ({eleves.totalDocs})</h2>
-        {eleves.docs.length === 0 ? (
+        <h2>Mes élèves ({eleves.length})</h2>
+        {eleves.length === 0 ? (
           <p>Aucun élève référent.</p>
         ) : (
           <ul>
-            {eleves.docs.map((eleve) => (
+            {eleves.map((eleve) => (
               <li key={String(eleve.id)}>
                 <Link href={`/profs/eleves/${eleve.id}`}>
                   {eleve.prenom} {eleve.nom} ({eleve.niveau})
