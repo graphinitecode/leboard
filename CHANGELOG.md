@@ -32,7 +32,8 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ### Corrigé
 - Cases à cocher et boutons radio restaurés à leur apparence native (44px)
 - Texte des tags et bannières blanc en mode sombre (sauf « En attente » : texte foncé)
-- Chevrons et flèches agrandis (20px) et centrés avec leurs libellés
+- Chevrons agrandis (24px) et flèches (20px), centrés avec leurs libellés
+- Page design system : démonstration du champ mot de passe avec bouton œil
 
 ## [0.2.0] — 2026-09-19
 
