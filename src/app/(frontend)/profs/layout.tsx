@@ -14,23 +14,27 @@ export const metadata: Metadata = {
   title: 'Espace profs — LPV Board',
 }
 
-// Layout du portail profs : entête de service avec le nom de l'utilisateur connecté.
-// La protection par rôle se fait page par page (requireProf).
+// Layout du portail profs : shell unique (entête + contenu + pied).
+// L'entête est dans le shell : le CSS de masquage (body:has > header) ne l'affecte pas.
 export default async function ProfsLayout({ children }: { children: ReactNode }) {
   const user = await getMeUserServer()
 
   return (
-    <>
-      <EnteteService
-        deconnexion={Boolean(user)}
-        libelleService="Espace profs"
-        nomUtilisateur={user?.name ?? null}
-        liens={[
-          { href: '/profs', libelle: 'Tableau de bord' },
-          { href: '/profs/disponibilites', libelle: 'Mes disponibilités' },
-        ]}
-      />
-      <ContenuPage>{children}</ContenuPage>
-    </>
+    <ContenuPage
+      entete={
+        <EnteteService
+          deconnexion={Boolean(user)}
+          libelleService="Espace profs"
+          nomUtilisateur={user?.name ?? null}
+          liens={[
+            { href: '/profs', libelle: 'Tableau de bord' },
+            { href: '/profs/disponibilites', libelle: 'Mes disponibilités' },
+          ]}
+        />
+      }
+      liensPied={[{ href: '/profs/login', libelle: 'Connexion' }]}
+    >
+      {children}
+    </ContenuPage>
   )
 }

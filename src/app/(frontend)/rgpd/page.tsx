@@ -13,22 +13,22 @@ export default async function RGPDPage() {
   const politique = await payload.findGlobal({ slug: 'politique-rgpd' })
 
   return (
-    <>
-      <EnteteService libelleService="LPV Board" liens={[]} />
-      <ContenuPage>
-        <h1 className="lpv-h1">Politique de protection des données</h1>
-        {politique?.contenu ? (
-          <RichText data={politique.contenu} />
-        ) : (
-          <p className="lpv-muted">La politique de protection des données n&rsquo;est pas encore publiée.</p>
-        )}
-        <p className="lpv-muted">
-          Version {politique?.version ?? '—'} · publiée le{' '}
-          {politique?.datePublication
-            ? new Date(politique.datePublication).toLocaleDateString('fr-FR')
-            : '—'}
-        </p>
-      </ContenuPage>
-    </>
+    <ContenuPage
+      entete={<EnteteService libelleService="LPV Board" liens={[]} />}
+      liensPied={[]}
+    >
+      <h1 className="lpv-h1">Politique de protection des données</h1>
+      {politique?.contenu ? (
+        <RichText data={politique.contenu} />
+      ) : (
+        <p className="lpv-muted">La politique de protection des données n&rsquo;est pas encore publiée.</p>
+      )}
+      <p className="lpv-muted">
+        Version {politique?.version ?? '—'} · publiée le{' '}
+        {politique?.datePublication
+          ? new Date(politique.datePublication).toLocaleDateString('fr-FR')
+          : '—'}
+      </p>
+    </ContenuPage>
   )
 }
