@@ -56,7 +56,6 @@ export default async function ProfsDashboard() {
 
   return (
     <>
-      <h1 className="lpv-h1">Tableau de bord</h1>
       <p className="lpv-muted">
         {maintenant.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}
         {retards > 0 && (
