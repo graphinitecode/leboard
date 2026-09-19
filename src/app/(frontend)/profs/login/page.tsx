@@ -1,7 +1,6 @@
 import { LoginForm } from '@/components/organisms/LoginForm'
 import { ContenuPage, EnteteService } from '@/components/molecules/EnteteService'
 
-import '../lpvboard.css'
 
 export const dynamic = 'force-dynamic'
 
