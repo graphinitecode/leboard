@@ -1,6 +1,7 @@
-// Atome : lien de retour (chevron gauche), couleur du portail courant.
+import { Icon } from '@/components/atoms/Icon'
+
+// Atome : lien de retour (flèche gauche), couleur du portail courant.
 // Utilisé pour la navigation arrière (page précédente, étape précédente).
-// Sur mobile, le chevron ← est affiché avant le libellé.
 export function BackLink({
   href,
   children = 'Retour',
@@ -16,7 +17,9 @@ export function BackLink({
       href={href}
       onClick={onClick}
     >
-      <span aria-hidden="true">← </span>
+      <span aria-hidden="true" className="lpv-back-link__icone">
+        <Icon icone="rivet-icons:arrow-left" taille={14} />
+      </span>
       {children}
     </a>
   )

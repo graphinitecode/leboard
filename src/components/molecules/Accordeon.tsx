@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 
+import { Icon } from '@/components/atoms/Icon'
+
 export interface SectionAccordeon {
   titre: string
   resume?: string
@@ -120,8 +122,8 @@ export function Accordeon({
                   onClick={() => toggleSection(sectionId)}
                   type="button"
                 >
-                  <span className="lpv-accordeon__icone" aria-hidden="true">
-                    {isOpen ? '▼' : '▶'}
+                  <span aria-hidden="true" className="lpv-accordeon__icone">
+                    <Icon icone={isOpen ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} taille={14} />
                   </span>
                   <span className="lpv-accordeon__texte-bouton">{section.titre}</span>
                   <span className="lpv-accordeon__texte-toggle lpv-visually-hidden">

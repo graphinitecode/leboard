@@ -1,5 +1,7 @@
 import Link from 'next/link'
 
+import { Icon } from '@/components/atoms/Icon'
+
 export interface PageNumero {
   numero: number
   href: string
@@ -38,7 +40,9 @@ export function PaginationLPV({
           >
             {variante === 'bloc' && precedente.libelle ? (
               <>
-                <span className="lpv-pagination__icone lpv-pagination__icone--precedent" aria-hidden="true">←</span>
+                <span aria-hidden="true" className="lpv-pagination__icone lpv-pagination__icone--precedent">
+                  <Icon icone="rivet-icons:arrow-left" taille={14} />
+                </span>
                 <span className="lpv-pagination__lien-titre">
                   Précédent
                   {precedente.libelle && (
@@ -51,7 +55,9 @@ export function PaginationLPV({
               </>
             ) : (
               <>
-                <span className="lpv-pagination__icone lpv-pagination__icone--precedent" aria-hidden="true">←</span>
+                <span aria-hidden="true" className="lpv-pagination__icone lpv-pagination__icone--precedent">
+                  <Icon icone="rivet-icons:arrow-left" taille={14} />
+                </span>
                 Précédent
               </>
             )}
@@ -103,12 +109,16 @@ export function PaginationLPV({
                     </>
                   )}
                 </span>
-                <span className="lpv-pagination__icone lpv-pagination__icone--suivant" aria-hidden="true">→</span>
+                <span aria-hidden="true" className="lpv-pagination__icone lpv-pagination__icone--suivant">
+                  <Icon icone="rivet-icons:arrow-right" taille={14} />
+                </span>
               </>
             ) : (
               <>
                 Suivant
-                <span className="lpv-pagination__icone lpv-pagination__icone--suivant" aria-hidden="true">→</span>
+                <span aria-hidden="true" className="lpv-pagination__icone lpv-pagination__icone--suivant">
+                  <Icon icone="rivet-icons:arrow-right" taille={14} />
+                </span>
               </>
             )}
           </Link>

@@ -15,6 +15,10 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Modale : composant réutilisable accessible (Escape, clic extérieur, focus, aria-modal)
 - Toast : composant réutilisable auto-dismiss (5s, role=status)
 - Mode sombre : bouton de bascule dans l'entête des portails, choix mémorisé, couleurs adaptées au contraste sur fond sombre
+- Icônes vectorielles dans toute l'interface (avertissement, chevrons, flèches, œil du mot de passe) avec la bibliothèque rivet-icons et boxicons pour le thème
+- Champ mot de passe : bouton œil pour afficher/masquer la saisie
+- Cases à cocher et boutons radio avec style dédié (surbrillance au survol, coche/point blanc à la sélection)
+- Nouvelles couleurs de marque : tags (vert #00A14C, orange #FF6B00, rouge #FF0004, bleu #0080FF), panel info (fond bleu nuit, texte bleu clair), bannière de succès (fond vert foncé)
 
 ### Modifié
 - Fiche élève (profs) : alertes en TexteAvertissement, présences et progressions en Tableau accessible
