@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useTransition } from 'react'
 
 import { BackLink } from '@/components/atoms/BackLink'
 import { Bouton } from '@/components/atoms/Bouton'
-import { ChampFormulaire, NotificationBanner, ResumeErreurs } from '@/components/molecules'
+import { ChampFormulaire, Modale, NotificationBanner, ResumeErreurs, Toast } from '@/components/molecules'
 
 import {
   ajouterDisponibilite,
@@ -31,74 +31,6 @@ function cleDispo(dispo: DispoItem): string {
   return `${dispo.jour}|${dispo.heureDebut}|${dispo.heureFin}`
 }
 
-// Molécule : toast pleine largeur en haut de l'écran, disparition après 5s.
-function Toast({ message, type }: { message: string; type: 'succes' | 'erreur' }) {
-  return (
-    <div className={`lpv-toast${type === 'erreur' ? ' lpv-toast--erreur' : ''}`} role="status">
-      {message}
-    </div>
-  )
-}
-
-// Molécule : modale de confirmation de suppression (accessible, Escape ferme).
-function ModaleSuppression({
-  dispo,
-  annuler,
-  confirmer,
-  pending,
-}: {
-  dispo: DispoItem
-  annuler: () => void
-  confirmer: () => void
-  pending: boolean
-}) {
-  const ref = useRef<HTMLDivElement>(null)
-  const boutonRef = useRef<HTMLButtonElement>(null)
-
-  useEffect(() => {
-    boutonRef.current?.focus()
-    function escape(e: KeyboardEvent) {
-      if (e.key === 'Escape') annuler()
-    }
-    document.addEventListener('keydown', escape)
-    return () => {
-      document.removeEventListener('keydown', escape)
-    }
-  }, [annuler])
-
-  return (
-    <div
-      className="lpv-modale-fond"
-      onClick={(e) => {
-        if (!ref.current?.contains(e.target as Node)) annuler()
-      }}
-    >
-      <div
-        aria-labelledby="modale-suppression-titre"
-        aria-modal="true"
-        className="lpv-modale"
-        ref={ref}
-        role="dialog"
-      >
-        <h2 className="lpv-modale__titre" id="modale-suppression-titre">
-          Supprimer cette disponibilité ?
-        </h2>
-        <p className="lpv-modale__texte">
-          {dispo.jour} · {dispo.heureDebut} → {dispo.heureFin} — cette action est définitive.
-        </p>
-        <div className="lpv-modale__actions">
-          <Bouton onClick={annuler} type="button" variante="secondaire">
-            Annuler
-          </Bouton>
-          <Bouton disabled={pending} onClick={confirmer} type="button" variante="danger">
-            {pending ? 'Suppression…' : 'Supprimer'}
-          </Bouton>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 // Organisme : liste des disponibilités (summary-list GOV.UK) + modale + toast.
 // Actions par row : Modifier (ré-ouvre l'assistant pré-rempli) et Supprimer (modale).
 export function ListeDispos({ dispos }: { dispos: DispoItem[] }) {
@@ -108,21 +40,16 @@ export function ListeDispos({ dispos }: { dispos: DispoItem[] }) {
   const [toast, setToast] = useState<{ message: string; type: 'succes' | 'erreur' } | null>(null)
   const [cleNouvelle, setCleNouvelle] = useState<string | null>(null)
   const [assistantOuvert, setAssistantOuvert] = useState(false)
-  const timerToast = useRef<ReturnType<typeof setTimeout> | null>(null)
   const timerAnimation = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Nettoie les timers au démontage
   useEffect(() => {
     return () => {
-      if (timerToast.current) clearTimeout(timerToast.current)
       if (timerAnimation.current) clearTimeout(timerAnimation.current)
     }
   }, [])
 
   function afficherToast(message: string, type: 'succes' | 'erreur') {
-    if (timerToast.current) clearTimeout(timerToast.current)
     setToast({ message, type })
-    timerToast.current = setTimeout(() => setToast(null), 5000)
   }
 
   function supprimer() {
@@ -148,14 +75,21 @@ export function ListeDispos({ dispos }: { dispos: DispoItem[] }) {
 
   return (
     <>
-      {toast && <Toast message={toast.message} type={toast.type} />}
+      {toast && <Toast message={toast.message} type={toast.type} onFerme={() => setToast(null)} />}
       {cibleSuppression && (
-        <ModaleSuppression
-          annuler={() => setCibleSuppression(null)}
-          confirmer={supprimer}
-          dispo={cibleSuppression}
-          pending={pending}
-        />
+        <Modale onFerme={() => setCibleSuppression(null)} titre="Supprimer cette disponibilité ?">
+          <p className="lpv-modale__texte">
+            {cibleSuppression.jour} · {cibleSuppression.heureDebut} → {cibleSuppression.heureFin} — cette action est définitive.
+          </p>
+          <div className="lpv-modale__actions">
+            <Bouton onClick={() => setCibleSuppression(null)} type="button" variante="secondaire">
+              Annuler
+            </Bouton>
+            <Bouton disabled={pending} onClick={supprimer} type="button" variante="danger">
+              {pending ? 'Suppression…' : 'Supprimer'}
+            </Bouton>
+          </div>
+        </Modale>
       )}
       <p style={{ marginTop: 0 }}>
         <Bouton onClick={() => setAssistantOuvert(true)} type="button">

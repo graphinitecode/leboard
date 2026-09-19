@@ -2205,3 +2205,17 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
   border-color: var(--lpv-red);
   border-width: 3px;
 }
+/* --- Demo page layout ------------------------------------------------------ */
+
+.lpv-demo-exemples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.lpv-h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.75rem;
+}
