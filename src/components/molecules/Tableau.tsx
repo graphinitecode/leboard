@@ -9,6 +9,7 @@ export interface TableauHeadCell {
 export interface TableauRowCell {
   texte?: string
   html?: string
+  contenu?: React.ReactNode
   format?: 'numerique'
   colspan?: number
   rowspan?: number
@@ -83,7 +84,7 @@ export function Tableau({
                   key={cellIndex}
                   rowSpan={cell.rowspan}
                 >
-                  {cell.html ? null : cell.texte}
+                  {cell.contenu ?? (cell.html ? null : cell.texte)}
                 </td>
               )
             })}

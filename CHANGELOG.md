@@ -12,6 +12,14 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Message d'erreur avec préfixe lecteur d'écran « Erreur : »
 - Utilitaire `lpv-visually-hidden` pour l'accessibilité
 
+### Modifié
+- Fiche élève (profs) : alertes en TexteAvertissement, présences et progressions en Tableau accessible
+- Fiche enfant (parents) : présences, progressions et prêts en Tableau accessible ; ajout d'un lien retour
+- Assistant disponibilités : champs horaires via ChampFormulaire (label, hint, min/max), liens retour via BackLink
+- Tableau : ajout de la prop `contenu` (ReactNode) dans les cellules pour afficher des composants (Tag)
+- ChampFormulaire : ajout des props `min` et `max`
+- BackLink : ajout de la prop `onClick`, styles en classe CSS `lpv-back-link`
+
 ## [0.2.0] — 2026-09-19
 
 Implémentation des 9 specs métier (voir `specs/`).

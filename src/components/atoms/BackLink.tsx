@@ -1,14 +1,20 @@
-// Atome : lien de retour (chevron gauche), couleur du portail courant
-export function BackLink({ href, children = 'Retour' }: { href: string; children?: string }) {
+// Atome : lien de retour (chevron gauche), couleur du portail courant.
+// Utilisé pour la navigation arrière (page précédente, étape précédente).
+// Sur mobile, le chevron ← est affiché avant le libellé.
+export function BackLink({
+  href,
+  children = 'Retour',
+  onClick,
+}: {
+  href: string
+  children?: string
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void
+}) {
   return (
     <a
+      className="lpv-back-link"
       href={href}
-      style={{
-        color: 'var(--lpv-portail-dark)',
-        display: 'inline-block',
-        marginBottom: '0.75rem',
-        textDecoration: 'none',
-      }}
+      onClick={onClick}
     >
       <span aria-hidden="true">← </span>
       {children}
