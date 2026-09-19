@@ -26,13 +26,13 @@ export default async function ProfsLayout({ children }: { children: ReactNode })
           heroTexte="Vos séances, présences et retours de séance, au même endroit."
           heroTitre="Espace profs"
           legales={[
+            { href: '/rgpd', libelle: 'Mentions légales' },
             { href: '/rgpd', libelle: 'Politique de confidentialité' },
-            { href: '/rgpd', libelle: 'Politique générale' },
           ]}
           nomUtilisateur={user?.name ?? null}
           services={[
-            { href: '/profs', libelle: 'Espace professeurs' },
-            { href: '/profs/disponibilites', libelle: 'Mes disponibilités' },
+            { description: 'Vos séances, présences et retours', href: '/profs', libelle: 'Espace professeurs' },
+            { description: 'Vos disponibilités hebdomadaires', href: '/profs/disponibilites', libelle: 'Mes disponibilités' },
             { href: '/parents', libelle: 'Espace parents' },
           ]}
         />
