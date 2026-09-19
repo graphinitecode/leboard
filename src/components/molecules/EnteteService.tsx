@@ -5,16 +5,18 @@ import { BoutonDeconnexion } from '@/components/atoms/BoutonDeconnexion'
 import { LogoLPV } from '@/components/atoms/LogoLPV'
 import { PiedPage } from '@/components/molecules/PiedPage'
 
-// Molécule : entête de service des portails (logo + navigation + déconnexion).
+// Molécule : entête de service des portails (logo + navigation + identité + déconnexion).
 // Thème clair forcé : data-theme="light" sur le conteneur.
-// Si `afficherDeconnexion` est false (ex. page de login), le bouton est masqué.
+// `nomUtilisateur` : affiche « Connecté en tant que … » ; si null, rien (page login).
 export function EnteteService({
   liens,
   libelleService = 'LPV Board',
+  nomUtilisateur,
   deconnexion = false,
 }: {
   liens: { href: string; libelle: string }[]
   libelleService?: string
+  nomUtilisateur?: string | null
   deconnexion?: boolean
 }) {
   return (
@@ -29,6 +31,14 @@ export function EnteteService({
               {lien.libelle}
             </Link>
           ))}
+          {nomUtilisateur && (
+            <span
+              aria-label={`Connecté en tant que ${nomUtilisateur}`}
+              className="lpv-entete__user"
+            >
+              {nomUtilisateur}
+            </span>
+          )}
           {deconnexion && <BoutonDeconnexion />}
         </nav>
       </div>
@@ -39,13 +49,7 @@ export function EnteteService({
 // Molécule : conteneur principal des pages portail (contenu + pied de page).
 // La classe lpv-shell + data-lpv-portail permettent au CSS de masquer le
 // header/footer du site vitrine.
-export function ContenuPage({
-  children,
-  liensPied,
-}: {
-  children: ReactNode
-  liensPied?: { href: string; libelle: string }[]
-}) {
+export function ContenuPage({ children, liensPied }: { children: ReactNode; liensPied?: { href: string; libelle: string }[] }) {
   return (
     <div
       className="lpv-shell"
