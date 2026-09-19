@@ -41,7 +41,7 @@ export function PaginationLPV({
             {variante === 'bloc' && precedente.libelle ? (
               <>
                 <span aria-hidden="true" className="lpv-pagination__icone lpv-pagination__icone--precedent">
-                  <Icon icone="rivet-icons:arrow-left" taille={20} />
+                  <Icon icone="rivet-icons:arrow-left" taille={16} />
                 </span>
                 <span className="lpv-pagination__lien-titre">
                   Précédent
@@ -56,7 +56,7 @@ export function PaginationLPV({
             ) : (
               <>
                 <span aria-hidden="true" className="lpv-pagination__icone lpv-pagination__icone--precedent">
-                  <Icon icone="rivet-icons:arrow-left" taille={20} />
+                  <Icon icone="rivet-icons:arrow-left" taille={16} />
                 </span>
                 Précédent
               </>
@@ -110,14 +110,14 @@ export function PaginationLPV({
                   )}
                 </span>
                 <span aria-hidden="true" className="lpv-pagination__icone lpv-pagination__icone--suivant">
-                  <Icon icone="rivet-icons:arrow-right" taille={20} />
+                  <Icon icone="rivet-icons:arrow-right" taille={16} />
                 </span>
               </>
             ) : (
               <>
                 Suivant
                 <span aria-hidden="true" className="lpv-pagination__icone lpv-pagination__icone--suivant">
-                  <Icon icone="rivet-icons:arrow-right" taille={20} />
+                  <Icon icone="rivet-icons:arrow-right" taille={16} />
                 </span>
               </>
             )}
