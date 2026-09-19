@@ -6,6 +6,8 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+## [0.3.0] — 2026-09-20
+
 ### Ajouté
 - Composants de design system inspirés de GOV.UK : Accordéon, Fil d'Ariane, Cases à cocher (avec révélation conditionnelle), Champ date, Compteur de caractères, Détails (disclosure), Ensemble de champs (fieldset), Onglets, Liste de tâches, Pagination, Boutons radio (avec révélation conditionnelle), Tableau, Téléversement (file upload), Texte d'avertissement
 - Label et légende avec tailles (l/m/s) et option `isPageHeading` (guide GOV.UK « Making labels and legends headings »)
