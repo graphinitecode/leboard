@@ -423,6 +423,61 @@ a.lpv-ligne:hover {
   border-color: var(--lpv-red);
 }
 
+/* --- Neutralisation des header/footer du template sur les portails --------- */
+/* Les portails fournissent leur propre entête (EnteteService) et pied (PiedPage).
+   Le Header (avant) et le Footer (après) du site vitrine ne doivent pas apparaître
+   en doublon : on les masque quand le shell portail est présent dans le body. */
+
+body:has(.lpv-shell[data-lpv-portail='true']) > header,
+body:has(.lpv-shell[data-lpv-portail='true']) > footer {
+  display: none !important;
+}
+
+/* --- Pied de page --------------------------------------------------------- */
+
+.lpv-pied {
+  background-color: var(--lpv-grey-bg);
+  border-top: 1px solid var(--lpv-grey-border);
+  margin-top: 3rem;
+}
+
+.lpv-pied__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: space-between;
+  margin-inline: auto;
+  max-width: var(--lpv-container);
+  padding: 1.5rem 1rem;
+}
+
+.lpv-pied__logo {
+  opacity: 0.9;
+}
+
+.lpv-pied__mention {
+  color: var(--lpv-text-muted);
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0;
+}
+
+.lpv-pied__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.lpv-pied__nav a {
+  color: var(--lpv-blue-dark);
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.lpv-pied__nav a:hover {
+  text-decoration: underline;
+}
+
 /* --- Rétrocompatibilité (transition) -------------------------------------- */
 
 .govfr-label { color: inherit; }
