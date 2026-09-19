@@ -56,7 +56,6 @@
   background-color: var(--lpv-blue);
   color: var(--lpv-surface);
   margin-bottom: 2rem;
-  position: relative;
 }
 
 .lpv-entete-bleue__inner {
@@ -68,6 +67,9 @@
   margin-inline: auto;
   max-width: var(--lpv-container);
   padding: 1rem;
+  /* Référence de positionnement du panneau de menu : il démarre sous la barre
+     logo/menu et recouvre le hero (visuel 2), sans le pousser. */
+  position: relative;
 }
 
 .lpv-entete-bleue__logo {
@@ -140,17 +142,21 @@
 .lpv-menu-panneau {
   background-color: var(--lpv-surface);
   border-bottom: 4px solid var(--lpv-blue);
-  box-shadow: 0 6px 12px rgb(15 20 25 / 15%);
+  box-shadow: 0 12px 24px rgb(15 20 25 / 20%);
   display: grid;
   gap: 2rem;
   grid-template-columns: 1fr 1fr;
-  left: 0;
-  padding: 1.5rem 1rem;
+  left: 50%;
+  padding: 1.5rem 1rem 2rem;
   position: absolute;
   top: 100%;
-  width: 100%;
+  transform: translateX(-50%);
+  width: 100vw;
   z-index: 50;
 }
+
+/* Le panneau recouvre le hero (overlay), il ne le pousse pas.
+   Il déborde volontairement du header : pas de clipping. */
 
 @media (max-width: 639px) {
   .lpv-menu-panneau {
@@ -175,7 +181,8 @@
   margin-bottom: 0.75rem;
 }
 
-.lpv-menu-panneau__colonne li a {
+.lpv-menu-panneau__colonne li a,
+.lpv-menu-panneau__colonne li a:visited {
   color: var(--lpv-blue-dark);
   font-weight: 700;
   text-decoration: underline;

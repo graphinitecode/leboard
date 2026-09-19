@@ -26,12 +26,12 @@ export default async function ParentsLayout({ children }: { children: ReactNode 
           heroTexte="Le suivi de votre enfant : présences, retours et prêts."
           heroTitre="Espace parents"
           legales={[
+            { href: '/rgpd', libelle: 'Mentions légales' },
             { href: '/rgpd', libelle: 'Politique de confidentialité' },
-            { href: '/rgpd', libelle: 'Politique générale' },
           ]}
           nomUtilisateur={user?.name ?? null}
           services={[
-            { href: '/parents', libelle: 'Espace parents' },
+            { description: 'Le suivi de votre enfant', href: '/parents', libelle: 'Espace parents' },
             { href: '/rgpd', libelle: 'Protection des données' },
           ]}
         />
