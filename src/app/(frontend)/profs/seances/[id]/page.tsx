@@ -96,17 +96,7 @@ export default async function SeanceProfPage({ params }: { params: Promise<{ id:
             {elevesDuGroupe?.docs.map((eleve) => {
               const presence = presencesParEleve.get(String(eleve.id))
               return (
-                <li
-                  key={String(eleve.id)}
-                  style={{
-                    alignItems: 'center',
-                    borderTop: '1px solid #eee',
-                    display: 'flex',
-                    gap: '1rem',
-                    justifyContent: 'space-between',
-                    padding: '0.5rem 0',
-                  }}
-                >
+                <li className="govfr-ligne-eleve" key={String(eleve.id)}>
                   <span>
                     <Link href={`/profs/eleves/${eleve.id}`}>{nomEleve(eleve)}</Link>
                   </span>

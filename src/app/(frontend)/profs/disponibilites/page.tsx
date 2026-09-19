@@ -43,15 +43,8 @@ export default async function DisponibilitesPage() {
         <ul style={{ display: 'grid', gap: '0.5rem', listStyle: 'none', padding: 0 }}>
           {dispos.map((dispo, index) => (
             <li
+              className="govfr-ligne-eleve"
               key={`${dispo.jour}-${dispo.heureDebut}-${index}`}
-              style={{
-                alignItems: 'center',
-                borderTop: '1px solid #eee',
-                display: 'flex',
-                gap: '1rem',
-                justifyContent: 'space-between',
-                padding: '0.5rem 0',
-              }}
             >
               <span style={{ textTransform: 'capitalize' }}>
                 {dispo.jour} · {dispo.heureDebut} → {dispo.heureFin}
