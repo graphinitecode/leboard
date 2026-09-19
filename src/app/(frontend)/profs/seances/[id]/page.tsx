@@ -22,7 +22,7 @@ export default async function SeanceProfPage({ params }: { params: Promise<{ id:
       id,
       depth: 1,
       overrideAccess: false,
-      user: { collection: 'users', id: user.id } as never,
+      user,
     })
     .catch(() => null)
 
@@ -36,7 +36,7 @@ export default async function SeanceProfPage({ params }: { params: Promise<{ id:
     limit: 0,
     overrideAccess: false,
     sort: 'createdAt',
-    user: { collection: 'users', id: user.id } as never,
+    user,
     where: { seance: { equals: id } },
   })
 
@@ -46,7 +46,7 @@ export default async function SeanceProfPage({ params }: { params: Promise<{ id:
     limit: 0,
     overrideAccess: false,
     sort: 'label',
-    user: { collection: 'users', id: user.id } as never,
+    user,
   })
 
   const groupeIds = (seance.groupe ?? []).map((eleve) =>

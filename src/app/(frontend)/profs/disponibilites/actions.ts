@@ -40,7 +40,7 @@ export async function ajouterDisponibilite(formData: FormData) {
       id: user.id,
       data: { disponibilites: dispos },
       overrideAccess: false,
-      user: { collection: 'users', id: user.id } as never,
+      user,
     })
 
     revalidatePath('/profs/disponibilites')
@@ -74,7 +74,7 @@ export async function supprimerDisponibilite(index: number) {
       id: user.id,
       data: { disponibilites: dispos },
       overrideAccess: false,
-      user: { collection: 'users', id: user.id } as never,
+      user,
     })
 
     revalidatePath('/profs/disponibilites')
