@@ -502,10 +502,11 @@ a:focus {
   border-radius: 999px;
   color: var(--lpv-surface);
   display: inline-block;
-  font-size: 0.875rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  padding: 0.15rem 0.6rem;
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
+  padding: 0.3rem 0.9rem;
   white-space: nowrap;
 }
 
@@ -993,19 +994,25 @@ a.lpv-ligne:hover {
 
 .lpv-toggle-option {
   background: var(--lpv-surface);
-  border: 2px solid var(--lpv-text);
+  border: 2px solid var(--lpv-grey-border);
   border-radius: var(--lpv-radius);
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: 400;
   min-height: 44px;
   min-width: 44px;
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.75rem;
   white-space: nowrap;
 }
 
+.lpv-toggle-option:hover {
+  border-color: var(--lpv-text-muted);
+}
+
 .lpv-toggle-option--actif {
-  font-weight: 700;
+  border-color: var(--lpv-text);
+  border-width: 3px;
+  font-weight: 800;
 }
 
 .lpv-toggle-option--actif[data-statut='present'] {
@@ -1458,13 +1465,11 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
   color: var(--lpv-surface);
   display: inline-flex;
   flex-shrink: 0;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 700;
   height: 2rem;
   justify-content: center;
   line-height: 1;
-  min-height: 44px;
-  min-width: 44px;
   width: 2rem;
 }
 
