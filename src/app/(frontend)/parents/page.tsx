@@ -66,7 +66,7 @@ export default async function ParentsAccueil() {
         <Panel key={String(enfant.id)}>
           <h2 style={{ marginTop: 0 }}>
             {enfant.prenom} {enfant.nom}{' '}
-            <Tag couleur="violet">{enfant.niveau}</Tag>
+            <Tag couleur="bleu">{enfant.niveau}</Tag>
           </h2>
           <p>
             Présence :{' '}

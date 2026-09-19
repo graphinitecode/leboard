@@ -1,63 +1,82 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 
-import { BoutonDeconnexion } from '@/components/atoms/BoutonDeconnexion'
-import { LogoLPV } from '@/components/atoms/LogoLPV'
 import { PiedPage } from '@/components/molecules/PiedPage'
 
-// Molécule : entête de service des portails (logo + navigation + identité + déconnexion).
-// `nomUtilisateur` : affiche le nom connecté ; si null, rien (page login).
+import { seDeconnecter } from './seDeconnecter'
+import { MenuDepliant } from './MenuDepliant'
+
+// Molécule : entête bleue pleine largeur (visuels LPV).
+// Logo blanc « Association Les Pierres Vivantes » + bouton Menu dépliant + identité.
+// Le hero est fusionné dans la même bande bleue (prop hero).
 export function EnteteService({
-  liens,
-  libelleService = 'LPV Board',
+  heroTitre,
+  heroTexte,
+  libelleService = 'Association Les Pierres Vivantes',
   nomUtilisateur,
   deconnexion = false,
+  services,
+  legales,
 }: {
-  liens: { href: string; libelle: string }[]
+  heroTitre?: string
+  heroTexte?: string
   libelleService?: string
   nomUtilisateur?: string | null
   deconnexion?: boolean
+  services: { href: string; libelle: string; description?: string }[]
+  legales: { href: string; libelle: string; description?: string }[]
 }) {
   return (
-    <header className="lpv-entete" data-theme="light">
-      <div className="lpv-entete__inner">
-        <Link className="lpv-entete__logo" href="/">
-          <LogoLPV libelle={libelleService} />
+    <header className="lpv-entete-bleue" data-theme="light">
+      <div className="lpv-entete-bleue__inner">
+        <Link className="lpv-entete-bleue__logo" href="/">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt="" className="lpv-entete-bleue__logo-img" src="/lpv-logo-white.svg" />
+          <span className="lpv-entete-bleue__logo-texte">
+            <small>Association</small>
+            <strong>Les Pierres Vivantes</strong>
+          </span>
         </Link>
-        <nav aria-label="Navigation du service" className="lpv-entete__nav">
-          {liens.map((lien) => (
-            <Link href={lien.href} key={lien.href}>
-              {lien.libelle}
-            </Link>
-          ))}
+
+        <div className="lpv-entete-bleue__actions">
           {nomUtilisateur && (
             <span
               aria-label={`Connecté en tant que ${nomUtilisateur}`}
-              className="lpv-entete__user"
+              className="lpv-entete-bleue__user"
             >
               {nomUtilisateur}
             </span>
           )}
-          {deconnexion && <BoutonDeconnexion />}
-        </nav>
+          {deconnexion && (
+            <form action={seDeconnecter}>
+              <button className="lpv-menu-bouton" type="submit">
+                Se déconnecter
+              </button>
+            </form>
+          )}
+          <MenuDepliant services={services} legales={legales} />
+        </div>
       </div>
+
+      {heroTitre && (
+        <div className="lpv-entete-bleue__hero">
+          <h1 className="lpv-entete-bleue__hero-titre">{heroTitre}</h1>
+          {heroTexte ? <p className="lpv-entete-bleue__hero-texte">{heroTexte}</p> : null}
+        </div>
+      )}
     </header>
   )
 }
 
-// Molécule : conteneur principal des pages portail.
-// Regroupe entête + hero optionnel + contenu + pied de page dans un seul shell :
-// la classe .lpv-shell permet au CSS de masquer le header/footer du site vitrine
-// (body:has(.lpv-shell) > header, > footer, > .admin-bar).
+// Molécule : conteneur principal des pages portail (shell).
+// La classe .lpv-shell permet au CSS de masquer le header/footer du site vitrine.
 export function ContenuPage({
   children,
   entete,
-  hero,
   liensPied,
 }: {
   children: ReactNode
   entete?: ReactNode
-  hero?: ReactNode
   liensPied?: { href: string; libelle: string }[]
 }) {
   return (
@@ -71,7 +90,6 @@ export function ContenuPage({
         Aller au contenu principal
       </a>
       {entete}
-      {hero}
       <main className="lpv-container" id="contenu-principal" style={{ flex: 1 }}>
         {children}
       </main>

@@ -1,14 +1,12 @@
-type Couleur = 'vert' | 'jaune' | 'orange' | 'rouge' | 'violet'
+type Couleur = 'vert' | 'jaune' | 'orange' | 'rouge' | 'bleu'
 
 // Atome : tag de statut. Toujours accompagné d'un libellé texte (jamais la couleur seule).
 export function Tag({
   children,
-  couleur = 'violet',
+  couleur = 'bleu',
 }: {
   children: string
-  couleur?: 'vert' | 'jaune' | 'orange' | 'rouge' | 'violet'
+  couleur?: 'vert' | 'jaune' | 'orange' | 'rouge' | 'bleu'
 }) {
-  return <span className={`lpv-tag lpv-tag--${couleur as VarianteCouleur}`}>{children}</span>
+  return <span className={`lpv-tag lpv-tag--${couleur}`}>{children}</span>
 }
-
-type VarianteCouleur = Couleur

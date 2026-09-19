@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 
 import { ContenuPage, EnteteService } from '@/components/molecules/EnteteService'
-import { HeroTitle } from '@/components/molecules/HeroTitle'
 import { getMeUserServer } from '@/utilities/profAuth'
 
 import '../lpvboard.css'
@@ -15,8 +14,7 @@ export const metadata: Metadata = {
   title: 'Espace profs — LPV Board',
 }
 
-// Layout du portail profs : entête + hero bleu façon GOV.UK + contenu + pied.
-// Le h1 vit dans le hero ; les pages filles commencent directement par leur contenu.
+// Layout du portail profs : entête bleue fusionnée avec le hero (visuels LPV).
 export default async function ProfsLayout({ children }: { children: ReactNode }) {
   const user = await getMeUserServer()
 
@@ -25,18 +23,18 @@ export default async function ProfsLayout({ children }: { children: ReactNode })
       entete={
         <EnteteService
           deconnexion={Boolean(user)}
-          libelleService="Espace profs"
-          nomUtilisateur={user?.name ?? null}
-          liens={[
-            { href: '/profs', libelle: 'Tableau de bord' },
-            { href: '/profs/disponibilites', libelle: 'Mes disponibilités' },
+          heroTexte="Vos séances, présences et retours de séance, au même endroit."
+          heroTitre="Espace profs"
+          legales={[
+            { href: '/rgpd', libelle: 'Politique de confidentialité' },
+            { href: '/rgpd', libelle: 'Politique générale' },
           ]}
-        />
-      }
-      hero={
-        <HeroTitle
-          texte="Vos séances, présences et retours de séance, au même endroit."
-          titre="Espace profs"
+          nomUtilisateur={user?.name ?? null}
+          services={[
+            { href: '/profs', libelle: 'Espace professeurs' },
+            { href: '/profs/disponibilites', libelle: 'Mes disponibilités' },
+            { href: '/parents', libelle: 'Espace parents' },
+          ]}
         />
       }
       liensPied={[{ href: '/profs/login', libelle: 'Connexion' }]}
