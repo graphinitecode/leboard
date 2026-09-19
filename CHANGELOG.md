@@ -21,6 +21,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Nouvelles couleurs de marque : tags (vert #00A14C, orange #FF6B00, rouge #FF0004, bleu #0080FF), panel info (fond bleu nuit, texte bleu clair), bannière de succès (fond vert foncé)
 
 ### Modifié
+- Boutons aux couleurs des tags : primaire bleu #0080FF, « Modifier » orange #FF6B00, danger rouge #FF0004 (texte blanc, quel que soit le thème ou le portail)
 - Fiche élève (profs) : alertes en TexteAvertissement, présences et progressions en Tableau accessible
 - Fiche enfant (parents) : présences, progressions et prêts en Tableau accessible ; ajout d'un lien retour
 - Assistant disponibilités : champs horaires via ChampFormulaire (label, hint, min/max), liens retour via BackLink
