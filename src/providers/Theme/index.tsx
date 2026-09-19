@@ -1,12 +1,11 @@
 'use client'
 
-import React, { createContext, useCallback, use, useEffect, useState } from 'react'
+import React, { createContext, useCallback, use, useState } from 'react'
 
 import type { Theme, ThemeContextType } from './types'
 
 import canUseDOM from '@/utilities/canUseDOM'
-import { defaultTheme, getImplicitPreference, themeLocalStorageKey } from './shared'
-import { themeIsValid } from './types'
+import { getImplicitPreference, themeLocalStorageKey } from './shared'
 
 const initialContext: ThemeContextType = {
   setTheme: () => null,
@@ -16,6 +15,9 @@ const initialContext: ThemeContextType = {
 const ThemeContext = createContext(initialContext)
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+  // Le script InitTheme (beforeInteractive) a déjà posé data-theme sur <html>
+  // avant l'hydratation : inutile de le refaire dans un effet (setState en effet
+  // déclenche un rendu en cascade, règle react-hooks/set-state-in-effect).
   const [theme, setThemeState] = useState<Theme | undefined>(
     canUseDOM ? (document.documentElement.getAttribute('data-theme') as Theme) : undefined,
   )
@@ -31,24 +33,6 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       window.localStorage.setItem(themeLocalStorageKey, themeToSet)
       document.documentElement.setAttribute('data-theme', themeToSet)
     }
-  }, [])
-
-  useEffect(() => {
-    let themeToSet: Theme = defaultTheme
-    const preference = window.localStorage.getItem(themeLocalStorageKey)
-
-    if (themeIsValid(preference)) {
-      themeToSet = preference
-    } else {
-      const implicitPreference = getImplicitPreference()
-
-      if (implicitPreference) {
-        themeToSet = implicitPreference
-      }
-    }
-
-    document.documentElement.setAttribute('data-theme', themeToSet)
-    setThemeState(themeToSet)
   }, [])
 
   return <ThemeContext value={{ setTheme, theme }}>{children}</ThemeContext>

@@ -1,0 +1,73 @@
+'use client'
+
+import { useEffect, useRef } from 'react'
+
+function LienErreur({ champId, texte }: { champId: string; texte: string }) {
+  return (
+    <a
+      href={`#${champId}`}
+      onClick={(e) => {
+        e.preventDefault()
+        document.getElementById(champId)?.focus()
+      }}
+    >
+      {texte}
+    </a>
+  )
+}
+
+// Molécule : résumé des erreurs en tête de formulaire (role alert).
+// Convention GOV.UK : chaque item est un lien vers le champ en erreur
+// (id optionnel) ; le summary prend le focus quand il apparaît.
+export function ResumeErreurs({
+  erreurs,
+  titre = 'Il y a un problème',
+}: {
+  erreurs: (string | { champId: string; texte: string })[]
+  titre?: string
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  const items: { champId?: string; texte: string }[] = erreurs.map((erreur) =>
+    typeof erreur === 'string' ? { texte: erreur } : erreur,
+  )
+
+  // Prend le focus quand le summary apparaît (déjà tabbable via tabIndex -1)
+  useEffect(() => {
+    if (items.length > 0) {
+      ref.current?.focus()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [erreurs])
+
+  if (items.length === 0) return null
+
+  return (
+    <div aria-labelledby="resume-erreurs-titre" className="lpv-error-summary" ref={ref} role="alert" tabIndex={-1}>
+      <h2 id="resume-erreurs-titre">{titre}</h2>
+      <ul>
+        {items.map((item) => (
+          <li key={item.texte}>
+            {item.champId ? (
+              <LienErreur champId={item.champId} texte={item.texte} />
+            ) : (
+              item.texte
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+// Molécule : bandeau de notification (succès / info)
+export function NotificationBanner({ titre, type = 'succes' }: { titre: string; type?: 'succes' | 'info' }) {
+  return (
+    <div
+      className={`lpv-banner${type === 'succes' ? ' lpv-banner--succes' : ''}`}
+      role={type === 'succes' ? 'status' : 'region'}
+    >
+      <strong>{titre}</strong>
+    </div>
+  )
+}

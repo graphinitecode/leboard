@@ -1,5 +1,6 @@
 import Link from 'next/link'
 
+import { InsetText, Panel, Tag } from '@/components/atoms'
 import { requireParent } from '@/utilities/parentAuth'
 import { getEnfantsDuParent, getPayloadInstance } from '@/utilities/parentPortal'
 
@@ -12,13 +13,13 @@ export default async function ParentsAccueil() {
 
   if (enfants.length === 0) {
     return (
-      <main style={{ maxWidth: 720, margin: '2rem auto', padding: '0 1rem' }}>
-        <h1>Espace parents</h1>
-        <p>Aucun enfant n’est relié à votre compte pour le moment.</p>
-        <p>
-          <small>Contactez l’association si cela vous semble anormal.</small>
-        </p>
-      </main>
+      <>
+        <h1 className="lpv-h1">Espace parents</h1>
+        <InsetText>
+          Aucun enfant n&rsquo;est relié à votre compte pour le moment. Contactez
+          l&rsquo;association si cela vous semble anormal.
+        </InsetText>
+      </>
     )
   }
 
@@ -59,19 +60,19 @@ export default async function ParentsAccueil() {
   )
 
   return (
-    <main style={{ maxWidth: 720, margin: '2rem auto', padding: '0 1rem' }}>
-      <h1>Espace parents</h1>
+    <>
+      <h1 className="lpv-h1">Espace parents</h1>
       {resumes.map(({ enfant, presences, taux, pretsEnCours, dernieresProgressions }) => (
-        <section
-          key={String(enfant.id)}
-          style={{ border: '1px solid #ddd', borderRadius: 8, padding: '1rem', marginBottom: '1rem' }}
-        >
-          <h2>
-            {enfant.prenom} {enfant.nom} <small>({enfant.niveau})</small>
+        <Panel key={String(enfant.id)}>
+          <h2 style={{ marginTop: 0 }}>
+            {enfant.prenom} {enfant.nom}{' '}
+            <Tag couleur="bleu">{enfant.niveau}</Tag>
           </h2>
           <p>
             Présence :{' '}
-            {taux !== null ? `${taux}% (${presences} séances)` : 'Aucune séance enregistrée'}
+            <strong>
+              {taux !== null ? `${taux}% (${presences} séances)` : 'Aucune séance enregistrée'}
+            </strong>
           </p>
           {pretsEnCours.totalDocs > 0 && (
             <p>
@@ -94,12 +95,11 @@ export default async function ParentsAccueil() {
               ({dernieresProgressions.docs[0].niveau})
             </p>
           )}
-          <Link href={`/parents/enfants/${enfant.id}`}>Voir le détail</Link>
-        </section>
+          <Link className="lpv-bouton" href={`/parents/enfants/${enfant.id}`}>
+            Voir le détail
+          </Link>
+        </Panel>
       ))}
-      <p>
-        <Link href="/rgpd">Politique de protection des données</Link>
-      </p>
-    </main>
+    </>
   )
 }
