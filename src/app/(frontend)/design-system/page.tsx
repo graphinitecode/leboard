@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { Bouton, BackLink, FilAriane, InsetText, Panel, Tag, TexteAvertissement, Details, Televersement } from '@/components/atoms'
 import { Label, Hint, ErrorMessage } from '@/components/atoms/Champ'
-import { Accordeon, BoutonsRadio, CasesACocher, ChampDate, ChampEnsemble, ChampFormulaire, CompteurCaracteres, ListeTaches, Modale, NotificationBanner, Onglets, PaginationLPV, ResumeErreurs, SummaryList, Tableau, Toast } from '@/components/molecules'
+import { Accordeon, BoutonsRadio, CasesACocher, ChampDate, ChampEnsemble, ChampFormulaire, CompteurCaracteres, ListeTaches, Modale, NotificationBanner, Onglets, PaginationLPV, ResumeErreurs, SummaryList, Tableau, Toast, BasculeTheme } from '@/components/molecules'
 import type { SectionAccordeon, Onglet, OptionCase, OptionRadio, TableauHeadCell, TableauRowCell, Tache, PageNumero } from '@/components/molecules'
 
 import { DemoModale, DemoToggle, DemoToast } from './DemoClient'
@@ -262,6 +262,17 @@ export default function DesignSystemPage() {
 
       <section id="surfaces" style={{ marginBottom: '3rem' }}>
         <h2 className="lpv-h2">Surfaces</h2>
+
+        <h3 className="lpv-h3">Bascule de thème</h3>
+        <p className="lpv-muted" style={{ marginTop: 0 }}>
+          Le mode sombre s&apos;applique à tout le design system via <code>data-theme</code> sur
+          {' '}<code>&lt;html&gt;</code>. Le choix est mémorisé (localStorage) et suit
+          {' '}<code>prefers-color-scheme</code> par défaut.
+        </p>
+        <div className="lpv-card" style={{ alignItems: 'center', display: 'flex', gap: '1rem', justifyContent: 'space-between', maxWidth: '28rem' }}>
+          <span>Thème actuel</span>
+          <BasculeTheme />
+        </div>
 
         <h3 className="lpv-h3">Modale</h3>
         <DemoModale />

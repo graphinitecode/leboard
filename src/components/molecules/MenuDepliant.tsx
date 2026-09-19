@@ -46,7 +46,7 @@ export function MenuDepliant({
       </button>
 
       {ouvert && (
-        <div className="lpv-menu-panneau" data-theme="light">
+        <div className="lpv-menu-panneau">
           <div className="lpv-menu-panneau__inner">
             <div className="lpv-menu-panneau__colonne">
               <h2 className="lpv-menu-panneau__titre">Services et informations</h2>

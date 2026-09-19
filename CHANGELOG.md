@@ -11,11 +11,10 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Label et légende avec tailles (l/m/s) et option `isPageHeading` (guide GOV.UK « Making labels and legends headings »)
 - Message d'erreur avec préfixe lecteur d'écran « Erreur : »
 - Utilitaire `lpv-visually-hidden` pour l'accessibilité
-
-### Ajouté
 - Page design system (/design-system) : démonstration visuelle de tous les composants
 - Modale : composant réutilisable accessible (Escape, clic extérieur, focus, aria-modal)
 - Toast : composant réutilisable auto-dismiss (5s, role=status)
+- Mode sombre : bouton de bascule dans l'entête des portails, choix mémorisé, couleurs adaptées au contraste sur fond sombre
 
 ### Modifié
 - Fiche élève (profs) : alertes en TexteAvertissement, présences et progressions en Tableau accessible
