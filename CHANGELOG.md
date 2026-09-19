@@ -29,6 +29,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - BackLink : ajout de la prop `onClick`, styles en classe CSS `lpv-back-link`
 - FormulairesDispo : modale et toast extraits en composants réutilisables (Modale, Toast)
 
+### Corrigé
+- Cases à cocher et boutons radio restaurés à leur apparence native (44px)
+- Texte des tags et bannières blanc en mode sombre (sauf « En attente » : texte foncé)
+- Chevrons et flèches agrandis (20px) et centrés avec leurs libellés
+
 ## [0.2.0] — 2026-09-19
 
 Implémentation des 9 specs métier (voir `specs/`).

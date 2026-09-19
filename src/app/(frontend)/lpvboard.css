@@ -54,15 +54,6 @@
   /* Bannière succès : fond vert foncé, texte blanc */
   --lpv-banner-succes-bg: #01582a;
 
-  /* Contrôles formulaire (cases à cocher, radios) */
-  --lpv-controle-bg: #1e1e1e;
-  --lpv-controle-border: #7c7c7c;
-  --lpv-controle-bg-hover: #313131;
-  --lpv-controle-border-hover: #ffffff;
-  --lpv-controle-selection-bg: #0080ff;
-  --lpv-controle-selection-border: #0080ff;
-  --lpv-controle-selection-insigne: #ffffff;
-
   --lpv-orange-hover: #d94e00;
   --lpv-red-shadow: #cc3a3d;
   --lpv-red-hover: #e04245;
@@ -532,7 +523,7 @@ a:focus {
 
 .lpv-tag {
   border-radius: 999px;
-  color: var(--lpv-surface);
+  color: #ffffff;
   display: inline-block;
   font-size: 0.875rem;
   font-weight: 700;
@@ -542,7 +533,7 @@ a:focus {
 }
 
 .lpv-tag--vert { background-color: var(--lpv-tag-vert); }
-.lpv-tag--jaune { background-color: var(--lpv-tag-jaune); color: var(--lpv-text); }
+.lpv-tag--jaune { background-color: var(--lpv-tag-jaune); color: #241623; }
 .lpv-tag--orange { background-color: var(--lpv-tag-orange); }
 .lpv-tag--rouge { background-color: var(--lpv-tag-rouge); }
 .lpv-tag--bleu { background-color: var(--lpv-tag-bleu); }
@@ -584,7 +575,7 @@ a:focus {
 .lpv-banner {
   background-color: var(--lpv-portail);
   border-radius: var(--lpv-radius);
-  color: var(--lpv-surface);
+  color: #ffffff;
   margin-bottom: 1.5rem;
   padding: 0.75rem 1rem;
 }
@@ -1688,48 +1679,11 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 }
 
 .lpv-cases__input {
-  appearance: none;
-  background-color: var(--lpv-controle-bg);
-  border: 2px solid var(--lpv-controle-border);
-  border-radius: var(--lpv-radius);
-  cursor: pointer;
   flex-shrink: 0;
-  height: 1.5rem;
-  margin: 0;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-  width: 1.5rem;
-}
-
-.lpv-cases__input:hover {
-  background-color: var(--lpv-controle-bg-hover);
-  border-color: var(--lpv-controle-border-hover);
-}
-
-.lpv-cases__input:checked {
-  background-color: var(--lpv-controle-selection-bg);
-  border-color: var(--lpv-controle-selection-border);
-}
-
-/* Insigne de coche (blanc) dessiné en CSS */
-.lpv-cases__input:checked::after {
-  background: transparent;
-  border-bottom: 3px solid var(--lpv-controle-selection-insigne);
-  border-right: 3px solid var(--lpv-controle-selection-insigne);
-  content: '';
-  height: 0.6em;
-  margin: auto;
-  transform: rotate(45deg) translate(-10%, -25%);
-  width: 0.35em;
-}
-
-.lpv-cases__input:focus {
-  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
-  outline: none;
-}
-
-.lpv-cases__input:focus-visible {
-  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
-  outline: none;
+  height: 2.5ex;
+  min-height: 44px;
+  min-width: 44px;
+  width: 2.5ex;
 }
 
 .lpv-cases__label {
@@ -1801,42 +1755,11 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 }
 
 .lpv-radios__input {
-  appearance: none;
-  background-color: var(--lpv-controle-bg);
-  border: 2px solid var(--lpv-controle-border);
-  border-radius: 50%;
-  cursor: pointer;
   flex-shrink: 0;
-  height: 1.5rem;
-  margin: 0;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-  width: 1.5rem;
-}
-
-.lpv-radios__input:hover {
-  background-color: var(--lpv-controle-bg-hover);
-  border-color: var(--lpv-controle-border-hover);
-}
-
-.lpv-radios__input:checked {
-  background-color: var(--lpv-controle-selection-bg);
-  border-color: var(--lpv-controle-selection-border);
-}
-
-/* Insigne central (blanc) */
-.lpv-radios__input:checked::after {
-  background: var(--lpv-controle-selection-insigne);
-  border-radius: 50%;
-  content: '';
-  display: block;
-  height: 0.5em;
-  margin: auto;
-  width: 0.5em;
-}
-
-.lpv-radios__input:focus {
-  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
-  outline: none;
+  height: 2.5ex;
+  min-height: 44px;
+  min-width: 44px;
+  width: 2.5ex;
 }
 
 .lpv-radios__label {
@@ -2285,9 +2208,11 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 }
 
 .lpv-pagination__lien {
+  align-items: center;
   color: var(--lpv-portail-dark);
   display: inline-flex;
   font-weight: 700;
+  gap: 0.375rem;
   min-height: 44px;
   padding: 0.5rem 0.75rem;
   text-decoration: underline;
@@ -2310,14 +2235,6 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 .lpv-pagination__icone {
   display: inline-flex;
   flex-shrink: 0;
-}
-
-.lpv-pagination__icone--precedent {
-  margin-right: 0.25rem;
-}
-
-.lpv-pagination__icone--suivant {
-  margin-left: 0.25rem;
 }
 
 .lpv-pagination__lien-titre {
