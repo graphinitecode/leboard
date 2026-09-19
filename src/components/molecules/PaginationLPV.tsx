@@ -14,7 +14,11 @@ export interface LienPagination {
 }
 
 // Molécule : pagination. Inspiré de GOV.UK Pagination.
-// Deux modes : liste (numéros + previous/next) et bloc (descriptif).
+// Deux modes : liste (numéros + previous/next alignés) et bloc (descriptif).
+// La page courante est un bloc plein inversé (pas un lien) marqué
+// aria-current="page" + texte caché « (page actuelle) ».
+// En variante liste, « Précédent » disparaît en première page et
+// « Suivant » en dernière page (ne pas passer les props correspondantes).
 // Utilise Next <Link> pour la navigation côté client.
 export function PaginationLPV({
   items,
@@ -40,7 +44,7 @@ export function PaginationLPV({
           >
             {variante === 'bloc' && precedente.libelle ? (
               <>
-                <span aria-hidden="true" className="lpv-pagination__icone lpv-pagination__icone--precedent">
+                <span aria-hidden="true" className="lpv-pagination__icone">
                   <Icon icone="rivet-icons:arrow-left" taille={16} />
                 </span>
                 <span className="lpv-pagination__lien-titre">
@@ -55,7 +59,7 @@ export function PaginationLPV({
               </>
             ) : (
               <>
-                <span aria-hidden="true" className="lpv-pagination__icone lpv-pagination__icone--precedent">
+                <span aria-hidden="true" className="lpv-pagination__icone">
                   <Icon icone="rivet-icons:arrow-left" taille={16} />
                 </span>
                 Précédent
@@ -69,16 +73,28 @@ export function PaginationLPV({
         <ul className="lpv-pagination__liste">
           {items.map((item, index) =>
             'ellipsis' in item ? (
-              <li className="lpv-pagination__item lpv-pagination__item--ellipsis" key={`ellipsis-${index}`}>
+              <li aria-hidden="true" className="lpv-pagination__item lpv-pagination__item--ellipsis" key={`ellipsis-${index}`}>
                 …
+              </li>
+            ) : item.courant ? (
+              <li
+                className="lpv-pagination__item"
+                key={item.numero}
+              >
+                <strong
+                  aria-current="page"
+                  className="lpv-pagination__lien lpv-pagination__lien--courant"
+                >
+                  {item.numero}
+                  <span className="lpv-visually-hidden"> (page actuelle)</span>
+                </strong>
               </li>
             ) : (
               <li
-                className={`lpv-pagination__item${item.courant ? ' lpv-pagination__item--courant' : ''}`}
+                className="lpv-pagination__item"
                 key={item.numero}
               >
                 <Link
-                  aria-current={item.courant ? 'page' : undefined}
                   aria-label={`Page ${item.numero}`}
                   className="lpv-link lpv-pagination__lien"
                   href={item.href}
@@ -109,14 +125,14 @@ export function PaginationLPV({
                     </>
                   )}
                 </span>
-                <span aria-hidden="true" className="lpv-pagination__icone lpv-pagination__icone--suivant">
+                <span aria-hidden="true" className="lpv-pagination__icone">
                   <Icon icone="rivet-icons:arrow-right" taille={16} />
                 </span>
               </>
             ) : (
               <>
                 Suivant
-                <span aria-hidden="true" className="lpv-pagination__icone lpv-pagination__icone--suivant">
+                <span aria-hidden="true" className="lpv-pagination__icone">
                   <Icon icone="rivet-icons:arrow-right" taille={16} />
                 </span>
               </>
