@@ -6,9 +6,9 @@ import { PiedPage } from '@/components/molecules/PiedPage'
 import { seDeconnecter } from './seDeconnecter'
 import { MenuDepliant } from './MenuDepliant'
 
-// Molécule : entête bleue pleine largeur (visuels LPV).
-// Logo blanc « Association Les Pierres Vivantes » + bouton Menu dépliant + identité.
-// Le hero est fusionné dans la même bande bleue (prop hero).
+// Molécule : entête pleine largeur du portail (couleur selon data-lpv-portail).
+// Logo blanc « Association Les Pierres Vivantes » + Menu dépliant + identité.
+// Le hero est fusionné dans la même bande colorée.
 export function EnteteService({
   heroTitre,
   heroTexte,
@@ -69,20 +69,23 @@ export function EnteteService({
 }
 
 // Molécule : conteneur principal des pages portail (shell).
-// La classe .lpv-shell permet au CSS de masquer le header/footer du site vitrine.
+// portail: 'profs' (bleu, défaut) | 'parents' (violet) | 'eleves' (orange) —
+// pilote la couleur via data-lpv-portail. Masque le chrome du site vitrine.
 export function ContenuPage({
   children,
   entete,
   liensPied,
+  portail = 'profs',
 }: {
   children: ReactNode
   entete?: ReactNode
   liensPied?: { href: string; libelle: string }[]
+  portail?: 'profs' | 'parents' | 'eleves'
 }) {
   return (
     <div
       className="lpv-shell"
-      data-lpv-portail="true"
+      data-lpv-portail={portail}
       data-theme="light"
       style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
     >
