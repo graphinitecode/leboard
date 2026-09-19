@@ -1,7 +1,8 @@
 'use client'
 
-import type { ChangeEvent } from 'react'
+import { useState, type ChangeEvent } from 'react'
 
+import { Icon } from '@/components/atoms/Icon'
 import { ErrorMessage, Hint, Label } from '@/components/atoms/Champ'
 
 // Molécule : champ de formulaire complet (Label + Hint + Erreur + contrôle).
@@ -55,6 +56,7 @@ export function ChampFormulaire({
   const required = !optionnel
   const classeErreur = erreur ? ' lpv-input--error' : ''
   const groupeClasse = `lpv-form-group${erreur ? ' lpv-form-group--error' : ''}`
+  const [visible, setVisible] = useState(false)
 
   return (
     <div className={groupeClasse}>
@@ -94,6 +96,32 @@ export function ChampFormulaire({
             </option>
           ))}
         </select>
+      ) : type === 'password' ? (
+        <div className="lpv-password">
+          <input
+            aria-describedby={describedBy || undefined}
+            aria-invalid={erreur ? true : undefined}
+            autoComplete={autoComplete}
+            className={`lpv-input lpv-password__input${classeErreur}`}
+            defaultValue={defaultValue}
+            id={id}
+            name={name ?? id}
+            onChange={onChange as never}
+            pattern={pattern}
+            required={required}
+            type={visible ? 'text' : 'password'}
+            value={value}
+          />
+          <button
+            aria-label={visible ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+            aria-pressed={visible}
+            className="lpv-password__oeil"
+            onClick={() => setVisible((v) => !v)}
+            type="button"
+          >
+            <Icon icone={visible ? 'rivet-icons:eye-off' : 'rivet-icons:eye'} taille={18} />
+          </button>
+        </div>
       ) : (
         <input
           aria-describedby={describedBy || undefined}

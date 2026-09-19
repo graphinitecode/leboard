@@ -1,5 +1,6 @@
 export { Bouton } from './Bouton'
 export { Tag } from './Tag'
+export { Icon } from './Icon'
 export { Label, Hint, ErrorMessage } from './Champ'
 export { InsetText, Panel } from './Panneaux'
 export { BackLink } from './BackLink'

@@ -38,6 +38,31 @@
   /* Focus : jaune, conservé du GOV.UK pour la visibilité maximale */
   --lpv-focus: #fd0;
 
+  /* Couleurs des tags (marque, identiques light/dark) */
+  --lpv-tag-vert: #00a14c;
+  --lpv-tag-jaune: #f4d35e;
+  --lpv-tag-orange: #ff6b00;
+  --lpv-tag-rouge: #ff0004;
+  --lpv-tag-bleu: #0080ff;
+
+  /* Panel info : fond bleu nuit, texte bleu clair */
+  --lpv-panel-bg: #002549;
+  --lpv-panel-texte: #3d9eff;
+  --lpv-panel-succes-bg: #01582a;
+  --lpv-panel-succes-texte: #ffffff;
+
+  /* Bannière succès : fond vert foncé, texte blanc */
+  --lpv-banner-succes-bg: #01582a;
+
+  /* Contrôles formulaire (cases à cocher, radios) */
+  --lpv-controle-bg: #1e1e1e;
+  --lpv-controle-border: #7c7c7c;
+  --lpv-controle-bg-hover: #313131;
+  --lpv-controle-border-hover: #ffffff;
+  --lpv-controle-selection-bg: #0080ff;
+  --lpv-controle-selection-border: #0080ff;
+  --lpv-controle-selection-insigne: #ffffff;
+
   --lpv-orange-hover: #d94e00;
   --lpv-red-shadow: #cc3a3d;
   --lpv-red-hover: #e04245;
@@ -89,6 +114,13 @@ html[data-theme='dark'] {
   --lpv-orange-hover: #f97b1a;
   --lpv-red-shadow: #8a2528;
   --lpv-red-hover: #ff6b6e;
+
+  /* Tags : identiques en dark (contraste déjà valide sur les deux fonds) */
+  --lpv-tag-vert: #00a14c;
+  --lpv-tag-jaune: #f4d35e;
+  --lpv-tag-orange: #ff6b00;
+  --lpv-tag-rouge: #ff0004;
+  --lpv-tag-bleu: #0080ff;
   --lpv-overlay: rgb(0 0 0 / 60%);
   --lpv-overlay-heavy: rgb(0 0 0 / 40%);
   --lpv-shadow: 0 1px 2px rgb(0 0 0 / 20%), 0 4px 16px rgb(0 0 0 / 25%);
@@ -428,10 +460,10 @@ html[data-theme='dark'] {
 }
 
 .lpv-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%235a6369' d='M23.1 5.6 12 16.7.9 5.6l1.3-1.3L12 14.1 21.8 4.3z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 24'%3E%3Cpath fill='%235a6369' d='m15.146 6.263-1.292-1.526L8 9.69 2.146 4.737.854 6.263 8 12.31z'/%3E%3C/svg%3E");
   background-position: right 0.5rem center;
   background-repeat: no-repeat;
-  background-size: 1rem;
+  background-size: 0.8rem;
   max-width: 30rem;
   padding-right: 2.5rem;
 }
@@ -502,19 +534,18 @@ a:focus {
   border-radius: 999px;
   color: var(--lpv-surface);
   display: inline-block;
-  font-size: 1.125rem;
-  font-weight: 800;
-  letter-spacing: 0.01em;
-  line-height: 1.25;
-  padding: 0.3rem 0.9rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.15rem 0.6rem;
   white-space: nowrap;
 }
 
-.lpv-tag--vert { background-color: var(--lpv-green); }
-.lpv-tag--jaune { background-color: var(--lpv-yellow); color: var(--lpv-text); }
-.lpv-tag--orange { background-color: var(--lpv-orange); }
-.lpv-tag--rouge { background-color: var(--lpv-red); }
-.lpv-tag--bleu { background-color: var(--lpv-blue); }
+.lpv-tag--vert { background-color: var(--lpv-tag-vert); }
+.lpv-tag--jaune { background-color: var(--lpv-tag-jaune); color: var(--lpv-text); }
+.lpv-tag--orange { background-color: var(--lpv-tag-orange); }
+.lpv-tag--rouge { background-color: var(--lpv-tag-rouge); }
+.lpv-tag--bleu { background-color: var(--lpv-tag-bleu); }
 
 /* --- Résumé des erreurs -------------------------------------------------- */
 
@@ -559,7 +590,7 @@ a:focus {
 }
 
 .lpv-banner--succes {
-  background-color: var(--lpv-green);
+  background-color: var(--lpv-banner-succes-bg);
 }
 
 .lpv-inset {
@@ -571,15 +602,16 @@ a:focus {
 }
 
 .lpv-panel {
-  background-color: var(--lpv-portail-soft);
-  border: 2px solid var(--lpv-portail);
+  background-color: var(--lpv-panel-bg);
   border-radius: var(--lpv-radius);
+  color: var(--lpv-panel-texte);
   margin-bottom: 1.5rem;
   padding: 1.25rem;
 }
 
 .lpv-panel--succes {
-  border-color: var(--lpv-green);
+  background-color: var(--lpv-panel-succes-bg);
+  color: var(--lpv-panel-succes-texte);
 }
 
 .lpv-panel h2 {
@@ -1465,12 +1497,13 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
   color: var(--lpv-surface);
   display: inline-flex;
   flex-shrink: 0;
-  font-size: 1rem;
-  font-weight: 700;
   height: 2rem;
   justify-content: center;
-  line-height: 1;
   width: 2rem;
+}
+
+.lpv-avertissement__icone-svg {
+  display: block;
 }
 
 .lpv-avertissement__texte {
@@ -1547,8 +1580,10 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 /* --- Back link -------------------------------------------------------------- */
 
 .lpv-back-link {
+  align-items: center;
   color: var(--lpv-portail-dark);
-  display: inline-block;
+  display: inline-flex;
+  gap: 0.375rem;
   margin-bottom: 0.75rem;
   text-decoration: none;
 }
@@ -1560,6 +1595,11 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 .lpv-back-link:focus {
   box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
   outline: none;
+}
+
+.lpv-back-link__icone {
+  display: inline-flex;
+  flex-shrink: 0;
 }
 
 /* --- Details (disclosure) -------------------------------------------------- */
@@ -1575,10 +1615,13 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 }
 
 .lpv-details__resume {
+  align-items: center;
   color: var(--lpv-portail-dark);
   cursor: pointer;
+  display: flex;
   font-size: 1.125rem;
   font-weight: 700;
+  gap: 0.5rem;
   list-style: none;
 }
 
@@ -1591,19 +1634,23 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
   display: none;
 }
 
-.lpv-details__resume-texte {
-  display: inline;
+.lpv-details__chevron {
+  color: var(--lpv-portail-dark);
+  display: inline-flex;
+  flex-shrink: 0;
 }
 
-.lpv-details__resume::before {
-  content: '▶ ';
-  display: inline-block;
-  font-size: 0.75rem;
-  transition: transform 0.2s ease;
+/* Chevron fermé visible par défaut, ouvert quand le details est ouvert */
+.lpv-details__chevron--ouvert {
+  display: none;
 }
 
-.lpv-details[open] > .lpv-details__resume::before {
-  content: '▼ ';
+.lpv-details[open] > .lpv-details__resume .lpv-details__chevron--ferme {
+  display: none;
+}
+
+.lpv-details[open] > .lpv-details__resume .lpv-details__chevron--ouvert {
+  display: inline-flex;
 }
 
 .lpv-details__texte {
@@ -1641,11 +1688,48 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 }
 
 .lpv-cases__input {
+  appearance: none;
+  background-color: var(--lpv-controle-bg);
+  border: 2px solid var(--lpv-controle-border);
+  border-radius: var(--lpv-radius);
+  cursor: pointer;
   flex-shrink: 0;
-  height: 2.5ex;
-  min-height: 44px;
-  min-width: 44px;
-  width: 2.5ex;
+  height: 1.5rem;
+  margin: 0;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  width: 1.5rem;
+}
+
+.lpv-cases__input:hover {
+  background-color: var(--lpv-controle-bg-hover);
+  border-color: var(--lpv-controle-border-hover);
+}
+
+.lpv-cases__input:checked {
+  background-color: var(--lpv-controle-selection-bg);
+  border-color: var(--lpv-controle-selection-border);
+}
+
+/* Insigne de coche (blanc) dessiné en CSS */
+.lpv-cases__input:checked::after {
+  background: transparent;
+  border-bottom: 3px solid var(--lpv-controle-selection-insigne);
+  border-right: 3px solid var(--lpv-controle-selection-insigne);
+  content: '';
+  height: 0.6em;
+  margin: auto;
+  transform: rotate(45deg) translate(-10%, -25%);
+  width: 0.35em;
+}
+
+.lpv-cases__input:focus {
+  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
+  outline: none;
+}
+
+.lpv-cases__input:focus-visible {
+  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
+  outline: none;
 }
 
 .lpv-cases__label {
@@ -1717,11 +1801,42 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 }
 
 .lpv-radios__input {
+  appearance: none;
+  background-color: var(--lpv-controle-bg);
+  border: 2px solid var(--lpv-controle-border);
+  border-radius: 50%;
+  cursor: pointer;
   flex-shrink: 0;
-  height: 2.5ex;
-  min-height: 44px;
-  min-width: 44px;
-  width: 2.5ex;
+  height: 1.5rem;
+  margin: 0;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  width: 1.5rem;
+}
+
+.lpv-radios__input:hover {
+  background-color: var(--lpv-controle-bg-hover);
+  border-color: var(--lpv-controle-border-hover);
+}
+
+.lpv-radios__input:checked {
+  background-color: var(--lpv-controle-selection-bg);
+  border-color: var(--lpv-controle-selection-border);
+}
+
+/* Insigne central (blanc) */
+.lpv-radios__input:checked::after {
+  background: var(--lpv-controle-selection-insigne);
+  border-radius: 50%;
+  content: '';
+  display: block;
+  height: 0.5em;
+  margin: auto;
+  width: 0.5em;
+}
+
+.lpv-radios__input:focus {
+  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
+  outline: none;
 }
 
 .lpv-radios__label {
@@ -1899,8 +2014,9 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 }
 
 .lpv-accordeon__icone {
+  color: var(--lpv-portail-dark);
+  display: inline-flex;
   flex-shrink: 0;
-  font-size: 0.875rem;
 }
 
 .lpv-accordeon__texte-bouton {
@@ -2192,9 +2308,8 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 }
 
 .lpv-pagination__icone {
-  display: inline-block;
-  height: 0.65rem;
-  width: 0.65rem;
+  display: inline-flex;
+  flex-shrink: 0;
 }
 
 .lpv-pagination__icone--precedent {
@@ -2266,11 +2381,13 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 /* --- Bascule de thème ------------------------------------------------------ */
 
 .lpv-bascule-theme {
+  align-items: center;
   background: transparent;
   border: 0;
   color: inherit;
   cursor: pointer;
   display: inline-flex;
+  justify-content: center;
   min-height: 44px;
   min-width: 44px;
   padding: 0.25rem;
@@ -2287,4 +2404,39 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 
 .lpv-bascule-theme__icone {
   display: block;
+  margin: auto;
+}
+
+/* --- Champ mot de passe (œil afficher/masquer) ------------------------------ */
+
+.lpv-password {
+  position: relative;
+}
+
+.lpv-password__input {
+  padding-right: 3rem;
+}
+
+.lpv-password__oeil {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--lpv-text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  inset-block: 0;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 0.6rem;
+  position: absolute;
+  right: 0;
+}
+
+.lpv-password__oeil:hover {
+  color: var(--lpv-text);
+}
+
+.lpv-password__oeil:focus {
+  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
+  outline: none;
 }
