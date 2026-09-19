@@ -315,6 +315,23 @@ a:focus {
   text-decoration: underline;
 }
 
+.lpv-entete__user {
+  align-items: center;
+  color: var(--lpv-text);
+  display: inline-flex;
+  font-weight: 400;
+}
+
+.lpv-entete__user::before {
+  background-color: var(--lpv-sky);
+  border-radius: 50%;
+  content: '';
+  display: inline-block;
+  height: 0.55rem;
+  margin-right: 0.4rem;
+  width: 0.55rem;
+}
+
 .lpv-skip-link {
   background: var(--lpv-surface);
   border: 2px solid var(--lpv-blue);
