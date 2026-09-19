@@ -568,11 +568,18 @@ a:focus {
   white-space: nowrap;
 }
 
-.lpv-tag--vert { background-color: var(--lpv-tag-vert); }
-.lpv-tag--jaune { background-color: var(--lpv-tag-jaune); color: #241623; }
-.lpv-tag--orange { background-color: var(--lpv-tag-orange); }
-.lpv-tag--rouge { background-color: var(--lpv-tag-rouge); }
-.lpv-tag--bleu { background-color: var(--lpv-tag-bleu); }
+.lpv-tag--vert { background-color: var(--lpv-green); }
+.lpv-tag--jaune { background-color: var(--lpv-yellow); color: #241623; }
+.lpv-tag--orange { background-color: var(--lpv-orange); }
+.lpv-tag--rouge { background-color: var(--lpv-red); }
+.lpv-tag--bleu { background-color: var(--lpv-blue); }
+
+/* Tags en mode sombre : couleurs de marque */
+html[data-theme='dark'] .lpv-tag--vert { background-color: var(--lpv-tag-vert); }
+html[data-theme='dark'] .lpv-tag--jaune { background-color: var(--lpv-tag-jaune); }
+html[data-theme='dark'] .lpv-tag--orange { background-color: var(--lpv-tag-orange); }
+html[data-theme='dark'] .lpv-tag--rouge { background-color: var(--lpv-tag-rouge); }
+html[data-theme='dark'] .lpv-tag--bleu { background-color: var(--lpv-tag-bleu); }
 
 /* --- Résumé des erreurs -------------------------------------------------- */
 
@@ -617,6 +624,11 @@ a:focus {
 }
 
 .lpv-banner--succes {
+  background-color: var(--lpv-green);
+}
+
+/* Bannière succès en mode sombre : couleur de marque */
+html[data-theme='dark'] .lpv-banner--succes {
   background-color: var(--lpv-banner-succes-bg);
 }
 
@@ -629,14 +641,25 @@ a:focus {
 }
 
 .lpv-panel {
-  background-color: var(--lpv-panel-bg);
+  background-color: var(--lpv-portail-soft);
   border-radius: var(--lpv-radius);
-  color: var(--lpv-panel-texte);
+  color: var(--lpv-text);
   margin-bottom: 1.5rem;
   padding: 1.25rem;
 }
 
 .lpv-panel--succes {
+  background-color: var(--lpv-green-soft);
+  color: var(--lpv-text);
+}
+
+/* Panel en mode sombre : couleurs de marque (fond bleu nuit, texte bleu clair) */
+html[data-theme='dark'] .lpv-panel {
+  background-color: var(--lpv-panel-bg);
+  color: var(--lpv-panel-texte);
+}
+
+html[data-theme='dark'] .lpv-panel--succes {
   background-color: var(--lpv-panel-succes-bg);
   color: var(--lpv-panel-succes-texte);
 }
