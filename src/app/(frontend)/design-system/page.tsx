@@ -233,6 +233,17 @@ export default function DesignSystemPage() {
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
           <Televersement accept=".pdf,.jpg,.png" hint="Formats acceptés : PDF, JPG, PNG." id="demo-upload" label="Attestation" name="attestation" optionnel />
         </div>
+
+        <h3 className="lpv-h3">Mot de passe</h3>
+        <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
+          <ChampFormulaire
+            autoComplete="current-password"
+            hint="8 caractères minimum."
+            id="demo-champ-password"
+            label="Mot de passe"
+            type="password"
+          />
+        </div>
       </section>
 
       <section id="donnees" style={{ marginBottom: '3rem' }}>
