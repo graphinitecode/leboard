@@ -1,11 +1,11 @@
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
+import { notFound } from 'next/navigation'
 
+import { BackLink, Tag } from '@/components/atoms'
+import { FormProgression, FormRetour } from '@/components/organisms/FormulairesSeance'
 import { requireProf } from '@/utilities/profAuth'
 
-import { FormProgression, FormRetour } from './Formulaires'
 import { TogglePresence } from './TogglePresence'
 
 export const dynamic = 'force-dynamic'
@@ -79,26 +79,31 @@ export default async function SeanceProfPage({ params }: { params: Promise<{ id:
   const retourTexte = extraireTexte(seance.retour)
 
   return (
-    <main style={{ maxWidth: 720, margin: '2rem auto', padding: '0 1rem' }}>
-      <p>
-        <Link href="/profs">← Mes séances</Link>
-      </p>
-      <h1>
-        {new Date(String(seance.date)).toLocaleDateString('fr-FR')} · {seance.matiere}
+    <>
+      <BackLink href="/profs">Tableau de bord</BackLink>
+      <h1 className="lpv-h1">
+        {new Date(String(seance.date)).toLocaleDateString('fr-FR', {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long',
+        })}{' '}
+        <Tag couleur="violet">{seance.matiere}</Tag>
       </h1>
 
       <section>
-        <h2>Présences</h2>
+        <h2 className="lpv-h2">Présences</h2>
         {groupeIds.length === 0 ? (
-          <p>Aucun élève inscrit sur cette séance.</p>
+          <p className="lpv-muted">Aucun élève inscrit sur cette séance.</p>
         ) : (
-          <ul style={{ display: 'grid', gap: '0.5rem', listStyle: 'none', padding: 0 }}>
+          <div>
             {elevesDuGroupe?.docs.map((eleve) => {
               const presence = presencesParEleve.get(String(eleve.id))
               return (
-                <li className="govfr-ligne-eleve" key={String(eleve.id)}>
+                <div className="lpv-ligne" key={String(eleve.id)}>
                   <span>
-                    <Link href={`/profs/eleves/${eleve.id}`}>{nomEleve(eleve)}</Link>
+                    <a href={`/profs/eleves/${eleve.id}`} style={{ color: 'var(--lpv-blue-dark)', fontWeight: 700 }}>
+                      {nomEleve(eleve)}
+                    </a>
                   </span>
                   {presence ? (
                     <TogglePresence
@@ -107,22 +112,22 @@ export default async function SeanceProfPage({ params }: { params: Promise<{ id:
                       statutInitial={presence.present}
                     />
                   ) : (
-                    <span style={{ color: '#888' }}>Présence non initialisée</span>
+                    <span className="lpv-muted">Présence non initialisée</span>
                   )}
-                </li>
+                </div>
               )
             })}
-          </ul>
+          </div>
         )}
       </section>
 
       <section>
-        <h2>Retour de séance</h2>
+        <h2 className="lpv-h2">Retour de séance</h2>
         <FormRetour initial={retourTexte} seanceId={id} />
       </section>
 
       <section>
-        <h2>Progressions</h2>
+        <h2 className="lpv-h2">Progressions</h2>
         <FormProgression
           competences={competences.docs.map((competence) => ({
             id: competence.id,
@@ -136,7 +141,7 @@ export default async function SeanceProfPage({ params }: { params: Promise<{ id:
           seanceId={id}
         />
       </section>
-    </main>
+    </>
   )
 }
 

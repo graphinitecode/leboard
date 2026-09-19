@@ -1,16 +1,13 @@
-import { redirect } from 'next/navigation'
-
-import { getMeUserServer } from '@/utilities/profAuth'
-
-import LoginForm from './LoginForm'
+import { LoginForm } from '@/components/organisms/LoginForm'
 
 export const dynamic = 'force-dynamic'
 
 export default async function ProfLoginPage() {
-  const user = await getMeUserServer()
-  if (user?.role === 'prof' || user?.role === 'admin') {
-    redirect('/profs')
-  }
-
-  return <LoginForm />
+  return (
+    <LoginForm
+      cible="/profs"
+      libelleService="Espace profs"
+      note="Connectez-vous avec le compte fourni par l'association."
+    />
+  )
 }

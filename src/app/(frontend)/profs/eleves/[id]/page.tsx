@@ -1,12 +1,19 @@
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
+import { BackLink, InsetText, Tag } from '@/components/atoms'
+import { SummaryList } from '@/components/molecules/Listes'
 import { requireProf } from '@/utilities/profAuth'
 import { niveauLabel, texteLexical } from '@/utilities/rapports'
 
 export const dynamic = 'force-dynamic'
+
+function statutPresence(statut: string): { couleur: 'vert' | 'jaune' | 'rouge'; libelle: string } {
+  if (statut === 'present') return { couleur: 'vert', libelle: 'Présent' }
+  if (statut === 'absent-justifie') return { couleur: 'jaune', libelle: 'Absent (justifié)' }
+  return { couleur: 'rouge', libelle: 'Absent' }
+}
 
 export default async function EleveProfPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -80,86 +87,104 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
   const taux = presences.totalDocs > 0 ? Math.round((presentes / presences.totalDocs) * 100) : null
 
   return (
-    <main style={{ maxWidth: 720, margin: '2rem auto', padding: '0 1rem' }}>
-      <p>
-        <Link href="/profs">← Tableau de bord</Link>
-      </p>
-      <h1>
-        {eleve.prenom} {eleve.nom} <small>({eleve.niveau})</small>
+    <>
+      <BackLink href="/profs">Tableau de bord</BackLink>
+      <h1 className="lpv-h1">
+        {eleve.prenom} {eleve.nom} <Tag couleur="violet">{eleve.niveau}</Tag>
       </h1>
-      {eleve.groupe && <p>Groupe : {eleve.groupe}</p>}
+
+      <SummaryList
+        items={[
+          ...(eleve.groupe ? [{ cle: 'Groupe', valeur: eleve.groupe }] : []),
+          { cle: 'Présence', valeur: taux !== null ? `${taux}%` : '—' },
+        ]}
+      />
 
       {alertes && alertes.totalDocs > 0 && (
-        <div
-          style={{
-            background: '#fff4f4',
-            border: '1px solid #f3c3c3',
-            borderRadius: 8,
-            padding: '0.75rem 1rem',
-          }}
-        >
-          <strong>⚠️ Alertes actives</strong>
-          <ul style={{ margin: '0.5rem 0 0' }}>
-            {alertes.docs.map((alerte) => (
-              <li key={String(alerte.id)}>
-                {alerte.message} ({new Date(String(alerte.dateCreation)).toLocaleDateString('fr-FR')})
-              </li>
-            ))}
-          </ul>
-        </div>
+        <section>
+          <h2 className="lpv-h2">Alertes actives</h2>
+          {alertes.docs.map((alerte) => (
+            <InsetText key={String(alerte.id)}>
+              <strong style={{ color: 'var(--lpv-red)' }}>⚠ {alerte.message}</strong>
+              <span style={{ color: 'var(--lpv-text-muted)' }}>
+                {' '}
+                ({new Date(String(alerte.dateCreation)).toLocaleDateString('fr-FR')})
+              </span>
+            </InsetText>
+          ))}
+        </section>
       )}
 
       <section>
-        <h2>Présence {taux !== null && `— ${taux}%`}</h2>
+        <h2 className="lpv-h2">Présences</h2>
         {presences.docs.length === 0 ? (
-          <p>Aucune présence enregistrée.</p>
+          <p className="lpv-muted">Aucune présence enregistrée.</p>
         ) : (
-          <ul>
-            {presences.docs.map((presence) => {
-              const seance = presence.seance as unknown as { date?: string; matiere?: string }
-              return (
-                <li key={String(presence.id)}>
-                  {seance?.date ? new Date(String(seance.date)).toLocaleDateString('fr-FR') : '—'}{' '}
-                  · {seance?.matiere ?? '—'} ·{' '}
-                  {presence.present === 'present'
-                    ? 'Présent'
-                    : presence.present === 'absent-justifie'
-                      ? 'Absent (justifié)'
-                      : 'Absent'}
-                </li>
-              )
-            })}
-          </ul>
+          presences.docs.map((presence) => {
+            const seance = presence.seance as unknown as { date?: string; matiere?: string }
+            const statut = statutPresence(presence.present)
+            return (
+              <div className="lpv-ligne" key={String(presence.id)}>
+                <span>
+                  <strong>
+                    {seance?.date
+                      ? new Date(String(seance.date)).toLocaleDateString('fr-FR')
+                      : '—'}
+                  </strong>
+                  <span style={{ color: 'var(--lpv-text-muted)' }}>
+                    {' '}
+                    · {seance?.matiere ?? '—'}
+                  </span>
+                </span>
+                <Tag couleur={statut.couleur}>{statut.libelle}</Tag>
+              </div>
+            )
+          })
         )}
       </section>
 
       <section>
-        <h2>Progressions</h2>
+        <h2 className="lpv-h2">Progressions</h2>
         {progressions.docs.length === 0 ? (
-          <p>Aucune progression.</p>
+          <p className="lpv-muted">Aucune progression.</p>
         ) : (
-          <ul>
-            {progressions.docs.map((progression) => (
-              <li key={String(progression.id)}>
-                {new Date(String(progression.date)).toLocaleDateString('fr-FR')} ·{' '}
-                {String((progression.competence as unknown as { label?: string })?.label ?? '—')} —{' '}
+          progressions.docs.map((progression) => (
+            <div className="lpv-ligne" key={String(progression.id)}>
+              <span>
+                <strong>
+                  {String((progression.competence as unknown as { label?: string })?.label ?? '—')}
+                </strong>
+                <span style={{ color: 'var(--lpv-text-muted)' }}>
+                  {' '}
+                  · {new Date(String(progression.date)).toLocaleDateString('fr-FR')}
+                  {progression.commentaire ? ` — ${progression.commentaire}` : ''}
+                </span>
+              </span>
+              <Tag
+                couleur={
+                  progression.niveau === 'acquis'
+                    ? 'vert'
+                    : progression.niveau === 'en-cours'
+                      ? 'jaune'
+                      : 'rouge'
+                }
+              >
                 {niveauLabel(progression.niveau)}
-                {progression.commentaire ? ` — ${progression.commentaire}` : ''}
-              </li>
-            ))}
-          </ul>
+              </Tag>
+            </div>
+          ))
         )}
       </section>
 
       <section>
-        <h2>Retours de séance</h2>
+        <h2 className="lpv-h2">Retours de séance</h2>
         {seances.docs.filter((s) => s.retour).length === 0 ? (
-          <p>Aucun retour.</p>
+          <p className="lpv-muted">Aucun retour.</p>
         ) : (
           seances.docs
             .filter((s) => s.retour)
             .map((s) => (
-              <article key={String(s.id)} style={{ borderTop: '1px solid #eee', padding: '0.5rem 0' }}>
+              <article key={String(s.id)} style={{ borderBottom: '1px solid var(--lpv-grey-border)', padding: '0.5rem 0' }}>
                 <strong>
                   {new Date(String(s.date)).toLocaleDateString('fr-FR')} · {s.matiere}
                 </strong>
@@ -168,6 +193,6 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
             ))
         )}
       </section>
-    </main>
+    </>
   )
 }

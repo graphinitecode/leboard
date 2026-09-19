@@ -2,15 +2,13 @@
 
 import { useState, useTransition } from 'react'
 
-import {
-  BandeauNotification,
-  BoutonPrincipal,
-  ChampSelect,
-  ChampTexte,
-  ResumeErreurs,
-} from '@/components/govuk/Formulaires'
+import { Bouton } from '@/components/atoms/Bouton'
+import { ChampFormulaire, NotificationBanner, ResumeErreurs } from '@/components/molecules'
 
-import { ajouterDisponibilite, supprimerDisponibilite } from './actions'
+import {
+  ajouterDisponibilite,
+  supprimerDisponibilite,
+} from '@/app/(frontend)/profs/disponibilites/actions'
 
 const OPTIONS_JOUR = [
   { label: 'Lundi', value: 'lundi' },
@@ -44,17 +42,18 @@ export function FormDispo() {
         })
       }}
     >
-      {succes && <BandeauNotification titre={succes} type="succes" />}
+      {succes && <NotificationBanner titre={succes} type="succes" />}
       <ResumeErreurs erreurs={erreur ? [erreur] : []} />
       <div style={{ alignItems: 'end', display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-        <ChampSelect
+        <ChampFormulaire
+          as="select"
           id="dispo-jour"
           label="Jour"
           name="jour"
           options={OPTIONS_JOUR}
           required
         />
-        <ChampTexte
+        <ChampFormulaire
           hint="Format 24h, par exemple 17:30"
           id="dispo-debut"
           label="De"
@@ -62,7 +61,7 @@ export function FormDispo() {
           pattern="\d{2}:\d{2}"
           required
         />
-        <ChampTexte
+        <ChampFormulaire
           hint="Format 24h, par exemple 19:00"
           id="dispo-fin"
           label="À"
@@ -70,9 +69,9 @@ export function FormDispo() {
           pattern="\d{2}:\d{2}"
           required
         />
-        <BoutonPrincipal disabled={pending} type="submit">
+        <Bouton disabled={pending} type="submit">
           {pending ? 'Enregistrement…' : 'Ajouter'}
-        </BoutonPrincipal>
+        </Bouton>
       </div>
     </form>
   )
@@ -92,8 +91,8 @@ export function BoutonSupprimerDispo({ index }: { index: number }) {
       }
       style={{
         background: 'none',
-        border: '1px solid #0b0c0c',
-        borderRadius: 0,
+        border: '1px solid var(--lpv-text)',
+        borderRadius: 'var(--lpv-radius)',
         cursor: 'pointer',
         minHeight: 44,
         minWidth: 44,

@@ -2,16 +2,18 @@
 
 import { useTransition } from 'react'
 
+import { ToggleSegmentes, type OptionSegmentee } from '@/components/molecules/ToggleSegmentes'
+
 import { changerPresence } from './actions'
 
-const OPTIONS = [
+const OPTIONS: OptionSegmentee[] = [
   { label: 'P', libelle: 'Présent', value: 'present' },
   { label: 'A', libelle: 'Absent', value: 'absent' },
   { label: 'J', libelle: 'Absent (justifié)', value: 'absent-justifie' },
 ]
 
-// Toggle à un tap : boutons segmentés style GOV.UK (cibles ≥ 44 px, aria-pressed,
-// pas de couleur seule pour communiquer l'état — libellé court visible).
+// Toggle à un tap : boutons segmentés LPV Board (cibles ≥ 44 px, aria-pressed,
+// état communiqué par couleur + graisse + data-statut — jamais la couleur seule).
 export function TogglePresence({
   presenceId,
   statutInitial,
@@ -21,42 +23,13 @@ export function TogglePresence({
   statutInitial: string
   nomEleve: string
 }) {
-  const [pending, startTransition] = useTransition()
-
   return (
-    <div
-      aria-label={`Présence de ${nomEleve}`}
-      className="govfr-toggle"
-      role="group"
-    >
-      {OPTIONS.map((option) => {
-        const actif = statutInitial === option.value
-        return (
-          <button
-            key={option.value}
-            aria-label={option.libelle}
-            aria-pressed={actif}
-            className={`govfr-toggle-option${actif ? ' govfr-toggle-option--actif' : ''}`}
-            disabled={pending}
-            onClick={() => {
-              if (actif) return
-              startTransition(async () => {
-                const result = await changerPresence(presenceId, option.value)
-                if (!result.ok) {
-                  window.alert(result.erreur)
-                } else {
-                  window.location.reload()
-                }
-              })
-            }
-            }
-            title={option.libelle}
-            type="button"
-          >
-            {option.label}
-          </button>
-        )
-      })}
-    </div>
+    <ToggleSegmentes
+      ariaLabel={`Présence de ${nomEleve}`}
+      attributData={(option) => ({ 'data-statut': option.value })}
+      onChanger={(valeur) => changerPresence(presenceId, valeur)}
+      options={OPTIONS}
+      valeurInitiale={statutInitial}
+    />
   )
 }

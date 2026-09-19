@@ -1,0 +1,439 @@
+/* LPV Board Design System
+   Structure et principes d'accessibilité inspirés de GOV.UK Design System (MIT),
+   adaptés à la charte LPV Board (logo coeur bleu #3d9eff, palette accentuelle).
+
+   Conventions : classes lpv-* (BEM léger). Tous les composants consomment
+   les variables ci-dessous — pas de couleur en dur dans les composants. */
+
+:root {
+  /* Charte LPV Board */
+  --lpv-blue: #3d9eff;         /* marque : boutons, liens, focus secondaire */
+  --lpv-blue-dark: #1877d2;    /* hover boutons / liens (contraste AA sur blanc) */
+  --lpv-sky: #63d0ff;          /* surfaces mises en avant (panel du jour) */
+  --lpv-sky-soft: #eaf7ff;     /* fond clair dérivé du bleu clair */
+  --lpv-violet: #7d3ff0;       /* accent secondaire */
+  --lpv-green: #1f8a4c;        /* succès / présent */
+  --lpv-green-soft: #e3f5ea;
+  --lpv-yellow: #b98900;       /* absent justifié (foncé pour contraste) */
+  --lpv-yellow-soft: #fff8dc;
+  --lpv-orange: #c05e21;       /* « retour à faire » */
+  --lpv-orange-soft: #fdeee3;
+  --lpv-red: #d43b2b;          /* absent / erreur */
+  --lpv-red-soft: #fdebe9;
+
+  /* Neutres */
+  --lpv-text: #0f1419;
+  --lpv-text-muted: #5a6369;
+  --lpv-grey-bg: #f4f5f6;
+  --lpv-grey-border: #d8dadc;
+  --lpv-surface: #ffffff;
+
+  /* Focus : jaune, conservé du GOV.UK pour la visibilité maximale */
+  --lpv-focus: #fd0;
+
+  --lpv-radius: 6px;
+  --lpv-container: 960px;
+}
+
+/* --- Typographie -------------------------------------------------------- */
+
+.lpv-container {
+  margin-inline: auto;
+  max-width: var(--lpv-container);
+  padding-inline: 1rem;
+}
+
+.lpv-h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0.5rem 0 1rem;
+}
+
+.lpv-h2 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 2rem 0 0.75rem;
+  padding-bottom: 0.35rem;
+}
+
+.lpv-muted {
+  color: var(--lpv-text-muted);
+  font-size: 1rem;
+}
+
+/* --- Champs de formulaire ---------------------------------------------- */
+
+.lpv-label {
+  display: block;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 0.25rem;
+}
+
+.lpv-hint {
+  color: var(--lpv-text-muted);
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-bottom: 0.25rem;
+}
+
+.lpv-error-message {
+  color: var(--lpv-red);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0 0 0.25rem;
+}
+
+.lpv-form-group {
+  margin-bottom: 1.25rem;
+}
+
+.lpv-form-group--error {
+  border-left: 5px solid var(--lpv-red);
+  padding-left: 1rem;
+}
+
+.lpv-input,
+.lpv-select,
+.lpv-textarea {
+  appearance: none;
+  border: 2px solid var(--lpv-text);
+  border-radius: var(--lpv-radius);
+  box-sizing: border-box;
+  display: block;
+  font-size: 1.125rem;
+  line-height: 1.4;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.lpv-textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.lpv-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%230f1419' d='M23.1 5.6 12 16.7.9 5.6l1.3-1.3L12 14.1 21.8 4.3z'/%3E%3C/svg%3E");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1rem;
+  max-width: 30rem;
+  padding-right: 2.5rem;
+}
+
+.lpv-input--error {
+  border-color: var(--lpv-red);
+  border-width: 3px;
+}
+
+.lpv-input:focus,
+.lpv-select:focus,
+.lpv-textarea:focus,
+.lpv-bouton:focus,
+.lpv-toggle-option:focus,
+.lpv-ligne:focus,
+a:focus {
+  box-shadow:
+    0 0 0 2px var(--lpv-surface),
+    0 0 0 5px var(--lpv-focus);
+  outline: none;
+}
+
+/* --- Boutons ------------------------------------------------------------ */
+
+.lpv-bouton {
+  background-color: var(--lpv-blue);
+  border: 2px solid transparent;
+  border-radius: var(--lpv-radius);
+  box-shadow: 0 2px 0 var(--lpv-blue-dark);
+  color: var(--lpv-surface);
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.4;
+  min-height: 44px;
+  padding: 0.5rem 1rem 0.35rem;
+  text-decoration: none;
+}
+
+.lpv-bouton:hover {
+  background-color: var(--lpv-blue-dark);
+}
+
+.lpv-bouton:active {
+  box-shadow: none;
+  transform: translateY(2px);
+}
+
+.lpv-bouton:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.lpv-bouton--secondaire {
+  background-color: var(--lpv-grey-bg);
+  box-shadow: 0 2px 0 var(--lpv-grey-border);
+  color: var(--lpv-text);
+}
+
+.lpv-bouton--secondaire:hover {
+  background-color: var(--lpv-grey-border);
+}
+
+/* --- Tags de statut ------------------------------------------------------ */
+
+.lpv-tag {
+  border-radius: 999px;
+  color: var(--lpv-surface);
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.15rem 0.6rem;
+  white-space: nowrap;
+}
+
+.lpv-tag--vert { background-color: var(--lpv-green); }
+.lpv-tag--jaune { background-color: var(--lpv-yellow); }
+.lpv-tag--orange { background-color: var(--lpv-orange); }
+.lpv-tag--rouge { background-color: var(--lpv-red); }
+.lpv-tag--violet { background-color: var(--lpv-violet); }
+
+/* --- Résumé des erreurs -------------------------------------------------- */
+
+.lpv-error-summary {
+  background-color: var(--lpv-surface);
+  border: 4px solid var(--lpv-red);
+  border-radius: var(--lpv-radius);
+  margin-bottom: 2rem;
+  padding: 1rem;
+}
+
+.lpv-error-summary h2 {
+  font-size: 1.25rem;
+  margin: 0 0 0.5rem;
+}
+
+.lpv-error-summary ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.lpv-error-summary li {
+  color: var(--lpv-red);
+  font-weight: 700;
+  margin: 0.25rem 0;
+}
+
+/* --- Bannières & encadrés ------------------------------------------------ */
+
+.lpv-banner {
+  background-color: var(--lpv-blue);
+  border-radius: var(--lpv-radius);
+  color: var(--lpv-surface);
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+}
+
+.lpv-banner--succes {
+  background-color: var(--lpv-green);
+}
+
+.lpv-inset {
+  background-color: var(--lpv-grey-bg);
+  border-left: 6px solid var(--lpv-sky);
+  border-radius: 0 var(--lpv-radius) var(--lpv-radius) 0;
+  margin: 1rem 0;
+  padding: 0.85rem 1rem;
+}
+
+.lpv-panel {
+  background-color: var(--lpv-sky-soft);
+  border: 2px solid var(--lpv-sky);
+  border-radius: var(--lpv-radius);
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+}
+
+.lpv-panel--succes {
+  border-color: var(--lpv-green);
+}
+
+.lpv-panel h2 {
+  margin-top: 0;
+}
+
+/* --- Navigation de service ----------------------------------------------- */
+
+.lpv-entete {
+  background-color: var(--lpv-surface);
+  border-bottom: 4px solid var(--lpv-blue);
+  margin-bottom: 1.5rem;
+}
+
+.lpv-entete__inner {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+}
+
+.lpv-entete__logo {
+  align-items: center;
+  color: var(--lpv-text);
+  display: flex;
+  font-weight: 700;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.lpv-entete__logo-img {
+  height: 2.25rem;
+  width: auto;
+}
+
+.lpv-entete__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.lpv-entete__nav a {
+  color: var(--lpv-blue-dark);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.lpv-entete__nav a:hover {
+  text-decoration: underline;
+}
+
+.lpv-skip-link {
+  background: var(--lpv-surface);
+  border: 2px solid var(--lpv-blue);
+  border-radius: var(--lpv-radius);
+  left: -9999px;
+  padding: 0.5rem 1rem;
+  position: absolute;
+  z-index: 100;
+}
+
+.lpv-skip-link:focus {
+  left: 1rem;
+  position: fixed;
+  top: 1rem;
+}
+
+/* --- Listes structurées --------------------------------------------------- */
+
+.lpv-ligne {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--lpv-grey-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  text-align: left;
+  width: 100%;
+}
+
+.lpv-ligne__titre {
+  color: var(--lpv-blue-dark);
+  font-weight: 700;
+}
+
+a.lpv-ligne {
+  border-radius: var(--lpv-radius);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+a.lpv-ligne:hover {
+  background-color: var(--lpv-grey-bg);
+}
+
+.lpv-summary-list {
+  margin: 0;
+  width: 100%;
+}
+
+.lpv-summary-list__row {
+  border-bottom: 1px solid var(--lpv-grey-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+}
+
+.lpv-summary-list__key {
+  color: var(--lpv-text-muted);
+  font-weight: 700;
+  min-width: 9rem;
+}
+
+.lpv-summary-list__value {
+  flex: 1;
+}
+
+/* --- Toggle segmenté ------------------------------------------------------ */
+
+.lpv-toggle {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.lpv-toggle-option {
+  background: var(--lpv-surface);
+  border: 2px solid var(--lpv-text);
+  border-radius: var(--lpv-radius);
+  cursor: pointer;
+  font-size: 1.125rem;
+  font-weight: 400;
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.lpv-toggle-option--actif {
+  font-weight: 700;
+}
+
+.lpv-toggle-option--actif[data-statut='present'] {
+  background-color: var(--lpv-green-soft);
+  border-color: var(--lpv-green);
+}
+
+.lpv-toggle-option--actif[data-statut='absent-justifie'] {
+  background-color: var(--lpv-yellow-soft);
+  border-color: var(--lpv-yellow);
+}
+
+.lpv-toggle-option--actif[data-statut='absent'] {
+  background-color: var(--lpv-red-soft);
+  border-color: var(--lpv-red);
+}
+
+/* --- Rétrocompatibilité (transition) -------------------------------------- */
+
+.govfr-label { color: inherit; }
+
+/* --- Rétrocompatibilité immédiate : alias vers lpv ------------------------ */
+/* Les pages migrées utilisent lpv-* ; ces alias éviteront les erreurs pendant
+   la transition et seront supprimés à la fin de la migration. */
+
+@media print {
+  .lpv-entete,
+  .lpv-bouton {
+    display: none !important;
+  }
+}

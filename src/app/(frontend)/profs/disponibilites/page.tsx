@@ -1,10 +1,9 @@
-import Link from 'next/link'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
 import { requireProf } from '@/utilities/profAuth'
-
-import { BoutonSupprimerDispo, FormDispo } from './FormDispo'
+import { InsetText } from '@/components/atoms'
+import { FormDispo, BoutonSupprimerDispo } from '@/components/organisms/FormulairesDispo'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,36 +26,34 @@ export default async function DisponibilitesPage() {
   )
 
   return (
-    <main style={{ maxWidth: 720, margin: '2rem auto', padding: '0 1rem' }}>
-      <p>
-        <Link href="/profs">← Mes séances</Link>
-      </p>
-      <h1>Mes disponibilités</h1>
-      <p>
-        <small>Créneaux hebdomadaires où vous êtes disponible. L’association les utilise pour
-        planifier les séances.</small>
+    <>
+      <h1 className="lpv-h1">Mes disponibilités</h1>
+      <p className="lpv-muted">
+        Créneaux hebdomadaires où vous êtes disponible. L&rsquo;association les utilise pour
+        planifier les séances.
       </p>
 
       {dispos.length === 0 ? (
-        <p>Aucune disponibilité déclarée.</p>
+        <InsetText>Aucune disponibilité déclarée.</InsetText>
       ) : (
-        <ul style={{ display: 'grid', gap: '0.5rem', listStyle: 'none', padding: 0 }}>
+        <div>
           {dispos.map((dispo, index) => (
-            <li
-              className="govfr-ligne-eleve"
-              key={`${dispo.jour}-${dispo.heureDebut}-${index}`}
-            >
+            <div className="lpv-ligne" key={`${dispo.jour}-${dispo.heureDebut}-${index}`}>
               <span style={{ textTransform: 'capitalize' }}>
-                {dispo.jour} · {dispo.heureDebut} → {dispo.heureFin}
+                <strong>{dispo.jour}</strong>
+                <span style={{ color: 'var(--lpv-text-muted)' }}>
+                  {' '}
+                  · {dispo.heureDebut} → {dispo.heureFin}
+                </span>
               </span>
               <BoutonSupprimerDispo index={index} />
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
 
-      <h2>Ajouter</h2>
+      <h2 className="lpv-h2">Ajouter</h2>
       <FormDispo />
-    </main>
+    </>
   )
 }
