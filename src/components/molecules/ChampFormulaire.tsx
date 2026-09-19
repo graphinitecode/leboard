@@ -119,7 +119,7 @@ export function ChampFormulaire({
             onClick={() => setVisible((v) => !v)}
             type="button"
           >
-            <Icon icone={visible ? 'rivet-icons:eye-off' : 'rivet-icons:eye'} taille={18} />
+            <Icon icone={visible ? 'rivet-icons:eye-off' : 'rivet-icons:eye'} taille={26} />
           </button>
         </div>
       ) : (
