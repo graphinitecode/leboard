@@ -12,6 +12,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Message d'erreur avec préfixe lecteur d'écran « Erreur : »
 - Utilitaire `lpv-visually-hidden` pour l'accessibilité
 
+### Ajouté
+- Page design system (/design-system) : démonstration visuelle de tous les composants
+- Modale : composant réutilisable accessible (Escape, clic extérieur, focus, aria-modal)
+- Toast : composant réutilisable auto-dismiss (5s, role=status)
+
 ### Modifié
 - Fiche élève (profs) : alertes en TexteAvertissement, présences et progressions en Tableau accessible
 - Fiche enfant (parents) : présences, progressions et prêts en Tableau accessible ; ajout d'un lien retour
@@ -19,6 +24,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Tableau : ajout de la prop `contenu` (ReactNode) dans les cellules pour afficher des composants (Tag)
 - ChampFormulaire : ajout des props `min` et `max`
 - BackLink : ajout de la prop `onClick`, styles en classe CSS `lpv-back-link`
+- FormulairesDispo : modale et toast extraits en composants réutilisables (Modale, Toast)
 
 ## [0.2.0] — 2026-09-19
 
