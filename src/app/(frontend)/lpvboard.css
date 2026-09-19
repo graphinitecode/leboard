@@ -367,21 +367,21 @@
 .lpv-textarea {
   appearance: none;
   background-color: var(--lpv-surface);
-  border: 2px solid var(--lpv-grey-border);
+  border: 2px solid var(--lpv-text);
   border-radius: var(--lpv-radius-lg);
   box-sizing: border-box;
   display: block;
   font-size: 1.125rem;
   line-height: 1.4;
   padding: 0.6rem 0.75rem;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
   width: 100%;
 }
 
 .lpv-input:hover,
 .lpv-select:hover,
 .lpv-textarea:hover {
-  border-color: var(--lpv-text-muted);
+  border-color: var(--lpv-text);
 }
 
 .lpv-textarea {
@@ -1362,7 +1362,7 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 }
 
 .lpv-label--l {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
 }
 
@@ -1592,7 +1592,7 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 }
 
 .lpv-cases__item {
-  align-items: flex-start;
+  align-items: center;
   display: flex;
   gap: 0.5rem;
 }
@@ -1600,7 +1600,6 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 .lpv-cases__input {
   flex-shrink: 0;
   height: 2.5ex;
-  margin-top: 0.15em;
   min-height: 44px;
   min-width: 44px;
   width: 2.5ex;
@@ -1611,6 +1610,7 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
   font-size: 1.125rem;
   font-weight: 400;
   line-height: 1.4;
+  padding-top: 0.35rem;
 }
 
 .lpv-cases__hint {
@@ -1668,7 +1668,7 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 }
 
 .lpv-radios__item {
-  align-items: flex-start;
+  align-items: center;
   display: flex;
   gap: 0.5rem;
 }
@@ -1676,7 +1676,6 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 .lpv-radios__input {
   flex-shrink: 0;
   height: 2.5ex;
-  margin-top: 0.15em;
   min-height: 44px;
   min-width: 44px;
   width: 2.5ex;
@@ -1687,6 +1686,7 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
   font-size: 1.125rem;
   font-weight: 400;
   line-height: 1.4;
+  padding-top: 0.35rem;
 }
 
 .lpv-radios__hint {
@@ -1733,7 +1733,7 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 .lpv-champ-date__input {
   appearance: none;
   background-color: var(--lpv-surface);
-  border: 2px solid var(--lpv-grey-border);
+  border: 2px solid var(--lpv-text);
   border-radius: var(--lpv-radius-lg);
   box-sizing: border-box;
   display: block;
@@ -2182,7 +2182,7 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 .lpv-file-upload {
   appearance: none;
   background-color: var(--lpv-surface);
-  border: 2px solid var(--lpv-grey-border);
+  border: 2px solid var(--lpv-text);
   border-radius: var(--lpv-radius-lg);
   box-sizing: border-box;
   font-size: 1.125rem;
@@ -2193,7 +2193,7 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 }
 
 .lpv-file-upload:hover {
-  border-color: var(--lpv-text-muted);
+  border-color: var(--lpv-text);
 }
 
 .lpv-file-upload:focus {
