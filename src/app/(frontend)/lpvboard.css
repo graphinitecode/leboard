@@ -403,6 +403,34 @@ a.lpv-ligne:hover {
   flex: 1;
 }
 
+/* --- Champs en ligne (formulaire sur une ligne) ----------------------------- */
+/* Chaque champ vit dans une cellule flex column : labels alignés en haut,
+   inputs alignés sur une même ligne même si les hints diffèrent. */
+
+.lpv-champs-inline {
+  align-items: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+}
+
+.lpv-champs-inline__champ {
+  flex: 1 1 0;
+  min-width: 9rem;
+}
+
+.lpv-champs-inline__champ .lpv-form-group {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin-bottom: 1.25rem;
+}
+
+.lpv-champs-inline__champ .lpv-select,
+.lpv-champs-inline__champ .lpv-input {
+  margin-top: auto;
+}
+
 /* --- Toggle segmenté ------------------------------------------------------ */
 
 .lpv-toggle {
