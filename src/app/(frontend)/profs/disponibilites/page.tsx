@@ -19,7 +19,7 @@ export default async function DisponibilitesPage() {
     id: user.id,
     depth: 0,
     overrideAccess: false,
-    user: { collection: 'users', id: user.id } as never,
+    user,
   })
 
   const dispos = [...(me.disponibilites ?? [])].sort(

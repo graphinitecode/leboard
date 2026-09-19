@@ -26,7 +26,7 @@ export default async function ProfsDashboard() {
       ],
     },
     overrideAccess: false,
-    user: { collection: 'users', id: user.id } as never,
+    user,
   })
 
   const eleves = await payload.find({
@@ -35,7 +35,7 @@ export default async function ProfsDashboard() {
     limit: 0,
     where: { profReferent: { equals: user.id } },
     overrideAccess: false,
-    user: { collection: 'users', id: user.id } as never,
+    user,
   })
 
   const aVenir = seances.docs

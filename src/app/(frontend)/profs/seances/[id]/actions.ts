@@ -41,7 +41,7 @@ export async function changerPresence(presenceId: number | string, statut: strin
       id: presenceId,
       data: { present: statut as 'present' },
       overrideAccess: false,
-      user: { collection: 'users', id: user.id } as never,
+      user,
     })
     revalidatePath('/profs')
     return { ok: true }
@@ -64,7 +64,7 @@ export async function enregistrerRetour(seanceId: number | string, retour: strin
       id: seanceId,
       data: { retour: texteVersLexical(retour) as never },
       overrideAccess: false,
-      user: { collection: 'users', id: user.id } as never,
+      user,
     })
     revalidatePath(`/profs/seances/${seanceId}`)
     return { ok: true }
@@ -103,7 +103,7 @@ export async function ajouterProgression(formData: FormData) {
         seance: seanceId ? (seanceId as unknown as number) : undefined,
       },
       overrideAccess: false,
-      user: { collection: 'users', id: user.id },
+      user,
     })
     revalidatePath(`/profs/seances/${seanceId}`)
     return { ok: true }

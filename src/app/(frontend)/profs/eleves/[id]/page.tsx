@@ -20,7 +20,7 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
       id,
       depth: 0,
       overrideAccess: false,
-      user: { collection: 'users', id: user.id } as never,
+      user,
     })
     .catch(() => null)
 
@@ -34,7 +34,7 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
     limit: 0,
     overrideAccess: false,
     sort: '-createdAt',
-    user: { collection: 'users', id: user.id } as never,
+    user,
     where: { eleve: { equals: id } },
   })
 
@@ -44,7 +44,7 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
     limit: 50,
     overrideAccess: false,
     sort: '-date',
-    user: { collection: 'users', id: user.id } as never,
+    user,
     where: { eleve: { equals: id } },
   })
 
@@ -54,7 +54,7 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
     limit: 30,
     overrideAccess: false,
     sort: '-date',
-    user: { collection: 'users', id: user.id } as never,
+    user,
     where: { groupe: { equals: id } },
   })
 
