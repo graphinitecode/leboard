@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState, useTransition } from 'react'
 
+import { BackLink } from '@/components/atoms/BackLink'
 import { Bouton } from '@/components/atoms/Bouton'
-import { NotificationBanner, ResumeErreurs } from '@/components/molecules'
+import { ChampFormulaire, NotificationBanner, ResumeErreurs } from '@/components/molecules'
 
 import {
   ajouterDisponibilite,
@@ -342,36 +343,16 @@ export function FormulaireDispoSteps({
 
       {etape === 2 && (
         <>
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault()
-              setErreur(null)
-              setEtape(1)
-            }}
-            style={{
-              color: 'var(--lpv-portail-dark)',
-              display: 'inline-block',
-              marginBottom: '0.75rem',
-              textDecoration: 'none',
-            }}
-          >
-            <span aria-hidden="true">← </span>
-            Retour
-          </a>
+          <BackLink href="#" onClick={(e) => { e.preventDefault(); setErreur(null); setEtape(1) }}>Retour</BackLink>
           <p className="lpv-stepper__etape">Étape 2 sur 3</p>
           <h2 className="lpv-stepper__question">Quelle heure de début ?</h2>
-          <p className="lpv-stepper__hint">Début du créneau le {libelleJour.toLowerCase()}.</p>
-          <label className="lpv-label" htmlFor="step-debut">
-            De
-          </label>
-          <input
-            className="lpv-input"
+          <ChampFormulaire
+            hint={`Début du créneau le ${libelleJour.toLowerCase()}.`}
             id="step-debut"
+            label="De"
             max="22:00"
             min="08:00"
             onChange={(e) => setHeureDebut(e.target.value)}
-            required
             type="time"
             value={heureDebut}
           />
@@ -396,36 +377,16 @@ export function FormulaireDispoSteps({
 
       {etape === 3 && (
         <>
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault()
-              setErreur(null)
-              setEtape(2)
-            }}
-            style={{
-              color: 'var(--lpv-portail-dark)',
-              display: 'inline-block',
-              marginBottom: '0.75rem',
-              textDecoration: 'none',
-            }}
-          >
-            <span aria-hidden="true">← </span>
-            Retour
-          </a>
+          <BackLink href="#" onClick={(e) => { e.preventDefault(); setErreur(null); setEtape(2) }}>Retour</BackLink>
           <p className="lpv-stepper__etape">Étape 3 sur 3</p>
           <h2 className="lpv-stepper__question">Quelle heure de fin ?</h2>
-          <p className="lpv-stepper__hint">Fin du créneau le {libelleJour.toLowerCase()}.</p>
-          <label className="lpv-label" htmlFor="step-fin">
-            À
-          </label>
-          <input
-            className="lpv-input"
+          <ChampFormulaire
+            hint={`Fin du créneau le ${libelleJour.toLowerCase()}.`}
             id="step-fin"
+            label="À"
             max="22:00"
             min={heureDebut || '08:00'}
             onChange={(e) => setHeureFin(e.target.value)}
-            required
             type="time"
             value={heureFin}
           />

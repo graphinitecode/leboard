@@ -21,6 +21,8 @@ export function ChampFormulaire({
   value,
   onChange,
   pattern,
+  min,
+  max,
   rows = 4,
   options,
   isPageHeading,
@@ -39,6 +41,8 @@ export function ChampFormulaire({
   value?: string
   onChange?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void
   pattern?: string
+  min?: string
+  max?: string
   rows?: number
   options?: { label: string; value: string }[]
   isPageHeading?: boolean
@@ -98,6 +102,8 @@ export function ChampFormulaire({
           className={`lpv-input${classeErreur}`}
           defaultValue={defaultValue}
           id={id}
+          max={max}
+          min={min}
           name={name ?? id}
           onChange={onChange as never}
           pattern={pattern}

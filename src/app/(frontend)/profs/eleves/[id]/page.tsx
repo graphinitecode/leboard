@@ -2,7 +2,9 @@ import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
-import { BackLink, InsetText, Tag } from '@/components/atoms'
+import { BackLink, Tag, TexteAvertissement } from '@/components/atoms'
+import { Tableau } from '@/components/molecules'
+import type { TableauHeadCell, TableauRowCell } from '@/components/molecules'
 import { SummaryList } from '@/components/molecules/Listes'
 import { requireProf } from '@/utilities/profAuth'
 import { niveauLabel, texteLexical } from '@/utilities/rapports'
@@ -20,7 +22,6 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
   const user = await requireProf()
   const payload = await getPayload({ config: configPromise })
 
-  // Lecture via les access rules du prof (Spec 02) : pas de bypass
   const eleve = await payload
     .findByID({
       collection: 'eleves',
@@ -65,7 +66,6 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
     where: { groupe: { equals: id } },
   })
 
-  // Alertes décrochage ouvertes — visibles seulement par le prof référent
   const alertes =
     eleve.profReferent && String(eleve.profReferent) === String(user.id)
       ? await payload.find({
@@ -86,6 +86,42 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
   const presentes = presences.docs.filter((p) => p.present === 'present').length
   const taux = presences.totalDocs > 0 ? Math.round((presentes / presences.totalDocs) * 100) : null
 
+  const presencesHead: TableauHeadCell[] = [
+    { texte: 'Date' },
+    { texte: 'Matière' },
+    { texte: 'Statut' },
+  ]
+
+  const presencesRows: TableauRowCell[][] = presences.docs.map((presence) => {
+    const seance = presence.seance as unknown as { date?: string; matiere?: string }
+    const statut = statutPresence(presence.present)
+    return [
+      { texte: seance?.date ? new Date(String(seance.date)).toLocaleDateString('fr-FR') : '—' },
+      { texte: seance?.matiere ?? '—' },
+      { contenu: <Tag couleur={statut.couleur}>{statut.libelle}</Tag> },
+    ]
+  })
+
+  const progressionsHead: TableauHeadCell[] = [
+    { texte: 'Date' },
+    { texte: 'Compétence' },
+    { texte: 'Niveau' },
+    { texte: 'Commentaire' },
+  ]
+
+  const progressionsRows: TableauRowCell[][] = progressions.docs.map((progression) => {
+    const competence = progression.competence as unknown as { label?: string; matiere?: string }
+    const niveau = progression.niveau
+    const couleur: 'vert' | 'jaune' | 'rouge' =
+      niveau === 'acquis' ? 'vert' : niveau === 'en-cours' ? 'jaune' : 'rouge'
+    return [
+      { texte: new Date(String(progression.date)).toLocaleDateString('fr-FR') },
+      { texte: String(competence?.label ?? '—') },
+      { contenu: <Tag couleur={couleur}>{niveauLabel(niveau)}</Tag> },
+      { texte: progression.commentaire ?? '' },
+    ]
+  })
+
   return (
     <>
       <BackLink href="/profs">Tableau de bord</BackLink>
@@ -104,13 +140,12 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
         <section>
           <h2 className="lpv-h2">Alertes actives</h2>
           {alertes.docs.map((alerte) => (
-            <InsetText key={String(alerte.id)}>
-              <strong style={{ color: 'var(--lpv-red)' }}>⚠ {alerte.message}</strong>
+            <TexteAvertissement key={String(alerte.id)}>
+              {alerte.message}{' '}
               <span style={{ color: 'var(--lpv-text-muted)' }}>
-                {' '}
                 ({new Date(String(alerte.dateCreation)).toLocaleDateString('fr-FR')})
               </span>
-            </InsetText>
+            </TexteAvertissement>
           ))}
         </section>
       )}
@@ -120,26 +155,7 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
         {presences.docs.length === 0 ? (
           <p className="lpv-muted">Aucune présence enregistrée.</p>
         ) : (
-          presences.docs.map((presence) => {
-            const seance = presence.seance as unknown as { date?: string; matiere?: string }
-            const statut = statutPresence(presence.present)
-            return (
-              <div className="lpv-ligne" key={String(presence.id)}>
-                <span>
-                  <strong>
-                    {seance?.date
-                      ? new Date(String(seance.date)).toLocaleDateString('fr-FR')
-                      : '—'}
-                  </strong>
-                  <span style={{ color: 'var(--lpv-text-muted)' }}>
-                    {' '}
-                    · {seance?.matiere ?? '—'}
-                  </span>
-                </span>
-                <Tag couleur={statut.couleur}>{statut.libelle}</Tag>
-              </div>
-            )
-          })
+          <Tableau caption="Présences" head={presencesHead} rows={presencesRows} />
         )}
       </section>
 
@@ -148,31 +164,7 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
         {progressions.docs.length === 0 ? (
           <p className="lpv-muted">Aucune progression.</p>
         ) : (
-          progressions.docs.map((progression) => (
-            <div className="lpv-ligne" key={String(progression.id)}>
-              <span>
-                <strong>
-                  {String((progression.competence as unknown as { label?: string })?.label ?? '—')}
-                </strong>
-                <span style={{ color: 'var(--lpv-text-muted)' }}>
-                  {' '}
-                  · {new Date(String(progression.date)).toLocaleDateString('fr-FR')}
-                  {progression.commentaire ? ` — ${progression.commentaire}` : ''}
-                </span>
-              </span>
-              <Tag
-                couleur={
-                  progression.niveau === 'acquis'
-                    ? 'vert'
-                    : progression.niveau === 'en-cours'
-                      ? 'jaune'
-                      : 'rouge'
-                }
-              >
-                {niveauLabel(progression.niveau)}
-              </Tag>
-            </div>
-          ))
+          <Tableau caption="Progressions" head={progressionsHead} rows={progressionsRows} />
         )}
       </section>
 

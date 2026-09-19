@@ -1501,6 +1501,24 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
   color: var(--lpv-surface);
 }
 
+/* --- Back link -------------------------------------------------------------- */
+
+.lpv-back-link {
+  color: var(--lpv-portail-dark);
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  text-decoration: none;
+}
+
+.lpv-back-link:hover {
+  text-decoration: underline;
+}
+
+.lpv-back-link:focus {
+  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
+  outline: none;
+}
+
 /* --- Details (disclosure) -------------------------------------------------- */
 
 .lpv-details {
