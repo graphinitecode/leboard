@@ -60,12 +60,6 @@
   --lpv-overlay: rgb(15 20 25 / 50%);
   --lpv-overlay-heavy: rgb(15 20 25 / 30%);
 
-  /* Boutons aux couleurs des tags */
-  --lpv-bouton-primaire: #0080ff;
-  --lpv-bouton-primaire-hover: #0066cc;
-  --lpv-bouton-primaire-ombre: #0052a3;
-  --lpv-bouton-avertissement-ombre: #cc5600;
-
   --lpv-radius: 6px;
   --lpv-radius-lg: 4px;
   --lpv-container: 960px;
@@ -120,8 +114,6 @@ html[data-theme='dark'] {
   --lpv-tag-bleu: #0080ff;
 
   /* Boutons : fond tag identique, ombre assombrie pour le fond sombre */
-  --lpv-bouton-primaire: #0080ff;
-  --lpv-bouton-primaire-hover: #3399ff;
   --lpv-bouton-primaire-ombre: #004080;
   --lpv-bouton-avertissement-ombre: #803300;
 
@@ -133,15 +125,16 @@ html[data-theme='dark'] {
   color-scheme: dark;
 }
 
-/* Boutons en mode sombre : ils reprennent les couleurs des tags */
+/* Boutons en mode sombre : ils reprennent les couleurs des tags.
+   Le hover assombrit le fond (plus sombre que le repos). */
 html[data-theme='dark'] .lpv-bouton {
-  background-color: var(--lpv-bouton-primaire);
+  background-color: var(--lpv-tag-bleu);
   box-shadow: 0 2px 0 var(--lpv-bouton-primaire-ombre);
   color: #ffffff;
 }
 
 html[data-theme='dark'] .lpv-bouton:hover {
-  background-color: var(--lpv-bouton-primaire-hover);
+  background-color: #0066cc;
 }
 
 html[data-theme='dark'] .lpv-bouton--avertissement {
@@ -150,10 +143,18 @@ html[data-theme='dark'] .lpv-bouton--avertissement {
   color: #ffffff;
 }
 
+html[data-theme='dark'] .lpv-bouton--avertissement:hover {
+  background-color: #cc5600;
+}
+
 html[data-theme='dark'] .lpv-bouton--danger {
   background-color: var(--lpv-tag-rouge);
   box-shadow: 0 2px 0 var(--lpv-red-shadow);
   color: #ffffff;
+}
+
+html[data-theme='dark'] .lpv-bouton--danger:hover {
+  background-color: #cc0003;
 }
 
 /* --- Typographie -------------------------------------------------------- */
