@@ -143,11 +143,7 @@
   background-color: var(--lpv-surface);
   border-bottom: 4px solid var(--lpv-blue);
   box-shadow: 0 12px 24px rgb(15 20 25 / 20%);
-  display: grid;
-  gap: 2rem;
-  grid-template-columns: 1fr 1fr;
   left: 50%;
-  padding: 1.5rem 1rem 2rem;
   position: absolute;
   top: 100%;
   transform: translateX(-50%);
@@ -155,18 +151,29 @@
   z-index: 50;
 }
 
+/* Le contenu du panneau reprend le container du contenu (960px centré) */
+.lpv-menu-panneau__inner {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr 1fr;
+  margin-inline: auto;
+  max-width: var(--lpv-container);
+  padding: 1.5rem 1rem 2rem;
+}
+
 /* Le panneau recouvre le hero (overlay), il ne le pousse pas.
    Il déborde volontairement du header : pas de clipping. */
 
 @media (max-width: 639px) {
-  .lpv-menu-panneau {
+  .lpv-menu-panneau__inner {
     grid-template-columns: 1fr;
   }
 }
 
 .lpv-menu-panneau__titre {
   border-bottom: 1px solid var(--lpv-grey-border);
-  font-size: 1.125rem;
+  font-size: 1.5rem;
+  font-weight: 700;
   margin: 0 0 0.75rem;
   padding-bottom: 0.5rem;
 }

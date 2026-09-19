@@ -47,31 +47,33 @@ export function MenuDepliant({
 
       {ouvert && (
         <div className="lpv-menu-panneau" data-theme="light">
-          <div className="lpv-menu-panneau__colonne">
-            <h2 className="lpv-menu-panneau__titre">Services et informations</h2>
-            <ul>
-              {services.map((lien) => (
-                <li key={lien.href}>
-                  <Link href={lien.href} onClick={() => setOuvert(false)}>
-                    {lien.libelle}
-                  </Link>
-                  {lien.description ? <p>{lien.description}</p> : null}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="lpv-menu-panneau__colonne">
-            <h2 className="lpv-menu-panneau__titre">Légales</h2>
-            <ul>
-              {legales.map((lien) => (
-                <li key={lien.href}>
-                  <Link href={lien.href} onClick={() => setOuvert(false)}>
-                    {lien.libelle}
-                  </Link>
-                  {lien.description ? <p>{lien.description}</p> : null}
-                </li>
-              ))}
-            </ul>
+          <div className="lpv-menu-panneau__inner">
+            <div className="lpv-menu-panneau__colonne">
+              <h2 className="lpv-menu-panneau__titre">Services et informations</h2>
+              <ul>
+                {services.map((lien) => (
+                  <li key={lien.href}>
+                    <Link href={lien.href} onClick={() => setOuvert(false)}>
+                      {lien.libelle}
+                    </Link>
+                    {lien.description ? <p>{lien.description}</p> : null}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="lpv-menu-panneau__colonne">
+              <h2 className="lpv-menu-panneau__titre">Légales</h2>
+              <ul>
+                {legales.map((lien) => (
+                  <li key={lien.href}>
+                    <Link href={lien.href} onClick={() => setOuvert(false)}>
+                      {lien.libelle}
+                    </Link>
+                    {lien.description ? <p>{lien.description}</p> : null}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       )}
