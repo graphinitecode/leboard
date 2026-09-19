@@ -1,40 +1,38 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 
+import { BoutonDeconnexion } from '@/components/atoms/BoutonDeconnexion'
 import { LogoLPV } from '@/components/atoms/LogoLPV'
 import { PiedPage } from '@/components/molecules/PiedPage'
 
-// Molécule : entête de service des portails (logo + navigation + skip link).
+// Molécule : entête de service des portails (logo + navigation + déconnexion).
 // Thème clair forcé : data-theme="light" sur le conteneur.
+// Si `afficherDeconnexion` est false (ex. page de login), le bouton est masqué.
 export function EnteteService({
   liens,
   libelleService = 'LPV Board',
-  liensPied,
+  deconnexion = false,
 }: {
   liens: { href: string; libelle: string }[]
   libelleService?: string
-  liensPied?: { href: string; libelle: string }[]
+  deconnexion?: boolean
 }) {
   return (
-    <>
-      <a className="lpv-skip-link" href="#contenu-principal">
-        Aller au contenu principal
-      </a>
-      <header className="lpv-entete" data-theme="light">
-        <div className="lpv-entete__inner">
-          <Link className="lpv-entete__logo" href="/">
-            <LogoLPV libelle={libelleService} />
-          </Link>
-          <nav aria-label="Navigation du service" className="lpv-entete__nav">
-            {liens.map((lien) => (
-              <Link href={lien.href} key={lien.href}>
-                {lien.libelle}
-              </Link>
-            ))}
-          </nav>
-        </div>
-      </header>
-    </>
+    <header className="lpv-entete" data-theme="light">
+      <div className="lpv-entete__inner">
+        <Link className="lpv-entete__logo" href="/">
+          <LogoLPV libelle={libelleService} />
+        </Link>
+        <nav aria-label="Navigation du service" className="lpv-entete__nav">
+          {liens.map((lien) => (
+            <Link href={lien.href} key={lien.href}>
+              {lien.libelle}
+            </Link>
+          ))}
+          {deconnexion && <BoutonDeconnexion />}
+        </nav>
+      </div>
+    </header>
   )
 }
 
@@ -55,6 +53,9 @@ export function ContenuPage({
       data-theme="light"
       style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
     >
+      <a className="lpv-skip-link" href="#contenu-principal">
+        Aller au contenu principal
+      </a>
       <main className="lpv-container" id="contenu-principal" style={{ flex: 1 }}>
         {children}
       </main>

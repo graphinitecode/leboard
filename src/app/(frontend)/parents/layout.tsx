@@ -18,6 +18,7 @@ export default function ParentsLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <EnteteService
+        deconnexion
         libelleService="Espace parents"
         liens={[{ href: '/rgpd', libelle: 'Protection des données' }]}
       />
