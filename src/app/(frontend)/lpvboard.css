@@ -2240,13 +2240,17 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 /* --- Pagination ----------------------------------------------------------- */
 
 .lpv-pagination {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  justify-content: center;
   margin: 2rem 0;
 }
 
 .lpv-pagination__liste {
   display: flex;
   gap: 0.25rem;
-  justify-content: center;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -2256,13 +2260,10 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
   display: inline-flex;
 }
 
-.lpv-pagination__item--courant {
-  font-weight: 700;
-}
-
 .lpv-pagination__item--ellipsis {
   align-items: center;
   display: inline-flex;
+  color: var(--lpv-text);
   min-height: 44px;
   padding: 0 0.5rem;
 }
@@ -2287,6 +2288,13 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
   outline: none;
 }
 
+/* Page courante : bloc plein inversé (motif GOV.UK), pas un lien */
+.lpv-pagination__lien--courant {
+  background-color: var(--lpv-portail);
+  color: var(--lpv-surface);
+  text-decoration: none;
+}
+
 .lpv-pagination__precedent,
 .lpv-pagination__suivant {
   display: inline-flex;
@@ -2305,6 +2313,11 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
   display: block;
   font-size: 0.875rem;
   font-weight: 400;
+}
+
+/* Variante bloc : Précédent et Suivant empilés descriptifs */
+.lpv-pagination--bloc {
+  justify-content: flex-start;
 }
 
 .lpv-pagination--bloc .lpv-pagination__precedent,

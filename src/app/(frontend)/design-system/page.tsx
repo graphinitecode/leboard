@@ -58,11 +58,31 @@ const TACHES: Tache[] = [
 ]
 
 const PAGES: (PageNumero | { ellipsis: true })[] = [
+  { numero: 1, href: '#' },
+  { ellipsis: true },
+  { numero: 6, href: '#' },
+  { numero: 7, href: '#', courant: true },
+  { numero: 8, href: '#' },
+  { ellipsis: true },
+  { numero: 42, href: '#' },
+]
+
+const PAGES_COURTE: (PageNumero | { ellipsis: true })[] = [
+  { numero: 1, href: '#' },
+  { numero: 2, href: '#', courant: true },
+  { numero: 3, href: '#' },
+]
+
+const PAGES_PREMIERE: (PageNumero | { ellipsis: true })[] = [
   { numero: 1, href: '#', courant: true },
   { numero: 2, href: '#' },
   { numero: 3, href: '#' },
-  { ellipsis: true },
-  { numero: 10, href: '#' },
+]
+
+const PAGES_DERNIERE: (PageNumero | { ellipsis: true })[] = [
+  { numero: 1, href: '#' },
+  { numero: 2, href: '#' },
+  { numero: 3, href: '#', courant: true },
 ]
 
 export default function DesignSystemPage() {
@@ -150,7 +170,14 @@ export default function DesignSystemPage() {
         ]} />
 
         <h3 className="lpv-h3">Pagination</h3>
+        <p className="lpv-muted" style={{ marginTop: 0 }}>
+          La page courante est un bloc plein inversé, non cliquable. « Précédent » n&apos;est
+          pas rendu en première page, « Suivant » en dernière page.
+        </p>
         <PaginationLPV items={PAGES} precedente={{ href: '#' }} suivante={{ href: '#' }} />
+        <PaginationLPV items={PAGES_COURTE} precedente={{ href: '#' }} suivante={{ href: '#' }} />
+        <PaginationLPV items={PAGES_PREMIERE} suivante={{ href: '#' }} />
+        <PaginationLPV items={PAGES_DERNIERE} precedente={{ href: '#' }} />
         <PaginationLPV items={PAGES} precedente={{ href: '#', libelle: 'Disponibilités' }} suivante={{ href: '#', libelle: 'Élèves' }} variante="bloc" />
 
         <h3 className="lpv-h3">Details</h3>
