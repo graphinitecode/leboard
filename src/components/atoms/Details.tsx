@@ -21,10 +21,10 @@ export function Details({
     <details className="lpv-details" id={id} open={open}>
       <summary className="lpv-details__resume">
         <span aria-hidden="true" className="lpv-details__chevron lpv-details__chevron--ferme">
-          <Icon icone="rivet-icons:chevron-down" taille={24} />
+          <Icon icone="rivet-icons:chevron-down" taille={22} />
         </span>
         <span aria-hidden="true" className="lpv-details__chevron lpv-details__chevron--ouvert">
-          <Icon icone="rivet-icons:chevron-up" taille={24} />
+          <Icon icone="rivet-icons:chevron-up" taille={22} />
         </span>
         <span className="lpv-details__resume-texte">{resume}</span>
       </summary>
