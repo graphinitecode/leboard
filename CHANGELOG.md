@@ -7,6 +7,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ## [Unreleased]
 
 ### Modifié
+- Header et pied de page du site aux couleurs de l'association : logo LPV, navigation et liens éditables depuis le panneau d'administration (globaux header et footer)
 - Déconnexion des portails : navigation via le routeur Next.js (sans rechargement forcé)
 
 ## [0.3.0] — 2026-09-20
