@@ -1,9 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { Icon } from '@/components/atoms/Icon'
+import { useFermerHorsClic } from '@/hooks/useFermerHorsClic'
 
 // Molécule : menu dépliant façon GOV.UK (bouton Menu dans l'entête bleue).
 // Sections : Services et informations / Légales.
@@ -18,20 +19,7 @@ export function MenuDepliant({
   const ref = useRef<HTMLDivElement>(null)
 
   // Ferme au clic extérieur ou à Escape
-  useEffect(() => {
-    function horsClic(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOuvert(false)
-    }
-    function escape(e: KeyboardEvent) {
-      if (e.key === 'Escape') setOuvert(false)
-    }
-    document.addEventListener('mousedown', horsClic)
-    document.addEventListener('keydown', escape)
-    return () => {
-      document.removeEventListener('mousedown', horsClic)
-      document.removeEventListener('keydown', escape)
-    }
-  }, [])
+  useFermerHorsClic(ref, () => setOuvert(false))
 
   return (
     <div ref={ref}>
