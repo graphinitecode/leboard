@@ -2,8 +2,6 @@
 
 import { useTransition } from 'react'
 
-import { Bouton } from '@/components/atoms/Bouton'
-
 export interface OptionSegmentee {
   label: string
   libelle: string

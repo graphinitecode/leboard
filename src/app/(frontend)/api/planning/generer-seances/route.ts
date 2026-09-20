@@ -6,7 +6,6 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 const COOKIE_NAME = 'payload-token'
-const JOURS = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi']
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()

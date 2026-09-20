@@ -1,7 +1,5 @@
 import type { CollectionBeforeChangeHook } from 'payload'
 
-import { matiereOptions } from '../collections/Seances'
-
 // Duplique le profReferent de l'élève sur la progression et copie la matière
 // de la compétence — pour requêter sans join (cf. Spec 02 / Spec 03)
 export const denormaliserProgression: CollectionBeforeChangeHook = async ({ data, req }) => {

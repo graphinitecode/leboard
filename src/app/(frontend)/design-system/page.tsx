@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 import { Bouton, BackLink, FilAriane, InsetText, Panel, Tag, TexteAvertissement, Details, Televersement } from '@/components/atoms'
-import { Label, Hint, ErrorMessage } from '@/components/atoms/Champ'
-import { Accordeon, BoutonsRadio, CasesACocher, ChampDate, ChampEnsemble, ChampFormulaire, CompteurCaracteres, ListeTaches, Modale, NotificationBanner, Onglets, PaginationLPV, ResumeErreurs, SummaryList, Tableau, Toast, BasculeTheme } from '@/components/molecules'
+import { Label } from '@/components/atoms/Champ'
+import { Accordeon, BoutonsRadio, CasesACocher, ChampDate, ChampEnsemble, ChampFormulaire, CompteurCaracteres, ListeTaches, NotificationBanner, Onglets, PaginationLPV, ResumeErreurs, SummaryList, Tableau, BasculeTheme } from '@/components/molecules'
 import type { SectionAccordeon, Onglet, OptionCase, OptionRadio, TableauHeadCell, TableauRowCell, Tache, PageNumero } from '@/components/molecules'
 
 import { DemoModale, DemoToggle, DemoToast } from './DemoClient'
