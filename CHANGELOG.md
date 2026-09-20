@@ -7,6 +7,8 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ## [Unreleased]
 
 ### Modifié
+- Header du site : logo large légèrement réduit
+- Panneau d'administration : icône de recherche remplacée par la loupe du design system
 - Header du site : logo large avec la mention « Association Les Pierres Vivantes »
 - Menu dépliant des portails : vraies icônes chevron au lieu des caractères triangles
 - Mode sombre : fond du portail bleu plus profond, contraste amélioré pour l'entête et le panneau de menu
