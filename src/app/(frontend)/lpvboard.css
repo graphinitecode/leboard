@@ -267,6 +267,25 @@ html[data-theme='dark'] .lpv-bouton--danger:hover {
   font-size: 1rem;
 }
 
+/* Navigation du site vitrine (liens pilotés par le global header du panel) */
+.lpv-entete-nav {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.lpv-entete-nav__lien {
+  color: var(--lpv-surface);
+  text-decoration: none;
+}
+
+.lpv-entete-nav__lien:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+
 .lpv-entete-bleue__actions {
   align-items: center;
   display: flex;
@@ -1224,6 +1243,24 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+.lpv-pied__nav-zone {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.lpv-pied__lien {
+  color: var(--lpv-text-muted);
+  text-decoration: none;
+}
+
+.lpv-pied__lien:hover {
+  color: var(--lpv-portail-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .lpv-pied__nav a {

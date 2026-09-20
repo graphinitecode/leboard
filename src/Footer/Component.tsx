@@ -12,17 +12,19 @@ export async function Footer() {
   const navItems = footerData?.navItems || []
 
   return (
-    <footer className="mt-auto border-t border-border bg-black dark:bg-card text-white">
-      <div className="container py-8 gap-8 flex flex-col md:flex-row md:justify-between">
-        <Link className="flex items-center" href="/">
-          <Logo />
-        </Link>
+    <footer className="lpv-pied">
+      <div className="lpv-pied__inner">
+        <div>
+          <Link className="lpv-pied__logo" href="/">
+            <Logo />
+          </Link>
+        </div>
 
-        <div className="flex flex-col-reverse items-start md:flex-row gap-4 md:items-center">
+        <div className="lpv-pied__nav-zone">
           <ThemeSelector />
-          <nav className="flex flex-col md:flex-row gap-4">
+          <nav aria-label="Liens de pied de page" className="lpv-pied__nav">
             {navItems.map(({ link }, i) => {
-              return <CMSLink className="text-white" key={i} {...link} />
+              return <CMSLink className="lpv-pied__lien" key={i} {...link} appearance="inline" />
             })}
           </nav>
         </div>
