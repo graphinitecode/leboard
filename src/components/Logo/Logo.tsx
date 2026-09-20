@@ -24,7 +24,7 @@ export const Logo = (props: Props) => {
       loading={loading}
       fetchPriority={priority}
       decoding="async"
-      className={clsx('w-full h-auto max-w-[17rem]', className)}
+      className={clsx('w-full h-auto max-w-[14rem]', className)}
       src="/lpv-logo_large.png"
     />
   )
