@@ -223,6 +223,10 @@ html[data-theme='dark'] .lpv-bouton--danger:hover {
   background-color: var(--lpv-portail);
   color: var(--lpv-surface);
   margin-bottom: 2rem;
+  /* Le hero du template remonte avec une marge négative et un positionnement
+     relatif : sans stacking context, il recouvre la nav et intercepte les clics. */
+  position: relative;
+  z-index: 20;
 }
 
 .lpv-entete-bleue__inner {
