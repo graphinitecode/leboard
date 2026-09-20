@@ -6,7 +6,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+### Ajouté
+- Navigation du site : liens déroulants (menus avec sous-liens en liste verticale) et bouton de recherche, le tout pilotable depuis le panneau d'administration (global header)
+
 ### Modifié
+- Navigation du site : liens avec corps et cibles tactiles du design system, focus au clavier visible, page courante soulignée en permanence
 - Header du site : logo large légèrement réduit
 - Panneau d'administration : icône de recherche remplacée par la loupe du design system
 - Header du site : logo large avec la mention « Association Les Pierres Vivantes »
