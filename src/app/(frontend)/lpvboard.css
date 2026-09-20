@@ -35,6 +35,10 @@
   --lpv-portail-dark: var(--lpv-blue-dark);
   --lpv-portail-soft: var(--lpv-blue-soft);
 
+  /* Texte posé sur la couleur du portail (entêtes) : toujours blanc,
+     quel que soit le thème (le portail reste coloré en mode sombre) */
+  --lpv-sur-portail: #ffffff;
+
   /* Focus : jaune, conservé du GOV.UK pour la visibilité maximale */
   --lpv-focus: #fd0;
 
@@ -221,7 +225,7 @@ html[data-theme='dark'] .lpv-bouton--danger:hover {
 
 .lpv-entete-bleue {
   background-color: var(--lpv-portail);
-  color: var(--lpv-surface);
+  color: var(--lpv-sur-portail);
   margin-bottom: 2rem;
   /* Le hero du template remonte avec une marge négative et un positionnement
      relatif : sans stacking context, il recouvre la nav et intercepte les clics. */
@@ -245,7 +249,7 @@ html[data-theme='dark'] .lpv-bouton--danger:hover {
 
 .lpv-entete-bleue__logo {
   align-items: center;
-  color: var(--lpv-surface);
+  color: var(--lpv-sur-portail);
   display: flex;
   gap: 0.6rem;
   text-decoration: none;
@@ -283,9 +287,10 @@ html[data-theme='dark'] .lpv-bouton--danger:hover {
 .lpv-entete-nav__lien {
   align-items: center;
   border-radius: var(--lpv-radius);
-  color: var(--lpv-surface);
+  color: var(--lpv-sur-portail);
   display: inline-flex;
   font-size: 1.125rem;
+  font-weight: 700;
   min-height: 44px;
   padding: 0.5rem 0.75rem;
   text-decoration: none;
@@ -297,17 +302,14 @@ html[data-theme='dark'] .lpv-bouton--danger:hover {
   text-decoration-thickness: 2px;
 }
 
-/* Page courante soulignée en permanence (préfixe de segment, motif GOV.UK) */
 .lpv-entete-nav__lien--actif {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 2px;
+  font-weight: 700;
 }
 
 /* Focus : double anneau jaune, motif commun des contrôles sur fond coloré */
 .lpv-entete-nav__lien:focus-visible,
 .lpv-entete-nav__recherche:focus-visible {
-  box-shadow: 0 0 0 2px var(--lpv-surface), 0 0 0 5px var(--lpv-focus);
+  box-shadow: 0 0 0 2px var(--lpv-sur-portail), 0 0 0 5px var(--lpv-focus);
   outline: none;
 }
 
@@ -315,7 +317,7 @@ html[data-theme='dark'] .lpv-bouton--danger:hover {
 .lpv-entete-nav__recherche {
   align-items: center;
   border-radius: var(--lpv-radius);
-  color: var(--lpv-surface);
+  color: var(--lpv-sur-portail);
   display: inline-flex;
   justify-content: center;
   min-height: 44px;
@@ -391,7 +393,7 @@ html[data-theme='dark'] .lpv-bouton--danger:hover {
 }
 
 .lpv-entete-bleue__user::before {
-  background-color: var(--lpv-surface);
+  background-color: var(--lpv-sur-portail);
   border-radius: 50%;
   content: '';
   display: inline-block;
