@@ -38,10 +38,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
       <div className="lpv-entete-bleue__inner">
         <Link className="lpv-entete-bleue__logo" href="/">
           <Logo loading="eager" priority="high" />
-          <span className="lpv-entete-bleue__logo-texte">
-            <small>Association</small>
-            <strong>Les Pierres Vivantes</strong>
-          </span>
         </Link>
         <HeaderNav data={data} />
       </div>

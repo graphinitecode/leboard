@@ -114,6 +114,7 @@ html[data-theme='dark'] {
   --lpv-grey-border: #3a343a;
   --lpv-surface: #161216;
 
+  --lpv-blue: #1877d2;         /* portail plus profond en dark, texte blanc lisible */
   --lpv-blue-dark: #66b5ff;
   --lpv-blue-soft: #0d2137;
   --lpv-violet-dark: #c04fd8;
@@ -310,14 +311,21 @@ html[data-theme='dark'] .lpv-bouton--danger:hover {
 }
 
 .lpv-menu-bouton {
+  align-items: center;
   background: transparent;
   border: 0;
   color: var(--lpv-surface);
   cursor: pointer;
+  display: inline-flex;
   font-size: 1.125rem;
   font-weight: 700;
   min-height: 44px;
   padding: 0.5rem 0.75rem;
+}
+
+.lpv-menu-bouton__chevron {
+  display: inline-flex;
+  margin-right: 0.4rem;
 }
 
 .lpv-menu-bouton:hover {
