@@ -3,6 +3,8 @@
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 
+import { Icon } from '@/components/atoms/Icon'
+
 // Molécule : menu dépliant façon GOV.UK (bouton Menu dans l'entête bleue).
 // Sections : Services et informations / Légales.
 export function MenuDepliant({
@@ -39,8 +41,8 @@ export function MenuDepliant({
         onClick={() => setOuvert(!ouvert)}
         type="button"
       >
-        <span aria-hidden="true" style={{ marginRight: '0.4rem' }}>
-          {ouvert ? '▲' : '▼'}
+        <span aria-hidden="true" className="lpv-menu-bouton__chevron">
+          <Icon icone={ouvert ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} taille={22} />
         </span>
         Menu
       </button>
