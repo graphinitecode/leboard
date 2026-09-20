@@ -204,6 +204,18 @@ html[data-theme='dark'] .lpv-bouton--danger:hover {
   background-color: #cc0003;
 }
 
+/* Secondaire en mode sombre : fond relevé et texte clair (le grey-bg clair
+   devient un bloc noir illisible sur les fonds sombres, ex. hero image) */
+html[data-theme='dark'] .lpv-bouton--secondaire {
+  background-color: #2a242a;
+  box-shadow: 0 2px 0 #0d0a0d;
+  color: #f2eef2;
+}
+
+html[data-theme='dark'] .lpv-bouton--secondaire:hover {
+  background-color: #3a343a;
+}
+
 /* --- Typographie -------------------------------------------------------- */
 
 .lpv-container {
@@ -231,6 +243,9 @@ html[data-theme='dark'] .lpv-bouton--danger:hover {
      relatif : sans stacking context, il recouvre la nav et intercepte les clics. */
   position: relative;
   z-index: 20;
+}
+html[data-theme='dark'] .lpv-entete-bleue {
+  background-color: var(--lpv-tag-bleu);
 }
 
 .lpv-entete-bleue__inner {
@@ -343,7 +358,7 @@ html[data-theme='dark'] .lpv-bouton--danger:hover {
 
 .lpv-entete-dropdown__chevron {
   display: inline-flex;
-  margin-left: 0.4rem;
+  margin-right: 0.4rem;
 }
 
 .lpv-entete-dropdown__panneau {
@@ -715,6 +730,38 @@ a:focus {
 
 .lpv-bouton--secondaire:hover {
   background-color: var(--lpv-grey-border);
+}
+
+/* Variantes de taille (mêmes proportions que le motif GOV.UK) */
+.lpv-bouton--petit {
+  font-size: 1rem;
+  min-height: 38px;
+  padding: 0.35rem 0.75rem 0.25rem;
+}
+
+.lpv-bouton--grand {
+  font-size: 1.25rem;
+  padding: 0.65rem 1.5rem 0.5rem;
+}
+
+.lpv-bouton--icone {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  min-width: 44px;
+  padding: 0.5rem;
+  width: 44px;
+}
+
+/* Lien inline (variante « link ») : même corps que le texte environnant */
+.lpv-lien-inline {
+  color: var(--lpv-portail-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lpv-lien-inline:hover {
+  text-decoration-thickness: 2px;
 }
 
 /* --- Tags de statut ------------------------------------------------------ */

@@ -100,10 +100,10 @@ function DropdownNav({
         onClick={() => setOuvert(!ouvert)}
         type="button"
       >
-        {label}
         <span aria-hidden="true" className="lpv-entete-dropdown__chevron">
-          <Icon icone={ouvert ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} taille={22} />
+          <Icon icone={ouvert ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} taille={20} />
         </span>
+        {label}
       </button>
 
       {ouvert && (
