@@ -1,7 +1,5 @@
 'use client'
 
-import { useTransition } from 'react'
-
 import { ToggleSegmentes, type OptionSegmentee } from '@/components/molecules/ToggleSegmentes'
 
 import { changerPresence } from './actions'

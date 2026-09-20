@@ -13,7 +13,6 @@ import { MenuDepliant } from './MenuDepliant'
 export function EnteteService({
   heroTitre,
   heroTexte,
-  libelleService = 'Association Les Pierres Vivantes',
   nomUtilisateur,
   deconnexion = false,
   services,
@@ -21,7 +20,6 @@ export function EnteteService({
 }: {
   heroTitre?: string
   heroTexte?: string
-  libelleService?: string
   nomUtilisateur?: string | null
   deconnexion?: boolean
   services: { href: string; libelle: string; description?: string }[]

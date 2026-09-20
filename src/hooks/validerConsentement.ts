@@ -2,7 +2,7 @@ import type { CollectionBeforeValidateHook } from 'payload'
 
 import { estMajeur } from '../utilities/rgpd'
 
-export const validerConsentement: CollectionBeforeValidateHook = async ({ data, operation, req }) => {
+export const validerConsentement: CollectionBeforeValidateHook = async ({ data, operation }) => {
   if (operation !== 'create') return data
   if (!data) return data
 
