@@ -52,7 +52,7 @@ export function MenuDepliant({
               <h2 className="lpv-menu-panneau__titre">Services et informations</h2>
               <ul>
                 {services.map((lien) => (
-                  <li key={lien.href}>
+                  <li key={`${lien.href} ${lien.libelle}`}>
                     <Link href={lien.href} onClick={() => setOuvert(false)}>
                       {lien.libelle}
                     </Link>
@@ -65,7 +65,7 @@ export function MenuDepliant({
               <h2 className="lpv-menu-panneau__titre">Légales</h2>
               <ul>
                 {legales.map((lien) => (
-                  <li key={lien.href}>
+                  <li key={`${lien.href} ${lien.libelle}`}>
                     <Link href={lien.href} onClick={() => setOuvert(false)}>
                       {lien.libelle}
                     </Link>
