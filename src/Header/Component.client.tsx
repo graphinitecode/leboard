@@ -25,10 +25,11 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   }, [pathname])
 
   // Ajustement pendant le render (pattern React « derived state ») : évite un
-  // setState dans un effet qui déclencherait un rendu en cascade.
-  const [prevHeaderTheme, setPrevHeaderTheme] = useState<string | null>(null)
+  // setState dans un effet qui déclencherait un rendu en cascade. La sentinelle
+  // préserve `undefined` pour que la comparaison converge.
+  const [prevHeaderTheme, setPrevHeaderTheme] = useState<string | null | undefined>(headerTheme)
   if (headerTheme !== prevHeaderTheme) {
-    setPrevHeaderTheme(headerTheme ?? null)
+    setPrevHeaderTheme(headerTheme)
     if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
   }
 
