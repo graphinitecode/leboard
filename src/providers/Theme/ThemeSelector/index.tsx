@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import type { Theme } from './types'
 
@@ -29,12 +29,13 @@ export const ThemeSelector: React.FC = () => {
   }
 
   // La préférence ne peut être lue qu'après hydratation (localStorage indisponible
-  // côté serveur) ; le premier rendu sert de rendu initial cohérent.
-  const [monte, setMonte] = useState(false)
-  if (!monte) {
-    setMonte(true)
-    setValue(window.localStorage.getItem(themeLocalStorageKey) ?? 'auto')
-  }
+  // côté serveur) : le premier rendu est volontairement neutre (SSR). Disable
+  // justifié : lecture d'un système externe, cas d'usage légitime de useEffect.
+  useEffect(() => {
+    const preference = window.localStorage.getItem(themeLocalStorageKey)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setValue(preference ?? 'auto')
+  }, [])
 
   return (
     <Select onValueChange={onThemeChange} value={value}>
