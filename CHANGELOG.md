@@ -6,6 +6,9 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+### Modifié
+- Déconnexion des portails : navigation via le routeur Next.js (sans rechargement forcé)
+
 ## [0.3.0] — 2026-09-20
 
 ### Ajouté
