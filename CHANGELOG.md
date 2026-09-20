@@ -7,6 +7,9 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ## [Unreleased]
 
 ### Modifié
+- Header du site : logo large avec la mention « Association Les Pierres Vivantes »
+- Menu dépliant des portails : vraies icônes chevron au lieu des caractères triangles
+- Mode sombre : fond du portail bleu plus profond, contraste amélioré pour l'entête et le panneau de menu
 - Header et pied de page du site aux couleurs de l'association : logo LPV, navigation et liens éditables depuis le panneau d'administration (globaux header et footer)
 - Déconnexion des portails : navigation via le routeur Next.js (sans rechargement forcé)
 
