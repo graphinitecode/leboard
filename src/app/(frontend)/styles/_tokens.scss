@@ -17,7 +17,7 @@
   --lpv-green: #00af54;        /* Medium Jungle — succès / présent */
   --lpv-green-soft: #e2f7ec;
   --lpv-orange: #f96900;       /* Pumpkin Spice — « retour à faire », avertissements */
-  --lpv-orange-soft: #feefe4;
+  --lpv-orange-soft: #d35701;
   --lpv-yellow: #f4d35e;       /* Royal Gold — absent justifié (texte foncé sur fond) */
   --lpv-yellow-soft: #fdf6e0;
   --lpv-red: #ff5154;          /* Vibrant Coral — absent / erreur */
@@ -29,6 +29,7 @@
   --lpv-grey-bg: #f4f5f6;
   --lpv-grey-border: #d8dadc;
   --lpv-surface: #f8f8f8;
+  --lpv-bg-feedback: #fff8f8;
 
   /* Couleur du portail courant (surchargée par data-lpv-portail) */
   --lpv-portail: var(--lpv-blue);
