@@ -19,10 +19,10 @@ export function TexteAvertissement({
         icone="rivet-icons:exclamation-mark-circle-solid"
         taille={32}
       />
-      <strong className="lpv-avertissement__texte">
+      <p className="lpv-avertissement__texte">
         <span className="lpv-visually-hidden">{libelleCache} : </span>
         {children}
-      </strong>
+      </p>
     </div>
   )
 }

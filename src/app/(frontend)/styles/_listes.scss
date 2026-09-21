@@ -144,6 +144,18 @@ a.lpv-ligne {
         text-underline-offset: var(--lpv-text-underline-offset-hover);
       }
     }
+
+    .lpv-action--normal {
+      color: var(--lpv-tag-bleu-texte);
+      text-decoration-thickness: var(--lpv-decoration-thickness);
+      text-underline-offset: var(--lpv-text-underline-offset);
+
+      &:hover {
+        color: var(--lpv-text);
+        text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+        text-underline-offset: var(--lpv-text-underline-offset-hover);
+      }
+    }
   }
 
   &__actions-list-item {

@@ -126,10 +126,18 @@ export default function DesignSystemPage() {
         <h2 className="lpv-h2">Boutons</h2>
         <div className="lpv-demo-exemples">
           <Bouton type="button">Primaire</Bouton>
-          <Bouton type="button" variante="secondaire">Secondaire</Bouton>
-          <Bouton type="button" variante="avertissement">Avertissement</Bouton>
-          <Bouton type="button" variante="danger">Danger</Bouton>
-          <Bouton href="/design-system" type="button">Lien primaire</Bouton>
+          <Bouton type="button" variante="secondaire">
+            Secondaire
+          </Bouton>
+          <Bouton type="button" variante="avertissement">
+            Avertissement
+          </Bouton>
+          <Bouton type="button" variante="danger">
+            Danger
+          </Bouton>
+          <Bouton href="/design-system" type="button">
+            Lien primaire
+          </Bouton>
         </div>
       </section>
 
@@ -153,22 +161,28 @@ export default function DesignSystemPage() {
         <h2 className="lpv-h2">Messages</h2>
 
         <h3 className="lpv-h3">InsetText</h3>
-        <InsetText>Ce texte met en évidence une information importante pour l&apos;utilisateur.</InsetText>
+        <InsetText>
+          Ce texte met en évidence une information importante pour l&apos;utilisateur.
+        </InsetText>
 
         <h3 className="lpv-h3">Panel</h3>
         <Panel>Les cours du mercredi sont annulés pendant les vacances scolaires.</Panel>
 
         <h3 className="lpv-h3">TexteAvertissement</h3>
-        <TexteAvertissement>Cette action est irréversible. Vérifiez les informations avant de continuer.</TexteAvertissement>
+        <TexteAvertissement>
+          Cette action est irréversible. Vérifiez les informations avant de continuer.
+        </TexteAvertissement>
 
         <h3 className="lpv-h3">NotificationBanner</h3>
         <NotificationBanner titre="Vos disponibilités ont été enregistrées" type="success" />
 
         <h3 className="lpv-h3">ResumeErreurs</h3>
-        <ResumeErreurs erreurs={[
-          { champId: 'nom', texte: 'Le nom est requis' },
-          { champId: 'email', texte: 'L\'adresse e-mail n\'est pas valide' },
-        ]} />
+        <ResumeErreurs
+          erreurs={[
+            { champId: 'nom', texte: 'Le nom est requis' },
+            { champId: 'email', texte: "L'adresse e-mail n'est pas valide" },
+          ]}
+        />
 
         <h3 className="lpv-h3">Toast</h3>
         <DemoToast />
@@ -181,28 +195,35 @@ export default function DesignSystemPage() {
         <BackLink href="/profs">Tableau de bord</BackLink>
 
         <h3 className="lpv-h3">FilAriane</h3>
-        <FilAriane liens={[
-          { href: '/', libelle: 'Accueil' },
-          { href: '/profs', libelle: 'Espace profs' },
-          { libelle: 'Disponibilités' },
-        ]} />
+        <FilAriane
+          liens={[
+            { href: '/', libelle: 'Accueil' },
+            { href: '/profs', libelle: 'Espace profs' },
+            { libelle: 'Disponibilités' },
+          ]}
+        />
 
         <h3 className="lpv-h3">Pagination</h3>
         <p className="lpv-muted">
-          La page courante est un bloc plein inversé, non cliquable. « Précédent » n&apos;est
-          pas rendu en première page, « Suivant » en dernière page.
+          La page courante est un bloc plein inversé, non cliquable. « Précédent » n&apos;est pas
+          rendu en première page, « Suivant » en dernière page.
         </p>
         <PaginationLPV items={PAGES} precedente={{ href: '#' }} suivante={{ href: '#' }} />
         <PaginationLPV items={PAGES_COURTE} precedente={{ href: '#' }} suivante={{ href: '#' }} />
         <PaginationLPV items={PAGES_PREMIERE} suivante={{ href: '#' }} />
         <PaginationLPV items={PAGES_DERNIERE} precedente={{ href: '#' }} />
-        <PaginationLPV items={PAGES} precedente={{ href: '#', libelle: 'Disponibilités' }} suivante={{ href: '#', libelle: 'Élèves' }} variante="bloc" />
+        <PaginationLPV
+          items={PAGES}
+          precedente={{ href: '#', libelle: 'Disponibilités' }}
+          suivante={{ href: '#', libelle: 'Élèves' }}
+          variante="bloc"
+        />
 
         <h3 className="lpv-h3">Details</h3>
         <Details resume="Quelles sont les horaires possibles ?" open>
           Les cours ont lieu du lundi au samedi, de 8h à 18h.
         </Details>
-        <Details resume="Comment s&apos;inscrire ?">
+        <Details resume="Comment s'inscrire ?">
           Contactez l&apos;association par e-mail ou via le formulaire en ligne.
         </Details>
 
@@ -218,33 +239,66 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">Label tailles & isPageHeading</h3>
         <div>
-          <Label htmlFor="demo-label-l" taille="l">Label taille L</Label>
+          <Label htmlFor="demo-label-l" taille="l">
+            Label taille L
+          </Label>
         </div>
         <div>
-          <Label htmlFor="demo-label-m" taille="m">Label taille M</Label>
+          <Label htmlFor="demo-label-m" taille="m">
+            Label taille M
+          </Label>
         </div>
         <div>
-          <Label htmlFor="demo-label-s" taille="s">Label taille S</Label>
+          <Label htmlFor="demo-label-s" taille="s">
+            Label taille S
+          </Label>
         </div>
         <div>
-          <Label htmlFor="demo-label-heading" isPageHeading>Label comme titre de page</Label>
+          <Label htmlFor="demo-label-heading" isPageHeading>
+            Label comme titre de page
+          </Label>
         </div>
 
         <h3 className="lpv-h3">ChampFormulaire</h3>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <ChampFormulaire hint="Par exemple : Dupont, Martin." id="demo-champ-nom" label="Nom complet" />
+          <ChampFormulaire
+            hint="Par exemple : Dupont, Martin."
+            id="demo-champ-nom"
+            label="Nom complet"
+          />
         </div>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <ChampFormulaire erreur="Entrez votre adresse e-mail" hint="Nous ne partagerons pas votre e-mail." id="demo-champ-email" label="Adresse e-mail" type="email" />
+          <ChampFormulaire
+            erreur="Entrez votre adresse e-mail"
+            hint="Nous ne partagerons pas votre e-mail."
+            id="demo-champ-email"
+            label="Adresse e-mail"
+            type="email"
+          />
         </div>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
           <ChampFormulaire id="demo-champ-opt" label="Téléphone" optionnel />
         </div>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <ChampFormulaire as="textarea" hint="Décrivez votre situation en quelques phrases." id="demo-champ-textarea" label="Description" rows={4} />
+          <ChampFormulaire
+            as="textarea"
+            hint="Décrivez votre situation en quelques phrases."
+            id="demo-champ-textarea"
+            label="Description"
+            rows={4}
+          />
         </div>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <ChampFormulaire as="select" id="demo-champ-select" label="Niveau" options={[{ label: '6e', value: '6e' }, { label: '5e', value: '5e' }, { label: '4e', value: '4e' }]} />
+          <ChampFormulaire
+            as="select"
+            id="demo-champ-select"
+            label="Niveau"
+            options={[
+              { label: '6e', value: '6e' },
+              { label: '5e', value: '5e' },
+              { label: '4e', value: '4e' },
+            ]}
+          />
         </div>
 
         <h3 className="lpv-h3">ChampDate</h3>
@@ -254,14 +308,33 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">ChampEnsemble (fieldset)</h3>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <ChampEnsemble erreur="Choisissez une option" hint="Sélectionnez la fréquence souhaitée." isPageHeading legende="Fréquence des rappels" taille="m">
-            <ChampFormulaire as="select" id="demo-ensemble-freq" label="Fréquence" options={[{ label: 'Quotidien', value: 'quotidien' }, { label: 'Hebdomadaire', value: 'hebdomadaire' }]} />
+          <ChampEnsemble
+            erreur="Choisissez une option"
+            hint="Sélectionnez la fréquence souhaitée."
+            isPageHeading
+            legende="Fréquence des rappels"
+            taille="m"
+          >
+            <ChampFormulaire
+              as="select"
+              id="demo-ensemble-freq"
+              label="Fréquence"
+              options={[
+                { label: 'Quotidien', value: 'quotidien' },
+                { label: 'Hebdomadaire', value: 'hebdomadaire' },
+              ]}
+            />
           </ChampEnsemble>
         </div>
 
         <h3 className="lpv-h3">CasesACocher</h3>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <CasesACocher hint="Vous pouvez choisir plusieurs options." idPrefix="demo-cases" nom="notifications" options={CASES_OPTIONS} />
+          <CasesACocher
+            hint="Vous pouvez choisir plusieurs options."
+            idPrefix="demo-cases"
+            nom="notifications"
+            options={CASES_OPTIONS}
+          />
         </div>
 
         <h3 className="lpv-h3">BoutonsRadio</h3>
@@ -271,12 +344,25 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">CompteurCaracteres</h3>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <CompteurCaracteres hint="Décrivez votre situation en quelques mots." id="demo-compteur" label="Description" limite={200} name="description" />
+          <CompteurCaracteres
+            hint="Décrivez votre situation en quelques mots."
+            id="demo-compteur"
+            label="Description"
+            limite={200}
+            name="description"
+          />
         </div>
 
         <h3 className="lpv-h3">Televersement</h3>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <Televersement accept=".pdf,.jpg,.png" hint="Formats acceptés : PDF, JPG, PNG." id="demo-upload" label="Attestation" name="attestation" optionnel />
+          <Televersement
+            accept=".pdf,.jpg,.png"
+            hint="Formats acceptés : PDF, JPG, PNG."
+            id="demo-upload"
+            label="Attestation"
+            name="attestation"
+            optionnel
+          />
         </div>
 
         <h3 className="lpv-h3">Mot de passe</h3>
@@ -317,16 +403,20 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">SummaryList avec actions</h3>
         <p className="lpv-muted" style={{ marginTop: 0 }}>
-          Une action par row (Modifier), plusieurs actions séparées par un trait vertical
-          (Ajouter | Modifier | Supprimer). Le rouge est réservé à l&apos;action destructive.
-          Une valeur manquante se présente comme un lien « Renseigner… » dans la colonne valeur.
+          Une action par row (Modifier), plusieurs actions séparées par un trait vertical (Ajouter |
+          Modifier | Supprimer). Le rouge est réservé à l&apos;action destructive. Une valeur
+          manquante se présente comme un lien « Renseigner… » dans la colonne valeur.
         </p>
         <SummaryList
           items={[
             {
               cle: 'Élève',
               valeur: 'Marie Dupont',
-              actions: [<a href="#modifier" key="mod">Modifier</a>],
+              actions: [
+                <a className="lpv-action--normal" href="#modifier" key="mod">
+                  Modifier
+                </a>,
+              ],
             },
             {
               cle: 'Adresse',
@@ -337,20 +427,34 @@ export default function DesignSystemPage() {
                   75011 Paris
                 </>
               ),
-              actions: [<a href="#modifier" key="mod">Modifier</a>],
+              actions: [
+                <a className="lpv-action--normal" href="#modifier" key="mod">
+                  Modifier
+                </a>,
+              ],
             },
             {
               cle: 'Créneau',
               valeur: 'Lundi 14h → 16h',
               actions: [
-                <a href="#ajouter" key="aj">Ajouter</a>,
-                <a href="#modifier" key="mod">Modifier</a>,
-                <a className="lpv-action--danger" href="#supprimer" key="sup">Supprimer</a>,
+                <a className="lpv-action--normal" href="#ajouter" key="aj">
+                  Ajouter
+                </a>,
+                <a className="lpv-action--normal" href="#modifier" key="mod">
+                  Modifier
+                </a>,
+                <a className="lpv-action--danger" href="#supprimer" key="sup">
+                  Supprimer
+                </a>,
               ],
             },
             {
               cle: 'Certificat médical',
-              valeur: <a href="#renseigner" className="lpv-lien-inline">Renseigner…</a>,
+              valeur: (
+                <a href="#renseigner" className="lpv-lien-inline">
+                  Renseigner…
+                </a>
+              ),
             },
           ]}
         />
@@ -361,11 +465,20 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">Bascule de thème</h3>
         <p className="lpv-muted">
-          Le mode sombre s&apos;applique à tout le design system via <code>data-theme</code> sur
-          {' '}<code>&lt;html&gt;</code>. Le choix est mémorisé (localStorage) et suit
-          {' '}<code>prefers-color-scheme</code> par défaut.
+          Le mode sombre s&apos;applique à tout le design system via <code>data-theme</code> sur{' '}
+          <code>&lt;html&gt;</code>. Le choix est mémorisé (localStorage) et suit{' '}
+          <code>prefers-color-scheme</code> par défaut.
         </p>
-        <div className="lpv-card" style={{ alignItems: 'center', display: 'flex', gap: '1rem', justifyContent: 'space-between', maxWidth: '28rem' }}>
+        <div
+          className="lpv-card"
+          style={{
+            alignItems: 'center',
+            display: 'flex',
+            gap: '1rem',
+            justifyContent: 'space-between',
+            maxWidth: '28rem',
+          }}
+        >
           <span>Thème actuel</span>
           <BasculeTheme />
         </div>
