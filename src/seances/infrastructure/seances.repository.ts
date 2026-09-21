@@ -152,4 +152,22 @@ export const seancesRepository = {
       throw new Error(getAxiosErrorMessage(err, "Échec de l'enregistrement."))
     }
   },
+
+  async listPresencesParEleve(eleveId: number): Promise<
+    { id: number; seanceId: number; eleveId: number; present: StatutPresence }[]
+  > {
+    try {
+      const res = await httpClient.get<Paginated<Presence>>('/presences', {
+        params: {
+          depth: 1,
+          limit: 0,
+          sort: '-createdAt',
+          where: JSON.stringify({ eleve: { equals: eleveId } }),
+        },
+      })
+      return res.data.docs.map(mapDtoToPresence)
+    } catch (err) {
+      throw new Error(getAxiosErrorMessage(err, 'Impossible de charger les présences.'))
+    }
+  },
 }

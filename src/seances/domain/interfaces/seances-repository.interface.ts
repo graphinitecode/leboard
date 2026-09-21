@@ -23,4 +23,7 @@ export interface ISeancesRepository {
   getDetail(query: GetSeanceQuery): Promise<SeanceDetail | null>
   togglePresence(command: TogglePresenceCommand): Promise<void>
   enregistrerRetour(command: EnregistrerRetourCommand): Promise<void>
+  listPresencesParEleve(eleveId: number): Promise<
+    { id: number; seanceId: number; eleveId: number; present: StatutPresence }[]
+  >
 }
