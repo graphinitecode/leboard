@@ -21,6 +21,11 @@ export const userRepository = {
       const res = await httpClient.post<UserResponse>('/users/login', command)
       return mapDtoToUser(res.data.user)
     } catch (err) {
+      if (isAxiosUnauthorized(err)) {
+        // Le message Payload (« The email or password… ») est un détail d'implémentation :
+        // on affiche le libellé utilisateur clair.
+        throw new Error("L'adresse e-mail ou le mot de passe saisi(e) est incorrect(e).")
+      }
       throw new Error(getAxiosErrorMessage(err, 'Email ou mot de passe incorrect.'))
     }
   },
