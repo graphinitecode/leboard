@@ -4,7 +4,8 @@ import { useEffect, useRef, useState, useTransition } from 'react'
 
 import { BackLink } from '@/components/atoms/BackLink'
 import { Bouton } from '@/components/atoms/Bouton'
-import { ChampFormulaire, Modale, NotificationBanner, ResumeErreurs, Toast } from '@/components/molecules'
+import { ChampFormulaire, Modale, NotificationBanner, ResumeErreurs, SummaryList, Toast } from '@/components/molecules'
+import type { ActionSummaryList } from '@/components/molecules'
 
 import {
   useAjouterDisponibilite,
@@ -99,51 +100,31 @@ export function ListeDispos({ dispos }: { dispos: DispoItem[] }) {
         </Bouton>
       </p>
       {dispos.length > 0 && (
-        <dl className="lpv-summary-list lpv-summary-list--dispos">
-          {dispos.map((dispo, index) => (
-            <div
-              className={
-                cleDispo(dispo) === cleNouvelle
-                  ? 'lpv-summary-list__row lpv-table__nouvelle'
-                  : 'lpv-summary-list__row'
-              }
-              key={`${cleDispo(dispo)}-${index}`}
-            >
-              <dt className="lpv-summary-list__key">{dispo.jour}</dt>
-              <dd className="lpv-summary-list__value" style={{ margin: 0 }}>
-                {dispo.heureDebut} → {dispo.heureFin}
-              </dd>
-              <dd className="lpv-summary-list__actions" style={{ margin: 0 }}>
-                <ul className="lpv-summary-list__actions-list">
-                  <li className="lpv-summary-list__actions-list-item">
-                    <button
-                      aria-label={`Modifier la disponibilité du ${dispo.jour}`}
-                      disabled={pending}
-                      onClick={() => {
-                        setCibleEdition(dispo)
-                        setAssistantOuvert(true)
-                      }}
-                      type="button"
-                    >
-                      Modifier
-                    </button>
-                  </li>
-                  <li className="lpv-summary-list__actions-list-item">
-                    <button
-                      aria-label={`Supprimer la disponibilité du ${dispo.jour}`}
-                      className="lpv-action--danger"
-                      disabled={pending}
-                      onClick={() => setCibleSuppression(dispo)}
-                      type="button"
-                    >
-                      Supprimer
-                    </button>
-                  </li>
-                </ul>
-              </dd>
-            </div>
-          ))}
-        </dl>
+        <SummaryList
+          cleNouvelle={cleNouvelle !== null ? cleNouvelle.split('|')[0] : undefined}
+          items={dispos.map((dispo): { cle: string; valeur: string; actions?: (ActionSummaryList | React.ReactNode)[] } => ({
+            cle: dispo.jour,
+            valeur: `${dispo.heureDebut} → ${dispo.heureFin}`,
+            actions: [
+              {
+                type: 'normal',
+                texte: 'Modifier',
+                onClick: () => {
+                  setCibleEdition(dispo)
+                  setAssistantOuvert(true)
+                },
+                disabled: pending,
+              },
+              {
+                type: 'danger',
+                texte: 'Supprimer',
+                key: 'supprimer',
+                onClick: () => setCibleSuppression(dispo),
+                disabled: pending,
+              },
+            ],
+          }))}
+        />
       )}
       <FormulaireDispoSteps
         editionDe={cibleEdition}

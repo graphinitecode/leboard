@@ -64,6 +64,8 @@ html[data-theme='dark'] {
   /* Bannière succès : fond vert foncé, texte blanc */
   --lpv-banner-success-bg: #01582a;
 
+  --lpv-background: #0c0c0c;
+
   /* Boutons : fond tag identique, ombre assombrie pour le fond sombre */
   --lpv-bouton-primaire-ombre: #004080;
   --lpv-bouton-avertissement-ombre: #803300;
@@ -183,6 +185,15 @@ html[data-theme='dark'] {
 
     &:hover {
       color: var(--lpv-tag-rouge);
+    }
+  }
+
+  .lpv-summary-list__actions .lpv-action--warning,
+  .lpv-summary-list__actions-list .lpv-action--warning {
+    color: var(--lpv-tag-orange-texte);
+
+    &:hover {
+      color: var(--lpv-tag-orange-texte);
     }
   }
 }

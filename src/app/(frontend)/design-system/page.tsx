@@ -404,19 +404,16 @@ export default function DesignSystemPage() {
         <h3 className="lpv-h3">SummaryList avec actions</h3>
         <p className="lpv-muted" style={{ marginTop: 0 }}>
           Une action par row (Modifier), plusieurs actions séparées par un trait vertical (Ajouter |
-          Modifier | Supprimer). Le rouge est réservé à l&apos;action destructive. Une valeur
-          manquante se présente comme un lien « Renseigner… » dans la colonne valeur.
+          Modifier | Avertir | Supprimer). Le rouge est réservé à l&apos;action destructive,
+          l&apos;orange signale une action avec conséquence. Une valeur manquante se présente comme
+          un lien « Renseigner… » dans la colonne valeur.
         </p>
         <SummaryList
           items={[
             {
               cle: 'Élève',
               valeur: 'Marie Dupont',
-              actions: [
-                <a className="lpv-action--normal" href="#modifier" key="mod">
-                  Modifier
-                </a>,
-              ],
+              actions: [{ type: 'normal', texte: 'Modifier', href: '#modifier' }],
             },
             {
               cle: 'Adresse',
@@ -427,25 +424,16 @@ export default function DesignSystemPage() {
                   75011 Paris
                 </>
               ),
-              actions: [
-                <a className="lpv-action--normal" href="#modifier" key="mod">
-                  Modifier
-                </a>,
-              ],
+              actions: [{ type: 'normal', texte: 'Modifier', href: '#modifier' }],
             },
             {
               cle: 'Créneau',
               valeur: 'Lundi 14h → 16h',
               actions: [
-                <a className="lpv-action--normal" href="#ajouter" key="aj">
-                  Ajouter
-                </a>,
-                <a className="lpv-action--normal" href="#modifier" key="mod">
-                  Modifier
-                </a>,
-                <a className="lpv-action--danger" href="#supprimer" key="sup">
-                  Supprimer
-                </a>,
+                { key: 'aj', texte: 'Ajouter', href: '#ajouter' },
+                { key: 'mod', texte: 'Modifier', href: '#modifier' },
+                { key: 'av', texte: 'Suspendre', href: '#suspendre', type: 'warning' },
+                { key: 'sup', texte: 'Supprimer', href: '#supprimer', type: 'danger', confirmation: 'Cette action est définitive' },
               ],
             },
             {
