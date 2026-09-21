@@ -10,6 +10,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Navigation du site : liens déroulants (menus avec sous-liens en liste verticale) et bouton de recherche, le tout pilotable depuis le panneau d'administration (global header)
 
 ### Modifié
+- Design system affiné : espacements et soulignements harmonisés sur tout le site, onglets redessinés (fond clair, soulignement, ligne de séparation), chevron de l'accordéon réduit et cerclé, fil d'Ariane avec séparateur chevron, libellés de formulaire plus grands, page courante de la pagination et messages d'erreur plus lisibles en mode sombre
 - Boutons du site (hero, encadrés d'appel à l'action, formulaire de contact, page 404) aux couleurs et styles du design system, y compris en mode sombre
 - Mode sombre : liens de navigation et entête du site toujours en blanc sur la couleur du portail (lisibles et cliquables dans les deux thèmes)
 - Navigation du site : liens en gras, page courante en graisse plus forte sans soulignement permanent
