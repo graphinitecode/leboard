@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { Bouton, BackLink, FilAriane, InsetText, Panel, Tag, TexteAvertissement, Details, Televersement } from '@/components/atoms'
+import { Bouton, BackLink, FilAriane, Icon, InsetText, Panel, Tag, TexteAvertissement, Details, Televersement } from '@/components/atoms'
 import { Label } from '@/components/atoms/Champ'
 import { Accordeon, AvatarUtilisateur, CasesACocher, ChampDate, ChampEnsemble, ChampFormulaire, CompteurCaracteres, ListeTaches, NotificationBanner, Onglets, PaginationLPV, ResumeErreurs, SummaryList, Tableau, BasculeTheme } from '@/components/molecules'
 import type { SectionAccordeon, Onglet, OptionCase, TableauHeadCell, TableauRowCell, Tache, PageNumero } from '@/components/molecules'
@@ -453,9 +453,11 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">Avatar utilisateur (entête portail)</h3>
         <p className="lpv-muted">
-          Affiché quand une session est active : nom, cercle d&apos;initiales et chevron. Le
-          panneau déroulant présente l&apos;identité et la déconnexion. Se ferme au clic
-          extérieur ou à Escape.
+          Affiché quand une session est active : prénom, cercle d&apos;initiales et chevron,
+          séparateur vertical avant le menu. Le panneau déroulant présente l&apos;identité et la
+          déconnexion. Se ferme au clic extérieur ou à Escape. En mobile (&lt; 48rem) le prénom
+          disparaît et le bouton Menu devient l&apos;icône rivet-icons:menu (close panneau ouvert,
+          sections en accordéon).
         </p>
         <div
           className="lpv-card"
@@ -465,10 +467,21 @@ export default function DesignSystemPage() {
             display: 'flex',
             gap: '1rem',
             justifyContent: 'flex-end',
-            maxWidth: '28rem',
+            maxWidth: '32rem',
           }}
         >
           <AvatarUtilisateur email="olivier.durand@lpv.fr" nom="Olivier Durand" />
+          <span aria-hidden="true" className="lpv-entete-separateur" />
+          <BasculeTheme />
+          <button aria-expanded={false} className="lpv-menu-bouton" type="button">
+            <span aria-hidden="true" className="lpv-menu-bouton__icone">
+              <Icon icone="rivet-icons:menu" taille={22} />
+            </span>
+            <span aria-hidden="true" className="lpv-menu-bouton__chevron">
+              <Icon icone="rivet-icons:chevron-down" taille={22} />
+            </span>
+            <span className="lpv-menu-bouton__libelle">Menu</span>
+          </button>
         </div>
 
         <h3 className="lpv-h3">Bascule de thème</h3>

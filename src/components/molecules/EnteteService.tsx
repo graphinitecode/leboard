@@ -10,8 +10,9 @@ import { MenuDepliant } from './MenuDepliant'
 // Molécule : entête pleine largeur du portail (couleur selon data-lpv-portail).
 // Logo blanc « Association Les Pierres Vivantes » + Menu dépliant + identité.
 // Le hero est fusionné dans la même bande colorée.
-// utilisateur : session serveur (getMeUserServer) — connecté : avatar dropdown,
-// sinon rien (les pages login n'affichent pas d'identité).
+// utilisateur : session serveur (getMeUserServer) — connecté : avatar dropdown
+// + séparateur vertical avant le menu, sinon rien (les pages login n'affichent
+// pas d'identité).
 export function EnteteService({
   heroTitre,
   heroTexte,
@@ -29,16 +30,29 @@ export function EnteteService({
     <header className="lpv-entete-bleue">
       <div className="lpv-entete-bleue__inner">
         <Link className="lpv-entete-bleue__logo" href="/">
+          {/* Deux rendus du logo, la bascule est faite par CSS :
+              slim (symbole seul) en mobile, large (inscription incluse) ≥ 48rem. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="lpv-entete-bleue__logo-img" src="/lpv-logo-white.svg" />
-          <span className="lpv-entete-bleue__logo-texte">
-            <small>Association</small>
-            <strong>Les Pierres Vivantes</strong>
-          </span>
+          <img
+            alt="Association Les Pierres Vivantes"
+            className="lpv-entete-bleue__logo-slim"
+            height={93}
+            src="/lpv-logo-white.svg"
+            width={131}
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt="Association Les Pierres Vivantes"
+            className="lpv-entete-bleue__logo-large"
+            height={93}
+            src="/lpv-logo_large.png"
+            width={499}
+          />
         </Link>
 
         <div className="lpv-entete-bleue__actions">
           {utilisateur && <AvatarUtilisateur email={utilisateur.email} nom={utilisateur.nom} />}
+          {utilisateur && <span aria-hidden="true" className="lpv-entete-separateur" />}
           <BasculeTheme />
           <MenuDepliant services={services} legales={legales} />
         </div>
