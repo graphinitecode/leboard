@@ -18,7 +18,8 @@ function LienErreur({ champId, texte }: { champId: string; texte: string }) {
 
 // Molécule : résumé des erreurs en tête de formulaire (role alert).
 // Convention GOV.UK : chaque item est un lien vers le champ en erreur
-// (id optionnel) ; le summary prend le focus quand il apparaît.
+// (id optionnel) ; le summary prend le focus quand il APPARAIT, pas aux
+// re-renders suivants — sinon il vole le focus du champ à chaque frappe.
 export function ResumeErreurs({
   erreurs,
   titre = 'Il y a ' + erreurs.length + ' problème' + (erreurs.length > 1 ? 's' : ''),
@@ -32,11 +33,13 @@ export function ResumeErreurs({
     typeof erreur === 'string' ? { texte: erreur } : erreur,
   )
 
-  // Prend le focus quand le summary apparaît (déjà tabbable via tabIndex -1)
+  // Prend le focus uniquement à l'apparition (transition vide -> non-vide)
+  const avaitErreurs = useRef(false)
   useEffect(() => {
-    if (items.length > 0) {
+    if (items.length > 0 && !avaitErreurs.current) {
       ref.current?.focus()
     }
+    avaitErreurs.current = items.length > 0
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [erreurs])
 
