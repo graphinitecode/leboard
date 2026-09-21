@@ -22,7 +22,7 @@ const OPTIONS_NIVEAU = [
 
 export function FormRetour({ seanceId, initial }: { seanceId: number | string; initial: string }) {
   const [texte, setTexte] = useState(initial)
-  const [succes, setSucces] = useState(false)
+  const [success, setSuccess] = useState(false)
   const [erreur, setErreur] = useState<string | null>(null)
   const [pending, startTransition] = useTransition()
 
@@ -30,19 +30,19 @@ export function FormRetour({ seanceId, initial }: { seanceId: number | string; i
     <form
       onSubmit={(e) => {
         e.preventDefault()
-        setSucces(false)
+        setSuccess(false)
         setErreur(null)
         startTransition(async () => {
           const result = await enregistrerRetour(seanceId, texte)
           if (result.ok) {
-            setSucces(true)
+            setSuccess(true)
           } else {
             setErreur(result.erreur ?? 'Le retour n’a pas pu être enregistré.')
           }
         })
       }}
     >
-      {succes && <NotificationBanner titre="Retour enregistré" type="succes" />}
+      {success && <NotificationBanner titre="Retour enregistré" type="success" />}
       <ResumeErreurs erreurs={erreur ? [erreur] : []} />
       <ChampFormulaire
         as="textarea"
@@ -71,7 +71,7 @@ export function FormProgression({
   eleves: { id: number | string; label: string }[]
   competences: { id: number | string; label: string; matiere?: string }[]
 }) {
-  const [succes, setSucces] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
   const [pending, startTransition] = useTransition()
   const [ouvert, setOuvert] = useState(false)
   const [erreurFormulaire, setErreurFormulaire] = useState<string | null>(null)
@@ -91,12 +91,12 @@ export function FormProgression({
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
         formData.set('seance', String(seanceId))
-        setSucces(null)
+        setSuccess(null)
         setErreurFormulaire(null)
         startTransition(async () => {
           const result = await ajouterProgression(formData)
           if (result.ok) {
-            setSucces('Progression enregistrée')
+            setSuccess('Progression enregistrée')
             setOuvert(false)
           } else {
             setErreurFormulaire(result.erreur ?? 'La progression n’a pas pu être enregistrée.')
@@ -104,7 +104,7 @@ export function FormProgression({
         })
       }}
     >
-      {succes && <NotificationBanner titre={succes} type="succes" />}
+      {success && <NotificationBanner titre={success} type="success" />}
       <ResumeErreurs erreurs={erreurFormulaire ? [erreurFormulaire] : []} />
       <ChampFormulaire
         as="select"

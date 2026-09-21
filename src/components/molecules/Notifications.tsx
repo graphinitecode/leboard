@@ -21,7 +21,7 @@ function LienErreur({ champId, texte }: { champId: string; texte: string }) {
 // (id optionnel) ; le summary prend le focus quand il apparaît.
 export function ResumeErreurs({
   erreurs,
-  titre = 'Il y a un problème',
+  titre = 'Il y a ' + erreurs.length + ' problème' + (erreurs.length > 1 ? 's' : ''),
 }: {
   erreurs: (string | { champId: string; texte: string })[]
   titre?: string
@@ -61,11 +61,11 @@ export function ResumeErreurs({
 }
 
 // Molécule : bandeau de notification (succès / info)
-export function NotificationBanner({ titre, type = 'succes' }: { titre: string; type?: 'succes' | 'info' }) {
+export function NotificationBanner({ titre, type = 'success' }: { titre: string; type?: 'success' | 'info' }) {
   return (
     <div
-      className={`lpv-banner${type === 'succes' ? ' lpv-banner--succes' : ''}`}
-      role={type === 'succes' ? 'status' : 'region'}
+      className={`lpv-banner${type === 'success' ? ' lpv-banner--success' : ''}`}
+      role={type === 'success' ? 'status' : 'region'}
     >
       <strong>{titre}</strong>
     </div>
