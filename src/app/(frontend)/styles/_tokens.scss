@@ -40,6 +40,9 @@
      quel que soit le thème (le portail reste coloré en mode sombre) */
   --lpv-sur-portail: #ffffff;
 
+  /* Afin d'avoir le même background quelque soit le theme */
+  --lpv-background: var(--lpv-sur-portail);
+
   /* Focus : jaune, conservé du GOV.UK pour la visibilité maximale */
   --lpv-focus: #fd0;
 

@@ -289,7 +289,7 @@
     flex-wrap: wrap;
     gap: var(--lpv-spacing-md);
     list-style: none;
-    padding: 0;
+    padding-inline: 1.2rem;
     border-bottom: 1px solid var(--lpv-grey-border);
 
     @media (max-width: 639px) {
@@ -330,7 +330,7 @@
     &--actif {
       color: var(--lpv-text);
       text-decoration: none;
-      background-color: var(--lpv-surface);
+      background-color: var(--lpv-background);
       padding-bottom: 1.1rem;
       border-top: 1px solid var(--lpv-grey-border);
       border-inline: 1px solid var(--lpv-grey-border);
