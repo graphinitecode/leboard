@@ -7,10 +7,11 @@ import { Bouton } from '@/components/atoms/Bouton'
 import { ChampFormulaire, Modale, NotificationBanner, ResumeErreurs, Toast } from '@/components/molecules'
 
 import {
-  ajouterDisponibilite,
-  modifierDisponibilite,
-  supprimerDisponibilite,
-} from '@/app/(frontend)/profs/disponibilites/actions'
+  useAjouterDisponibilite,
+  useModifierDisponibilite,
+  useSupprimerDisponibilite,
+} from '@/planning/application/planning.hooks'
+import type { Disponibilite, JourSemaine } from '@/planning/domain/disponibilite.entity'
 
 export interface DispoItem {
   jour: string
@@ -41,6 +42,7 @@ export function ListeDispos({ dispos }: { dispos: DispoItem[] }) {
   const [cleNouvelle, setCleNouvelle] = useState<string | null>(null)
   const [assistantOuvert, setAssistantOuvert] = useState(false)
   const timerAnimation = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const supprimerDispo = useSupprimerDisponibilite()
 
   useEffect(() => {
     return () => {
@@ -57,11 +59,11 @@ export function ListeDispos({ dispos }: { dispos: DispoItem[] }) {
     const { jour, heureDebut, heureFin } = cibleSuppression
     setCibleSuppression(null)
     startTransition(async () => {
-      const result = await supprimerDisponibilite(jour, heureDebut, heureFin)
-      if (result.ok) {
+      try {
+        await supprimerDispo.mutateAsync({ heureDebut, heureFin, jour: jour as JourSemaine })
         afficherToast('Disponibilité supprimée', 'success')
-      } else {
-        afficherToast(result.erreur ?? 'Échec de la suppression.', 'erreur')
+      } catch (err) {
+        afficherToast(err instanceof Error ? err.message : 'Échec de la suppression.', 'erreur')
       }
     })
   }
@@ -178,6 +180,8 @@ export function FormulaireDispoSteps({
   const [pending, startTransition] = useTransition()
   const [erreur, setErreur] = useState<string | null>(null)
   const [precedente, setPrecedente] = useState<DispoItem | null>(editionDe ?? null)
+  const ajouterDispo = useAjouterDisponibilite()
+  const modifierDispo = useModifierDisponibilite()
 
   function reinitialiser() {
     onFerme()
@@ -194,9 +198,9 @@ export function FormulaireDispoSteps({
     startTransition(async () => {
       const nouveau = { heureDebut, heureFin, jour }
 
-      if (precedente) {
-        const result = await modifierDisponibilite(precedente, nouveau)
-        if (result.ok) {
+      try {
+        if (precedente) {
+          await modifierDispo.mutateAsync({ nouveau: nouveau as Disponibilite, origine: precedente as Disponibilite })
           setEtape(1)
           setJour('')
           setHeureDebut('')
@@ -204,26 +208,18 @@ export function FormulaireDispoSteps({
           setPrecedente(null)
           onFerme()
           onEnregistre?.(nouveau, precedente)
-        } else {
-          setErreur(result.erreur ?? 'La disponibilité n’a pas pu être modifiée.')
+          return
         }
-        return
-      }
 
-      const formData = new FormData()
-      formData.set('jour', jour)
-      formData.set('heureDebut', heureDebut)
-      formData.set('heureFin', heureFin)
-      const result = await ajouterDisponibilite(formData)
-      if (result.ok) {
+        await ajouterDispo.mutateAsync(nouveau as Disponibilite)
         setEtape(1)
         setJour('')
         setHeureDebut('')
         setHeureFin('')
         onFerme()
         onEnregistre?.(nouveau, null)
-      } else {
-        setErreur(result.erreur ?? 'La disponibilité n’a pas pu être enregistrée.')
+      } catch (err) {
+        setErreur(err instanceof Error ? err.message : 'La disponibilité n’a pas pu être enregistrée.')
       }
     })
   }
