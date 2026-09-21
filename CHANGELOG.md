@@ -6,6 +6,20 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+## [0.5.0] — 2026-09-21
+
+### Ajouté
+- Architecture de l'application réorganisée en modules métier (authentification, élèves, séances, progressions, planning, bibliothèque, rapports) : les écrans des portails gagnent en fiabilité (chargements explicites, messages d'erreur clairs)
+
+### Modifié
+- Résumé d'erreurs : fond rosé dédié (mode clair et sombre) qui détache le bloc du reste de la page, et fond « retour à faire » des avertissements plus lisible
+- Actions des listes : liens « Modifier / Ajouter » en bleu avec soulignement renforcé au survol (le rouge reste réservé à « Supprimer »)
+- Texte d'avertissement : rendu plus léger et plus lisible (graisse intermédiaire au lieu du gras marqué)
+- Fil d'Ariane : séparateur chevron régulièrement espacé dans tous les thèmes
+- Mode sombre : bouton secondaire avec ombre mieux détachée du fond
+
+## [0.4.0] — 2026-09-21
+
 ### Ajouté
 - Navigation du site : liens déroulants (menus avec sous-liens en liste verticale) et bouton de recherche, le tout pilotable depuis le panneau d'administration (global header)
 
