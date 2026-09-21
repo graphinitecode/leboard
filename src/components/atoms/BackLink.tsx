@@ -1,4 +1,5 @@
 import { Icon } from '@/components/atoms/Icon'
+import React from 'react'
 
 // Atome : lien de retour (flèche gauche), couleur du portail courant.
 // Utilisé pour la navigation arrière (page précédente, étape précédente).

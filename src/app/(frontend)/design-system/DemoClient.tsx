@@ -55,12 +55,12 @@ export function DemoModale() {
 }
 
 export function DemoToast() {
-  const [toast, setToast] = useState<{ message: string; type: 'succes' | 'erreur' } | null>(null)
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'erreur' } | null>(null)
 
   return (
     <>
       <div style={{ display: 'flex', gap: '0.75rem' }}>
-        <Bouton onClick={() => setToast({ message: 'Action enregistrée', type: 'succes' })} type="button">
+        <Bouton onClick={() => setToast({ message: 'Action enregistrée', type: 'success' })} type="button">
           Toast succès
         </Bouton>
         <Bouton onClick={() => setToast({ message: 'Une erreur est survenue', type: 'erreur' })} type="button" variante="danger">

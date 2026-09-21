@@ -127,7 +127,7 @@ export function Accordeon({
                   type="button"
                 >
                   <span aria-hidden="true" className="lpv-accordeon__icone">
-                    <Icon icone={isOpen ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} taille={22} />
+                    <Icon icone={isOpen ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} taille={12} />
                   </span>
                   <span className="lpv-accordeon__texte-bouton">{section.titre}</span>
                   <span className="lpv-accordeon__texte-toggle lpv-visually-hidden">

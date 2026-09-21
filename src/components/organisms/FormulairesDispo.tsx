@@ -37,7 +37,7 @@ export function ListeDispos({ dispos }: { dispos: DispoItem[] }) {
   const [pending, startTransition] = useTransition()
   const [cibleSuppression, setCibleSuppression] = useState<DispoItem | null>(null)
   const [cibleEdition, setCibleEdition] = useState<DispoItem | null>(null)
-  const [toast, setToast] = useState<{ message: string; type: 'succes' | 'erreur' } | null>(null)
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'erreur' } | null>(null)
   const [cleNouvelle, setCleNouvelle] = useState<string | null>(null)
   const [assistantOuvert, setAssistantOuvert] = useState(false)
   const timerAnimation = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -48,7 +48,7 @@ export function ListeDispos({ dispos }: { dispos: DispoItem[] }) {
     }
   }, [])
 
-  function afficherToast(message: string, type: 'succes' | 'erreur') {
+  function afficherToast(message: string, type: 'success' | 'erreur') {
     setToast({ message, type })
   }
 
@@ -59,7 +59,7 @@ export function ListeDispos({ dispos }: { dispos: DispoItem[] }) {
     startTransition(async () => {
       const result = await supprimerDisponibilite(jour, heureDebut, heureFin)
       if (result.ok) {
-        afficherToast('Disponibilité supprimée', 'succes')
+        afficherToast('Disponibilité supprimée', 'success')
       } else {
         afficherToast(result.erreur ?? 'Échec de la suppression.', 'erreur')
       }
@@ -70,7 +70,7 @@ export function ListeDispos({ dispos }: { dispos: DispoItem[] }) {
     if (timerAnimation.current) clearTimeout(timerAnimation.current)
     setCleNouvelle(cleDispo(dispo))
     timerAnimation.current = setTimeout(() => setCleNouvelle(null), 2000)
-    afficherToast(precedente ? 'Disponibilité modifiée' : 'Disponibilité ajoutée', 'succes')
+    afficherToast(precedente ? 'Disponibilité modifiée' : 'Disponibilité ajoutée', 'success')
   }
 
   return (
@@ -341,5 +341,5 @@ export function FormulaireDispoSteps({
 
 // Gardé pour compat : bannière de succès inline (ancien FormDispo)
 export function NotificationDispo({ message }: { message: string }) {
-  return <NotificationBanner titre={message} type="succes" />
+  return <NotificationBanner titre={message} type="success" />
 }
