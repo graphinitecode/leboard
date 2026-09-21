@@ -7,7 +7,9 @@ import { Icon } from '@/components/atoms/Icon'
 // Molécule : bascule de thème (clair/sombre).
 // Utilise le ThemeProvider du template Payload (localStorage + prefers-color-scheme).
 // Icône lune en dark, soleil en light (boxicons filled).
-export function BasculeTheme() {
+// variante 'barre' (défaut) : icône seule, blanc sur fond portail.
+// variante 'panneau' : ligne libellé + icône, couleurs du panneau (surface).
+export function BasculeTheme({ variante = 'barre' }: { variante?: 'barre' | 'panneau' }) {
   const [theme, setTheme] = useState<'dark' | 'light' | null>(null)
 
   // La préférence ne peut être lue qu'après hydratation (window n'existe pas
@@ -35,14 +37,19 @@ export function BasculeTheme() {
   }
 
   const icone = theme === 'dark' ? 'boxicons:moon-star-filled' : 'boxicons:sun-bright-filled'
+  const libelle = theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'
+
+  if (variante === 'panneau') {
+    return (
+      <button aria-label={libelle} className="lpv-bascule-theme-panneau" onClick={basculer} type="button">
+        <span>{theme === 'dark' ? 'Mode clair' : 'Mode sombre'}</span>
+        <Icon aria-hidden icone={icone} taille={20} />
+      </button>
+    )
+  }
 
   return (
-    <button
-      aria-label={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
-      className="lpv-bascule-theme"
-      onClick={basculer}
-      type="button"
-    >
+    <button aria-label={libelle} className="lpv-bascule-theme" onClick={basculer} type="button">
       <Icon classe="lpv-bascule-theme__icone" icone={icone} taille={20} />
     </button>
   )

@@ -472,7 +472,6 @@ export default function DesignSystemPage() {
         >
           <AvatarUtilisateur email="olivier.durand@lpv.fr" nom="Olivier Durand" />
           <span aria-hidden="true" className="lpv-entete-separateur" />
-          <BasculeTheme />
           <button aria-expanded={false} className="lpv-menu-bouton" type="button">
             <span aria-hidden="true" className="lpv-menu-bouton__icone">
               <Icon icone="rivet-icons:menu" taille={22} />
@@ -488,7 +487,8 @@ export default function DesignSystemPage() {
         <p className="lpv-muted">
           Le mode sombre s&apos;applique à tout le design system via <code>data-theme</code> sur{' '}
           <code>&lt;html&gt;</code>. Le choix est mémorisé (localStorage) et suit{' '}
-          <code>prefers-color-scheme</code> par défaut.
+          <code>prefers-color-scheme</code> par défaut. Dans l&apos;entête des portails, la
+          bascule vit dans le panneau du menu (variante « panneau ») et non plus dans la barre.
         </p>
         <div
           className="lpv-card"
