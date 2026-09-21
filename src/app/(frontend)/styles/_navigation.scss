@@ -21,12 +21,20 @@
   &__item {
     align-items: center;
     display: flex;
-    padding-right: 7px;
+    padding-inline: 7px;
 
     & + &::before {
       content: '›';
       color: var(--lpv-text-muted);
     }
+  }
+
+  &--item:last-child {
+    padding-right: 0;
+  }
+
+  &--item:first-child {
+    padding-left: 0;
   }
 
   &__lien {
