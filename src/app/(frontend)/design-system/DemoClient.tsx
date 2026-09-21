@@ -45,9 +45,9 @@ export function DemoToggle() {
       ariaLabel="Portail"
       onChanger={onChanger}
       options={[
-        { label: 'Profs', libelle: 'Espace profs', value: 'profs' },
-        { label: 'Parents', libelle: 'Espace parents', value: 'parents' },
-        { label: 'Élèves', libelle: 'Espace élèves', value: 'eleves' },
+        { label: 'Profs', libelle: 'Professeurs', value: 'profs' },
+        { label: 'Parents', libelle: 'Parents', value: 'parents' },
+        { label: 'Élèves', libelle: 'Élèves', value: 'eleves' },
       ]}
       valeurInitiale={valeur}
     />
