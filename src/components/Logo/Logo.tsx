@@ -7,6 +7,8 @@ interface Props {
   priority?: 'auto' | 'high' | 'low'
 }
 
+// Atome : logo LPV Board « large » (cœur + mention Association Les Pierres
+// Vivantes), blanc, pour fond coloré — header du site vitrine.
 export const Logo = (props: Props) => {
   const { loading: loadingFromProps, priority: priorityFromProps, className } = props
 
@@ -16,14 +18,14 @@ export const Logo = (props: Props) => {
   return (
     /* eslint-disable @next/next/no-img-element */
     <img
-      alt="Payload Logo"
-      width={193}
-      height={34}
+      alt="Association Les Pierres Vivantes"
+      width={499}
+      height={93}
       loading={loading}
       fetchPriority={priority}
       decoding="async"
-      className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
-      src="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-logo-light.svg"
+      className={clsx('w-full h-auto max-w-[14rem]', className)}
+      src="/lpv-logo_large.png"
     />
   )
 }

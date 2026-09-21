@@ -11,9 +11,9 @@ export function Panel({
   variante = 'info',
 }: {
   children: ReactNode
-  variante?: 'info' | 'succes'
+  variante?: 'info' | 'success'
 }) {
   return (
-    <div className={`lpv-panel${variante === 'succes' ? ' lpv-panel--succes' : ''}`}>{children}</div>
+    <div className={`lpv-panel${variante === 'success' ? ' lpv-panel--success' : ''}`}>{children}</div>
   )
 }

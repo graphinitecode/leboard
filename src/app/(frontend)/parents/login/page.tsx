@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 
-import { LoginForm } from '@/components/organisms/LoginForm'
+import { LoginForm } from '@/auth'
 import { getMeUserServer } from '@/utilities/parentAuth'
 
 export const dynamic = 'force-dynamic'
@@ -15,6 +15,7 @@ export default async function LoginPage() {
   return (
     <LoginForm
       cible="/parents"
+      portail="parent"
       sousTitre="Connectez pour accéder à l'espace parents."
     />
   )

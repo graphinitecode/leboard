@@ -3,9 +3,34 @@
 import { useState } from 'react'
 
 import { Bouton } from '@/components/atoms/Bouton'
+import { BoutonsRadio, type OptionRadio } from '@/components/molecules/BoutonsRadio'
+import { ChampFormulaire } from '@/components/molecules/ChampFormulaire'
 import { Modale } from '@/components/molecules/Modale'
 import { Toast } from '@/components/molecules/Toast'
 import { ToggleSegmentes } from '@/components/molecules/ToggleSegmentes'
+
+const RADIO_OPTIONS: OptionRadio[] = [
+  {
+    conditionnel: <ChampFormulaire hint="Précisez les modalités." id="demo-radio-modalites" label="Modalités" optionnel />,
+    texte: 'Oui',
+    valeur: 'oui',
+  },
+  { texte: 'Non', valeur: 'non' },
+]
+
+export function DemoRadio() {
+  const [valeur, setValeur] = useState('non')
+
+  return (
+    <BoutonsRadio
+      idPrefix="demo-radio"
+      nom="accord"
+      onChange={(e) => setValeur(e.target.value)}
+      options={RADIO_OPTIONS}
+      valeur={valeur}
+    />
+  )
+}
 
 export function DemoToggle() {
   const [valeur, setValeur] = useState('profs')
@@ -55,12 +80,12 @@ export function DemoModale() {
 }
 
 export function DemoToast() {
-  const [toast, setToast] = useState<{ message: string; type: 'succes' | 'erreur' } | null>(null)
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'erreur' } | null>(null)
 
   return (
     <>
       <div style={{ display: 'flex', gap: '0.75rem' }}>
-        <Bouton onClick={() => setToast({ message: 'Action enregistrée', type: 'succes' })} type="button">
+        <Bouton onClick={() => setToast({ message: 'Action enregistrée', type: 'success' })} type="button">
           Toast succès
         </Bouton>
         <Bouton onClick={() => setToast({ message: 'Une erreur est survenue', type: 'erreur' })} type="button" variante="danger">

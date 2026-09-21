@@ -6,6 +6,23 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+### Ajouté
+- Navigation du site : liens déroulants (menus avec sous-liens en liste verticale) et bouton de recherche, le tout pilotable depuis le panneau d'administration (global header)
+
+### Modifié
+- Design system affiné : espacements et soulignements harmonisés sur tout le site, onglets redessinés (fond clair, soulignement, ligne de séparation), chevron de l'accordéon réduit et cerclé, fil d'Ariane avec séparateur chevron, libellés de formulaire plus grands, page courante de la pagination et messages d'erreur plus lisibles en mode sombre
+- Boutons du site (hero, encadrés d'appel à l'action, formulaire de contact, page 404) aux couleurs et styles du design system, y compris en mode sombre
+- Mode sombre : liens de navigation et entête du site toujours en blanc sur la couleur du portail (lisibles et cliquables dans les deux thèmes)
+- Navigation du site : liens en gras, page courante en graisse plus forte sans soulignement permanent
+- Navigation du site : liens avec corps et cibles tactiles du design system, focus au clavier visible
+- Header du site : logo large légèrement réduit
+- Panneau d'administration : icône de recherche remplacée par la loupe du design system
+- Header du site : logo large avec la mention « Association Les Pierres Vivantes »
+- Menu dépliant des portails : vraies icônes chevron au lieu des caractères triangles
+- Mode sombre : fond du portail bleu plus profond, contraste amélioré pour l'entête et le panneau de menu
+- Header et pied de page du site aux couleurs de l'association : logo LPV, navigation et liens éditables depuis le panneau d'administration (globaux header et footer)
+- Déconnexion des portails : navigation via le routeur Next.js (sans rechargement forcé)
+
 ## [0.3.0] — 2026-09-20
 
 ### Ajouté

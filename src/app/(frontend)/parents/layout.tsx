@@ -4,8 +4,6 @@ import type { ReactNode } from 'react'
 import { ContenuPage, EnteteService } from '@/components/molecules/EnteteService'
 import { getMeUserServer } from '@/utilities/parentAuth'
 
-import '../lpvboard.css'
-
 export const dynamic = 'force-dynamic'
 
 export const viewport: Viewport = { width: 'device-width', initialScale: 1 }

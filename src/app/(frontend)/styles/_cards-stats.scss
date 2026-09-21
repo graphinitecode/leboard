@@ -1,0 +1,131 @@
+/* LPV Board Design System — Cards, stats, grille élèves */
+
+/* --- Cards & stats (moderne doux) ----------------------------------------- */
+
+.lpv-card {
+  background-color: var(--lpv-grey-bg);
+  border-radius: var(--lpv-radius-lg);
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+
+  &__titre {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+  }
+
+  &__lignes {
+    margin: -0.35rem -0.5rem;
+
+    .lpv-ligne {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
+}
+
+.lpv-cards-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  margin-bottom: 2rem;
+
+  &--2 {
+    @media (min-width: 480px) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (min-width: 720px) {
+      gap: 1.5rem;
+    }
+  }
+
+  &--4 {
+    @media (min-width: 720px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}
+
+.lpv-stat {
+  display: block;
+
+  &__valeur {
+    color: var(--lpv-portail);
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+
+    &--alerte {
+      color: var(--lpv-orange);
+    }
+  }
+
+  &__libelle {
+    color: var(--lpv-text-muted);
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+  }
+
+  &__detail {
+    color: var(--lpv-text-muted);
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+  }
+}
+
+/* --- Grille de cards élèves ------------------------------------------------ */
+
+.lpv-eleves-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 480px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (min-width: 720px) {
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-bottom: 2rem;
+  }
+}
+
+.lpv-eleve-card {
+  background-color: var(--lpv-grey-bg);
+  border-radius: var(--lpv-radius-lg);
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--lpv-grey-border);
+  }
+
+  &__haut {
+    align-items: center;
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  &__nom {
+    font-weight: 700;
+  }
+
+  &__detail {
+    color: var(--lpv-text-muted);
+    font-size: 0.9rem;
+  }
+
+  &__lien {
+    color: var(--lpv-portail-dark);
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-top: auto;
+  }
+}

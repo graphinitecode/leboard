@@ -63,18 +63,19 @@ export function Accordeon({
   const ref = useRef<HTMLDivElement>(null)
 
   // Lecture de la mémorisation après hydratation : sessionStorage n'existe pas
-  // côté serveur ; le premier rendu sert d'état initial cohérent avec le SSR.
-  const [initialise, setInitialise] = useState(!souvenirOuverture)
-  if (!initialise) {
-    setInitialise(true)
+  // côté serveur, le premier rendu est volontairement neutre (SSR). Disable
+  // justifié : lecture d'un système externe, cas d'usage légitime de useEffect.
+  useEffect(() => {
+    if (!souvenirOuverture) return
     try {
       const stored = sessionStorage.getItem(`lpv-accordeon-${id}`)
       if (stored) {
         const parsed = JSON.parse(stored) as Record<string, boolean>
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         if (parsed && typeof parsed === 'object') setOuverts(parsed)
       }
     } catch {}
-  }
+  }, [id, souvenirOuverture])
 
   useEffect(() => {
     if (!souvenirOuverture) return
@@ -126,7 +127,7 @@ export function Accordeon({
                   type="button"
                 >
                   <span aria-hidden="true" className="lpv-accordeon__icone">
-                    <Icon icone={isOpen ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} taille={22} />
+                    <Icon icone={isOpen ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} taille={12} />
                   </span>
                   <span className="lpv-accordeon__texte-bouton">{section.titre}</span>
                   <span className="lpv-accordeon__texte-toggle lpv-visually-hidden">

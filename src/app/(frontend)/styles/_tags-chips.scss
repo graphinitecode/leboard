@@ -1,0 +1,51 @@
+/* LPV Board Design System — Tags de statut, chips, avatars */
+
+/* --- Tags de statut ------------------------------------------------------ */
+
+.lpv-tag {
+  border-left: 3px solid currentColor;
+  display: inline-block;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+  padding: 0.15rem 0.6rem;
+  white-space: nowrap;
+
+  &--vert { background-color: var(--lpv-tag-vert-bg); color: var(--lpv-tag-vert-texte); }
+  &--jaune { background-color: var(--lpv-tag-jaune-bg); color: var(--lpv-tag-jaune-texte); }
+  &--orange { background-color: var(--lpv-tag-orange-bg); color: var(--lpv-tag-orange-texte); }
+  &--rouge { background-color: var(--lpv-tag-rouge-bg); color: var(--lpv-tag-rouge-texte); }
+  &--bleu { background-color: var(--lpv-tag-bleu-bg); color: var(--lpv-tag-bleu-texte); }
+  &--violet { background-color: var(--lpv-tag-violet-bg); color: var(--lpv-tag-violet-texte); }
+  &--magenta { background-color: var(--lpv-tag-magenta-bg); color: var(--lpv-tag-magenta-texte); }
+  &--sarcelle { background-color: var(--lpv-tag-sarcelle-bg); color: var(--lpv-tag-sarcelle-texte); }
+}
+
+/* Les couleurs dark sont gérées par la surcharge des variables dans _dark.scss :
+   les règles ci-dessus suffisent pour les deux thèmes. */
+
+/* --- Chips & avatars ------------------------------------------------------ */
+
+.lpv-chip {
+  background-color: var(--lpv-portail-soft);
+  border-radius: 999px;
+  color: var(--lpv-portail-dark);
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.1rem 0.6rem;
+  white-space: nowrap;
+}
+
+.lpv-avatar {
+  align-items: center;
+  background-color: var(--lpv-portail-soft);
+  border-radius: 50%;
+  color: var(--lpv-portail-dark);
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  height: 2.75rem;
+  justify-content: center;
+  width: 2.75rem;
+}

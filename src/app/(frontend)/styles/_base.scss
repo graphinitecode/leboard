@@ -1,0 +1,98 @@
+/* LPV Board Design System — Base
+   Container, typographie minimale, utilitaires d'accessibilité, print. */
+
+@use 'mixins';
+
+/* --- Typographie -------------------------------------------------------- */
+
+.lpv-container {
+  margin-inline: auto;
+  max-width: var(--lpv-container);
+  padding-inline: 1rem;
+}
+
+.lpv-h1 {
+  font-size: 2.7rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0.5rem 0 1rem;
+}
+
+.lpv-h2 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.3;
+  padding-bottom: 0.35rem;
+  margin-top: var(--lpv-spacing-xl);
+  margin-bottom: var(--lpv-spacing-lg);
+}
+
+.lpv-h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: var(--lpv-spacing-lg);
+  margin-bottom: var(--lpv-spacing-md);
+}
+
+.lpv-muted {
+  color: var(--lpv-text-muted);
+  font-size: 1rem;
+  margin-bottom: var(--lpv-spacing-md);
+}
+
+/* --- Skip link (accessibilité clavier) -------------------------------------- */
+/* Hors écran par défaut ; apparaît en bandeau fixe en haut à gauche au focus
+   (Tab) — pratique GOV.UK. Invisible à la souris, conforme RGAA 11.10. */
+
+.lpv-skip-link {
+  background: var(--lpv-surface);
+  border: 2px solid var(--lpv-portail);
+  border-radius: 0 0 var(--lpv-radius) var(--lpv-radius);
+  color: var(--lpv-portail-dark);
+  font-weight: 700;
+  left: 1rem;
+  padding: 0.5rem 1rem;
+  position: fixed;
+  text-decoration: none;
+  top: -9999px;
+  z-index: 100;
+
+  &:focus {
+    top: 0;
+  }
+}
+
+/* --- Utilitaire d'accessibilité --------------------------------------------- */
+
+.lpv-visually-hidden {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+/* --- Neutralisation du chrome du site vitrine sur les portails ------------- */
+/* Les portails fournissent leur propre entête (EnteteService) et pied (PiedPage).
+   On masque le Header, le Footer et la barre d'admin Payload du site vitrine
+   quand le shell portail est présent dans le body. */
+
+body:has(.lpv-shell[data-lpv-portail]) > header,
+body:has(.lpv-shell[data-lpv-portail]) > footer,
+body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
+  display: none !important;
+}
+
+/* --- Print ----------------------------------------------------------------- */
+
+@media print {
+  .lpv-entete,
+  .lpv-bouton {
+    display: none !important;
+  }
+}

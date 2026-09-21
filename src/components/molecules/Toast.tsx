@@ -7,12 +7,12 @@ import { useEffect, useRef, useState } from 'react'
 // Inspiré du pattern GOV.UK : bref, visible, sans interaction requise.
 export function Toast({
   message,
-  type = 'succes',
+  type = 'success',
   duree = 5000,
   onFerme,
 }: {
   message: string
-  type?: 'succes' | 'erreur'
+  type?: 'success' | 'erreur'
   duree?: number
   onFerme?: () => void
 }) {

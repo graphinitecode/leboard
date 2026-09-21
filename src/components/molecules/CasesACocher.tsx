@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import { ErrorMessage, Hint, Label } from '@/components/atoms/Champ'
+import { ErrorMessage, Hint } from '@/components/atoms/Champ'
 
 type TailleLabel = 'l' | 'm' | 's'
 
@@ -107,12 +107,6 @@ export function CasesACocher({
   if (hint) ariaDescribedByParts.push(`${prefix}-hint`)
   if (erreur) ariaDescribedByParts.push(`${prefix}-error`)
   const ariaDescribedBy = ariaDescribedByParts.length > 0 ? ariaDescribedByParts.join(' ') : undefined
-
-  const legende = (
-    <legend className={`lpv-fieldset__legende${tailleLegende !== 'l' ? ` lpv-fieldset__legende--${tailleLegende}` : ''}`}>
-      {isPageHeading ? <h1 className="lpv-fieldset__titre">{/* legend text passed by parent */}</h1> : null}
-    </legend>
-  )
 
   return (
     <div className={groupeClasse}>

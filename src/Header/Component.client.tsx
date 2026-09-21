@@ -25,18 +25,19 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   }, [pathname])
 
   // Ajustement pendant le render (pattern React « derived state ») : évite un
-  // setState dans un effet qui déclencherait un rendu en cascade.
-  const [prevHeaderTheme, setPrevHeaderTheme] = useState<string | null>(null)
+  // setState dans un effet qui déclencherait un rendu en cascade. La sentinelle
+  // préserve `undefined` pour que la comparaison converge.
+  const [prevHeaderTheme, setPrevHeaderTheme] = useState<string | null | undefined>(headerTheme)
   if (headerTheme !== prevHeaderTheme) {
-    setPrevHeaderTheme(headerTheme ?? null)
+    setPrevHeaderTheme(headerTheme)
     if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
   }
 
   return (
-    <header className="container relative z-20   " {...(theme ? { 'data-theme': theme } : {})}>
-      <div className="py-8 flex justify-between">
-        <Link href="/">
-          <Logo loading="eager" priority="high" className="invert dark:invert-0" />
+    <header className="lpv-entete-bleue" {...(theme ? { 'data-theme': theme } : {})}>
+      <div className="lpv-entete-bleue__inner">
+        <Link className="lpv-entete-bleue__logo" href="/">
+          <Logo loading="eager" priority="high" />
         </Link>
         <HeaderNav data={data} />
       </div>

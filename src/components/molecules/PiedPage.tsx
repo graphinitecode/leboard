@@ -24,7 +24,7 @@ export function PiedPage({
         <nav aria-label="Liens de pied de page" className="lpv-pied__nav">
           <Link href="/rgpd">Protection des données</Link>
           {liens.map((lien) => (
-            <Link href={lien.href} key={lien.href}>
+            <Link href={lien.href} key={`${lien.href} ${lien.libelle}`}>
               {lien.libelle}
             </Link>
           ))}

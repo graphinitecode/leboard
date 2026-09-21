@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Icon } from '@/components/atoms/Icon'
 
@@ -10,19 +10,22 @@ import { Icon } from '@/components/atoms/Icon'
 export function BasculeTheme() {
   const [theme, setTheme] = useState<'dark' | 'light' | null>(null)
 
-  // Lecture du thème après hydratation : localStorage n'existe pas côté serveur ;
-  // le premier rendu sert d'état initial cohérent avec le SSR.
-  const [initialise, setInitialise] = useState(false)
-  if (!initialise) {
-    setInitialise(true)
+  // La préférence ne peut être lue qu'après hydratation (window n'existe pas
+  // côté serveur) : le premier rendu est volontairement neutre (SSR), l'effet
+  // synchronise ensuite l'icône avec le thème réel. Disable justifié : c'est
+  // le cas d'usage légitime « subscribe to external system » de useEffect,
+  // la règle react-hooks/set-state-in-effect du compilateur n'admet pas
+  // d'exception aussi ciblée.
+  useEffect(() => {
     const stored = window.localStorage.getItem('payload-theme')
     if (stored === 'dark' || stored === 'light') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTheme(stored)
     } else {
       const mql = window.matchMedia('(prefers-color-scheme: dark)')
       setTheme(mql.matches ? 'dark' : 'light')
     }
-  }
+  }, [])
 
   function basculer() {
     const nouveau = theme === 'dark' ? 'light' : 'dark'

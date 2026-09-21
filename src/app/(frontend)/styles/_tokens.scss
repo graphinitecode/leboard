@@ -1,0 +1,121 @@
+/* LPV Board Design System — Tokens
+   Structure et principes d'accessibilité inspirés de GOV.UK Design System (MIT),
+   adaptés à la charte LPV Board (logo coeur bleu #3d9eff, palette accentuelle).
+
+   Conventions : classes lpv-* (BEM léger). Tous les composants consomment
+   les variables ci-dessous — pas de couleur en dur dans les composants. */
+
+:root {
+  /* Charte LPV Board (visuel officiel) */
+  --lpv-blue: #3d9eff;         /* Dodger Blue — portail profs */
+  --lpv-blue-dark: #1877d2;    /* hover boutons / liens (contraste AA sur blanc) */
+  --lpv-blue-soft: #eaf5ff;    /* fond clair dérivé du bleu de marque */
+  --lpv-violet: #9000b3;       /* portail parents */
+  --lpv-violet-dark: #6b0087;  /* hover violet (contraste AA sur blanc) */
+  --lpv-violet-soft: #f6e8fb;  /* fond clair dérivé du violet */
+  --lpv-orange-portail: #e4572e; /* portail élèves (à venir) */
+  --lpv-green: #00af54;        /* Medium Jungle — succès / présent */
+  --lpv-green-soft: #e2f7ec;
+  --lpv-orange: #f96900;       /* Pumpkin Spice — « retour à faire », avertissements */
+  --lpv-orange-soft: #feefe4;
+  --lpv-yellow: #f4d35e;       /* Royal Gold — absent justifié (texte foncé sur fond) */
+  --lpv-yellow-soft: #fdf6e0;
+  --lpv-red: #ff5154;          /* Vibrant Coral — absent / erreur */
+  --lpv-red-soft: #ffeaeb;
+
+  /* Neutres */
+  --lpv-text: #241623;         /* noir du projet */
+  --lpv-text-muted: #565656;
+  --lpv-grey-bg: #f4f5f6;
+  --lpv-grey-border: #d8dadc;
+  --lpv-surface: #f8f8f8;
+
+  /* Couleur du portail courant (surchargée par data-lpv-portail) */
+  --lpv-portail: var(--lpv-blue);
+  --lpv-portail-dark: var(--lpv-blue-dark);
+  --lpv-portail-soft: var(--lpv-blue-soft);
+
+  /* Texte posé sur la couleur du portail (entêtes) : toujours blanc,
+     quel que soit le thème (le portail reste coloré en mode sombre) */
+  --lpv-sur-portail: #ffffff;
+
+  /* Focus : jaune, conservé du GOV.UK pour la visibilité maximale */
+  --lpv-focus: #fd0;
+
+  /* Couleurs des tags (marque, identiques light/dark) */
+  --lpv-tag-vert: #00a14c;
+  --lpv-tag-jaune: #f4d35e;
+  --lpv-tag-orange: #ff6b00;
+  --lpv-tag-rouge: #ff0004;
+  --lpv-tag-bleu: #0080ff;
+  --lpv-tag-violet: #9000b3;
+  --lpv-tag-magenta: #c62991;
+  --lpv-tag-sarcelle: #007c8c;
+
+  /* Tags doux : fond subtil + texte coloré (light : fond éclairci, texte assombri) */
+  --lpv-tag-vert-bg: #e2f7ec;
+  --lpv-tag-vert-texte: #00703c;
+  --lpv-tag-jaune-bg: #fdf6e0;
+  --lpv-tag-jaune-texte: #8a6d00;
+  --lpv-tag-orange-bg: #feefe4;
+  --lpv-tag-orange-texte: #d94e00;
+  --lpv-tag-rouge-bg: #ffeaeb;
+  --lpv-tag-rouge-texte: #cc3a3d;
+  --lpv-tag-bleu-bg: #eaf5ff;
+  --lpv-tag-bleu-texte: #1877d2;
+  --lpv-tag-violet-bg: #f6e8fb;
+  --lpv-tag-violet-texte: #6b0087;
+  --lpv-tag-magenta-bg: #fbe4f2;
+  --lpv-tag-magenta-texte: #a82278;
+  --lpv-tag-sarcelle-bg: #e0f2f4;
+  --lpv-tag-sarcelle-texte: #006470;
+
+  /* Panel info : fond bleu nuit, texte bleu clair */
+  --lpv-panel-bg: #002549;
+  --lpv-panel-texte: #3d9eff;
+  --lpv-panel-success-bg: #01582a;
+  --lpv-panel-success-texte: #ffffff;
+
+  /* Bannière succès : fond vert foncé, texte blanc */
+  --lpv-banner-success-bg: #01582a;
+
+  --lpv-orange-hover: #d94e00;
+  --lpv-red-shadow: #cc3a3d;
+  --lpv-red-hover: #e04245;
+  --lpv-overlay: rgb(15 20 25 / 50%);
+  --lpv-overlay-heavy: rgb(15 20 25 / 30%);
+
+  --lpv-radius: 6px;
+  --lpv-radius-lg: 4px;
+  --lpv-container: 960px;
+  --lpv-shadow: 0 1px 2px rgb(15 20 25 / 6%), 0 4px 16px rgb(15 20 25 / 7%);
+  --lpv-shadow-hover: 0 2px 4px rgb(15 20 25 / 8%), 0 8px 24px rgb(15 20 25 / 10%);
+
+  --lpv-spacing-xs: 2px;
+  --lpv-spacing-sm: 4px;
+  --lpv-spacing-md: 7px;
+  --lpv-spacing-lg: 12px;
+  --lpv-spacing-xl: 24px;
+  --lpv-spacing-xxl: 32px;
+  --lpv-spacing-xxx: 48px;
+
+  --lpv-decoration-thickness: 1px;
+  --lpv-decoration-thickness-hover: 4px;
+
+  --lpv-text-underline-offset: 1px;
+  --lpv-text-underline-offset-hover: 4px;
+}
+
+/* Portail profs : bleu (défaut) */
+.lpv-shell[data-lpv-portail='profs'] {
+  --lpv-portail: var(--lpv-blue);
+  --lpv-portail-dark: var(--lpv-blue-dark);
+  --lpv-portail-soft: var(--lpv-blue-soft);
+}
+
+/* Portail parents : violet */
+.lpv-shell[data-lpv-portail='parents'] {
+  --lpv-portail: var(--lpv-violet);
+  --lpv-portail-dark: var(--lpv-violet-dark);
+  --lpv-portail-soft: var(--lpv-violet-soft);
+}

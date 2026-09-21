@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 
 import { Bouton, BackLink, FilAriane, InsetText, Panel, Tag, TexteAvertissement, Details, Televersement } from '@/components/atoms'
-import { Label, Hint, ErrorMessage } from '@/components/atoms/Champ'
-import { Accordeon, BoutonsRadio, CasesACocher, ChampDate, ChampEnsemble, ChampFormulaire, CompteurCaracteres, ListeTaches, Modale, NotificationBanner, Onglets, PaginationLPV, ResumeErreurs, SummaryList, Tableau, Toast, BasculeTheme } from '@/components/molecules'
-import type { SectionAccordeon, Onglet, OptionCase, OptionRadio, TableauHeadCell, TableauRowCell, Tache, PageNumero } from '@/components/molecules'
+import { Label } from '@/components/atoms/Champ'
+import { Accordeon, CasesACocher, ChampDate, ChampEnsemble, ChampFormulaire, CompteurCaracteres, ListeTaches, NotificationBanner, Onglets, PaginationLPV, ResumeErreurs, SummaryList, Tableau, BasculeTheme } from '@/components/molecules'
+import type { SectionAccordeon, Onglet, OptionCase, TableauHeadCell, TableauRowCell, Tache, PageNumero } from '@/components/molecules'
 
-import { DemoModale, DemoToggle, DemoToast } from './DemoClient'
+import { DemoModale, DemoRadio, DemoToggle, DemoToast } from './DemoClient'
 
-import '../lpvboard.css'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Design system — LPV Board',
@@ -21,8 +21,28 @@ const ACCORDEON_SECTIONS: SectionAccordeon[] = [
 ]
 
 const ONGLETS: Onglet[] = [
-  { id: 'lundi', libelle: 'Lundi', contenu: <p>Cours de mathématiques le lundi.</p> },
-  { id: 'mardi', libelle: 'Mardi', contenu: <p>Cours de français le mardi.</p> },
+  {
+    id: 'lundi',
+    libelle: 'Lundi',
+    contenu: (
+      <p>
+        Cours de <strong>mathématiques</strong> le lundi.
+      </p>
+    ),
+  },
+  {
+    id: 'mardi',
+    libelle: 'Mardi',
+    contenu: (
+      <p>
+        Cours de{' '}
+        <strong>
+          <Link href="/design-system">français</Link>
+        </strong>{' '}
+        le mardi.
+      </p>
+    ),
+  },
   { id: 'mercredi', libelle: 'Mercredi', contenu: <p>Pas de cours le mercredi.</p> },
 ]
 
@@ -32,11 +52,6 @@ const CASES_OPTIONS: OptionCase[] = [
   { valeur: 'courrier', texte: 'Notification par courrier' },
   { diviseur: 'ou' },
   { valeur: 'aucun', texte: 'Aucune notification' },
-]
-
-const RADIO_OPTIONS: OptionRadio[] = [
-  { valeur: 'oui', texte: 'Oui', conditionnel: <ChampFormulaire hint="Précisez les modalités." id="modalites" label="Modalités" optionnel /> },
-  { valeur: 'non', texte: 'Non' },
 ]
 
 const TABLEAU_HEAD: TableauHeadCell[] = [
@@ -87,8 +102,8 @@ const PAGES_DERNIERE: (PageNumero | { ellipsis: true })[] = [
 
 export default function DesignSystemPage() {
   return (
-    <div className="lpv-container" style={{ paddingBottom: '4rem' }}>
-      <h1 className="lpv-h1">Design system LPV Board</h1>
+    <div className="lpv-container">
+      <h1 className="lpv-h1">Design system&nbsp;LPV Board</h1>
       <p className="lpv-muted">
         Composants inspirés du GOV.UK Design System, adaptés aux couleurs et aux conventions LPV.
       </p>
@@ -107,7 +122,7 @@ export default function DesignSystemPage() {
         />
       </nav>
 
-      <section id="boutons" style={{ marginBottom: '3rem' }}>
+      <section id="boutons" style={{ marginBottom: '3.7rem' }}>
         <h2 className="lpv-h2">Boutons</h2>
         <div className="lpv-demo-exemples">
           <Bouton type="button">Primaire</Bouton>
@@ -118,7 +133,7 @@ export default function DesignSystemPage() {
         </div>
       </section>
 
-      <section id="tags" style={{ marginBottom: '3rem' }}>
+      <section id="tags" style={{ marginBottom: '3.7rem' }}>
         <h2 className="lpv-h2">Tags & toggle</h2>
         <div className="lpv-demo-exemples">
           <Tag couleur="vert">Actif</Tag>
@@ -130,11 +145,11 @@ export default function DesignSystemPage() {
           <Tag couleur="magenta">Nouveau</Tag>
           <Tag couleur="sarcelle">Archivé</Tag>
         </div>
-        <h3 className="lpv-h3" style={{ marginTop: '1rem' }}>Toggle segmenté</h3>
+        <h3 className="lpv-h3">Toggle segmenté</h3>
         <DemoToggle />
       </section>
 
-      <section id="messages" style={{ marginBottom: '3rem' }}>
+      <section id="messages" style={{ marginBottom: '3.7rem' }}>
         <h2 className="lpv-h2">Messages</h2>
 
         <h3 className="lpv-h3">InsetText</h3>
@@ -147,7 +162,7 @@ export default function DesignSystemPage() {
         <TexteAvertissement>Cette action est irréversible. Vérifiez les informations avant de continuer.</TexteAvertissement>
 
         <h3 className="lpv-h3">NotificationBanner</h3>
-        <NotificationBanner titre="Vos disponibilités ont été enregistrées" type="succes" />
+        <NotificationBanner titre="Vos disponibilités ont été enregistrées" type="success" />
 
         <h3 className="lpv-h3">ResumeErreurs</h3>
         <ResumeErreurs erreurs={[
@@ -173,7 +188,7 @@ export default function DesignSystemPage() {
         ]} />
 
         <h3 className="lpv-h3">Pagination</h3>
-        <p className="lpv-muted" style={{ marginTop: 0 }}>
+        <p className="lpv-muted">
           La page courante est un bloc plein inversé, non cliquable. « Précédent » n&apos;est
           pas rendu en première page, « Suivant » en dernière page.
         </p>
@@ -202,16 +217,16 @@ export default function DesignSystemPage() {
         <h2 className="lpv-h2">Formulaires</h2>
 
         <h3 className="lpv-h3">Label tailles & isPageHeading</h3>
-        <div style={{ marginBottom: '1rem' }}>
+        <div>
           <Label htmlFor="demo-label-l" taille="l">Label taille L</Label>
         </div>
-        <div style={{ marginBottom: '1rem' }}>
+        <div>
           <Label htmlFor="demo-label-m" taille="m">Label taille M</Label>
         </div>
-        <div style={{ marginBottom: '1rem' }}>
+        <div>
           <Label htmlFor="demo-label-s" taille="s">Label taille S</Label>
         </div>
-        <div style={{ marginBottom: '1rem' }}>
+        <div>
           <Label htmlFor="demo-label-heading" isPageHeading>Label comme titre de page</Label>
         </div>
 
@@ -251,7 +266,7 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">BoutonsRadio</h3>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <BoutonsRadio idPrefix="demo-radio" nom="accord" options={RADIO_OPTIONS} valeur="non" />
+          <DemoRadio />
         </div>
 
         <h3 className="lpv-h3">CompteurCaracteres</h3>
@@ -335,17 +350,17 @@ export default function DesignSystemPage() {
             },
             {
               cle: 'Certificat médical',
-              valeur: <a href="#renseigner">Renseigner…</a>,
+              valeur: <a href="#renseigner" className="lpv-lien-inline">Renseigner…</a>,
             },
           ]}
         />
       </section>
 
-      <section id="surfaces" style={{ marginBottom: '3rem' }}>
+      <section id="surfaces">
         <h2 className="lpv-h2">Surfaces</h2>
 
         <h3 className="lpv-h3">Bascule de thème</h3>
-        <p className="lpv-muted" style={{ marginTop: 0 }}>
+        <p className="lpv-muted">
           Le mode sombre s&apos;applique à tout le design system via <code>data-theme</code> sur
           {' '}<code>&lt;html&gt;</code>. Le choix est mémorisé (localStorage) et suit
           {' '}<code>prefers-color-scheme</code> par défaut.

@@ -1,6 +1,5 @@
 import type { Access, PayloadRequest } from 'payload'
 
-import type { User } from '@/payload-types'
 import { isAdmin, isParent } from './roles'
 
 // access.admin n'accepte qu'un booléen (pas de Where clause)

@@ -1,7 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
+
+import { Icon } from '@/components/atoms/Icon'
+import { useFermerHorsClic } from '@/hooks/useFermerHorsClic'
 
 // Molécule : menu dépliant façon GOV.UK (bouton Menu dans l'entête bleue).
 // Sections : Services et informations / Légales.
@@ -16,20 +19,7 @@ export function MenuDepliant({
   const ref = useRef<HTMLDivElement>(null)
 
   // Ferme au clic extérieur ou à Escape
-  useEffect(() => {
-    function horsClic(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOuvert(false)
-    }
-    function escape(e: KeyboardEvent) {
-      if (e.key === 'Escape') setOuvert(false)
-    }
-    document.addEventListener('mousedown', horsClic)
-    document.addEventListener('keydown', escape)
-    return () => {
-      document.removeEventListener('mousedown', horsClic)
-      document.removeEventListener('keydown', escape)
-    }
-  }, [])
+  useFermerHorsClic(ref, () => setOuvert(false))
 
   return (
     <div ref={ref}>
@@ -39,8 +29,8 @@ export function MenuDepliant({
         onClick={() => setOuvert(!ouvert)}
         type="button"
       >
-        <span aria-hidden="true" style={{ marginRight: '0.4rem' }}>
-          {ouvert ? '▲' : '▼'}
+        <span aria-hidden="true" className="lpv-menu-bouton__chevron">
+          <Icon icone={ouvert ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} taille={22} />
         </span>
         Menu
       </button>
@@ -52,7 +42,7 @@ export function MenuDepliant({
               <h2 className="lpv-menu-panneau__titre">Services et informations</h2>
               <ul>
                 {services.map((lien) => (
-                  <li key={lien.href}>
+                  <li key={`${lien.href} ${lien.libelle}`}>
                     <Link href={lien.href} onClick={() => setOuvert(false)}>
                       {lien.libelle}
                     </Link>
@@ -65,7 +55,7 @@ export function MenuDepliant({
               <h2 className="lpv-menu-panneau__titre">Légales</h2>
               <ul>
                 {legales.map((lien) => (
-                  <li key={lien.href}>
+                  <li key={`${lien.href} ${lien.libelle}`}>
                     <Link href={lien.href} onClick={() => setOuvert(false)}>
                       {lien.libelle}
                     </Link>

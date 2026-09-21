@@ -1,7 +1,6 @@
 import type { Payload } from 'payload'
 
 import { FENETRE_SEANCES, RAPPEL_JOURS_AVANT, SEUIL_ABSENCES } from './alertsConfig'
-import { creerAlerteSiInexistante } from './detecterFinRetention'
 
 function idDe(relation: unknown): number | string | undefined {
   if (relation == null) return undefined

@@ -1,0 +1,187 @@
+/* LPV Board Design System — Mode sombre
+   Surcharges quand data-theme="dark" est posé sur <html>.
+   Les variables portail (bleu/violet) sont réinjectées en clair
+   pour que liens et hover restent lisibles sur fond sombre. */
+
+html[data-theme='dark'] {
+  /* --- Tokens ------------------------------------------------------------- */
+
+  --lpv-text: #f2eef2;
+  --lpv-text-muted: #a3adb3;
+  --lpv-grey-bg: #1e1a1e;
+  --lpv-grey-border: #3a343a;
+  --lpv-surface: #161216;
+
+  --lpv-blue: #1877d2;         /* portail plus profond en dark, texte blanc lisible */
+  --lpv-blue-dark: #66b5ff;
+  --lpv-blue-soft: #0d2137;
+  --lpv-violet-dark: #c04fd8;
+  --lpv-violet-soft: #2d1435;
+  --lpv-orange-soft: #3a1d0a;
+  --lpv-yellow-soft: #3a3015;
+  --lpv-green-soft: #0d3b24;
+  --lpv-red-soft: #3a1215;
+
+  --lpv-orange-hover: #f97b1a;
+  --lpv-red-shadow: #8a2528;
+  --lpv-red-hover: #ff6b6e;
+
+  /* Tags : identiques en dark (contraste déjà valide sur les deux fonds) */
+  --lpv-tag-vert: #00a14c;
+  --lpv-tag-jaune: #f4d35e;
+  --lpv-tag-orange: #ff6b00;
+  --lpv-tag-rouge: #ff0004;
+  --lpv-tag-bleu: #0080ff;
+  --lpv-tag-violet: #9000b3;
+  --lpv-tag-magenta: #c62991;
+  --lpv-tag-sarcelle: #007c8c;
+
+  /* Tags doux en dark : fond assombri, texte éclairci */
+  --lpv-tag-vert-bg: #0d3b24;
+  --lpv-tag-vert-texte: #4cd98a;
+  --lpv-tag-jaune-bg: #3a3015;
+  --lpv-tag-jaune-texte: #f4d35e;
+  --lpv-tag-orange-bg: #3a1d0a;
+  --lpv-tag-orange-texte: #ff9c4d;
+  --lpv-tag-rouge-bg: #3a1215;
+  --lpv-tag-rouge-texte: #ff8083;
+  --lpv-tag-bleu-bg: #0d2137;
+  --lpv-tag-bleu-texte: #66b5ff;
+  --lpv-tag-violet-bg: #2d1435;
+  --lpv-tag-violet-texte: #c04fd8;
+  --lpv-tag-magenta-bg: #331122;
+  --lpv-tag-magenta-texte: #e06db8;
+  --lpv-tag-sarcelle-bg: #0a2a30;
+  --lpv-tag-sarcelle-texte: #4dc3d4;
+
+  /* Panel : fond bleu nuit, texte bleu clair */
+  --lpv-panel-bg: #002549;
+  --lpv-panel-texte: #3d9eff;
+  --lpv-panel-success-bg: #01582a;
+  --lpv-panel-success-texte: #ffffff;
+
+  /* Bannière succès : fond vert foncé, texte blanc */
+  --lpv-banner-success-bg: #01582a;
+
+  /* Boutons : fond tag identique, ombre assombrie pour le fond sombre */
+  --lpv-bouton-primaire-ombre: #004080;
+  --lpv-bouton-avertissement-ombre: #803300;
+
+  --lpv-overlay: rgb(0 0 0 / 60%);
+  --lpv-overlay-heavy: rgb(0 0 0 / 40%);
+  --lpv-shadow: 0 1px 2px rgb(0 0 0 / 20%), 0 4px 16px rgb(0 0 0 / 25%);
+  --lpv-shadow-hover: 0 2px 4px rgb(0 0 0 / 30%), 0 8px 24px rgb(0 0 0 / 35%);
+
+  color-scheme: dark;
+
+  /* --- Boutons ------------------------------------------------------------
+     Ils reprennent les couleurs des tags.
+     Le hover assombrit le fond (plus sombre que le repos). */
+
+  .lpv-bouton {
+    background-color: var(--lpv-tag-bleu);
+    box-shadow: 0 2px 0 var(--lpv-bouton-primaire-ombre);
+    color: #ffffff;
+
+    &:hover {
+      background-color: #0066cc;
+    }
+  }
+
+  .lpv-bouton--avertissement {
+    background-color: var(--lpv-tag-orange);
+    box-shadow: 0 2px 0 var(--lpv-bouton-avertissement-ombre);
+    color: #ffffff;
+
+    &:hover {
+      background-color: #cc5600;
+    }
+  }
+
+  .lpv-bouton--danger {
+    background-color: var(--lpv-tag-rouge);
+    box-shadow: 0 2px 0 var(--lpv-red-shadow);
+    color: #ffffff;
+
+    &:hover {
+      background-color: #cc0003;
+    }
+  }
+
+  /* Secondaire : fond relevé et texte clair (le grey-bg clair devient un bloc
+     noir illisible sur les fonds sombres, ex. hero image) */
+  .lpv-bouton--secondaire {
+    background-color: #2a242a;
+    box-shadow: 0 2px 0 #0d0a0d;
+    color: #f2eef2;
+
+    &:hover {
+      background-color: #3a343a;
+    }
+  }
+
+  /* --- Entête ------------------------------------------------------------- */
+
+  .lpv-entete-bleue {
+    background-color: var(--lpv-tag-bleu);
+  }
+
+  /* --- Formulaires -------------------------------------------------------- */
+
+  .lpv-error-message {
+    color: var(--lpv-tag-rouge);
+  }
+
+  .lpv-form-group--error {
+    border-color: var(--lpv-tag-rouge);
+  }
+
+  /* Couleur du champ en erreur : la bordure passe à la couleur de marque tag */
+  .lpv-input--error {
+    border-color: var(--lpv-tag-rouge);
+  }
+
+  /* --- Résumé des erreurs --------------------------------------------------- */
+
+  .lpv-error-summary {
+    border-color: var(--lpv-tag-rouge);
+
+    li a {
+      color: var(--lpv-tag-rouge);
+
+      &:hover {
+        color: var(--lpv-text);
+        text-underline-offset: var(--lpv-text-underline-offset-hover);
+        text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+      }
+    }
+  }
+
+  /* --- Bannières & panels ---------------------------------------------------- */
+
+  .lpv-banner--success {
+    background-color: var(--lpv-banner-success-bg);
+  }
+
+  /* Panel : couleurs de marque (fond bleu nuit, texte bleu clair) */
+  .lpv-panel {
+    background-color: var(--lpv-panel-bg);
+    color: var(--lpv-panel-texte);
+  }
+
+  .lpv-panel--success {
+    background-color: var(--lpv-panel-success-bg);
+    color: var(--lpv-panel-success-texte);
+  }
+
+  /* --- Listes ----------------------------------------------------------------- */
+
+  .lpv-summary-list__actions .lpv-action--danger,
+  .lpv-summary-list__actions-list .lpv-action--danger {
+    color: var(--lpv-tag-rouge);
+
+    &:hover {
+      color: var(--lpv-tag-rouge);
+    }
+  }
+}
