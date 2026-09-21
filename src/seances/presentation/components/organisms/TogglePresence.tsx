@@ -1,8 +1,7 @@
 'use client'
 
 import { ToggleSegmentes, type OptionSegmentee } from '@/components/molecules/ToggleSegmentes'
-
-import { changerPresence } from './actions'
+import { useTogglePresence } from '@/seances/application/seances.hooks'
 
 const OPTIONS: OptionSegmentee[] = [
   { label: 'Présent', libelle: 'Présent', value: 'present' },
@@ -17,15 +16,24 @@ export function TogglePresence({
   statutInitial,
   nomEleve,
 }: {
-  presenceId: number | string
+  presenceId: number
   statutInitial: string
   nomEleve: string
 }) {
+  const toggle = useTogglePresence()
+
   return (
     <ToggleSegmentes
       ariaLabel={`Présence de ${nomEleve}`}
       attributData={(option) => ({ 'data-statut': option.value })}
-      onChanger={(valeur) => changerPresence(presenceId, valeur)}
+      onChanger={(valeur) =>
+        toggle.mutate(
+          { presenceId, statut: valeur as 'present' },
+          {
+            onError: () => undefined,
+          },
+        )
+      }
       options={OPTIONS}
       valeurInitiale={statutInitial}
     />

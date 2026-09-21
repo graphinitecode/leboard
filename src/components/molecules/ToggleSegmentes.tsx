@@ -1,6 +1,6 @@
 'use client'
 
-import { useTransition } from 'react'
+import { useState } from 'react'
 
 export interface OptionSegmentee {
   label: string
@@ -19,11 +19,11 @@ export function ToggleSegmentes({
 }: {
   options: OptionSegmentee[]
   valeurInitiale: string
-  onChanger: (valeur: string) => Promise<{ ok: boolean; erreur?: string }>
+  onChanger: (valeur: string) => void
   ariaLabel: string
   attributData?: (option: OptionSegmentee) => Record<string, string>
 }) {
-  const [pending, startTransition] = useTransition()
+  const [actifLocal, setActifLocal] = useState<string | null>(null)
 
   return (
     <div aria-label={ariaLabel} className="lpv-toggle" role="group">
@@ -37,17 +37,15 @@ export function ToggleSegmentes({
             aria-label={option.libelle}
             aria-pressed={actif}
             className={`lpv-toggle-option${actif ? ' lpv-toggle-option--actif' : ''}`}
-            disabled={pending}
+            disabled={actifLocal !== null}
             onClick={() => {
-              if (actif) return
-              startTransition(async () => {
-                const result = await onChanger(option.value)
-                if (!result.ok) {
-                  window.alert(result.erreur)
-                } else {
-                  window.location.reload()
-                }
-              })
+              if (actif || actifLocal !== null) return
+              setActifLocal(option.value)
+              try {
+                onChanger(option.value)
+              } finally {
+                setActifLocal(null)
+              }
             }}
             title={option.libelle}
             type="button"
