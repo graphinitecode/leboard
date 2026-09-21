@@ -198,7 +198,7 @@ export default function DesignSystemPage() {
         <FilAriane
           liens={[
             { href: '/', libelle: 'Accueil' },
-            { href: '/profs', libelle: 'Espace profs' },
+            { href: '/profs', libelle: 'Mes séances' },
             { libelle: 'Disponibilités' },
           ]}
         />
