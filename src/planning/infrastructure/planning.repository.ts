@@ -3,7 +3,9 @@ import type { User } from '@/payload-types'
 import { getAxiosErrorMessage } from '@/shared/infrastructure/axios-error'
 import { httpClient } from '@/shared/infrastructure/http.client'
 
-type UserDto = Pick<User, 'id' | 'disponibilites'>
+// Réponse réelle de GET /api/users/me : { user, collection, token, exp }.
+// Sans ce wrapper, me.user.id est undefined et le PATCH part vers /users/undefined.
+type MeResponse = { user: Pick<User, 'id' | 'disponibilites'> }
 
 type DispoDto = NonNullable<User['disponibilites']>[number]
 
@@ -16,8 +18,8 @@ const mapDispo = (dispo: DispoDto): Disponibilite => ({
 export const planningRepository = {
   async listMesDisponibilites(): Promise<Disponibilite[]> {
     try {
-      const res = await httpClient.get<UserDto>('/users/me')
-      return (res.data.disponibilites ?? []).map(mapDispo)
+      const res = await httpClient.get<MeResponse>('/users/me')
+      return (res.data.user?.disponibilites ?? []).map(mapDispo)
     } catch (err) {
       throw new Error(getAxiosErrorMessage(err, 'Impossible de charger vos disponibilités.'))
     }
@@ -57,10 +59,11 @@ export const planningRepository = {
     transformer: (dispos: Disponibilite[]) => Disponibilite[],
   ): Promise<Disponibilite[]> {
     try {
-      const me = await httpClient.get<UserDto>('/users/me')
-      const dispos: Disponibilite[] = (me.data.disponibilites ?? []).map(mapDispo)
+      const me = await httpClient.get<MeResponse>('/users/me')
+      if (!me.data.user) throw new Error('Non authentifié.')
+      const dispos: Disponibilite[] = (me.data.user.disponibilites ?? []).map(mapDispo)
       const nouvelles = transformer(dispos)
-      await httpClient.patch(`/users/${me.data.id}`, { disponibilites: nouvelles })
+      await httpClient.patch(`/users/${me.data.user.id}`, { disponibilites: nouvelles })
       return nouvelles
     } catch (err) {
       if (err instanceof Error && err.message.includes('introuvable')) throw err
