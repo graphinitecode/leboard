@@ -104,6 +104,18 @@ a.lpv-ligne {
         text-underline-offset: var(--lpv-text-underline-offset-hover);
       }
     }
+
+    .lpv-action--warning {
+      color: var(--lpv-tag-orange-texte);
+      text-decoration-thickness: var(--lpv-decoration-thickness);
+      text-underline-offset: var(--lpv-text-underline-offset);
+
+      &:hover {
+        color: var(--lpv-tag-orange-texte);
+        text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+        text-underline-offset: var(--lpv-text-underline-offset-hover);
+      }
+    }
   }
 
   /* Liste d'actions multiples, séparées par un trait vertical */
@@ -145,13 +157,27 @@ a.lpv-ligne {
       }
     }
 
-    .lpv-action--normal {
-      color: var(--lpv-tag-bleu-texte);
+    .lpv-action--normal,
+    .lpv-action--warning {
       text-decoration-thickness: var(--lpv-decoration-thickness);
       text-underline-offset: var(--lpv-text-underline-offset);
+    }
+
+    .lpv-action--normal {
+      color: var(--lpv-tag-bleu-texte);
 
       &:hover {
         color: var(--lpv-text);
+        text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+        text-underline-offset: var(--lpv-text-underline-offset-hover);
+      }
+    }
+
+    .lpv-action--warning {
+      color: var(--lpv-tag-orange-texte);
+
+      &:hover {
+        color: var(--lpv-tag-orange-texte);
         text-decoration-thickness: var(--lpv-decoration-thickness-hover);
         text-underline-offset: var(--lpv-text-underline-offset-hover);
       }

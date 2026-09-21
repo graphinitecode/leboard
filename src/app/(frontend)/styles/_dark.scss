@@ -187,4 +187,13 @@ html[data-theme='dark'] {
       color: var(--lpv-tag-rouge);
     }
   }
+
+  .lpv-summary-list__actions .lpv-action--warning,
+  .lpv-summary-list__actions-list .lpv-action--warning {
+    color: var(--lpv-tag-orange-texte);
+
+    &:hover {
+      color: var(--lpv-tag-orange-texte);
+    }
+  }
 }
