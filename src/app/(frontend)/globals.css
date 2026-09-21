@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-@import './lpvboard.css';
 
 @config '../../../tailwind.config.mjs';
 

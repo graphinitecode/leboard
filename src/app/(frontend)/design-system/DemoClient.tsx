@@ -3,9 +3,34 @@
 import { useState } from 'react'
 
 import { Bouton } from '@/components/atoms/Bouton'
+import { BoutonsRadio, type OptionRadio } from '@/components/molecules/BoutonsRadio'
+import { ChampFormulaire } from '@/components/molecules/ChampFormulaire'
 import { Modale } from '@/components/molecules/Modale'
 import { Toast } from '@/components/molecules/Toast'
 import { ToggleSegmentes } from '@/components/molecules/ToggleSegmentes'
+
+const RADIO_OPTIONS: OptionRadio[] = [
+  {
+    conditionnel: <ChampFormulaire hint="Précisez les modalités." id="demo-radio-modalites" label="Modalités" optionnel />,
+    texte: 'Oui',
+    valeur: 'oui',
+  },
+  { texte: 'Non', valeur: 'non' },
+]
+
+export function DemoRadio() {
+  const [valeur, setValeur] = useState('non')
+
+  return (
+    <BoutonsRadio
+      idPrefix="demo-radio"
+      nom="accord"
+      onChange={(e) => setValeur(e.target.value)}
+      options={RADIO_OPTIONS}
+      valeur={valeur}
+    />
+  )
+}
 
 export function DemoToggle() {
   const [valeur, setValeur] = useState('profs')

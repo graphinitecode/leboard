@@ -1,0 +1,188 @@
+/* LPV Board Design System — Retours utilisateur
+   Résumé d'erreurs, bannières, encadrés, panels, avertissements,
+   toasts, modales. */
+
+@use 'mixins';
+
+/* --- Résumé des erreurs -------------------------------------------------- */
+
+.lpv-error-summary {
+  background-color: var(--lpv-surface);
+  border: 4px solid var(--lpv-red);
+  border-radius: var(--lpv-radius);
+  margin-top: var(--lpv-spacing-md);
+  margin-bottom: var(--lpv-spacing-md);
+  padding: 1rem;
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0.5rem;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 0.5rem;
+  }
+
+  li {
+    color: var(--lpv-red);
+    font-weight: 700;
+    margin: 0.25rem 0;
+  }
+
+  li a {
+    color: var(--lpv-red);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: var(--lpv-decoration-thickness);
+    text-underline-offset: var(--lpv-text-underline-offset);
+
+    &:hover {
+      color: var(--lpv-text);
+      font-weight: 700;
+      text-decoration: underline;
+      text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+      text-underline-offset: var(--lpv-text-underline-offset-hover);
+    }
+  }
+}
+
+/* --- Bannières & encadrés ------------------------------------------------ */
+
+.lpv-banner {
+  background-color: var(--lpv-portail);
+  border-radius: var(--lpv-radius);
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+
+  &--success {
+    background-color: var(--lpv-green);
+  }
+}
+
+.lpv-inset {
+  background-color: var(--lpv-grey-bg);
+  border-left: 6px solid var(--lpv-portail);
+  border-radius: 0 var(--lpv-radius) var(--lpv-radius) 0;
+  margin-top: var(--lpv-spacing-md);
+  margin-bottom: var(--lpv-spacing-md);
+  padding: 0.85rem 1rem;
+}
+
+.lpv-panel {
+  background-color: var(--lpv-portail-soft);
+  border-radius: var(--lpv-radius);
+  color: var(--lpv-text);
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+
+  &--success {
+    background-color: var(--lpv-green-soft);
+    color: var(--lpv-text);
+  }
+
+  h2 {
+    margin-top: 0;
+  }
+}
+
+/* --- Texte d'avertissement (Warning text) --------------------------------- */
+
+.lpv-avertissement {
+  align-items: center;
+  display: flex;
+  font-weight: 700;
+  gap: 0.75rem;
+  margin-top: var(--lpv-spacing-md);
+  margin-bottom: var(--lpv-spacing-md);
+  padding: 0.75rem 0;
+
+  &__icone {
+    align-items: center;
+    background-color: var(--lpv-text);
+    border-radius: 50%;
+    color: var(--lpv-surface);
+    display: inline-flex;
+    flex-shrink: 0;
+    height: 2rem;
+    justify-content: center;
+    width: 2rem;
+  }
+
+  &__icone-svg {
+    display: block;
+  }
+
+  &__texte {
+    flex: 1;
+  }
+}
+
+/* --- Toast pleine largeur ---------------------------------------------------- */
+
+.lpv-toast {
+  animation: lpv-toast-entree 0.3s ease-out;
+  background-color: var(--lpv-green);
+  color: var(--lpv-surface);
+  font-weight: 700;
+  left: 0;
+  padding: 0.75rem 1rem;
+  position: fixed;
+  right: 0;
+  text-align: center;
+  top: 0;
+  z-index: 300;
+
+  &--erreur {
+    background-color: var(--lpv-red);
+  }
+}
+
+@keyframes lpv-toast-entree {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* --- Modale de confirmation ------------------------------------------------- */
+
+.lpv-modale-fond {
+  align-items: center;
+  background-color: var(--lpv-overlay);
+  display: flex;
+  inset: 0;
+  position: fixed;
+  z-index: 200;
+}
+
+.lpv-modale {
+  background-color: var(--lpv-surface);
+  border-radius: var(--lpv-radius-lg);
+  box-shadow: 0 12px 32px var(--lpv-overlay-heavy);
+  margin-inline: auto;
+  max-width: 28rem;
+  padding: 1.5rem;
+  width: calc(100% - 2rem);
+
+  &__titre {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+  }
+
+  &__texte {
+    color: var(--lpv-text-muted);
+    margin: 0 0 1.25rem;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+  }
+}

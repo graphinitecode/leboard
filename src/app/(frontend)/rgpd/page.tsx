@@ -4,8 +4,6 @@ import { getPayload } from 'payload'
 
 import { ContenuPage, EnteteService } from '@/components/molecules/EnteteService'
 
-import '../lpvboard.css'
-
 export const dynamic = 'force-dynamic'
 
 export default async function RGPDPage() {

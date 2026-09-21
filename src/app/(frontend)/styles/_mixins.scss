@@ -1,0 +1,27 @@
+/* LPV Board Design System — Mixins partagés */
+
+/* Motif focus commun des contrôles : double anneau (blanc + jaune GOV.UK) */
+@mixin lpv-focus {
+  box-shadow:
+    0 0 0 2px var(--lpv-surface),
+    0 0 0 5px var(--lpv-focus);
+  outline: none;
+}
+
+/* Focus sur fond coloré (portail) : anneau blanc du portail + jaune */
+@mixin lpv-focus-sur-portail {
+  box-shadow: 0 0 0 2px var(--lpv-sur-portail), 0 0 0 5px var(--lpv-focus);
+  outline: none;
+}
+
+/* Lien piloté par le portail : couleur portail-dark, soulignement
+   renforcé au hover (motif répété des liens du design system) */
+@mixin lpv-lien-portail {
+  color: var(--lpv-portail-dark);
+
+  &:hover {
+    color: var(--lpv-text);
+    text-underline-offset: var(--lpv-text-underline-offset-hover);
+    text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+  }
+}
