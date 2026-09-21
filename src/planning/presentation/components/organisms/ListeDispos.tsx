@@ -94,11 +94,13 @@ export function ListeDispos({ dispos }: { dispos: DispoItem[] }) {
           </div>
         </Modale>
       )}
-      <p style={{ marginTop: 0 }}>
+
+      <p style={{ margin: '0 0 1rem' }}>
         <Bouton onClick={() => setAssistantOuvert(true)} type="button">
-          + Ajouter un horaire
+          + Ajouter un créneau
         </Bouton>
       </p>
+
       {dispos.length > 0 && (
         <SummaryList
           cleNouvelle={cleNouvelle !== null ? cleNouvelle.split('|')[0] : undefined}
@@ -126,6 +128,7 @@ export function ListeDispos({ dispos }: { dispos: DispoItem[] }) {
           }))}
         />
       )}
+
       <FormulaireDispoSteps
         editionDe={cibleEdition}
         key={cibleEdition ? cleDispo(cibleEdition) : 'nouveau'}
