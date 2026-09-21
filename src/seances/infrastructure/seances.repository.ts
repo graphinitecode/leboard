@@ -83,13 +83,14 @@ function texteVersLexical(texte: string) {
 export const seancesRepository = {
   async listMy({ limite = 30 }: ListMySeancesQuery): Promise<Seance[]> {
     try {
-      const me = await httpClient.get<User>('/users/me')
+      // GET /api/users/me renvoie { user, ... } : sans le wrapper, id est undefined.
+      const me = await httpClient.get<{ user: Pick<User, 'id'> }>('/users/me')
       const res = await httpClient.get<Paginated<SeanceDto>>('/seances', {
         params: {
           depth: 1,
           limit: limite,
           sort: '-date',
-          where: JSON.stringify({ prof: { equals: me.data.id } }),
+          where: JSON.stringify({ prof: { equals: me.data.user.id } }),
         },
       })
       return res.data.docs.map(mapDtoToSeance)
