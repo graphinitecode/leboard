@@ -11,6 +11,7 @@ html[data-theme='dark'] {
   --lpv-grey-bg: #1e1a1e;
   --lpv-grey-border: #3a343a;
   --lpv-surface: #161216;
+  --lpv-bg-feedback: #251011;
 
   --lpv-blue: #1877d2;         /* portail plus profond en dark, texte blanc lisible */
   --lpv-blue-dark: #66b5ff;
@@ -112,7 +113,7 @@ html[data-theme='dark'] {
      noir illisible sur les fonds sombres, ex. hero image) */
   .lpv-bouton--secondaire {
     background-color: #2a242a;
-    box-shadow: 0 2px 0 #0d0a0d;
+    box-shadow: 0 2px 0 #1e1a1e;
     color: #f2eef2;
 
     &:hover {

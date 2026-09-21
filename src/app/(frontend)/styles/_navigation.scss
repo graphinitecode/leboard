@@ -21,10 +21,10 @@
   &__item {
     align-items: center;
     display: flex;
-    padding-inline: 7px;
 
     & + &::before {
       content: '›';
+      padding-inline: 8px;
       color: var(--lpv-text-muted);
     }
   }
