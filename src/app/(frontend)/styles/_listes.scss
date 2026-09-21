@@ -45,6 +45,7 @@ a.lpv-ligne {
   width: 100%;
 
   &__row {
+    align-items: center;
     border-bottom: 1px solid var(--lpv-grey-border);
     display: flex;
     flex-wrap: wrap;
@@ -68,9 +69,10 @@ a.lpv-ligne {
     flex: 1;
   }
 
-  /* Colonne d'actions d'une row (pattern GOV.UK) */
+  /* Colonne d'actions d'une row (pattern GOV.UK) :
+     centrée verticalement pour rester alignée avec key/value */
   &__actions {
-    align-items: flex-start;
+    align-items: center;
     display: flex;
     justify-content: flex-end;
     margin-left: auto;
