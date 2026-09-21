@@ -3,25 +3,25 @@ import type { ReactNode } from 'react'
 
 import { PiedPage } from '@/components/molecules/PiedPage'
 import { BasculeTheme } from '@/components/molecules/BasculeTheme'
+import { AvatarUtilisateur } from '@/components/molecules/AvatarUtilisateur'
 
-import { seDeconnecter } from './seDeconnecter'
 import { MenuDepliant } from './MenuDepliant'
 
 // Molécule : entête pleine largeur du portail (couleur selon data-lpv-portail).
 // Logo blanc « Association Les Pierres Vivantes » + Menu dépliant + identité.
 // Le hero est fusionné dans la même bande colorée.
+// utilisateur : session serveur (getMeUserServer) — connecté : avatar dropdown,
+// sinon rien (les pages login n'affichent pas d'identité).
 export function EnteteService({
   heroTitre,
   heroTexte,
-  nomUtilisateur,
-  deconnexion = false,
+  utilisateur,
   services,
   legales,
 }: {
   heroTitre?: string
   heroTexte?: string
-  nomUtilisateur?: string | null
-  deconnexion?: boolean
+  utilisateur?: { nom: string; email: string } | null
   services: { href: string; libelle: string; description?: string }[]
   legales: { href: string; libelle: string; description?: string }[]
 }) {
@@ -38,21 +38,7 @@ export function EnteteService({
         </Link>
 
         <div className="lpv-entete-bleue__actions">
-          {nomUtilisateur && (
-            <span
-              aria-label={`Connecté en tant que ${nomUtilisateur}`}
-              className="lpv-entete-bleue__user"
-            >
-              {nomUtilisateur}
-            </span>
-          )}
-          {deconnexion && (
-            <form action={seDeconnecter}>
-              <button className="lpv-menu-bouton" type="submit">
-                Se déconnecter
-              </button>
-            </form>
-          )}
+          {utilisateur && <AvatarUtilisateur email={utilisateur.email} nom={utilisateur.nom} />}
           <BasculeTheme />
           <MenuDepliant services={services} legales={legales} />
         </div>
