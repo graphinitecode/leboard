@@ -1,48 +1,36 @@
 'use client'
 
-import Link from 'next/link'
-
 import { useState } from 'react'
 
 import { Bouton } from '@/components/atoms/Bouton'
 import { ChampFormulaire, ResumeErreurs } from '@/components/molecules'
+import { useLoginParent, useLoginProf } from '@/auth/application/auth.hooks'
 
-export function LoginForm({
-  cible,
-  sousTitre,
-  titre = 'Connexion',
-}: {
+interface LoginFormProps {
+  portail: 'prof' | 'parent'
   cible: string
-  sousTitre?: string
   titre?: string
-}) {
+  sousTitre?: string
+}
+
+export function LoginForm({ portail, cible, titre = 'Connexion', sousTitre }: LoginFormProps) {
+  const loginProf = useLoginProf(cible)
+  const loginParent = useLoginParent(cible)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [erreur, setErreur] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
 
-  async function submit(e: React.FormEvent) {
+  const isPending = loginProf.isPending || loginParent.isPending
+
+  const submit = (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
     setErreur(null)
 
-    try {
-      const res = await fetch('/api/users/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      })
-
-      if (!res.ok) {
-        setErreur('Email ou mot de passe incorrect.')
-        return
-      }
-
-      window.location.href = cible
-    } catch {
-      setErreur('Désolé, il y a un problème technique. Réessayez dans quelques instants.')
-    } finally {
-      setLoading(false)
+    const onError = (err: Error) => setErreur(err.message)
+    if (portail === 'prof') {
+      loginProf.mutate({ email, password }, { onError })
+    } else {
+      loginParent.mutate({ email, password }, { onError })
     }
   }
 
@@ -67,11 +55,8 @@ export function LoginForm({
         type="password"
         value={password}
       />
-      <p className="lpv-login__oublie">
-        Mot de passe oublié ? <Link href="/admin/forgot-password">Réinitialiser ici</Link>
-      </p>
-      <Bouton disabled={loading} type="submit">
-        {loading ? 'Connexion…' : 'Se connecter'}
+      <Bouton disabled={isPending} type="submit">
+        {isPending ? 'Connexion…' : 'Se connecter'}
       </Bouton>
     </form>
   )

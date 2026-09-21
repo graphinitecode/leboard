@@ -1,4 +1,4 @@
-import { LoginForm } from '@/components/organisms/LoginForm'
+import { LoginForm } from '@/auth'
 
 export const dynamic = 'force-dynamic'
 
@@ -8,6 +8,7 @@ export default function ProfLoginPage() {
   return (
     <LoginForm
       cible="/profs"
+      portail="prof"
       sousTitre="Connectez pour accéder à votre espace de professeur."
     />
   )
