@@ -13,8 +13,13 @@ function initiales(nom: string): string {
   return initiales.join('').toUpperCase()
 }
 
+function prenom(nom: string): string {
+  return nom.trim().split(/\s+/)[0] ?? nom
+}
+
 // Molécule : avatar utilisateur de l'entête portail (connecté uniquement).
-// Trigger : nom + cercle d'initiales + chevron (motif MenuDepliant).
+// Trigger : prénom + cercle d'initiales + chevron (motif MenuDepliant) ;
+// le nom complet reste porté par l'aria-label, le title et le panneau.
 // Dropdown : identité (nom + email, lecture seule) et déconnexion
 // (server action seDeconnecter : suppression du cookie puis redirection).
 export function AvatarUtilisateur({ nom, email }: { nom: string; email: string }) {
@@ -31,9 +36,10 @@ export function AvatarUtilisateur({ nom, email }: { nom: string; email: string }
         aria-label={`Connecté en tant que ${nom}. Ouvrir le menu du compte`}
         className="lpv-avatar-entete__bouton"
         onClick={() => setOuvert(!ouvert)}
+        title={`Connecté en tant que ${nom}`}
         type="button"
       >
-        <span className="lpv-avatar-entete__nom">{nom}</span>
+        <span className="lpv-avatar-entete__nom">{prenom(nom)}</span>
         <span aria-hidden="true" className="lpv-avatar">
           {initiales(nom)}
         </span>

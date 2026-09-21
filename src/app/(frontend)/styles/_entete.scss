@@ -37,24 +37,26 @@
     text-decoration: none;
   }
 
-  &__logo-img {
-    height: 2.75rem;
+  /* Slim (symbole seul) en mobile, large (inscription incluse) ≥ 48rem.
+     Les deux assets sont blancs : lisibles sur le fond portail en light
+     comme en dark (l'entête reste colorée en dark). */
+  &__logo-slim {
+    display: block;
+    height: 2.5rem;
     width: auto;
+
+    @media (width >= 48rem) {
+      display: none;
+    }
   }
 
-  &__logo-texte {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.2;
+  &__logo-large {
+    display: none;
+    height: 3rem;
+    width: auto;
 
-    small {
-      font-size: 0.8rem;
-      font-weight: 400;
-      opacity: 0.9;
-    }
-
-    strong {
-      font-size: 1rem;
+    @media (width >= 48rem) {
+      display: block;
     }
   }
 
@@ -88,6 +90,16 @@
     margin: 0;
     max-width: 46ch;
   }
+}
+
+/* --- Séparateur vertical (zone actions, connecté) --------------------------- */
+
+.lpv-entete-separateur {
+  align-self: center;
+  background-color: var(--lpv-sur-portail);
+  height: 1.5rem;
+  opacity: 0.4;
+  width: 1px;
 }
 
 /* --- Navigation du site vitrine (liens pilotés par le global header du panel) */
@@ -195,6 +207,8 @@
 }
 
 /* --- Menu dépliant de l'entête --------------------------------------------- */
+/* Mobile (< 48rem) : bouton icône (menu/close), panneau en accordéon vertical.
+   Tablette/desktop (≥ 48rem) : bouton texte + chevron, panneau 2 colonnes. */
 
 .lpv-menu-bouton {
   align-items: center;
@@ -208,13 +222,40 @@
   min-height: 44px;
   padding: 0.5rem 0.75rem;
 
-  &__chevron {
+  &__icone {
     display: inline-flex;
+  }
+
+  /* Chevron desktop, masqué en mobile (l'icône menu/close le remplace) */
+  &__chevron {
+    display: none;
     margin-right: 0.4rem;
+  }
+
+  &__libelle {
+    display: none;
+  }
+
+  @media (width >= 48rem) {
+    &__icone {
+      display: none;
+    }
+
+    &__chevron {
+      display: inline-flex;
+    }
+
+    &__libelle {
+      display: inline;
+    }
   }
 
   &:hover {
     text-decoration: underline;
+  }
+
+  &:focus-visible {
+    @include mixins.lpv-focus-sur-portail;
   }
 }
 
@@ -229,25 +270,10 @@
   width: 100vw;
   z-index: 50;
 
-  /* Le contenu du panneau reprend le container du contenu (960px centré) */
+  /* Mobile : une seule colonne, sections en accordéon */
   &__inner {
-    display: grid;
-    gap: 2rem;
-    grid-template-columns: 1fr 1fr;
-    margin-inline: auto;
-    max-width: var(--lpv-container);
-    padding: 1.5rem 1rem 2rem;
-  }
-
-  /* Le panneau recouvre le hero (overlay), il ne le pousse pas.
-     Il déborde volontairement du header : pas de clipping. */
-
-  &__titre {
-    border-bottom: 1px solid var(--lpv-grey-border);
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0 0 0.75rem;
-    padding-bottom: 0.5rem;
+    display: block;
+    padding: 0.5rem 1rem 1rem;
   }
 
   &__colonne {
@@ -255,36 +281,134 @@
       list-style: none;
       margin: 0;
       padding: 0;
+
+      /* Masqué tant que la section est fermée (accordéon mobile) */
+      display: none;
     }
 
     li {
-      margin-bottom: 0.75rem;
+      margin-bottom: 0;
     }
 
     li a,
     li a:visited {
+      border-top: 1px solid var(--lpv-grey-border);
       color: var(--lpv-portail-dark);
+      display: block;
       font-weight: 700;
+      min-height: 44px;
+      padding: 0.6rem 0 0.6rem 1rem;
       text-decoration: underline;
     }
 
     li p {
       color: var(--lpv-text-muted);
       font-size: 0.9rem;
-      margin: 0.15rem 0 0;
+      margin: -0.25rem 0 0.5rem;
+      padding-left: 1rem;
+    }
+  }
+
+  /* Section accordéon ouverte : titre souligné, liens visibles */
+  &__colonne--ouverte {
+    ul {
+      display: block;
+    }
+  }
+
+  &__titre-bouton {
+    align-items: center;
+    background: none;
+    border: 0;
+    color: var(--lpv-text);
+    cursor: pointer;
+    display: flex;
+    font-size: 1.125rem;
+    font-weight: 700;
+    justify-content: space-between;
+    min-height: 44px;
+    padding: 0.5rem 0;
+    text-align: left;
+    width: 100%;
+
+    &:hover {
+      text-decoration: underline;
+      text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+      text-underline-offset: var(--lpv-text-underline-offset-hover);
+    }
+
+    &:focus {
+      @include mixins.lpv-focus;
+    }
+  }
+
+  &__titre-chevron {
+    display: inline-flex;
+  }
+
+  /* Le panneau recouvre le hero (overlay), il ne le pousse pas.
+     Il déborde volontairement du header : pas de clipping. */
+
+  /* Tablette/desktop : sections toujours dépliées en 2 colonnes,
+     les boutons de titre redeviennent des titres simples */
+  &__titre-bouton {
+    @media (width >= 48rem) {
+      border-bottom: 1px solid var(--lpv-grey-border);
+      cursor: default;
+      font-size: 1.5rem;
+      margin: 0 0 0.75rem;
+      padding-bottom: 0.5rem;
+      pointer-events: none;
+    }
+  }
+
+  &__titre-chevron {
+    @media (width >= 48rem) {
+      display: none;
+    }
+  }
+
+  &__inner {
+    @media (width >= 48rem) {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: 1fr 1fr;
+      margin-inline: auto;
+      max-width: var(--lpv-container);
+      padding: 1.5rem 1rem 2rem;
+    }
+  }
+
+  &__colonne {
+    @media (width >= 48rem) {
+      ul {
+        display: block;
+      }
+
+      li {
+        margin-bottom: 0.75rem;
+      }
+
+      li a,
+      li a:visited {
+        border-top: 0;
+        display: inline;
+        min-height: 0;
+        padding: 0;
+      }
+
+      li p {
+        margin: 0.15rem 0 0;
+        padding-left: 0;
+      }
     }
   }
 }
 
-@media (max-width: 639px) {
-  .lpv-menu-panneau__inner {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* --- Avatar utilisateur (entête portail, connecté) -------------------------- */
-/* Trigger : nom + cercle d'initiales + chevron. Panneau : identité (nom,
-   email) et déconnexion. Aligné à droite, motif mini du menu-panneau. */
+/* Trigger : prénom + cercle d'initiales + chevron. Panneau : identité (nom,
+   email) et déconnexion. Aligné à droite, motif mini du menu-panneau.
+   Mobile : prénom masqué (l'avatar seul porte l'identité, aria-label complet). */
 
 .lpv-avatar-entete {
   position: relative;
@@ -322,6 +446,10 @@
 
   &__nom {
     font-weight: 400;
+
+    @media (width < 48rem) {
+      display: none;
+    }
   }
 
   &__chevron {
