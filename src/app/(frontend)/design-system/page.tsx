@@ -103,7 +103,7 @@ const PAGES_DERNIERE: (PageNumero | { ellipsis: true })[] = [
 export default function DesignSystemPage() {
   return (
     <div className="lpv-container">
-      <h1 className="lpv-h1">Design system LPV Board</h1>
+      <h1 className="lpv-h1">Design system&nbsp;LPV Board</h1>
       <p className="lpv-muted">
         Composants inspirés du GOV.UK Design System, adaptés aux couleurs et aux conventions LPV.
       </p>
