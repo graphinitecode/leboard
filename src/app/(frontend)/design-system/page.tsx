@@ -102,7 +102,7 @@ const PAGES_DERNIERE: (PageNumero | { ellipsis: true })[] = [
 
 export default function DesignSystemPage() {
   return (
-    <div className="lpv-container" style={{ paddingBottom: '4rem' }}>
+    <div className="lpv-container">
       <h1 className="lpv-h1">Design system LPV Board</h1>
       <p className="lpv-muted">
         Composants inspirés du GOV.UK Design System, adaptés aux couleurs et aux conventions LPV.
@@ -356,11 +356,11 @@ export default function DesignSystemPage() {
         />
       </section>
 
-      <section id="surfaces" style={{ marginBottom: '3rem' }}>
+      <section id="surfaces">
         <h2 className="lpv-h2">Surfaces</h2>
 
         <h3 className="lpv-h3">Bascule de thème</h3>
-        <p className="lpv-muted" style={{ marginTop: 0 }}>
+        <p className="lpv-muted">
           Le mode sombre s&apos;applique à tout le design system via <code>data-theme</code> sur
           {' '}<code>&lt;html&gt;</code>. Le choix est mémorisé (localStorage) et suit
           {' '}<code>prefers-color-scheme</code> par défaut.
