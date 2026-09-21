@@ -1,0 +1,30 @@
+/* LPV Board Design System — Page de connexion */
+
+/* --- Page de connexion (visuels LPV) ---------------------------------------- */
+
+.lpv-login {
+  margin-inline: auto;
+  max-width: 28rem;
+  padding: 2rem 0 4rem;
+
+  &__titre {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+  }
+
+  &__sous-titre {
+    font-size: 1.125rem;
+    line-height: 1.4;
+    margin: 0 0 2rem;
+  }
+
+  &__oublie {
+    margin: 0.5rem 0 1.5rem;
+
+    a {
+      color: var(--lpv-portail-dark);
+      font-weight: 700;
+    }
+  }
+}

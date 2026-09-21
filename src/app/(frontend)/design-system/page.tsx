@@ -2,12 +2,11 @@ import type { Metadata } from 'next'
 
 import { Bouton, BackLink, FilAriane, InsetText, Panel, Tag, TexteAvertissement, Details, Televersement } from '@/components/atoms'
 import { Label } from '@/components/atoms/Champ'
-import { Accordeon, BoutonsRadio, CasesACocher, ChampDate, ChampEnsemble, ChampFormulaire, CompteurCaracteres, ListeTaches, NotificationBanner, Onglets, PaginationLPV, ResumeErreurs, SummaryList, Tableau, BasculeTheme } from '@/components/molecules'
-import type { SectionAccordeon, Onglet, OptionCase, OptionRadio, TableauHeadCell, TableauRowCell, Tache, PageNumero } from '@/components/molecules'
+import { Accordeon, CasesACocher, ChampDate, ChampEnsemble, ChampFormulaire, CompteurCaracteres, ListeTaches, NotificationBanner, Onglets, PaginationLPV, ResumeErreurs, SummaryList, Tableau, BasculeTheme } from '@/components/molecules'
+import type { SectionAccordeon, Onglet, OptionCase, TableauHeadCell, TableauRowCell, Tache, PageNumero } from '@/components/molecules'
 
-import { DemoModale, DemoToggle, DemoToast } from './DemoClient'
+import { DemoModale, DemoRadio, DemoToggle, DemoToast } from './DemoClient'
 
-import '../lpvboard.css'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
@@ -53,11 +52,6 @@ const CASES_OPTIONS: OptionCase[] = [
   { valeur: 'courrier', texte: 'Notification par courrier' },
   { diviseur: 'ou' },
   { valeur: 'aucun', texte: 'Aucune notification' },
-]
-
-const RADIO_OPTIONS: OptionRadio[] = [
-  { valeur: 'oui', texte: 'Oui', conditionnel: <ChampFormulaire hint="Précisez les modalités." id="modalites" label="Modalités" optionnel /> },
-  { valeur: 'non', texte: 'Non' },
 ]
 
 const TABLEAU_HEAD: TableauHeadCell[] = [
@@ -272,7 +266,7 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">BoutonsRadio</h3>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <BoutonsRadio idPrefix="demo-radio" nom="accord" options={RADIO_OPTIONS} valeur="non" />
+          <DemoRadio />
         </div>
 
         <h3 className="lpv-h3">CompteurCaracteres</h3>
