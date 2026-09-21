@@ -24,7 +24,18 @@
 
     a {
       color: var(--lpv-portail-dark);
-      font-weight: 700;
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: var(--lpv-text-underline-offset);
+      text-decoration-thickness: var(--lpv-decoration-thickness);
+    }
+
+    a:hover {
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: var(--lpv-text-underline-offset-hover);
+      text-decoration-thickness: var(--lpv-decoration-thickness-hover);
     }
   }
+
 }
