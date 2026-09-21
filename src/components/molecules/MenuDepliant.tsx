@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRef, useState } from 'react'
 
 import { Icon } from '@/components/atoms/Icon'
+import { BasculeTheme } from '@/components/molecules/BasculeTheme'
 import { useFermerHorsClic } from '@/hooks/useFermerHorsClic'
 
 type Section = 'services' | 'legales'
@@ -14,6 +15,7 @@ type LienMenu = { href: string; libelle: string; description?: string }
 // Desktop/tablette : bouton texte + chevron, panneau pleine largeur 2 colonnes.
 // Mobile : icône rivet-icons:menu qui devient close panneau ouvert, sections
 // en accordéon vertical (titres cliquables, liens dépliables dessous).
+// La bascule de thème vit dans le panneau (ligne dédiée), plus dans la barre.
 export function MenuDepliant({
   services,
   legales,
@@ -92,6 +94,9 @@ export function MenuDepliant({
           <div className="lpv-menu-panneau__inner">
             {colonne('services', 'Services et informations', services)}
             {colonne('legales', 'Légales', legales)}
+          </div>
+          <div className="lpv-menu-panneau__pied">
+            <BasculeTheme variante="panneau" />
           </div>
         </div>
       )}

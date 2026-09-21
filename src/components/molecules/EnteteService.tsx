@@ -2,7 +2,6 @@ import Link from 'next/link'
 import type { ReactNode } from 'react'
 
 import { PiedPage } from '@/components/molecules/PiedPage'
-import { BasculeTheme } from '@/components/molecules/BasculeTheme'
 import { AvatarUtilisateur } from '@/components/molecules/AvatarUtilisateur'
 
 import { MenuDepliant } from './MenuDepliant'
@@ -53,7 +52,6 @@ export function EnteteService({
         <div className="lpv-entete-bleue__actions">
           {utilisateur && <AvatarUtilisateur email={utilisateur.email} nom={utilisateur.nom} />}
           {utilisateur && <span aria-hidden="true" className="lpv-entete-separateur" />}
-          <BasculeTheme />
           <MenuDepliant services={services} legales={legales} />
         </div>
       </div>
