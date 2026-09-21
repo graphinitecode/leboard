@@ -20,18 +20,17 @@ export default async function ParentsLayout({ children }: { children: ReactNode 
     <ContenuPage
       entete={
         <EnteteService
-          deconnexion={Boolean(user)}
           heroTexte="Le suivi de votre enfant : présences, retours et prêts."
           heroTitre="Espace parents"
           legales={[
             { href: '/rgpd', libelle: 'Mentions légales' },
             { href: '/rgpd', libelle: 'Politique de confidentialité' },
           ]}
-          nomUtilisateur={user?.name ?? null}
           services={[
             { description: 'Le suivi de votre enfant', href: '/parents', libelle: 'Espace parents' },
             { href: '/rgpd', libelle: 'Protection des données' },
           ]}
+          utilisateur={user ? { email: user.email, nom: user.name } : null}
         />
       }
       liensPied={[{ href: '/parents/login', libelle: 'Connexion' }]}

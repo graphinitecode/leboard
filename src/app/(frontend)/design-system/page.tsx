@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { Bouton, BackLink, FilAriane, InsetText, Panel, Tag, TexteAvertissement, Details, Televersement } from '@/components/atoms'
 import { Label } from '@/components/atoms/Champ'
-import { Accordeon, CasesACocher, ChampDate, ChampEnsemble, ChampFormulaire, CompteurCaracteres, ListeTaches, NotificationBanner, Onglets, PaginationLPV, ResumeErreurs, SummaryList, Tableau, BasculeTheme } from '@/components/molecules'
+import { Accordeon, AvatarUtilisateur, CasesACocher, ChampDate, ChampEnsemble, ChampFormulaire, CompteurCaracteres, ListeTaches, NotificationBanner, Onglets, PaginationLPV, ResumeErreurs, SummaryList, Tableau, BasculeTheme } from '@/components/molecules'
 import type { SectionAccordeon, Onglet, OptionCase, TableauHeadCell, TableauRowCell, Tache, PageNumero } from '@/components/molecules'
 
 import { DemoModale, DemoRadio, DemoToggle, DemoToast } from './DemoClient'
@@ -450,6 +450,26 @@ export default function DesignSystemPage() {
 
       <section id="surfaces">
         <h2 className="lpv-h2">Surfaces</h2>
+
+        <h3 className="lpv-h3">Avatar utilisateur (entête portail)</h3>
+        <p className="lpv-muted">
+          Affiché quand une session est active : nom, cercle d&apos;initiales et chevron. Le
+          panneau déroulant présente l&apos;identité et la déconnexion. Se ferme au clic
+          extérieur ou à Escape.
+        </p>
+        <div
+          className="lpv-card"
+          style={{
+            alignItems: 'center',
+            backgroundColor: 'var(--lpv-portail)',
+            display: 'flex',
+            gap: '1rem',
+            justifyContent: 'flex-end',
+            maxWidth: '28rem',
+          }}
+        >
+          <AvatarUtilisateur email="olivier.durand@lpv.fr" nom="Olivier Durand" />
+        </div>
 
         <h3 className="lpv-h3">Bascule de thème</h3>
         <p className="lpv-muted">

@@ -65,22 +65,6 @@
     gap: 1rem;
   }
 
-  &__user {
-    align-items: center;
-    display: inline-flex;
-    font-weight: 400;
-
-    &::before {
-      background-color: var(--lpv-sur-portail);
-      border-radius: 50%;
-      content: '';
-      display: inline-block;
-      height: 0.55rem;
-      margin-right: 0.4rem;
-      width: 0.55rem;
-    }
-  }
-
   &__hero {
     margin-inline: auto;
     max-width: var(--lpv-container);
@@ -295,6 +279,115 @@
 @media (max-width: 639px) {
   .lpv-menu-panneau__inner {
     grid-template-columns: 1fr;
+  }
+}
+
+/* --- Avatar utilisateur (entête portail, connecté) -------------------------- */
+/* Trigger : nom + cercle d'initiales + chevron. Panneau : identité (nom,
+   email) et déconnexion. Aligné à droite, motif mini du menu-panneau. */
+
+.lpv-avatar-entete {
+  position: relative;
+
+  &__bouton {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    color: var(--lpv-sur-portail);
+    cursor: pointer;
+    display: inline-flex;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.25rem;
+
+    /* L'avatar portail-soft/texte reste lisible sur le fond portail :
+       on inverse avec les couleurs de surface pour le contraste */
+    .lpv-avatar {
+      background-color: var(--lpv-sur-portail);
+      color: var(--lpv-portail);
+      height: 2.25rem;
+      width: 2.25rem;
+    }
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: var(--lpv-text-underline-offset-hover);
+      text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+    }
+
+    &:focus-visible {
+      @include mixins.lpv-focus-sur-portail;
+    }
+  }
+
+  &__nom {
+    font-weight: 400;
+  }
+
+  &__chevron {
+    display: inline-flex;
+  }
+}
+
+.lpv-avatar-panneau {
+  background-color: var(--lpv-surface);
+  border-bottom: 4px solid var(--lpv-portail);
+  box-shadow: var(--lpv-shadow-hover);
+  min-width: 16rem;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 50;
+
+  &__identite {
+    border-bottom: 1px solid var(--lpv-grey-border);
+    padding: 0.75rem 1rem;
+  }
+
+  &__nom {
+    font-weight: 700;
+    margin: 0;
+  }
+
+  &__email {
+    color: var(--lpv-text-muted);
+    font-size: 0.9rem;
+    margin: 0.15rem 0 0;
+    overflow-wrap: anywhere;
+  }
+
+  &__liste {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
+  }
+
+  &__liste form {
+    display: block;
+  }
+
+  &__liste button {
+    align-items: center;
+    background: none;
+    border: 0;
+    color: var(--lpv-portail-dark);
+    cursor: pointer;
+    display: flex;
+    font-size: 1rem;
+    font-weight: 400;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0 1rem;
+    text-align: left;
+    width: 100%;
+
+    &:hover {
+      background-color: var(--lpv-portail-soft);
+    }
+
+    &:focus {
+      @include mixins.lpv-focus;
+    }
   }
 }
 

@@ -20,18 +20,17 @@ export default async function ProfsLayout({ children }: { children: ReactNode })
     <ContenuPage
       entete={
         <EnteteService
-          deconnexion={Boolean(user)}
           heroTexte="Vos séances, présences et retours de séance, au même endroit."
           legales={[
             { href: '/rgpd', libelle: 'Mentions légales' },
             { href: '/rgpd', libelle: 'Politique de confidentialité' },
           ]}
-          nomUtilisateur={user?.name ?? null}
           services={[
             { description: 'Vos séances, présences et retours', href: '/profs', libelle: 'Mes séances' },
             { description: 'Vos disponibilités hebdomadaires', href: '/profs/disponibilites', libelle: 'Mes disponibilités' },
             { href: '/parents', libelle: 'Espace parents' },
           ]}
+          utilisateur={user ? { email: user.email, nom: user.name } : null}
         />
       }
       liensPied={[{ href: '/profs/login', libelle: 'Connexion' }]}
