@@ -4,15 +4,15 @@ import { useMemo } from 'react'
 
 import { InsetText, Tag } from '@/components/atoms'
 import { presentSeanceLigne, useListMySeances } from '@/seances'
-import { useListElevesDuProf } from '@/eleves'
+import { useListElevesDuProf } from '@/students'
 
 interface ProfsDashboardProps {
   profId: number
 }
 
 interface StatCard {
-  valeur: string | number
-  libelle: string
+  value: string | number
+  label: string
   detail?: string
   detailColor?: string
 }
@@ -21,9 +21,9 @@ function DashboardStats({ statCards }: { statCards: StatCard[] }) {
   return (
     <div className="lpv-cards-grid lpv-cards-grid--4">
       {statCards.map((card) => (
-        <div className="lpv-card lpv-stat" key={card.libelle}>
-          <span className="lpv-stat__valeur">{card.valeur}</span>
-          <div className="lpv-stat__libelle">{card.libelle}</div>
+        <div className="lpv-card lpv-stat" key={card.label}>
+          <span className="lpv-stat__value">{card.value}</span>
+          <div className="lpv-stat__label">{card.label}</div>
           {card.detail && (
             <div className="lpv-stat__detail" style={card.detailColor ? { color: card.detailColor } : undefined}>
               {card.detail}
@@ -68,29 +68,29 @@ export default function ProfsDashboard({ profId }: ProfsDashboardProps) {
       <DashboardStats
         statCards={[
           {
-            valeur: aujourdhuiCount,
-            libelle: 'Séance(s) aujourd\u2019hui',
+            value: aujourdhuiCount,
+            label: 'Séance(s) aujourd\u2019hui',
             detail: groupes.retards > 0 ? `${groupes.retards} retour(s) en attente` : undefined,
             detailColor: 'var(--lpv-orange)',
           },
           {
-            valeur: semaineCount,
-            libelle: 'Cette semaine',
+            value: semaineCount,
+            label: 'Cette semaine',
             detail: aujourdhuiCount > 0 ? `dont ${aujourdhuiCount} aujourd\u2019hui` : undefined,
           },
-          { valeur: groupes.passees.length, libelle: 'Passées récentes' },
-          { valeur: eleves.data?.length ?? 0, libelle: 'Mes élèves' },
+          { value: groupes.passees.length, label: 'Passées récentes' },
+          { value: eleves.data?.length ?? 0, label: 'Mes élèves' },
         ]}
       />
 
       <ListesSection
-        titre="Aujourd'hui"
+        title="Aujourd'hui"
         seances={groupes.aujourdhui}
-        vide="Aucune séance aujourd'hui."
-        modeJour
+        empty="Aucune séance aujourd'hui."
+        dayMode
       />
-      <ListesSection titre="Cette semaine" seances={groupes.resteSemaine} vide="Aucune séance à afficher." />
-      <ListesSection titre="Passées récentes" seances={groupes.passees} vide="Aucune séance à afficher." />
+      <ListesSection title="Cette semaine" seances={groupes.resteSemaine} empty="Aucune séance à afficher." />
+      <ListesSection title="Passées récentes" seances={groupes.passees} empty="Aucune séance à afficher." />
 
       <section>
         <h2 className="lpv-h2">Mes élèves ({eleves.data?.length ?? 0})</h2>
@@ -100,19 +100,19 @@ export default function ProfsDashboard({ profId }: ProfsDashboardProps) {
           <div className="lpv-eleves-grid">
             {eleves.data?.map((eleve) => (
               <a className="lpv-eleve-card" href={`/profs/eleves/${eleve.id}`} key={eleve.id}>
-                <span className="lpv-eleve-card__haut">
+                <span className="lpv-eleve-card__top">
                   <span aria-hidden="true" className="lpv-avatar">
                     {`${eleve.prenom.charAt(0)}${eleve.nom.charAt(0)}`.toUpperCase()}
                   </span>
                   <span>
-                    <span className="lpv-eleve-card__nom">
+                    <span className="lpv-eleve-card__name">
                       {eleve.prenom} {eleve.nom}
                     </span>
                     <br />
                     <span className="lpv-eleve-card__detail">{eleve.groupe ?? eleve.niveau}</span>
                   </span>
                 </span>
-                <span className="lpv-eleve-card__lien">Voir la fiche →</span>
+                <span className="lpv-eleve-card__link">Voir la fiche →</span>
               </a>
             ))}
           </div>
@@ -123,36 +123,36 @@ export default function ProfsDashboard({ profId }: ProfsDashboardProps) {
 }
 
 function ListesSection({
-  titre,
+  title,
   seances,
-  vide,
-  modeJour,
+  empty,
+  dayMode,
 }: {
-  titre: string
+  title: string
   seances: { id: number; date: Date; matiereLabel: string; retourPresent: boolean }[]
-  vide: string
-  modeJour?: boolean
+  empty: string
+  dayMode?: boolean
 }) {
   return (
     <section>
-      <h2 className={modeJour ? 'lpv-card__titre' : 'lpv-h2'} style={modeJour ? { marginBottom: 0 } : undefined}>
-        {titre}
+      <h2 className={dayMode ? 'lpv-card__title' : 'lpv-h2'} style={dayMode ? { marginBottom: 0 } : undefined}>
+        {title}
       </h2>
       {seances.length === 0 ? (
-        <InsetText>{vide}</InsetText>
+        <InsetText>{empty}</InsetText>
       ) : (
-        <div className={modeJour ? 'lpv-card__lignes' : 'lpv-card lpv-card__lignes'} style={modeJour ? undefined : { padding: '0.5rem 0.75rem' }}>
+        <div className={dayMode ? 'lpv-card__rows' : 'lpv-card lpv-card__rows'} style={dayMode ? undefined : { padding: '0.5rem 0.75rem' }}>
           {seances.map((seance) => (
-            <a className="lpv-ligne" href={`/profs/seances/${seance.id}`} key={seance.id}>
+            <a className="lpv-m-list-row" href={`/profs/seances/${seance.id}`} key={seance.id}>
               <span>
                 <span className="lpv-chip">
-                  {modeJour
+                  {dayMode
                     ? seance.date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
                     : seance.date.toLocaleDateString('fr-FR')}
                 </span>{' '}
-                <span className="lpv-ligne__titre">{seance.matiereLabel}</span>
+                <span className="lpv-m-list-row__title">{seance.matiereLabel}</span>
               </span>
-              {!seance.retourPresent && <Tag couleur="orange">Retour à faire</Tag>}
+              {!seance.retourPresent && <Tag color="orange">Retour à faire</Tag>}
             </a>
           ))}
         </div>

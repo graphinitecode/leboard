@@ -6,24 +6,24 @@ import { type VariantProps, cva } from 'class-variance-authority'
 import * as React from 'react'
 
 // Boutons du panel et du site vitrine : les classes du design system LPV
-// (lpv-bouton, cf. docs/design-system.md §3) remplacent les variants shadcn.
+// (lpv-a-button, cf. docs/design-system.md §3) remplacent les variants shadcn.
 // Les libellés de variants sont conservés pour ne pas casser les call sites.
 const buttonVariants = cva('', {
   variants: {
     variant: {
-      default: 'lpv-bouton',
-      destructive: 'lpv-bouton lpv-bouton--danger',
-      outline: 'lpv-bouton lpv-bouton--secondaire',
-      secondary: 'lpv-bouton lpv-bouton--secondaire',
-      ghost: 'lpv-bouton lpv-bouton--secondaire',
-      link: 'lpv-lien-inline',
+      default: 'lpv-a-button',
+      destructive: 'lpv-a-button lpv-a-button--danger',
+      outline: 'lpv-a-button lpv-a-button--secondary',
+      secondary: 'lpv-a-button lpv-a-button--secondary',
+      ghost: 'lpv-a-button lpv-a-button--secondary',
+      link: 'lpv-link-inline',
     },
     size: {
       clear: '',
       default: '',
-      sm: 'lpv-bouton--petit',
-      lg: 'lpv-bouton--grand',
-      icon: 'lpv-bouton--icone',
+      sm: 'lpv-a-button--petit',
+      lg: 'lpv-a-button--grand',
+      icon: 'lpv-a-button--icon',
     },
   },
   defaultVariants: {

@@ -2,97 +2,97 @@
 
 import { useState } from 'react'
 
-import { Bouton } from '@/components/atoms/Bouton'
-import { BoutonsRadio, type OptionRadio } from '@/components/molecules/BoutonsRadio'
-import { ChampFormulaire } from '@/components/molecules/ChampFormulaire'
-import { Modale } from '@/components/molecules/Modale'
-import { Toast } from '@/components/molecules/Toast'
-import { ToggleSegmentes } from '@/components/molecules/ToggleSegmentes'
+import { Button } from '@/components/atoms/a-button'
+import { Radios, type RadioOption } from '@/components/molecules/m-radios'
+import { Input } from '@/components/molecules/m-input'
+import { Modal } from '@/components/molecules/m-modal'
+import { Toast } from '@/components/molecules/m-toast'
+import { SegmentedToggle } from '@/components/molecules/m-segmented-toggle'
 
-const RADIO_OPTIONS: OptionRadio[] = [
+const RADIO_OPTIONS: RadioOption[] = [
   {
-    conditionnel: <ChampFormulaire hint="Précisez les modalités." id="demo-radio-modalites" label="Modalités" optionnel />,
-    texte: 'Oui',
-    valeur: 'oui',
+    conditional: <Input hint="Précisez les modalités." id="demo-radio-modalites" label="Modalités" optional />,
+    label: 'Oui',
+    value: 'oui',
   },
-  { texte: 'Non', valeur: 'non' },
+  { label: 'Non', value: 'non' },
 ]
 
 export function DemoRadio() {
-  const [valeur, setValeur] = useState('non')
+  const [value, setValue] = useState('non')
 
   return (
-    <BoutonsRadio
+    <Radios
       idPrefix="demo-radio"
-      nom="accord"
-      onChange={(e) => setValeur(e.target.value)}
+      name="accord"
+      onChange={(e) => setValue(e.target.value)}
       options={RADIO_OPTIONS}
-      valeur={valeur}
+      value={value}
     />
   )
 }
 
 export function DemoToggle() {
-  const [valeur, setValeur] = useState('profs')
+  const [value, setValue] = useState('profs')
 
-  async function onChanger(nouvelleValeur: string) {
-    setValeur(nouvelleValeur)
+  async function onChange(newValue: string) {
+    setValue(newValue)
     return { ok: true }
   }
 
   return (
-    <ToggleSegmentes
+    <SegmentedToggle
       ariaLabel="Portail"
-      onChanger={onChanger}
+      onChange={onChange}
       options={[
-        { label: 'Profs', libelle: 'Professeurs', value: 'profs' },
-        { label: 'Parents', libelle: 'Parents', value: 'parents' },
-        { label: 'Élèves', libelle: 'Élèves', value: 'eleves' },
+        { label: 'Profs', ariaLabel: 'Professeurs', value: 'profs' },
+        { label: 'Parents', ariaLabel: 'Parents', value: 'parents' },
+        { label: 'Élèves', ariaLabel: 'Élèves', value: 'eleves' },
       ]}
-      valeurInitiale={valeur}
+      initialValue={value}
     />
   )
 }
 
 export function DemoModale() {
-  const [ouverte, setOuverte] = useState(false)
+  const [open, setOpen] = useState(false)
 
   return (
     <>
-      <Bouton onClick={() => setOuverte(true)} type="button">Ouvrir la modale</Bouton>
-      {ouverte && (
-        <Modale onFerme={() => setOuverte(false)} titre="Confirmer l'action">
-          <p className="lpv-modale__texte">
+      <Button onClick={() => setOpen(true)} type="button">Ouvrir la modale</Button>
+      {open && (
+        <Modal onClose={() => setOpen(false)} title="Confirmer l'action">
+          <p className="lpv-m-modal__text">
             Êtes-vous sûr de vouloir continuer ? Cette action est irréversible.
           </p>
-          <div className="lpv-modale__actions">
-            <Bouton onClick={() => setOuverte(false)} type="button" variante="secondaire">
+          <div className="lpv-m-modal__actions">
+            <Button onClick={() => setOpen(false)} type="button" variant="secondary">
               Annuler
-            </Bouton>
-            <Bouton onClick={() => setOuverte(false)} type="button" variante="danger">
+            </Button>
+            <Button onClick={() => setOpen(false)} type="button" variant="danger">
               Confirmer
-            </Bouton>
+            </Button>
           </div>
-        </Modale>
+        </Modal>
       )}
     </>
   )
 }
 
 export function DemoToast() {
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'erreur' } | null>(null)
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
 
   return (
     <>
       <div style={{ display: 'flex', gap: '0.75rem' }}>
-        <Bouton onClick={() => setToast({ message: 'Action enregistrée', type: 'success' })} type="button">
+        <Button onClick={() => setToast({ message: 'Action enregistrée', type: 'success' })} type="button">
           Toast succès
-        </Bouton>
-        <Bouton onClick={() => setToast({ message: 'Une erreur est survenue', type: 'erreur' })} type="button" variante="danger">
+        </Button>
+        <Button onClick={() => setToast({ message: 'Une erreur est survenue', type: 'error' })} type="button" variant="danger">
           Toast erreur
-        </Bouton>
+        </Button>
       </div>
-      {toast && <Toast message={toast.message} type={toast.type} onFerme={() => setToast(null)} />}
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
     </>
   )
 }

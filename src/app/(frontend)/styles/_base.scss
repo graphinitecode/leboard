@@ -91,8 +91,8 @@ body:has(.lpv-shell[data-lpv-portail]) > .admin-bar {
 /* --- Print ----------------------------------------------------------------- */
 
 @media print {
-  .lpv-entete,
-  .lpv-bouton {
+  .lpv-o-header,
+  .lpv-a-button {
     display: none !important;
   }
 }

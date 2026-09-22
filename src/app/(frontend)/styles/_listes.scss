@@ -5,7 +5,7 @@
 
 /* --- Listes structurées --------------------------------------------------- */
 
-.lpv-ligne {
+.lpv-m-list-row {
   align-items: center;
   background: transparent;
   border: 0;
@@ -18,7 +18,7 @@
   text-align: left;
   width: 100%;
 
-  &__titre {
+  &__title {
     color: var(--lpv-portail-dark);
     font-weight: 700;
   }
@@ -28,7 +28,7 @@
   }
 }
 
-a.lpv-ligne {
+a.lpv-m-list-row {
   border-radius: var(--lpv-radius);
   cursor: pointer;
   text-decoration: none;
@@ -40,7 +40,7 @@ a.lpv-ligne {
 
 /* --- Summary list (pattern GOV.UK) ----------------------------------------- */
 
-.lpv-summary-list {
+.lpv-m-summary-list {
   margin: 0;
   width: 100%;
 
@@ -95,7 +95,7 @@ a.lpv-ligne {
       }
     }
 
-    .lpv-action--danger {
+    .lpv-m-summary-list__action--danger {
       color: var(--lpv-red);
       text-decoration-thickness: var(--lpv-decoration-thickness);
       text-underline-offset: var(--lpv-text-underline-offset);
@@ -107,13 +107,13 @@ a.lpv-ligne {
       }
     }
 
-    .lpv-action--warning {
-      color: var(--lpv-tag-orange-texte);
+    .lpv-m-summary-list__action--warning {
+      color: var(--lpv-a-tag--orange-text);
       text-decoration-thickness: var(--lpv-decoration-thickness);
       text-underline-offset: var(--lpv-text-underline-offset);
 
       &:hover {
-        color: var(--lpv-tag-orange-texte);
+        color: var(--lpv-a-tag--orange-text);
         text-decoration-thickness: var(--lpv-decoration-thickness-hover);
         text-underline-offset: var(--lpv-text-underline-offset-hover);
       }
@@ -147,7 +147,7 @@ a.lpv-ligne {
       }
     }
 
-    .lpv-action--danger {
+    .lpv-m-summary-list__action--danger {
       color: var(--lpv-red);
       text-decoration-thickness: var(--lpv-decoration-thickness);
       text-underline-offset: var(--lpv-text-underline-offset);
@@ -159,14 +159,14 @@ a.lpv-ligne {
       }
     }
 
-    .lpv-action--normal,
-    .lpv-action--warning {
+    .lpv-m-summary-list__action--normal,
+    .lpv-m-summary-list__action--warning {
       text-decoration-thickness: var(--lpv-decoration-thickness);
       text-underline-offset: var(--lpv-text-underline-offset);
     }
 
-    .lpv-action--normal {
-      color: var(--lpv-tag-bleu-texte);
+    .lpv-m-summary-list__action--normal {
+      color: var(--lpv-a-tag--blue-text);
 
       &:hover {
         color: var(--lpv-text);
@@ -175,11 +175,11 @@ a.lpv-ligne {
       }
     }
 
-    .lpv-action--warning {
-      color: var(--lpv-tag-orange-texte);
+    .lpv-m-summary-list__action--warning {
+      color: var(--lpv-a-tag--orange-text);
 
       &:hover {
-        color: var(--lpv-tag-orange-texte);
+        color: var(--lpv-a-tag--orange-text);
         text-decoration-thickness: var(--lpv-decoration-thickness-hover);
         text-underline-offset: var(--lpv-text-underline-offset-hover);
       }
@@ -196,10 +196,10 @@ a.lpv-ligne {
   }
 
   /* Variante espacée (disponibilités) */
-  &--dispos {
+  &--spaced {
     margin-bottom: 1.5rem;
 
-    .lpv-summary-list__row {
+    .lpv-m-summary-list__row {
       gap: 0.5rem 1.5rem;
       padding: 0.85rem 0;
 
@@ -208,7 +208,7 @@ a.lpv-ligne {
       }
     }
 
-    .lpv-summary-list__key {
+    .lpv-m-summary-list__key {
       color: var(--lpv-text);
       text-transform: capitalize;
     }
@@ -217,7 +217,7 @@ a.lpv-ligne {
 
 /* --- Liste de tâches (Task list) ------------------------------------------ */
 
-.lpv-liste-taches {
+.lpv-m-task-list {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -231,17 +231,17 @@ a.lpv-ligne {
     justify-content: space-between;
     padding: 0.75rem 0;
 
-    &--avec-lien .lpv-liste-taches__lien:hover {
+    &--with-link .lpv-m-task-list__link:hover {
       text-decoration: underline;
     }
   }
 
-  &__nom-et-hint {
+  &__name-and-hint {
     flex: 1;
     min-width: 0;
   }
 
-  &__lien {
+  &__link {
     color: var(--lpv-portail-dark);
     font-weight: 700;
     text-decoration: none;
@@ -258,7 +258,7 @@ a.lpv-ligne {
     margin-top: 0.25rem;
   }
 
-  &__statut {
+  &__status {
     flex-shrink: 0;
   }
 }

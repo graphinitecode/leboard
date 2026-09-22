@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
 
 import { InsetText, Panel, Tag } from '@/components/atoms'
-import { nomEleve, useListEnfantsDuParent } from '@/eleves'
+import { nomEleve, useListEnfantsDuParent } from '@/students'
 import { progressionsRepository } from '@/progressions'
 import { seancesRepository } from '@/seances'
 
@@ -73,7 +73,7 @@ function ResumeEnfantCard({
   return (
     <Panel>
       <h2 style={{ marginTop: 0 }}>
-        {nomComplet} <Tag couleur="bleu">{niveau}</Tag>
+        {nomComplet} <Tag color="blue">{niveau}</Tag>
       </h2>
       {isLoading || !resume ? (
         <p className="lpv-muted">Chargement du résumé…</p>
@@ -95,7 +95,7 @@ function ResumeEnfantCard({
           )}
         </>
       )}
-      <Link className="lpv-bouton" href={`/parents/enfants/${eleveId}`}>
+      <Link className="lpv-a-button" href={`/parents/enfants/${eleveId}`}>
         Voir le détail
       </Link>
     </Panel>

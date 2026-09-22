@@ -35,12 +35,12 @@
   }
 
   tr#{&}__nouvelle,
-  .lpv-summary-list .lpv-table__nouvelle {
-    animation: lpv-ligne-nouvelle 1.5s ease-out;
+  .lpv-m-summary-list .lpv-m-summary-list__row--new {
+    animation: lpv-row-new 1.5s ease-out;
   }
 }
 
-@keyframes lpv-ligne-nouvelle {
+@keyframes lpv-row-new {
   0% {
     background-color: var(--lpv-portail-soft);
     opacity: 0;
@@ -60,12 +60,12 @@
 
 /* --- Tableau (Table, pattern GOV.UK) -------------------------------------- */
 
-.lpv-tableau {
+.lpv-m-table {
   border-collapse: separate;
   border-spacing: 0;
   width: 100%;
 
-  &__legende {
+  &__caption {
     font-size: 1.125rem;
     font-weight: 700;
     margin-bottom: 1rem;
@@ -87,11 +87,11 @@
     }
   }
 
-  &__tete {
+  &__head {
     border-bottom: 2px solid var(--lpv-text);
   }
 
-  &__entete {
+  &__head-cell {
     color: var(--lpv-text-muted);
     font-size: 0.875rem;
     font-weight: 700;
@@ -100,25 +100,25 @@
     text-align: left;
     text-transform: uppercase;
 
-    &--numerique {
+    &--numeric {
       text-align: right;
     }
   }
 
-  &__corps {
+  &__body {
     vertical-align: top;
   }
 
-  &__ligne:nth-child(even) {
+  &__row:nth-child(even) {
     background-color: var(--lpv-grey-bg);
   }
 
-  &__cellule {
+  &__cell {
     border-bottom: 1px solid var(--lpv-grey-border);
     padding: 0.75rem 1rem;
     vertical-align: top;
 
-    &--numerique {
+    &--numeric {
       text-align: right;
     }
   }

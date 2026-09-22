@@ -6,7 +6,7 @@
 
 /* --- Résumé des erreurs -------------------------------------------------- */
 
-.lpv-error-summary {
+.lpv-m-error-summary {
   background-color: var(--lpv-bg-feedback);
   border: 4px solid var(--lpv-red);
   border-radius: var(--lpv-radius);
@@ -50,7 +50,7 @@
 
 /* --- Bannières & encadrés ------------------------------------------------ */
 
-.lpv-banner {
+.lpv-m-banner {
   background-color: var(--lpv-portail);
   border-radius: var(--lpv-radius);
   color: #ffffff;
@@ -62,7 +62,7 @@
   }
 }
 
-.lpv-inset {
+.lpv-a-inset {
   background-color: var(--lpv-grey-bg);
   border-left: 6px solid var(--lpv-portail);
   border-radius: 0 var(--lpv-radius) var(--lpv-radius) 0;
@@ -71,7 +71,7 @@
   padding: 0.85rem 1rem;
 }
 
-.lpv-panel {
+.lpv-a-panel {
   background-color: var(--lpv-portail-soft);
   border-radius: var(--lpv-radius);
   color: var(--lpv-text);
@@ -90,7 +90,7 @@
 
 /* --- Texte d'avertissement (Warning text) --------------------------------- */
 
-.lpv-avertissement {
+.lpv-a-warning-text {
   align-items: center;
   display: flex;
   font-weight: 700;
@@ -99,7 +99,7 @@
   margin-bottom: var(--lpv-spacing-md);
   padding: 0.75rem 0;
 
-  &__icone {
+  &__icon {
     align-items: center;
     background-color: var(--lpv-text);
     border-radius: 50%;
@@ -111,11 +111,11 @@
     width: 2rem;
   }
 
-  &__icone-svg {
+  &__icon-svg {
     display: block;
   }
 
-  &__texte {
+  &__text {
     flex: 1;
     font-weight: 600;
   }
@@ -123,8 +123,8 @@
 
 /* --- Toast pleine largeur ---------------------------------------------------- */
 
-.lpv-toast {
-  animation: lpv-toast-entree 0.3s ease-out;
+.lpv-m-toast {
+  animation: lpv-m-toast-enter 0.3s ease-out;
   background-color: var(--lpv-green);
   color: var(--lpv-surface);
   font-weight: 700;
@@ -136,12 +136,12 @@
   top: 0;
   z-index: 300;
 
-  &--erreur {
+  &--error {
     background-color: var(--lpv-red);
   }
 }
 
-@keyframes lpv-toast-entree {
+@keyframes lpv-m-toast-enter {
   from {
     transform: translateY(-100%);
   }
@@ -152,7 +152,7 @@
 
 /* --- Modale de confirmation ------------------------------------------------- */
 
-.lpv-modale-fond {
+.lpv-m-modal-overlay {
   align-items: center;
   background-color: var(--lpv-overlay);
   display: flex;
@@ -161,7 +161,7 @@
   z-index: 200;
 }
 
-.lpv-modale {
+.lpv-m-modal {
   background-color: var(--lpv-surface);
   border-radius: var(--lpv-radius-lg);
   box-shadow: 0 12px 32px var(--lpv-overlay-heavy);
@@ -170,13 +170,13 @@
   padding: 1.5rem;
   width: calc(100% - 2rem);
 
-  &__titre {
+  &__title {
     font-size: 1.25rem;
     font-weight: 700;
     margin: 0 0 0.5rem;
   }
 
-  &__texte {
+  &__text {
     color: var(--lpv-text-muted);
     margin: 0 0 1.25rem;
   }

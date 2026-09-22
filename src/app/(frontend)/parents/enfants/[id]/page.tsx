@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation'
 
 import { BackLink, Tag } from '@/components/atoms'
-import { Tableau } from '@/components/molecules'
-import type { TableauHeadCell, TableauRowCell } from '@/components/molecules'
+import { Table } from '@/components/molecules'
+import type { TableHeadCell, TableRowCell } from '@/components/molecules'
 import { requireParent } from '@/utilities/parentAuth'
 import { getPayloadInstance, verifierParentEleve } from '@/utilities/parentPortal'
 
@@ -77,46 +77,46 @@ export default async function EnfantPage({ params }: { params: Promise<{ id: str
   const presentes = presences.docs.filter((p) => p.present === 'present').length
   const taux = presences.totalDocs > 0 ? Math.round((presentes / presences.totalDocs) * 100) : null
 
-  const presencesHead: TableauHeadCell[] = [
-    { texte: 'Date' },
-    { texte: 'Matière' },
-    { texte: 'Statut' },
-    { texte: 'Commentaire' },
+  const presencesHead: TableHeadCell[] = [
+    { text: 'Date' },
+    { text: 'Matière' },
+    { text: 'Statut' },
+    { text: 'Commentaire' },
   ]
 
-  const presencesRows: TableauRowCell[][] = presences.docs.map((presence) => {
+  const presencesRows: TableRowCell[][] = presences.docs.map((presence) => {
     const seance = presence.seance as unknown as { date?: string; matiere?: string }
     return [
-      { texte: seance?.date ? new Date(String(seance.date)).toLocaleDateString('fr-FR') : '—' },
-      { texte: seance?.matiere ?? '—' },
-      { texte: statutTexte(presence.present) },
-      { texte: presence.commentaire ?? '' },
+      { text: seance?.date ? new Date(String(seance.date)).toLocaleDateString('fr-FR') : '—' },
+      { text: seance?.matiere ?? '—' },
+      { text: statutTexte(presence.present) },
+      { text: presence.commentaire ?? '' },
     ]
   })
 
-  const progressionsHead: TableauHeadCell[] = [
-    { texte: 'Date' },
-    { texte: 'Compétence' },
-    { texte: 'Niveau' },
+  const progressionsHead: TableHeadCell[] = [
+    { text: 'Date' },
+    { text: 'Compétence' },
+    { text: 'Niveau' },
   ]
 
-  const progressionsRows: TableauRowCell[][] = progressions.docs.map((progression) => {
+  const progressionsRows: TableRowCell[][] = progressions.docs.map((progression) => {
     const competence = progression.competence as unknown as { label?: string; matiere?: string }
     return [
-      { texte: new Date(String(progression.date)).toLocaleDateString('fr-FR') },
-      { texte: String(competence?.label ?? '—') },
-      { texte: niveauLabel(progression.niveau) },
+      { text: new Date(String(progression.date)).toLocaleDateString('fr-FR') },
+      { text: String(competence?.label ?? '—') },
+      { text: niveauLabel(progression.niveau) },
     ]
   })
 
-  const pretsHead: TableauHeadCell[] = [
-    { texte: 'Statut' },
-    { texte: 'Date de retour' },
+  const pretsHead: TableHeadCell[] = [
+    { text: 'Statut' },
+    { text: 'Date de retour' },
   ]
 
-  const pretsRows: TableauRowCell[][] = prets.docs.map((pret) => [
-    { texte: pret.dateRetourEffective ? 'Retourné' : 'En cours' },
-    { texte: pret.dateRetourEffective
+  const pretsRows: TableRowCell[][] = prets.docs.map((pret) => [
+    { text: pret.dateRetourEffective ? 'Retourné' : 'En cours' },
+    { text: pret.dateRetourEffective
       ? new Date(String(pret.dateRetourEffective)).toLocaleDateString('fr-FR')
       : pret.dateRetourPrevue
         ? `Prévu le ${new Date(String(pret.dateRetourPrevue)).toLocaleDateString('fr-FR')}`
@@ -127,7 +127,7 @@ export default async function EnfantPage({ params }: { params: Promise<{ id: str
     <>
       <BackLink href="/parents">Mes enfants</BackLink>
       <h1 className="lpv-h1">
-        {enfant.prenom} {enfant.nom} <Tag couleur="bleu">{enfant.niveau}</Tag>
+        {enfant.prenom} {enfant.nom} <Tag color="blue">{enfant.niveau}</Tag>
       </h1>
 
       <section>
@@ -135,7 +135,7 @@ export default async function EnfantPage({ params }: { params: Promise<{ id: str
         {presences.docs.length === 0 ? (
           <p className="lpv-muted">Aucune séance enregistrée pour le moment.</p>
         ) : (
-          <Tableau caption="Présences" head={presencesHead} rows={presencesRows} />
+          <Table caption="Présences" head={presencesHead} rows={presencesRows} />
         )}
       </section>
 
@@ -162,7 +162,7 @@ export default async function EnfantPage({ params }: { params: Promise<{ id: str
         {progressions.docs.length === 0 ? (
           <p className="lpv-muted">Aucune progression enregistrée pour le moment.</p>
         ) : (
-          <Tableau caption="Progressions" head={progressionsHead} rows={progressionsRows} />
+          <Table caption="Progressions" head={progressionsHead} rows={progressionsRows} />
         )}
       </section>
 
@@ -171,7 +171,7 @@ export default async function EnfantPage({ params }: { params: Promise<{ id: str
         {prets.docs.length === 0 ? (
           <p className="lpv-muted">Aucun prêt enregistré.</p>
         ) : (
-          <Tableau caption="Prêts" head={pretsHead} rows={pretsRows} />
+          <Table caption="Prêts" head={pretsHead} rows={pretsRows} />
         )}
       </section>
     </>

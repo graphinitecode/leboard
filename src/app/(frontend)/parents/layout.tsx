@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 
-import { ContenuPage, EnteteService } from '@/components/molecules/EnteteService'
+import { PageContent, ServiceHeader } from '@/components/molecules/m-service-header'
 import { getMeUserServer } from '@/utilities/parentAuth'
 
 export const dynamic = 'force-dynamic'
@@ -17,26 +17,26 @@ export default async function ParentsLayout({ children }: { children: ReactNode 
   const user = await getMeUserServer()
 
   return (
-    <ContenuPage
-      entete={
-        <EnteteService
-          heroTexte="Le suivi de votre enfant : présences, retours et prêts."
-          heroTitre="Espace parents"
-          legales={[
-            { href: '/rgpd', libelle: 'Mentions légales' },
-            { href: '/rgpd', libelle: 'Politique de confidentialité' },
+    <PageContent
+      header={
+        <ServiceHeader
+          heroText="Le suivi de votre enfant : présences, retours et prêts."
+          heroTitle="Espace parents"
+          legalLinks={[
+            { href: '/rgpd', label: 'Mentions légales' },
+            { href: '/rgpd', label: 'Politique de confidentialité' },
           ]}
           services={[
-            { description: 'Le suivi de votre enfant', href: '/parents', libelle: 'Espace parents' },
-            { href: '/rgpd', libelle: 'Protection des données' },
+            { description: 'Le suivi de votre enfant', href: '/parents', label: 'Espace parents' },
+            { href: '/rgpd', label: 'Protection des données' },
           ]}
-          utilisateur={user ? { email: user.email, nom: user.name } : null}
+          user={user ? { nom: user.name, email: user.email } : null}
         />
       }
-      liensPied={[{ href: '/parents/login', libelle: 'Connexion' }]}
+      footerLinks={[{ href: '/parents/login', label: 'Connexion' }]}
       portail="parents"
     >
       {children}
-    </ContenuPage>
+    </PageContent>
   )
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import { InsetText } from '@/components/atoms'
-import { ListeDispos, trierDisponibilites, useListMesDisponibilites } from '@/planning'
+import { AvailabilityList, trierDisponibilites, useListMesDisponibilites } from '@/planning'
 
 export default function DisponibilitesView() {
   const disponibilites = useListMesDisponibilites()
@@ -38,7 +38,7 @@ export default function DisponibilitesView() {
         {dispos.length === 0 ? (
           <InsetText>Aucune disponibilité déclarée. Ajoutez votre premier créneau ci-dessous.</InsetText>
         ) : (
-          <ListeDispos dispos={dispos} />
+          <AvailabilityList dispos={dispos} />
         )}
       </section>
     </>

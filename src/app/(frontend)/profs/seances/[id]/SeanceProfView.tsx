@@ -1,12 +1,12 @@
 'use client'
 
 import { BackLink, Tag } from '@/components/atoms'
-import { FormRetour } from '@/seances'
-import { TogglePresence } from '@/seances'
-import { FormProgression } from '@/progressions'
+import { ReturnForm } from '@/seances'
+import { PresenceToggle } from '@/seances'
+import { ProgressionForm } from '@/progressions'
 import { useGetSeance } from '@/seances'
 import { presentSeanceDetail } from '@/seances'
-import { nomEleve } from '@/eleves'
+import { nomEleve } from '@/students'
 
 interface SeanceProfViewProps {
   seanceId: number
@@ -34,7 +34,7 @@ export default function SeanceProfView({ seanceId }: SeanceProfViewProps) {
     <>
       <BackLink href="/profs">Tableau de bord</BackLink>
       <h1 className="lpv-h1">
-        {viewModel.seance.dateLabel} <Tag couleur="bleu">{viewModel.seance.matiereLabel}</Tag>
+        {viewModel.seance.dateLabel} <Tag color="blue">{viewModel.seance.matiereLabel}</Tag>
       </h1>
 
       <section>
@@ -44,7 +44,7 @@ export default function SeanceProfView({ seanceId }: SeanceProfViewProps) {
         ) : (
           <div>
             {viewModel.presences.map((presence) => (
-              <div className="lpv-ligne" key={presence.eleveId}>
+              <div className="lpv-m-list-row" key={presence.eleveId}>
                 <span>
                   <a
                     href={`/profs/eleves/${presence.eleveId}`}
@@ -54,10 +54,10 @@ export default function SeanceProfView({ seanceId }: SeanceProfViewProps) {
                   </a>
                 </span>
                 {presence.presenceId !== null && presence.statutInitial !== null ? (
-                  <TogglePresence
-                    nomEleve={presence.eleveNom}
+                  <PresenceToggle
+                    studentName={presence.eleveNom}
                     presenceId={presence.presenceId}
-                    statutInitial={presence.statutInitial}
+                    initialStatus={presence.statutInitial}
                   />
                 ) : (
                   <span className="lpv-muted">Présence non initialisée</span>
@@ -70,13 +70,13 @@ export default function SeanceProfView({ seanceId }: SeanceProfViewProps) {
 
       <section>
         <h2 className="lpv-h2">Retour de séance</h2>
-        <FormRetour initial={detail.seance.retourTexte} seanceId={seanceId} />
+        <ReturnForm initial={detail.seance.retourTexte} seanceId={seanceId} />
       </section>
 
       <section>
         <h2 className="lpv-h2">Progressions</h2>
-        <FormProgression
-          eleves={detail.elevesDuGroupe.map((eleve) => ({
+        <ProgressionForm
+          students={detail.elevesDuGroupe.map((eleve) => ({
             id: eleve.id,
             label: nomEleve(eleve),
           }))}

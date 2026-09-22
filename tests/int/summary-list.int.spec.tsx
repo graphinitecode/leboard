@@ -1,15 +1,15 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-import { SummaryList } from '@/components/molecules/Listes'
+import { SummaryList } from '@/components/molecules/m-lists'
 
 describe('SummaryList', () => {
   it('affiche les cles et les valeurs', () => {
     render(
       <SummaryList
         items={[
-          { cle: 'Nom', valeur: 'Dupont' },
-          { cle: 'Prénom', valeur: 'Marie' },
+          { key: 'Nom', value: 'Dupont' },
+          { key: 'Prénom', value: 'Marie' },
         ]}
       />,
     )
@@ -21,7 +21,7 @@ describe('SummaryList', () => {
     render(
       <SummaryList
         items={[
-          { cle: 'Élève', valeur: 'Marie', actions: [<a href="#mod" key="m">Modifier</a>] },
+          { key: 'Élève', value: 'Marie', actions: [<a href="#mod" key="m">Modifier</a>] },
         ]}
       />,
     )
@@ -33,12 +33,12 @@ describe('SummaryList', () => {
       <SummaryList
         items={[
           {
-            cle: 'Créneau',
-            valeur: 'Lundi 14h',
+            key: 'Créneau',
+            value: 'Lundi 14h',
             actions: [
               <a href="#aj" key="a">Ajouter</a>,
               <a href="#mod" key="m">Modifier</a>,
-              <a className="lpv-action--danger" href="#sup" key="s">Supprimer</a>,
+              <a className="lpv-m-summary-list__action--danger" href="#sup" key="s">Supprimer</a>,
             ],
           },
         ]}
@@ -46,14 +46,14 @@ describe('SummaryList', () => {
     )
     expect(screen.getByText('Ajouter')).toBeDefined()
     expect(screen.getByText('Supprimer')).toBeDefined()
-    const items = container.querySelectorAll('.lpv-summary-list__actions-list-item')
+    const items = container.querySelectorAll('.lpv-m-summary-list__actions-list-item')
     expect(items).toHaveLength(3)
   })
 
   it('ne rend pas la colonne actions quand aucune action', () => {
-    const { container } = render(<SummaryList items={[{ cle: 'Nom', valeur: 'Dupont' }]} />)
-    expect(container.querySelector('.lpv-summary-list__actions')).toBeNull()
-    expect(container.querySelector('.lpv-summary-list__row--no-actions')).not.toBeNull()
+    const { container } = render(<SummaryList items={[{ key: 'Nom', value: 'Dupont' }]} />)
+    expect(container.querySelector('.lpv-m-summary-list__actions')).toBeNull()
+    expect(container.querySelector('.lpv-m-summary-list__row--no-actions')).not.toBeNull()
   })
 
   it('rend les actions declaratives avec la classe du type', () => {
@@ -61,21 +61,21 @@ describe('SummaryList', () => {
       <SummaryList
         items={[
           {
-            cle: 'Créneau',
-            valeur: 'Lundi 14h',
+            key: 'Créneau',
+            value: 'Lundi 14h',
             actions: [
-              { type: 'normal', texte: 'Modifier', href: '#mod', key: 'mod' },
-              { type: 'warning', texte: 'Suspendre', href: '#sus', key: 'sus' },
-              { type: 'danger', texte: 'Supprimer', href: '#sup', key: 'sup' },
+              { type: 'normal', label: 'Modifier', href: '#mod', key: 'mod' },
+              { type: 'warning', label: 'Suspendre', href: '#sus', key: 'sus' },
+              { type: 'danger', label: 'Supprimer', href: '#sup', key: 'sup' },
             ],
           },
         ]}
       />,
     )
     const liens = container.querySelectorAll('a')
-    expect(liens[0]).toHaveClass('lpv-action--normal')
-    expect(liens[1]).toHaveClass('lpv-action--warning')
-    expect(liens[2]).toHaveClass('lpv-action--danger')
+    expect(liens[0]).toHaveClass('lpv-m-summary-list__action--normal')
+    expect(liens[1]).toHaveClass('lpv-m-summary-list__action--warning')
+    expect(liens[2]).toHaveClass('lpv-m-summary-list__action--danger')
     expect(screen.getByText('Suspendre')).toBeDefined()
   })
 
@@ -85,9 +85,9 @@ describe('SummaryList', () => {
       <SummaryList
         items={[
           {
-            cle: 'Créneau',
-            valeur: 'Lundi 14h',
-            actions: [{ type: 'danger', texte: 'Supprimer', onClick: () => (clique += 1) }],
+            key: 'Créneau',
+            value: 'Lundi 14h',
+            actions: [{ type: 'danger', label: 'Supprimer', onClick: () => (clique += 1) }],
           },
         ]}
       />,
@@ -100,7 +100,7 @@ describe('SummaryList', () => {
     render(
       <SummaryList
         items={[
-          { cle: 'Créneau', valeur: 'Lundi 14h', actions: [{ texte: 'Supprimer', disabled: true }] },
+          { key: 'Créneau', value: 'Lundi 14h', actions: [{ label: 'Supprimer', disabled: true }] },
         ]}
       />,
     )
@@ -112,11 +112,11 @@ describe('SummaryList', () => {
       <SummaryList
         items={[
           {
-            cle: 'Créneau',
-            valeur: 'Lundi 14h',
+            key: 'Créneau',
+            value: 'Lundi 14h',
             actions: [
               <a href="#libre" key="libre">Action libre</a>,
-              { texte: 'Modifier', href: '#mod', key: 'mod' },
+              { label: 'Modifier', href: '#mod', key: 'mod' },
             ],
           },
         ]}
