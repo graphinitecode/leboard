@@ -32,15 +32,35 @@ Règles :
 
 ## Format des commits (obligatoire)
 
-Chaque commit suit le format [Conventional Commits](https://www.conventionalcommits.org/) :
+Chaque commit suit le format [Conventional Commits](https://www.conventionalcommits.org/) préfixé d'un **gitmoji** :
 
 ```
-<type>(<portée>): <sujet>
+:<type>: <type>(<portée>): <sujet>
 
 <description>
 
 <footer>
 ```
+
+### Gitmoji (obligatoire, en tête du sujet)
+
+Un emoji GitHub (shortcode `:nom:` ou emoji unicode) reflétant la nature du commit, placé
+**avant** le type. Correspondances usuelles :
+
+| Gitmoji | Type(s) |
+|---|---|
+| `:sparkles:` | `feat` |
+| `:bug:` | `fix` |
+| `:zap:` | `perf` |
+| `:recycle:` | `refactor` |
+| `:art:` | `style` |
+| `:test_tube:` | `test` |
+| `:memo:` | `docs` |
+| `:construction_worker:` / `:package:` | `build` |
+| `:construction:` | `ci` |
+| `:wrench:` / `:toolbox:` | `chore` |
+
+Exemples : `:sparkles: feat(theme): ajouter le cycle device`, `:bug: fix(molecules): élargir le type du handler`.
 
 ### Type (obligatoire)
 
@@ -87,7 +107,7 @@ Partie de l'application/librairie affectée — `feat(reader): …`, `fix(strong
 ### Exemples
 
 ```
-feat(reader): ajouter le mode focus
+:sparkles: feat(reader): ajouter le mode focus
 
 le mode focus masque la topbar et le dock tant que la touche Escape
 n'est pas pressée, pour réduire les distractions pendant la lecture
@@ -96,14 +116,14 @@ Closes #14
 ```
 
 ```
-fix(strong): gérer l'absence de code strong sur la version lsg
+:bug: fix(strong): gérer l'absence de code strong sur la version lsg
 
 la concordance repliait vers un état vide quand le code strong etait
 invalide ; on affiche maintenant un message explicite
 ```
 
 ```
-docs(agent): formaliser le format des commits conventionnels
+:memo: docs(agent): formaliser le format des commits conventionnels
 
 ajoute la section 10 a AGENT.md decrivant le format type(portee): sujet
 plus description et footer, ainsi que les regles de typographie
