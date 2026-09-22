@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import { ErrorMessage, Hint } from '@/components/atoms/Champ'
+import { ErrorMessage, Hint } from '@/components/atoms/Label'
 
 type TailleLabel = 'l' | 'm' | 's'
 
@@ -82,7 +82,7 @@ function OptionAvecRevelation({
   )
 }
 
-export function CasesACocher({
+export function Checkbox({
   nom,
   options,
   idPrefix,

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRef, useState } from 'react'
 
 import { Icon } from '@/components/atoms/Icon'
-import { BasculeTheme } from '@/components/molecules/BasculeTheme'
+import { ToggleTheme } from '@/components/molecules/ToggleTheme'
 import { useFermerHorsClic } from '@/hooks/useFermerHorsClic'
 
 type Section = 'services' | 'legales'
@@ -96,7 +96,7 @@ export function MenuDepliant({
             {colonne('legales', 'Légales', legales)}
           </div>
           <div className="lpv-menu-panneau__pied">
-            <BasculeTheme variante="panneau" />
+            <ToggleTheme variante="panneau" />
           </div>
         </div>
       )}

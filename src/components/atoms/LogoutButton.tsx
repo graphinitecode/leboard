@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 
 // Bouton de déconnexion des portails : POST /api/users/logout puis redirect.
-export function BoutonDeconnexion() {
+export function LogoutButton() {
   const router = useRouter()
 
   return (

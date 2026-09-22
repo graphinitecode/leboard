@@ -6,7 +6,7 @@ import { TogglePresence } from '@/seances'
 import { FormProgression } from '@/progressions'
 import { useGetSeance } from '@/seances'
 import { presentSeanceDetail } from '@/seances'
-import { nomEleve } from '@/eleves'
+import { nomEleve } from '@/students'
 
 interface SeanceProfViewProps {
   seanceId: number

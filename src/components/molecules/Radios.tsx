@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import { ErrorMessage, Hint } from '@/components/atoms/Champ'
+import { ErrorMessage, Hint } from '@/components/atoms/Label'
 
 type TailleLegende = 'l' | 'm' | 's'
 
@@ -28,7 +28,7 @@ export type OptionRadio = {
 // - Variante inline (enLigne) pour 2 options courtes
 // - Révélation conditionnelle
 // - Small (petit) pour filtres de résultats
-export function BoutonsRadio({
+export function Radios({
   nom,
   options,
   idPrefix,

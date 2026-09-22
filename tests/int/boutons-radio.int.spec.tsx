@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-import { BoutonsRadio } from '@/components/molecules/BoutonsRadio'
-import type { OptionRadio } from '@/components/molecules/BoutonsRadio'
+import { Radios } from '@/components/molecules/Radios'
+import type { OptionRadio } from '@/components/molecules/Radios'
 
 const options: OptionRadio[] = [
   { valeur: 'oui', texte: 'Oui' },
@@ -11,13 +11,13 @@ const options: OptionRadio[] = [
 
 describe('BoutonsRadio', () => {
   it('affiche toutes les options', () => {
-    render(<BoutonsRadio nom="test" options={options} idPrefix="test-radio" valeur="oui" />)
+    render(<Radios nom="test" options={options} idPrefix="test-radio" valeur="oui" />)
     expect(screen.getByLabelText('Oui')).toBeDefined()
     expect(screen.getByLabelText('Non')).toBeDefined()
   })
 
   it('affiche l\'option sélectionnée comme cochée', () => {
-    render(<BoutonsRadio nom="test" options={options} idPrefix="test-radio" valeur="oui" />)
+    render(<Radios nom="test" options={options} idPrefix="test-radio" valeur="oui" />)
     expect(screen.getByLabelText('Oui')).toBeChecked()
     expect(screen.getByLabelText('Non')).not.toBeChecked()
   })
@@ -27,7 +27,7 @@ describe('BoutonsRadio', () => {
       { valeur: 'oui', texte: 'Oui', conditionnel: <p>Précisez</p> },
       { valeur: 'non', texte: 'Non' },
     ]
-    render(<BoutonsRadio nom="test" options={optionsWithConditional} idPrefix="test-radio" valeur="oui" />)
+    render(<Radios nom="test" options={optionsWithConditional} idPrefix="test-radio" valeur="oui" />)
     const el = screen.getByText('Précisez')
     expect(el.closest('.lpv-radios__conditionnel')).not.toHaveClass('lpv-radios__conditionnel--hidden')
   })
@@ -37,13 +37,13 @@ describe('BoutonsRadio', () => {
       { valeur: 'oui', texte: 'Oui', conditionnel: <p>Précisez</p> },
       { valeur: 'non', texte: 'Non' },
     ]
-    const { container } = render(<BoutonsRadio nom="test" options={optionsWithConditional} idPrefix="test-radio" valeur="non" />)
+    const { container } = render(<Radios nom="test" options={optionsWithConditional} idPrefix="test-radio" valeur="non" />)
     const conditionalDiv = container.querySelector('.lpv-radios__conditionnel')
     expect(conditionalDiv).toHaveClass('lpv-radios__conditionnel--hidden')
   })
 
   it('affiche une erreur quand le prop est fourni', () => {
-    render(<BoutonsRadio nom="test" options={options} idPrefix="test-radio" valeur="oui" erreur="Choisissez une option" />)
+    render(<Radios nom="test" options={options} idPrefix="test-radio" valeur="oui" erreur="Choisissez une option" />)
     expect(screen.getByText('Choisissez une option')).toBeDefined()
   })
 
@@ -53,7 +53,7 @@ describe('BoutonsRadio', () => {
       { diviseur: 'ou' },
       { valeur: 'non', texte: 'Non' },
     ]
-    render(<BoutonsRadio nom="test" options={optionsWithDivider} idPrefix="test-radio" valeur="oui" />)
+    render(<Radios nom="test" options={optionsWithDivider} idPrefix="test-radio" valeur="oui" />)
     expect(screen.getByText('ou')).toBeDefined()
   })
 })

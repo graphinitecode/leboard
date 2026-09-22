@@ -22,7 +22,7 @@ function prenom(nom: string): string {
 // le nom complet reste porté par l'aria-label, le title et le panneau.
 // Dropdown : identité (nom + email, lecture seule) et déconnexion
 // (server action seDeconnecter : suppression du cookie puis redirection).
-export function AvatarUtilisateur({ nom, email }: { nom: string; email: string }) {
+export function Avatar({ nom, email }: { nom: string; email: string }) {
   const [ouvert, setOuvert] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 

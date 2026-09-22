@@ -2,8 +2,8 @@
 
 import { useQuery } from '@tanstack/react-query'
 
-import { elevesRepository } from '@/eleves/infrastructure/eleves.repository'
-import { nomEleve } from '@/eleves/domain/eleve.entity'
+import { elevesRepository } from '@/students/infrastructure/eleves.repository'
+import { nomEleve } from '@/students/domain/eleve.entity'
 
 export const ELEVES_QUERY_KEY = ['eleves']
 

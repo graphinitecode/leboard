@@ -18,7 +18,7 @@ export interface TableauRowCell {
 // - En-têtes de colonne avec scope="col"
 // - premiereCelluleEntete = th scope="row" pour la première cellule de chaque ligne
 // - Cellules numériques alignées à droite
-export function Tableau({
+export function Table({
   caption,
   captionTaille = 'm',
   head,

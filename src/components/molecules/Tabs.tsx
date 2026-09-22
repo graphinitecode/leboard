@@ -11,7 +11,7 @@ export interface Onglet {
 // Molécule : onglets. Inspiré de GOV.UK Tabs.
 // Sans JS : tous les panneaux empilés avec liens d'ancre.
 // Avec JS : tablist/tab/tabpanel, roving tabindex, flèches, état dans l'URL.
-export function Onglets({
+export function Tabs({
   id,
   titre = 'Contenu',
   onglets,

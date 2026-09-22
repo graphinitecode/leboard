@@ -1,9 +1,9 @@
-import { ErrorMessage, Hint, Label } from '@/components/atoms/Champ'
+import { ErrorMessage, Hint, Label } from '@/components/atoms/Label'
 
 // Atome : téléversement de fichier (input file) avec label, hint et erreur.
 // Inspiré de GOV.UK File upload. Version de base sans JS amélioré (drop zone).
 // L'erreur s'applique au groupe de formulaire complet.
-export function Televersement({
+export function FileUpload({
   id,
   name,
   label,

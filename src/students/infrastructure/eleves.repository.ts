@@ -1,5 +1,5 @@
 import type { Eleve as EleveDto } from '@/payload-types'
-import type { Eleve } from '@/eleves/domain/eleve.entity'
+import type { Eleve } from '@/students/domain/eleve.entity'
 import { getAxiosErrorMessage } from '@/shared/infrastructure/axios-error'
 import { httpClient } from '@/shared/infrastructure/http.client'
 
@@ -30,7 +30,7 @@ export const elevesRepository = {
     }
   },
 
-  async getFiche(eleveId: number): Promise<import('@/eleves/domain/eleve.entity').Eleve | null> {
+  async getFiche(eleveId: number): Promise<import('@/students/domain/eleve.entity').Eleve | null> {
     try {
       const res = await httpClient.get<EleveDto>(`/eleves/${eleveId}`, { params: { depth: 0 } })
       return mapDtoToEleve(res.data)

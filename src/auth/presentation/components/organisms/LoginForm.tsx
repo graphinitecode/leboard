@@ -3,8 +3,8 @@
 import Link from 'next/link'
 import { useState } from 'react'
 
-import { Bouton } from '@/components/atoms/Bouton'
-import { ChampFormulaire, ResumeErreurs } from '@/components/molecules'
+import { Button } from '@/components/atoms/Button'
+import { Input, ResumeErreurs } from '@/components/molecules'
 import { useLoginParent, useLoginProf } from '@/auth/application/auth.hooks'
 
 interface LoginFormProps {
@@ -40,7 +40,7 @@ export function LoginForm({ portail, cible, titre = 'Connexion', sousTitre }: Lo
       <h1 className="lpv-login__titre">{titre}</h1>
       {sousTitre ? <p className="lpv-login__sous-titre">{sousTitre}</p> : null}
       <ResumeErreurs erreurs={erreur ? [{ champId: 'email', texte: erreur }] : []} />
-      <ChampFormulaire
+      <Input
         autoComplete="email"
         id="email"
         label="Adresse e-mail"
@@ -48,7 +48,7 @@ export function LoginForm({ portail, cible, titre = 'Connexion', sousTitre }: Lo
         type="email"
         value={email}
       />
-      <ChampFormulaire
+      <Input
         autoComplete="current-password"
         id="motdepasse"
         label="Mot de passe"
@@ -59,9 +59,9 @@ export function LoginForm({ portail, cible, titre = 'Connexion', sousTitre }: Lo
       <p className="lpv-login__oublie">
         Mot de passe oublié ? <Link href="/admin/forgot-password" className="lpv-link">Réinitialiser ici</Link>
       </p>
-      <Bouton disabled={isPending} type="submit">
+      <Button disabled={isPending} type="submit" className="w-full md:w-auto">
         {isPending ? 'Connexion…' : 'Se connecter'}
-      </Bouton>
+      </Button>
     </form>
   )
 }

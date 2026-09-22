@@ -62,9 +62,9 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - En mode sombre, les boutons reprennent les couleurs des tags : primaire bleu #0080FF, « Modifier » orange #FF6B00, danger rouge #FF0004 (texte blanc). En mode clair, les boutons, tags, panel et bannière de succès conservent leurs couleurs d'origine ; ils prennent les couleurs de marque en mode sombre
 - Fiche élève (profs) : alertes en TexteAvertissement, présences et progressions en Tableau accessible
 - Fiche enfant (parents) : présences, progressions et prêts en Tableau accessible ; ajout d'un lien retour
-- Assistant disponibilités : champs horaires via ChampFormulaire (label, hint, min/max), liens retour via BackLink
+- Assistant disponibilités : champs horaires via Input (label, hint, min/max), liens retour via BackLink
 - Tableau : ajout de la prop `contenu` (ReactNode) dans les cellules pour afficher des composants (Tag)
-- ChampFormulaire : ajout des props `min` et `max`
+- Input : ajout des props `min` et `max`
 - BackLink : ajout de la prop `onClick`, styles en classe CSS `lpv-back-link`
 - FormulairesDispo : modale et toast extraits en composants réutilisables (Modale, Toast)
 

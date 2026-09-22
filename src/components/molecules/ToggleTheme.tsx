@@ -9,7 +9,7 @@ import { Icon } from '@/components/atoms/Icon'
 // Icône lune en dark, soleil en light (boxicons filled).
 // variante 'barre' (défaut) : icône seule, blanc sur fond portail.
 // variante 'panneau' : ligne libellé + icône, couleurs du panneau (surface).
-export function BasculeTheme({ variante = 'barre' }: { variante?: 'barre' | 'panneau' }) {
+export function ToggleTheme({ variante = 'barre' }: { variante?: 'barre' | 'panneau' }) {
   const [theme, setTheme] = useState<'dark' | 'light' | null>(null)
 
   // La préférence ne peut être lue qu'après hydratation (window n'existe pas

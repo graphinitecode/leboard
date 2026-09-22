@@ -1,5 +1,5 @@
-import type { Eleve } from '@/eleves/domain/eleve.entity'
-import { elevesRepository } from '@/eleves/infrastructure/eleves.repository'
+import type { Eleve } from '@/students/domain/eleve.entity'
+import { elevesRepository } from '@/students/infrastructure/eleves.repository'
 
 export const getFicheHandler = async (eleveId: number): Promise<Eleve | null> => {
   return elevesRepository.getFiche(eleveId)

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
 
 import { InsetText, Panel, Tag } from '@/components/atoms'
-import { nomEleve, useListEnfantsDuParent } from '@/eleves'
+import { nomEleve, useListEnfantsDuParent } from '@/students'
 import { progressionsRepository } from '@/progressions'
 import { seancesRepository } from '@/seances'
 

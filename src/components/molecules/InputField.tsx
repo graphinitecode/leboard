@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { ErrorMessage, Hint } from '@/components/atoms/Champ'
+import { ErrorMessage, Hint } from '@/components/atoms/Label'
 
 type TailleLegende = 'l' | 'm' | 's'
 
@@ -13,7 +13,7 @@ type TailleLegende = 'l' | 'm' | 's'
 // - taille pilote la classe de légende : 'l' (défaut), 'm', 's'.
 // - Le fieldset regroupe visuellement et accessiblement les champs du groupe.
 // - describedBy relie le fieldset au hint et/ou à l'erreur du groupe.
-export function ChampEnsemble({
+export function InputField({
   children,
   legende,
   taille = 'l',

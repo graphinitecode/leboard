@@ -2,8 +2,8 @@ import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
-import { BackLink, Tag, TexteAvertissement } from '@/components/atoms'
-import { Tableau } from '@/components/molecules'
+import { BackLink, Tag, WarningText } from '@/components/atoms'
+import { Table } from '@/components/molecules'
 import type { TableauHeadCell, TableauRowCell } from '@/components/molecules'
 import { SummaryList } from '@/components/molecules/Listes'
 import { requireProf } from '@/utilities/profAuth'
@@ -140,12 +140,12 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
         <section>
           <h2 className="lpv-h2">Alertes actives</h2>
           {alertes.docs.map((alerte) => (
-            <TexteAvertissement key={String(alerte.id)}>
+            <WarningText key={String(alerte.id)}>
               {alerte.message}{' '}
               <span style={{ color: 'var(--lpv-text-muted)' }}>
                 ({new Date(String(alerte.dateCreation)).toLocaleDateString('fr-FR')})
               </span>
-            </TexteAvertissement>
+            </WarningText>
           ))}
         </section>
       )}
@@ -155,7 +155,7 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
         {presences.docs.length === 0 ? (
           <p className="lpv-muted">Aucune présence enregistrée.</p>
         ) : (
-          <Tableau caption="Présences" head={presencesHead} rows={presencesRows} />
+          <Table caption="Présences" head={presencesHead} rows={presencesRows} />
         )}
       </section>
 
@@ -164,7 +164,7 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
         {progressions.docs.length === 0 ? (
           <p className="lpv-muted">Aucune progression.</p>
         ) : (
-          <Tableau caption="Progressions" head={progressionsHead} rows={progressionsRows} />
+          <Table caption="Progressions" head={progressionsHead} rows={progressionsRows} />
         )}
       </section>
 

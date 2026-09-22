@@ -3,12 +3,12 @@
 import { useState, type ChangeEvent } from 'react'
 
 import { Icon } from '@/components/atoms/Icon'
-import { ErrorMessage, Hint, Label } from '@/components/atoms/Champ'
+import { ErrorMessage, Hint, Label } from '@/components/atoms/Label'
 
 // Molécule : champ de formulaire complet (Label + Hint + Erreur + contrôle).
 // Convention : `optionnel` affiche « (optionnel) » dans le label ; un champ
 // sans cette mention est obligatoire (attribut required appliqué au contrôle).
-export function ChampFormulaire({
+export function Input({
   as = 'input',
   label,
   hint,

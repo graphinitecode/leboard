@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 
 import { BackLink, Tag } from '@/components/atoms'
-import { Tableau } from '@/components/molecules'
+import { Table } from '@/components/molecules'
 import type { TableauHeadCell, TableauRowCell } from '@/components/molecules'
 import { requireParent } from '@/utilities/parentAuth'
 import { getPayloadInstance, verifierParentEleve } from '@/utilities/parentPortal'
@@ -135,7 +135,7 @@ export default async function EnfantPage({ params }: { params: Promise<{ id: str
         {presences.docs.length === 0 ? (
           <p className="lpv-muted">Aucune séance enregistrée pour le moment.</p>
         ) : (
-          <Tableau caption="Présences" head={presencesHead} rows={presencesRows} />
+          <Table caption="Présences" head={presencesHead} rows={presencesRows} />
         )}
       </section>
 
@@ -162,7 +162,7 @@ export default async function EnfantPage({ params }: { params: Promise<{ id: str
         {progressions.docs.length === 0 ? (
           <p className="lpv-muted">Aucune progression enregistrée pour le moment.</p>
         ) : (
-          <Tableau caption="Progressions" head={progressionsHead} rows={progressionsRows} />
+          <Table caption="Progressions" head={progressionsHead} rows={progressionsRows} />
         )}
       </section>
 
@@ -171,7 +171,7 @@ export default async function EnfantPage({ params }: { params: Promise<{ id: str
         {prets.docs.length === 0 ? (
           <p className="lpv-muted">Aucun prêt enregistré.</p>
         ) : (
-          <Tableau caption="Prêts" head={pretsHead} rows={pretsRows} />
+          <Table caption="Prêts" head={pretsHead} rows={pretsRows} />
         )}
       </section>
     </>

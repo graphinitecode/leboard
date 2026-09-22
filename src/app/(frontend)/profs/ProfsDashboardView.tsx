@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 
 import { InsetText, Tag } from '@/components/atoms'
 import { presentSeanceLigne, useListMySeances } from '@/seances'
-import { useListElevesDuProf } from '@/eleves'
+import { useListElevesDuProf } from '@/students'
 
 interface ProfsDashboardProps {
   profId: number

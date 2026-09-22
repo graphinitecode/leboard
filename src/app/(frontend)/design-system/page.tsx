@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
-import { Bouton, BackLink, FilAriane, Icon, InsetText, Panel, Tag, TexteAvertissement, Details, Televersement } from '@/components/atoms'
-import { Label } from '@/components/atoms/Champ'
-import { Accordeon, AvatarUtilisateur, CasesACocher, ChampDate, ChampEnsemble, ChampFormulaire, CompteurCaracteres, ListeTaches, NotificationBanner, Onglets, PaginationLPV, ResumeErreurs, SummaryList, Tableau, BasculeTheme } from '@/components/molecules'
+import { Button, BackLink, Breadcrumbs, Icon, InsetText, Panel, Tag, WarningText, Details, FileUpload } from '@/components/atoms'
+import { Label } from '@/components/atoms/Label'
+import { Accordeon, Avatar, Checkbox, DateInput, InputField, Input, CharacterCount, ListeTaches, NotificationBanner, Tabs, PaginationLPV, ResumeErreurs, SummaryList, Table, ToggleTheme } from '@/components/molecules'
 import type { SectionAccordeon, Onglet, OptionCase, TableauHeadCell, TableauRowCell, Tache, PageNumero } from '@/components/molecules'
 
 import { DemoModale, DemoRadio, DemoToggle, DemoToast } from './DemoClient'
@@ -109,7 +109,7 @@ export default function DesignSystemPage() {
       </p>
 
       <nav aria-label="Sommaire" style={{ marginBottom: '2rem' }}>
-        <FilAriane
+        <Breadcrumbs
           liens={[
             { href: '#boutons', libelle: 'Boutons' },
             { href: '#tags', libelle: 'Tags & toggle' },
@@ -125,19 +125,19 @@ export default function DesignSystemPage() {
       <section id="boutons" style={{ marginBottom: '3.7rem' }}>
         <h2 className="lpv-h2">Boutons</h2>
         <div className="lpv-demo-exemples">
-          <Bouton type="button">Primaire</Bouton>
-          <Bouton type="button" variante="secondaire">
+          <Button type="button">Primaire</Button>
+          <Button type="button" variante="secondaire">
             Secondaire
-          </Bouton>
-          <Bouton type="button" variante="avertissement">
+          </Button>
+          <Button type="button" variante="avertissement">
             Avertissement
-          </Bouton>
-          <Bouton type="button" variante="danger">
+          </Button>
+          <Button type="button" variante="danger">
             Danger
-          </Bouton>
-          <Bouton href="/design-system" type="button">
+          </Button>
+          <Button href="/design-system" type="button">
             Lien primaire
-          </Bouton>
+          </Button>
         </div>
       </section>
 
@@ -169,9 +169,9 @@ export default function DesignSystemPage() {
         <Panel>Les cours du mercredi sont annulés pendant les vacances scolaires.</Panel>
 
         <h3 className="lpv-h3">TexteAvertissement</h3>
-        <TexteAvertissement>
+        <WarningText>
           Cette action est irréversible. Vérifiez les informations avant de continuer.
-        </TexteAvertissement>
+        </WarningText>
 
         <h3 className="lpv-h3">NotificationBanner</h3>
         <NotificationBanner titre="Vos disponibilités ont été enregistrées" type="success" />
@@ -195,7 +195,7 @@ export default function DesignSystemPage() {
         <BackLink href="/profs">Tableau de bord</BackLink>
 
         <h3 className="lpv-h3">FilAriane</h3>
-        <FilAriane
+        <Breadcrumbs
           liens={[
             { href: '/', libelle: 'Accueil' },
             { href: '/profs', libelle: 'Mes séances' },
@@ -231,7 +231,7 @@ export default function DesignSystemPage() {
         <Accordeon id="demo-accordeon" sections={ACCORDEON_SECTIONS} />
 
         <h3 className="lpv-h3">Onglets</h3>
-        <Onglets id="demo-onglets" onglets={ONGLETS} titre="Cours par jour" />
+        <Tabs id="demo-onglets" onglets={ONGLETS} titre="Cours par jour" />
       </section>
 
       <section id="formulaires" style={{ marginBottom: '3rem' }}>
@@ -259,16 +259,16 @@ export default function DesignSystemPage() {
           </Label>
         </div>
 
-        <h3 className="lpv-h3">ChampFormulaire</h3>
+        <h3 className="lpv-h3">Input</h3>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <ChampFormulaire
+          <Input
             hint="Par exemple : Dupont, Martin."
             id="demo-champ-nom"
             label="Nom complet"
           />
         </div>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <ChampFormulaire
+          <Input
             erreur="Entrez votre adresse e-mail"
             hint="Nous ne partagerons pas votre e-mail."
             id="demo-champ-email"
@@ -277,10 +277,10 @@ export default function DesignSystemPage() {
           />
         </div>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <ChampFormulaire id="demo-champ-opt" label="Téléphone" optionnel />
+          <Input id="demo-champ-opt" label="Téléphone" optionnel />
         </div>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <ChampFormulaire
+          <Input
             as="textarea"
             hint="Décrivez votre situation en quelques phrases."
             id="demo-champ-textarea"
@@ -289,7 +289,7 @@ export default function DesignSystemPage() {
           />
         </div>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <ChampFormulaire
+          <Input
             as="select"
             id="demo-champ-select"
             label="Niveau"
@@ -303,19 +303,19 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">ChampDate</h3>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <ChampDate hint="Par exemple : 15 03 2025" id="demo-date" label="Date de naissance" />
+          <DateInput hint="Par exemple : 15 03 2025" id="demo-date" label="Date de naissance" />
         </div>
 
         <h3 className="lpv-h3">ChampEnsemble (fieldset)</h3>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <ChampEnsemble
+          <InputField
             erreur="Choisissez une option"
             hint="Sélectionnez la fréquence souhaitée."
             isPageHeading
             legende="Fréquence des rappels"
             taille="m"
           >
-            <ChampFormulaire
+            <Input
               as="select"
               id="demo-ensemble-freq"
               label="Fréquence"
@@ -324,12 +324,12 @@ export default function DesignSystemPage() {
                 { label: 'Hebdomadaire', value: 'hebdomadaire' },
               ]}
             />
-          </ChampEnsemble>
+          </InputField>
         </div>
 
         <h3 className="lpv-h3">CasesACocher</h3>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <CasesACocher
+          <Checkbox
             hint="Vous pouvez choisir plusieurs options."
             idPrefix="demo-cases"
             nom="notifications"
@@ -344,7 +344,7 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">CompteurCaracteres</h3>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <CompteurCaracteres
+          <CharacterCount
             hint="Décrivez votre situation en quelques mots."
             id="demo-compteur"
             label="Description"
@@ -355,7 +355,7 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">Televersement</h3>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <Televersement
+          <FileUpload
             accept=".pdf,.jpg,.png"
             hint="Formats acceptés : PDF, JPG, PNG."
             id="demo-upload"
@@ -367,7 +367,7 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">Mot de passe</h3>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <ChampFormulaire
+          <Input
             autoComplete="current-password"
             hint="8 caractères minimum."
             id="demo-champ-password"
@@ -381,7 +381,7 @@ export default function DesignSystemPage() {
         <h2 className="lpv-h2">Données</h2>
 
         <h3 className="lpv-h3">Tableau</h3>
-        <Tableau
+        <Table
           caption="Élèves inscrits"
           captionTaille="l"
           head={TABLEAU_HEAD}
@@ -470,7 +470,7 @@ export default function DesignSystemPage() {
             maxWidth: '32rem',
           }}
         >
-          <AvatarUtilisateur email="olivier.durand@lpv.fr" nom="Olivier Durand" />
+          <Avatar email="olivier.durand@lpv.fr" nom="Olivier Durand" />
           <span aria-hidden="true" className="lpv-entete-separateur" />
           <button aria-expanded={false} className="lpv-menu-bouton" type="button">
             <span aria-hidden="true" className="lpv-menu-bouton__icone">
@@ -501,7 +501,7 @@ export default function DesignSystemPage() {
           }}
         >
           <span>Thème actuel</span>
-          <BasculeTheme />
+          <ToggleTheme />
         </div>
 
         <h3 className="lpv-h3">Modale</h3>

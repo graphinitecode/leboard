@@ -3,7 +3,7 @@ import Link from 'next/link'
 // Atome : fil d'Ariane (breadcrumbs). Inspiré de GOV.UK Breadcrumbs.
 // Dernier item sans href = page courante (aria-current="page").
 // Sur mobile, l'option replierSurMobile ne montre que le premier et le dernier item.
-export function FilAriane({
+export function Breadcrumbs({
   liens,
   replierSurMobile = false,
   ariaLabel = 'Fil d\'Ariane',

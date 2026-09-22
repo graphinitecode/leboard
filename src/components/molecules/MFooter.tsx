@@ -4,7 +4,7 @@ import { LogoLPV } from '@/components/atoms/LogoLPV'
 
 // Pied de page des portails LPV Board (cohérent avec EnteteService).
 // Hérite du thème dark/light depuis <html> data-theme.
-export function PiedPage({
+export function MFooter({
   liens = [],
   mention = 'Association Les Pierres Vivantes — cours de soutien',
 }: {

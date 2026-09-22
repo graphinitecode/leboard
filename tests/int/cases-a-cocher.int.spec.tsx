@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-import { CasesACocher } from '@/components/molecules/CasesACocher'
-import type { OptionCase } from '@/components/molecules/CasesACocher'
+import { Checkbox } from '@/components/molecules/Checkbox'
+import type { OptionCase } from '@/components/molecules/Checkbox'
 
 const options: OptionCase[] = [
   { valeur: 'opt1', texte: 'Option un' },
@@ -12,7 +12,7 @@ const options: OptionCase[] = [
 
 describe('CasesACocher', () => {
   it('affiche toutes les options', () => {
-    render(<CasesACocher nom="test" options={options} idPrefix="test-cb" />)
+    render(<Checkbox nom="test" options={options} idPrefix="test-cb" />)
     expect(screen.getByLabelText('Option un')).toBeDefined()
     expect(screen.getByLabelText('Option deux')).toBeDefined()
     expect(screen.getByLabelText('Option trois')).toBeDefined()
@@ -24,12 +24,12 @@ describe('CasesACocher', () => {
       { diviseur: 'ou' },
       { valeur: 'opt2', texte: 'Option deux' },
     ]
-    render(<CasesACocher nom="test" options={optionsWithDivider} idPrefix="test-cb" />)
+    render(<Checkbox nom="test" options={optionsWithDivider} idPrefix="test-cb" />)
     expect(screen.getByText('ou')).toBeDefined()
   })
 
   it('affiche une erreur quand le prop est fourni', () => {
-    render(<CasesACocher nom="test" options={options} idPrefix="test-cb" erreur="Choisissez au moins une option" />)
+    render(<Checkbox nom="test" options={options} idPrefix="test-cb" erreur="Choisissez au moins une option" />)
     expect(screen.getByText('Choisissez au moins une option')).toBeDefined()
   })
 
@@ -38,7 +38,7 @@ describe('CasesACocher', () => {
       { valeur: 'opt1', texte: 'Option un', conditionnel: <p>Détails supplémentaires</p> },
       { valeur: 'opt2', texte: 'Option deux' },
     ]
-    render(<CasesACocher nom="test" options={optionsWithConditional} idPrefix="test-cb" />)
+    render(<Checkbox nom="test" options={optionsWithConditional} idPrefix="test-cb" />)
 
     const checkbox = screen.getByLabelText('Option un')
     fireEvent.click(checkbox)
@@ -51,7 +51,7 @@ describe('CasesACocher', () => {
       { valeur: 'opt1', texte: 'Option un', hint: 'Aide pour un' },
       { valeur: 'opt2', texte: 'Option deux' },
     ]
-    render(<CasesACocher nom="test" options={optionsWithHint} idPrefix="test-cb" />)
+    render(<Checkbox nom="test" options={optionsWithHint} idPrefix="test-cb" />)
     expect(screen.getByText('Aide pour un')).toBeDefined()
   })
 })

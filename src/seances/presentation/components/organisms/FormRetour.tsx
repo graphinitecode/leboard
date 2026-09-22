@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 
-import { Bouton } from '@/components/atoms/Bouton'
+import { Button } from '@/components/atoms/Button'
 import {
-  ChampFormulaire,
+  Input,
   NotificationBanner,
   ResumeErreurs,
 } from '@/components/molecules'
@@ -38,7 +38,7 @@ export function FormRetour({
     >
       {success && <NotificationBanner titre="Retour enregistré" type="success" />}
       <ResumeErreurs erreurs={erreur ? [erreur] : []} />
-      <ChampFormulaire
+      <Input
         as="textarea"
         hint="Texte libre. Ce retour sera visible par les parents."
         id="retour"
@@ -48,9 +48,9 @@ export function FormRetour({
         value={texte}
       />
       <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-        <Bouton disabled={enregistrerRetour.isPending} type="submit">
+        <Button disabled={enregistrerRetour.isPending} type="submit">
           {enregistrerRetour.isPending ? 'Enregistrement…' : 'Enregistrer le retour'}
-        </Bouton>
+        </Button>
       </div>
     </form>
   )

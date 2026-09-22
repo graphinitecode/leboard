@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState, useTransition } from 'react'
 
 import { BackLink } from '@/components/atoms/BackLink'
-import { Bouton } from '@/components/atoms/Bouton'
-import { ChampFormulaire, Modale, NotificationBanner, ResumeErreurs, SummaryList, Toast } from '@/components/molecules'
+import { Button } from '@/components/atoms/Button'
+import { Input, Modale, NotificationBanner, ResumeErreurs, SummaryList, Toast } from '@/components/molecules'
 import type { ActionSummaryList } from '@/components/molecules'
 
 import {
@@ -85,20 +85,20 @@ export function ListeDispos({ dispos }: { dispos: DispoItem[] }) {
             {cibleSuppression.jour} · {cibleSuppression.heureDebut} → {cibleSuppression.heureFin} — cette action est définitive.
           </p>
           <div className="lpv-modale__actions">
-            <Bouton onClick={() => setCibleSuppression(null)} type="button" variante="secondaire">
+            <Button onClick={() => setCibleSuppression(null)} type="button" variante="secondaire">
               Annuler
-            </Bouton>
-            <Bouton disabled={pending} onClick={supprimer} type="button" variante="danger">
+            </Button>
+            <Button disabled={pending} onClick={supprimer} type="button" variante="danger">
               {pending ? 'Suppression…' : 'Supprimer'}
-            </Bouton>
+            </Button>
           </div>
         </Modale>
       )}
 
       <p style={{ margin: '0 0 1rem' }}>
-        <Bouton onClick={() => setAssistantOuvert(true)} type="button">
+        <Button onClick={() => setAssistantOuvert(true)} type="button">
           + Ajouter un créneau
-        </Bouton>
+        </Button>
       </p>
 
       {dispos.length > 0 && (
@@ -234,12 +234,12 @@ export function FormulaireDispoSteps({
             ))}
           </div>
           <div className="lpv-stepper__actions">
-            <Bouton disabled={!jour} onClick={() => setEtape(2)} type="button">
+            <Button disabled={!jour} onClick={() => setEtape(2)} type="button">
               Continuer
-            </Bouton>
-            <Bouton onClick={reinitialiser} type="button" variante="secondaire">
+            </Button>
+            <Button onClick={reinitialiser} type="button" variante="secondaire">
               Annuler
-            </Bouton>
+            </Button>
           </div>
         </>
       )}
@@ -249,7 +249,7 @@ export function FormulaireDispoSteps({
           <BackLink href="#" onClick={(e) => { e.preventDefault(); setErreur(null); setEtape(1) }}>Retour</BackLink>
           <p className="lpv-stepper__etape">Étape 2 sur 3</p>
           <h2 className="lpv-stepper__question">Quelle heure de début ?</h2>
-          <ChampFormulaire
+          <Input
             hint={`Début du créneau le ${libelleJour.toLowerCase()}.`}
             id="step-debut"
             label="De"
@@ -261,7 +261,7 @@ export function FormulaireDispoSteps({
           />
           {erreur && <ResumeErreurs erreurs={[erreur]} />}
           <div className="lpv-stepper__actions">
-            <Bouton
+            <Button
               disabled={!heureDebut}
               onClick={() => {
                 setErreur(null)
@@ -270,10 +270,10 @@ export function FormulaireDispoSteps({
               type="button"
             >
               Continuer
-            </Bouton>
-            <Bouton onClick={reinitialiser} type="button" variante="secondaire">
+            </Button>
+            <Button onClick={reinitialiser} type="button" variante="secondaire">
               Annuler
-            </Bouton>
+            </Button>
           </div>
         </>
       )}
@@ -283,7 +283,7 @@ export function FormulaireDispoSteps({
           <BackLink href="#" onClick={(e) => { e.preventDefault(); setErreur(null); setEtape(2) }}>Retour</BackLink>
           <p className="lpv-stepper__etape">Étape 3 sur 3</p>
           <h2 className="lpv-stepper__question">Quelle heure de fin ?</h2>
-          <ChampFormulaire
+          <Input
             hint={`Fin du créneau le ${libelleJour.toLowerCase()}.`}
             id="step-fin"
             label="À"
@@ -303,15 +303,15 @@ export function FormulaireDispoSteps({
           </div>
           {erreur && <ResumeErreurs erreurs={[erreur]} />}
           <div className="lpv-stepper__actions">
-            <Bouton disabled={!heureFin || pending} onClick={valider} type="button">
+            <Button disabled={!heureFin || pending} onClick={valider} type="button">
               {pending ? 'Enregistrement…' : enEdition ? 'Enregistrer la modification' : 'Valider'}
-            </Bouton>
-            <Bouton onClick={() => setEtape(1)} type="button" variante="avertissement">
+            </Button>
+            <Button onClick={() => setEtape(1)} type="button" variante="avertissement">
               Modifier
-            </Bouton>
-            <Bouton onClick={reinitialiser} type="button" variante="secondaire">
+            </Button>
+            <Button onClick={reinitialiser} type="button" variante="secondaire">
               Annuler
-            </Bouton>
+            </Button>
           </div>
         </>
       )}

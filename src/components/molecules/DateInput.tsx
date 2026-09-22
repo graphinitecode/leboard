@@ -1,10 +1,10 @@
-import { ErrorMessage, Hint, Label } from '@/components/atoms/Champ'
+import { ErrorMessage, Hint, Label } from '@/components/atoms/Label'
 
 // Molécule : saisie de date (3 champs jour/mois/année).
 // Inspiré de GOV.UK Date input. Fieldset avec role="group", legend,
 // hint, erreur. Champs inputmode numeric, autocomplete bday-* optionnel.
 // Les erreurs peuvent cibler tous les champs ou un seul (jour/mois/année).
-export function ChampDate({
+export function DateInput({
   id,
   namePrefix,
   label,

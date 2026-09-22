@@ -10,7 +10,7 @@ const CLASSES: Record<Variante, string> = {
 }
 
 // Atome : bouton du design system LPV Board
-export function Bouton({
+export function Button({
   children,
   className,
   disabled,

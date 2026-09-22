@@ -2,16 +2,16 @@
 
 import { useState } from 'react'
 
-import { Bouton } from '@/components/atoms/Bouton'
-import { BoutonsRadio, type OptionRadio } from '@/components/molecules/BoutonsRadio'
-import { ChampFormulaire } from '@/components/molecules/ChampFormulaire'
+import { Button } from '@/components/atoms/Button'
+import { Radios, type OptionRadio } from '@/components/molecules/Radios'
+import { Input } from '@/components/molecules/Input'
 import { Modale } from '@/components/molecules/Modale'
 import { Toast } from '@/components/molecules/Toast'
 import { ToggleSegmentes } from '@/components/molecules/ToggleSegmentes'
 
 const RADIO_OPTIONS: OptionRadio[] = [
   {
-    conditionnel: <ChampFormulaire hint="Précisez les modalités." id="demo-radio-modalites" label="Modalités" optionnel />,
+    conditionnel: <Input hint="Précisez les modalités." id="demo-radio-modalites" label="Modalités" optionnel />,
     texte: 'Oui',
     valeur: 'oui',
   },
@@ -22,7 +22,7 @@ export function DemoRadio() {
   const [valeur, setValeur] = useState('non')
 
   return (
-    <BoutonsRadio
+    <Radios
       idPrefix="demo-radio"
       nom="accord"
       onChange={(e) => setValeur(e.target.value)}
@@ -59,19 +59,19 @@ export function DemoModale() {
 
   return (
     <>
-      <Bouton onClick={() => setOuverte(true)} type="button">Ouvrir la modale</Bouton>
+      <Button onClick={() => setOuverte(true)} type="button">Ouvrir la modale</Button>
       {ouverte && (
         <Modale onFerme={() => setOuverte(false)} titre="Confirmer l'action">
           <p className="lpv-modale__texte">
             Êtes-vous sûr de vouloir continuer ? Cette action est irréversible.
           </p>
           <div className="lpv-modale__actions">
-            <Bouton onClick={() => setOuverte(false)} type="button" variante="secondaire">
+            <Button onClick={() => setOuverte(false)} type="button" variante="secondaire">
               Annuler
-            </Bouton>
-            <Bouton onClick={() => setOuverte(false)} type="button" variante="danger">
+            </Button>
+            <Button onClick={() => setOuverte(false)} type="button" variante="danger">
               Confirmer
-            </Bouton>
+            </Button>
           </div>
         </Modale>
       )}
@@ -85,12 +85,12 @@ export function DemoToast() {
   return (
     <>
       <div style={{ display: 'flex', gap: '0.75rem' }}>
-        <Bouton onClick={() => setToast({ message: 'Action enregistrée', type: 'success' })} type="button">
+        <Button onClick={() => setToast({ message: 'Action enregistrée', type: 'success' })} type="button">
           Toast succès
-        </Bouton>
-        <Bouton onClick={() => setToast({ message: 'Une erreur est survenue', type: 'erreur' })} type="button" variante="danger">
+        </Button>
+        <Button onClick={() => setToast({ message: 'Une erreur est survenue', type: 'erreur' })} type="button" variante="danger">
           Toast erreur
-        </Bouton>
+        </Button>
       </div>
       {toast && <Toast message={toast.message} type={toast.type} onFerme={() => setToast(null)} />}
     </>

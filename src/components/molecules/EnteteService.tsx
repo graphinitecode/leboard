@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 
-import { PiedPage } from '@/components/molecules/PiedPage'
-import { AvatarUtilisateur } from '@/components/molecules/AvatarUtilisateur'
+import { MFooter } from '@/components/molecules/MFooter'
+import { Avatar } from '@/components/molecules/Avatar'
 
 import { MenuDepliant } from './MenuDepliant'
 
@@ -50,7 +50,7 @@ export function EnteteService({
         </Link>
 
         <div className="lpv-entete-bleue__actions">
-          {utilisateur && <AvatarUtilisateur email={utilisateur.email} nom={utilisateur.nom} />}
+          {utilisateur && <Avatar email={utilisateur.email} nom={utilisateur.nom} />}
           {utilisateur && <span aria-hidden="true" className="lpv-entete-separateur" />}
           <MenuDepliant services={services} legales={legales} />
         </div>
@@ -93,7 +93,7 @@ export function ContenuPage({
       <main className="lpv-container" id="contenu-principal" style={{ flex: 1 }}>
         {children}
       </main>
-      <PiedPage liens={liensPied} />
+      <MFooter liens={liensPied} />
     </div>
   )
 }

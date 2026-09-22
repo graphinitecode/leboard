@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 
-import { Bouton } from '@/components/atoms/Bouton'
+import { Button } from '@/components/atoms/Button'
 import {
-  ChampFormulaire,
+  Input,
   NotificationBanner,
   ResumeErreurs,
 } from '@/components/molecules'
@@ -31,9 +31,9 @@ export function FormProgression({
 
   if (!ouvert) {
     return (
-      <Bouton onClick={() => setOuvert(true)} type="button">
+      <Button onClick={() => setOuvert(true)} type="button">
         Ajouter une progression
-      </Bouton>
+      </Button>
     )
   }
 
@@ -64,7 +64,7 @@ export function FormProgression({
     >
       {success && <NotificationBanner titre={success} type="success" />}
       <ResumeErreurs erreurs={erreurFormulaire ? [erreurFormulaire] : []} />
-      <ChampFormulaire
+      <Input
         as="select"
         hint="Seuls les élèves de cette séance sont proposés."
         id="eleve-progression"
@@ -72,7 +72,7 @@ export function FormProgression({
         name="eleve"
         options={eleves.map((eleve) => ({ label: eleve.label, value: String(eleve.id) }))}
       />
-      <ChampFormulaire
+      <Input
         as="select"
         hint="Liste gérée par l’association."
         id="competence-progression"
@@ -83,8 +83,8 @@ export function FormProgression({
           value: String(competence.id),
         })) ?? []}
       />
-      <ChampFormulaire as="select" id="niveau-progression" label="Niveau" name="niveau" options={OPTIONS_NIVEAU} />
-      <ChampFormulaire
+      <Input as="select" id="niveau-progression" label="Niveau" name="niveau" options={OPTIONS_NIVEAU} />
+      <Input
         hint="Observation courte, visible par la famille."
         id="commentaire-progression"
         label="Commentaire"
@@ -92,12 +92,12 @@ export function FormProgression({
         optionnel
       />
       <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-start' }}>
-        <Bouton disabled={ajouter.isPending} type="submit">
+        <Button disabled={ajouter.isPending} type="submit">
           {ajouter.isPending ? 'Enregistrement…' : 'Enregistrer'}
-        </Bouton>
-        <Bouton onClick={() => setOuvert(false)} type="button" variante="secondaire">
+        </Button>
+        <Button onClick={() => setOuvert(false)} type="button" variante="secondaire">
           Annuler
-        </Bouton>
+        </Button>
       </div>
     </form>
   )

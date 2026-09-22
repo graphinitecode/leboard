@@ -9,7 +9,7 @@
 .lpv-entete-bleue {
   background-color: var(--lpv-portail);
   color: var(--lpv-sur-portail);
-  margin-bottom: 2rem;
+  margin-bottom: var(--lpv-spacing-xxl);
   /* Le hero du template remonte avec une marge négative et un positionnement
      relatif : sans stacking context, il recouvre la nav et intercepte les clics. */
   position: relative;
@@ -19,11 +19,11 @@
     align-items: center;
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 0.7rem;
     justify-content: space-between;
     margin-inline: auto;
     max-width: var(--lpv-container);
-    padding: 1rem;
+    padding: 0.7rem;
     /* Référence de positionnement du panneau de menu : il démarre sous la barre
        logo/menu et recouvre le hero (visuel 2), sans le pousser. */
     position: relative;
@@ -33,7 +33,7 @@
     align-items: center;
     color: var(--lpv-sur-portail);
     display: flex;
-    gap: 0.6rem;
+    gap: 0.5rem;
     text-decoration: none;
   }
 
@@ -52,7 +52,7 @@
 
   &__logo-large {
     display: none;
-    height: 3rem;
+    height: 2.7em;
     width: auto;
 
     @media (width >= 48rem) {
@@ -108,17 +108,17 @@
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
 
   &__lien {
     align-items: center;
     border-radius: var(--lpv-radius);
     color: var(--lpv-sur-portail);
     display: inline-flex;
-    font-size: 1.125rem;
-    font-weight: 700;
+    font-size: 1.05rem;
+    font-weight: 600;
     min-height: 44px;
-    padding: 0.5rem 0.75rem;
+    padding: 0.4rem 0.75rem;
     text-decoration: none;
 
     &:hover {
@@ -128,7 +128,7 @@
     }
 
     &--actif {
-      font-weight: 700;
+      font-weight: 600;
     }
   }
 
@@ -147,7 +147,7 @@
     justify-content: center;
     min-height: 44px;
     min-width: 44px;
-    padding: 0.5rem;
+    padding: 0.4rem;
 
     &:hover {
       text-decoration: none;
@@ -169,7 +169,8 @@
 
   &__chevron {
     display: inline-flex;
-    margin-right: 0.4rem;
+    margin-right: 0.3rem;
+    width: 1rem;
   }
 
   &__panneau {

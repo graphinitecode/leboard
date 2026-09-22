@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import { ErrorMessage, Hint, Label } from '@/components/atoms/Champ'
+import { ErrorMessage, Hint, Label } from '@/components/atoms/Label'
 
 type LimiteType = 'caracteres' | 'mots'
 
@@ -10,7 +10,7 @@ type LimiteType = 'caracteres' | 'mots'
 // Affiche un message de compte sous le champ, ne bloque pas la saisie.
 // Seuil : le message n'apparaît que quand le seuil (%) est dépassé.
 // Annonce AT via aria-live="polite" quand le compteur change.
-export function CompteurCaracteres({
+export function CharacterCount({
   id,
   name,
   label,
