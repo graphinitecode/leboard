@@ -195,6 +195,17 @@ a.lpv-m-list-row {
     }
   }
 
+  /* Variante sans séparateurs : ni bordure de row ni trait entre actions */
+  &--no-dividers {
+    .lpv-m-summary-list__row {
+      border-bottom: 0;
+    }
+
+    .lpv-m-summary-list__actions-list-item + .lpv-m-summary-list__actions-list-item {
+      border-left: 0;
+    }
+  }
+
   /* Variante espacée (disponibilités) */
   &--spaced {
     margin-bottom: 1.5rem;

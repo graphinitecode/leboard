@@ -8,6 +8,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ### Ajouté
 - Bouton « Succès » : nouvelle variante verte pour valider une action (dans le design system)
+- SummaryList : nouvelle variante sans séparateurs (prop `dividers={false}`) pour empiler les rows sans bordures, dans le design system
 
 ### Modifié
 - Bascule de thème : nouveau mode « suivre la machine » (icône d'écran) qui applique automatiquement le thème du système et suit ses changements en temps réel ; le cycle machine → clair → sombre remplace l'ancienne bascule à deux états

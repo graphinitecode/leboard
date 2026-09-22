@@ -449,6 +449,20 @@ export default function DesignSystemPage() {
             },
           ]}
         />
+
+        <h3 className="lpv-h3">SummaryList sans séparateurs</h3>
+        <p className="lpv-muted" style={{ marginTop: 0 }}>
+          Avec <code>dividers&#123;=&#123;false&#125;&#125;</code>, les rows s&apos;empilent sans bordure
+          et les actions perdent le trait vertical.
+        </p>
+        <SummaryList
+          dividers={false}
+          items={[
+            { key: 'Nom', value: 'Dupont' },
+            { key: 'Prénom', value: 'Marie' },
+            { key: 'Niveau', value: '6e' },
+          ]}
+        />
       </section>
 
       <section id="surfaces">
