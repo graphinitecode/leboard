@@ -1,10 +1,11 @@
 import type { ReactNode } from 'react'
 
-type Variant = 'primary' | 'secondary' | 'warning' | 'danger'
+type Variant = 'primary' | 'secondary' | 'warning' | 'danger' | 'success'
 
 const CLASSES: Record<Variant, string> = {
   warning: 'lpv-a-button lpv-a-button--warning',
   danger: 'lpv-a-button lpv-a-button--danger',
+  success: 'lpv-a-button lpv-a-button--success',
   primary: 'lpv-a-button',
   secondary: 'lpv-a-button lpv-a-button--secondary',
 }

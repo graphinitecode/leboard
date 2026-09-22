@@ -129,6 +129,9 @@ export default function DesignSystemPage() {
           <Button type="button" variant="secondary">
             Secondaire
           </Button>
+          <Button type="button" variant="success">
+            Succès
+          </Button>
           <Button type="button" variant="warning">
             Avertissement
           </Button>

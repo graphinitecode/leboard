@@ -13,6 +13,7 @@ const buttonVariants = cva('', {
     variant: {
       default: 'lpv-a-button',
       destructive: 'lpv-a-button lpv-a-button--danger',
+      success: 'lpv-a-button lpv-a-button--success',
       outline: 'lpv-a-button lpv-a-button--secondary',
       secondary: 'lpv-a-button lpv-a-button--secondary',
       ghost: 'lpv-a-button lpv-a-button--secondary',
