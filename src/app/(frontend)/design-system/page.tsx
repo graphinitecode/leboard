@@ -8,6 +8,9 @@ import type { AccordionSection, Tab, CheckboxOption, TableHeadCell, TableRowCell
 import { DemoModale, DemoRadio, DemoToggle, DemoToast } from './DemoClient'
 
 import Link from 'next/link'
+import { IconCard } from '@/components/atoms/a-icon-card'
+import { ActionIconcard } from '@/components/molecules/m-action-iconcard'
+import { EnterText } from '@/components/atoms/a-enter-text'
 
 export const metadata: Metadata = {
   title: 'Design system — LPV Board',
@@ -108,20 +111,40 @@ export default function DesignSystemPage() {
         Composants inspirés du GOV.UK Design System, adaptés aux couleurs et aux conventions LPV.
       </p>
 
-      <nav aria-label="Sommaire" style={{ marginBottom: '2rem' }}>
-        <Breadcrumbs
-          items={[
-            { href: '#buttons', label: 'Boutons' },
-            { href: '#tags', label: 'Tags & toggle' },
-            { href: '#messages', label: 'Messages' },
-            { href: '#navigation', label: 'Navigation' },
-            { href: '#forms', label: 'Formulaires' },
-            { href: '#data', label: 'Données' },
-            { href: '#surfaces', label: 'Surfaces' },
-            { href: '/design-system/colors', label: 'Couleurs' },
-          ]}
-        />
-      </nav>
+      <section className="" style={{ marginBlock: '3.7rem' }}>
+        <h2 className="lpv-h2">Sommaire</h2>
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-y-7">
+          <EnterText hrf={'#buttons'}>Boutons</EnterText>
+          <EnterText hrf={'#tags'}>Tags et Toggles</EnterText>
+          <EnterText hrf={'#icons'}>Icons</EnterText>
+
+          <EnterText hrf={'#actionCard'}>action Card</EnterText>
+          <EnterText hrf={'#EnterText'}>Title Action</EnterText>
+          <EnterText hrf={'#messages'}>All Messages</EnterText>
+
+          <EnterText hrf={'#navigation'}>Navigation</EnterText>
+          <EnterText hrf={'#formulaires'}>Les Formulaires</EnterText>
+          <EnterText hrf={'#donnees'}>Les Données</EnterText>
+
+          <EnterText hrf={'#surfaces'}>Les Surfaces</EnterText>
+          <EnterText hrf={'/design-system/colors'}>Les Couleurs</EnterText>
+        </div>
+      </section>
+
+      {/*<nav aria-label="Sommaire" style={{ marginBottom: '2rem' }}>*/}
+      {/*  <Breadcrumbs*/}
+      {/*    items={[*/}
+      {/*      { href: '#buttons', label: 'Boutons' },*/}
+      {/*      { href: '#tags', label: 'Tags & toggle' },*/}
+      {/*      { href: '#messages', label: 'Messages' },*/}
+      {/*      { href: '#navigation', label: 'Navigation' },*/}
+      {/*      { href: '#forms', label: 'Formulaires' },*/}
+      {/*      { href: '#data', label: 'Données' },*/}
+      {/*      { href: '#surfaces', label: 'Surfaces' },*/}
+      {/*      { href: '/design-system/colors', label: 'Couleurs' },*/}
+      {/*    ]}*/}
+      {/*  />*/}
+      {/*</nav>*/}
 
       <section id="buttons" style={{ marginBottom: '3.7rem' }}>
         <h2 className="lpv-h2">Boutons</h2>
@@ -159,6 +182,44 @@ export default function DesignSystemPage() {
         </div>
         <h3 className="lpv-h3">Toggle segmenté</h3>
         <DemoToggle />
+      </section>
+
+      <section id="icons" style={{ marginBottom: '3.7rem' }}>
+        <h2 className="lpv-h2">Icon Card</h2>
+        <div className="gap-5 md:flex items-end">
+          <IconCard icon="rivet-icons:alarm-solid" color="yellow" size="xl" />
+          <IconCard icon="rivet-icons:thumbs-up-solid" size="xl" />
+          <IconCard icon="rivet-icons:chat-solid" color="orange" size="lg" />
+          <IconCard icon="rivet-icons:shopping-bag-solid" color="magenta" size="lg" />
+          <IconCard icon="rivet-icons:home-solid" color="green" />
+          <IconCard icon="rivet-icons:flag-solid" color="red" size="md" />
+          <IconCard icon="rivet-icons:microphone-solid" color="violet" size="sm" />
+          <IconCard icon="rivet-icons:newspaper-solid" color="teal" size="sm" />
+        </div>
+      </section>
+
+      <section id="actionCard" style={{ marginBottom: '3.7rem' }}>
+        <h2 className="lpv-h2">Action Icon Card</h2>
+        <div className="gap-7 grid md:grid-cols-2 grid-cols-1 items-start">
+          <ActionIconcard
+            icon="rivet-icons:heart-solid"
+            title={'Births, deaths, marriages and care'}
+            description={'Find out what support is available to help with the cost of living'}
+          />
+          <ActionIconcard
+            icon="rivet-icons:shopping-bag-solid"
+            color="red"
+            title={'Find a job'}
+            description={'Check your record to see if you can add more contributions.'}
+          />
+        </div>
+      </section>
+
+      <section id="EnterText">
+        <h2 className="lpv-h2">Enter Text</h2>
+        <div>
+          <EnterText hrf={`#messages`}>C&#39;est un peu cela le truc</EnterText>
+        </div>
       </section>
 
       <section id="messages" style={{ marginBottom: '3.7rem' }}>
@@ -265,11 +326,7 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">Input</h3>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <Input
-            hint="Par exemple : Dupont, Martin."
-            id="demo-champ-nom"
-            label="Nom complet"
-          />
+          <Input hint="Par exemple : Dupont, Martin." id="demo-champ-nom" label="Nom complet" />
         </div>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
           <Input
@@ -437,7 +494,13 @@ export default function DesignSystemPage() {
                 { key: 'aj', label: 'Ajouter', href: '#ajouter' },
                 { key: 'mod', label: 'Modifier', href: '#modifier' },
                 { key: 'av', label: 'Suspendre', href: '#suspendre', type: 'warning' },
-                { key: 'sup', label: 'Supprimer', href: '#supprimer', type: 'danger', confirmation: 'Cette action est définitive' },
+                {
+                  key: 'sup',
+                  label: 'Supprimer',
+                  href: '#supprimer',
+                  type: 'danger',
+                  confirmation: 'Cette action est définitive',
+                },
               ],
             },
             {
@@ -453,8 +516,8 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">SummaryList sans séparateurs</h3>
         <p className="lpv-muted" style={{ marginTop: 0 }}>
-          Avec <code>dividers&#123;=&#123;false&#125;&#125;</code>, les rows s&apos;empilent sans bordure
-          et les actions perdent le trait vertical.
+          Avec <code>dividers&#123;=&#123;false&#125;&#125;</code>, les rows s&apos;empilent sans
+          bordure et les actions perdent le trait vertical.
         </p>
         <SummaryList
           dividers={false}
@@ -505,8 +568,8 @@ export default function DesignSystemPage() {
         <p className="lpv-muted">
           Le mode sombre s&apos;applique à tout le design system via <code>data-theme</code> sur{' '}
           <code>&lt;html&gt;</code>. Le choix est mémorisé (localStorage) et suit{' '}
-          <code>prefers-color-scheme</code> par défaut. Dans l&apos;entête des portails, la
-          bascule vit dans le panneau du menu (variante « panneau ») et non plus dans la barre.
+          <code>prefers-color-scheme</code> par défaut. Dans l&apos;entête des portails, la bascule
+          vit dans le panneau du menu (variante « panneau ») et non plus dans la barre.
         </p>
         <div
           className="lpv-card"

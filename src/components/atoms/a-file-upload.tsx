@@ -1,4 +1,5 @@
 import { ErrorMessage, Hint, Label } from '@/components/atoms/a-label'
+import { Icon } from '@/components/atoms/a-icon'
 
 // Atome : téléversement de fichier (input file) avec label, hint et erreur.
 // Inspiré de GOV.UK File upload. Version de base sans JS amélioré (drop zone).
@@ -34,7 +35,9 @@ export function FileUpload({
 
   return (
     <div className={groupeClasse}>
-      <Label htmlFor={id} optional={optional}>{label}</Label>
+      <Label htmlFor={id} optional={optional}>
+        {label}
+      </Label>
       {hint ? <Hint id={`${describedBy ?? id}-hint`}>{hint}</Hint> : null}
       {error ? <ErrorMessage id={`${describedBy ?? id}-error`}>{error}</ErrorMessage> : null}
       <input
@@ -48,6 +51,7 @@ export function FileUpload({
         onChange={onChange}
         type="file"
       />
+      <Icon icon="rivet-icons:download" size={22} className="lpv-a-file-upload__icon" />
     </div>
   )
 }

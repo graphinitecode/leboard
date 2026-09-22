@@ -121,6 +121,58 @@
   }
 }
 
+
+/* --- Texte de selection (Enter text) --------------------------------- */
+
+.lpv-a-enter-text {
+  align-items: center;
+  display: flex;
+  font-weight: 700;
+  width: fit-content;
+  gap: 0.75rem;
+  margin-top: var(--lpv-spacing-md);
+  margin-bottom: var(--lpv-spacing-md);
+  padding: 0;
+  cursor: pointer;
+
+  &:hover {
+    .lpv-a-enter-text__icon {
+      color: var(--lpv-text);
+    }
+    .lpv-a-enter-text__text {
+      text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+      text-underline-offset: var(--lpv-text-underline-offset-hover);
+      color: var(--lpv-text);
+    }
+  }
+
+  &__icon {
+    align-items: center;
+    background-color: var(--lpv-a-tag--blue-bg);
+    padding: calc(var(--spacing) * 2.5);
+    border-radius: 50%;
+    color: var(--lpv-portail-dark);
+    display: inline-flex;
+    flex-shrink: 0;
+    justify-content: center;
+  }
+
+  &__icon-svg {
+    display: block;
+    fill: var(--lpv-surface);
+  }
+
+  &__text {
+    flex: 1;
+    font-weight: 600;
+    font-size: var(--lpv-font-size-md);
+    color: var(--lpv-a-tag--blue-text);
+    text-decoration: underline;
+    text-decoration-thickness: var(--lpv-decoration-thickness);
+    text-underline-offset: var(--lpv-text-underline-offset);
+  }
+}
+
 /* --- Toast pleine largeur ---------------------------------------------------- */
 
 .lpv-m-toast {

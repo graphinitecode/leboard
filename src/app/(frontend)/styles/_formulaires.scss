@@ -383,10 +383,23 @@
   text-align: center;
   max-width: 40rem;
   min-height: 44px;
-  padding: 0.6rem 0.5rem;
+  padding: 0.6rem 2.1rem 0.6rem 1.1rem;
+  width: fit-content;
 
   &:hover {
-    border-color: var(--lpv-text);
+    border-color: var(--lpv-a-tag--blue-text);
+    color: var(--lpv-a-tag--blue-text);
+    background-color: var(--lpv-a-tag--blue-bg);
+  }
+  &__icon {
+    //inline-flex absolute -translate-x-9 translate-y-3.5
+    display: inline-flex;
+    position: absolute;
+    transform: translateX(-36px) translateY(13px);
+  }
+
+  .lpv-form-group:hover &__icon {
+    color: var(--lpv-a-tag--blue-text);
   }
 
   &:focus {
