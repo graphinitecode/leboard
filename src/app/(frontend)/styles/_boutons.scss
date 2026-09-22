@@ -38,7 +38,7 @@
   }
 
   /* Variante « Modifier » (orange) */
-  &--secondaire {
+  &--secondary {
     background-color: var(--lpv-grey-bg);
     box-shadow: 0 2px 0 var(--lpv-grey-border);
     color: var(--lpv-text);
@@ -48,7 +48,7 @@
     }
   }
 
-  &--avertissement {
+  &--warning {
     background-color: var(--lpv-orange);
     box-shadow: 0 2px 0 var(--lpv-orange-soft);
     color: var(--lpv-text);
@@ -69,18 +69,18 @@
   }
 
   /* Variantes de taille (mêmes proportions que le motif GOV.UK) */
-  &--petit {
+  &--small {
     font-size: 1rem;
     min-height: 38px;
     padding: 0.35rem 0.75rem 0.25rem;
   }
 
-  &--grand {
+  &--large {
     font-size: 1.25rem;
     padding: 0.65rem 1.5rem 0.5rem;
   }
 
-  &--icone {
+  &--icon {
     align-items: center;
     display: inline-flex;
     justify-content: center;

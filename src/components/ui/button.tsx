@@ -23,7 +23,7 @@ const buttonVariants = cva('', {
       default: '',
       sm: 'lpv-a-button--petit',
       lg: 'lpv-a-button--grand',
-      icon: 'lpv-a-button--icone',
+      icon: 'lpv-a-button--icon',
     },
   },
   defaultVariants: {

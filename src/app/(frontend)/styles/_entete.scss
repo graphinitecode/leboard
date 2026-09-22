@@ -73,7 +73,7 @@
     padding: 1.5rem 1rem 2rem;
   }
 
-  &__hero-titre {
+  &__hero-title {
     color: var(--lpv-surface);
     font-size: 2.5rem;
     font-weight: 700;
@@ -83,7 +83,7 @@
     max-width: 22ch;
   }
 
-  &__hero-texte {
+  &__hero-text {
     color: var(--lpv-surface);
     font-size: 1.125rem;
     line-height: 1.4;
@@ -110,7 +110,7 @@
   flex-wrap: wrap;
   gap: 0.4rem;
 
-  &__lien {
+  &__link {
     align-items: center;
     border-radius: var(--lpv-radius);
     color: var(--lpv-on-portal);
@@ -133,13 +133,13 @@
   }
 
   /* Focus : double anneau jaune, motif commun des contrôles sur fond coloré */
-  &__lien:focus-visible,
-  &__recherche:focus-visible {
+  &__link:focus-visible,
+  &__search:focus-visible {
     @include mixins.lpv-focus-on-portal;
   }
 
   /* Bouton recherche (loupe) de la nav vitrine */
-  &__recherche {
+  &__search {
     align-items: center;
     border-radius: var(--lpv-radius);
     color: var(--lpv-on-portal);
@@ -161,7 +161,7 @@
 .lpv-o-header-dropdown {
   position: relative;
 
-  &__bouton {
+  &__button {
     background: transparent;
     border: 0;
     cursor: pointer;
@@ -173,7 +173,7 @@
     width: 1rem;
   }
 
-  &__panneau {
+  &__panel {
     background-color: var(--lpv-surface);
     border-bottom: 4px solid var(--lpv-portail);
     box-shadow: var(--lpv-shadow-hover);
@@ -225,40 +225,40 @@
   min-height: 44px;
   padding: 0.5rem 0.75rem;
 
-  &__icon {
-    display: inline-flex;
-  }
-
-  /* Chevron desktop, masqué en mobile (l'icône menu/close le remplace) */
-  &__chevron {
-    display: none;
-    margin-right: 0.4rem;
-  }
-
-  &__label {
-    display: none;
-  }
-
-  @media (width >= 48rem) {
-    &__icon {
-      display: none;
-    }
-
-    &__chevron {
-      display: inline-flex;
-    }
-
-    &__label {
-      display: inline;
-    }
-  }
-
   &:hover {
     text-decoration: underline;
   }
 
   &:focus-visible {
     @include mixins.lpv-focus-on-portal;
+  }
+}
+
+.lpv-m-collapsible-menu__button-icon {
+  display: inline-flex;
+}
+
+/* Chevron desktop, masqué en mobile (l'icône menu/close le remplace) */
+.lpv-m-collapsible-menu__button-chevron {
+  display: none;
+  margin-right: 0.4rem;
+}
+
+.lpv-m-collapsible-menu__button-label {
+  display: none;
+}
+
+@media (width >= 48rem) {
+  .lpv-m-collapsible-menu__button-icon {
+    display: none;
+  }
+
+  .lpv-m-collapsible-menu__button-chevron {
+    display: inline-flex;
+  }
+
+  .lpv-m-collapsible-menu__button-label {
+    display: inline;
   }
 }
 
@@ -279,7 +279,7 @@
     padding: 0.5rem 1rem 1rem;
   }
 
-  &__colonne {
+  &__column {
     ul {
       list-style: none;
       margin: 0;
@@ -313,7 +313,7 @@
   }
 
   /* Section accordéon ouverte : titre souligné, liens visibles */
-  &__colonne--ouverte {
+  &__column--open {
     ul {
       display: block;
     }
@@ -382,7 +382,7 @@
     }
   }
 
-  &__colonne {
+  &__column {
     @media (width >= 48rem) {
       ul {
         display: block;
@@ -408,7 +408,7 @@
   }
 
   /* Pied du panneau : bascule de thème, largeur du container */
-  &__pied {
+  &__footer {
     border-top: 1px solid var(--lpv-grey-border);
     margin-inline: auto;
     max-width: var(--lpv-container);
@@ -428,7 +428,7 @@
 .lpv-m-avatar-header {
   position: relative;
 
-  &__bouton {
+  &__button {
     align-items: center;
     background: transparent;
     border: 0;
@@ -482,7 +482,7 @@
   top: 100%;
   z-index: 50;
 
-  &__identite {
+  &__identity {
     border-bottom: 1px solid var(--lpv-grey-border);
     padding: 0.75rem 1rem;
   }
@@ -505,11 +505,11 @@
     padding: 0.5rem 0;
   }
 
-  &__liste form {
+  &__list form {
     display: block;
   }
 
-  &__liste button {
+  &__list button {
     align-items: center;
     background: none;
     border: 0;
@@ -556,7 +556,7 @@
     opacity: 0.9;
   }
 
-  &__mention {
+  &__tagline {
     color: var(--lpv-text-muted);
     font-size: 0.9rem;
     margin: 0.35rem 0 0;
@@ -590,7 +590,7 @@
     gap: 1rem;
   }
 
-  &__lien {
+  &__link {
     color: var(--lpv-text-muted);
     text-decoration: none;
 

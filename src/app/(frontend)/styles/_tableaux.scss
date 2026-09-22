@@ -35,7 +35,7 @@
   }
 
   tr#{&}__nouvelle,
-  .lpv-m-summary-list .lpv-table__nouvelle {
+  .lpv-m-summary-list .lpv-m-summary-list__row--new {
     animation: lpv-row-new 1.5s ease-out;
   }
 }
@@ -65,7 +65,7 @@
   border-spacing: 0;
   width: 100%;
 
-  &__legende {
+  &__caption {
     font-size: 1.125rem;
     font-weight: 700;
     margin-bottom: 1rem;
@@ -87,11 +87,11 @@
     }
   }
 
-  &__tete {
+  &__head {
     border-bottom: 2px solid var(--lpv-text);
   }
 
-  &__head {
+  &__head-cell {
     color: var(--lpv-text-muted);
     font-size: 0.875rem;
     font-weight: 700;
@@ -105,7 +105,7 @@
     }
   }
 
-  &__corps {
+  &__body {
     vertical-align: top;
   }
 
@@ -113,7 +113,7 @@
     background-color: var(--lpv-grey-bg);
   }
 
-  &__cellule {
+  &__cell {
     border-bottom: 1px solid var(--lpv-grey-border);
     padding: 0.75rem 1rem;
     vertical-align: top;

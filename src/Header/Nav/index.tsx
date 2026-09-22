@@ -44,7 +44,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
         return (
           <Link
             aria-current={estActif(href) ? 'page' : undefined}
-            className={`lpv-o-header-nav__lien${estActif(href) ? ' lpv-o-header-nav__lien--actif' : ''}`}
+            className={`lpv-o-header-nav__link${estActif(href) ? ' lpv-o-header-nav__link--active' : ''}`}
             href={href}
             key={i}
             {...(newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {})}
@@ -54,7 +54,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
         )
       })}
       {data?.afficherRecherche !== false && (
-        <Link aria-label="Recherche" className="lpv-o-header-nav__recherche" href="/search">
+        <Link aria-label="Recherche" className="lpv-o-header-nav__search" href="/search">
           <Icon icon="rivet-icons:magnifying-glass" size={20} />
           <span className="lpv-visually-hidden">Recherche</span>
         </Link>
@@ -96,7 +96,7 @@ function DropdownNav({
     <div className="lpv-o-header-dropdown" ref={ref}>
       <button
         aria-expanded={ouvert}
-        className={`lpv-o-header-nav__lien lpv-o-header-dropdown__bouton${ouvert ? ' lpv-o-header-dropdown__bouton--ouvert' : ''}`}
+        className={`lpv-o-header-nav__link lpv-o-header-dropdown__button${ouvert ? ' lpv-o-header-dropdown__button--open' : ''}`}
         onClick={() => setOuvert(!ouvert)}
         type="button"
       >
@@ -107,8 +107,8 @@ function DropdownNav({
       </button>
 
       {ouvert && (
-        <div className="lpv-o-header-dropdown__panneau">
-          <ul className="lpv-o-header-dropdown__liste">
+        <div className="lpv-o-header-dropdown__panel">
+          <ul className="lpv-o-header-dropdown__list">
             {sousLiens.map((lien, i) => {
               if (!lien) return null
               const href = lienHref(lien)

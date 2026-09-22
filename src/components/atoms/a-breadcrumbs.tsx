@@ -18,17 +18,17 @@ export function Breadcrumbs({
 
   return (
     <nav aria-label={ariaLabel} className={classe}>
-      <ol className="lpv-a-breadcrumbs__liste">
+      <ol className="lpv-a-breadcrumbs__list">
         {items.map((item, index) => {
           const isLast = index === items.length - 1
           return (
             <li className="lpv-a-breadcrumbs__item" key={item.label}>
               {item.href && !isLast ? (
-                <Link className="lpv-a-breadcrumbs__lien" href={item.href}>
+                <Link className="lpv-a-breadcrumbs__link" href={item.href}>
                   {item.label}
                 </Link>
               ) : (
-                <span aria-current={isLast ? 'page' : undefined} className="lpv-a-breadcrumbs__actuel">
+                <span aria-current={isLast ? 'page' : undefined} className="lpv-a-breadcrumbs__current">
                   {item.label}
                 </span>
               )}

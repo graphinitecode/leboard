@@ -24,7 +24,7 @@ export async function Footer() {
           <ThemeSelector />
           <nav aria-label="Liens de pied de page" className="lpv-m-footer__nav">
             {navItems.map(({ link }, i) => {
-              return <CMSLink className="lpv-m-footer__lien" key={i} {...link} appearance="inline" />
+              return <CMSLink className="lpv-m-footer__link" key={i} {...link} appearance="inline" />
             })}
           </nav>
         </div>

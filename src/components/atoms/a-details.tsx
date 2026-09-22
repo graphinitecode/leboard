@@ -20,15 +20,15 @@ export function Details({
   return (
     <details className="lpv-a-details" id={id} open={open}>
       <summary className="lpv-a-details__summary">
-        <span aria-hidden="true" className="lpv-a-details__chevron lpv-a-details__chevron--ferme">
+        <span aria-hidden="true" className="lpv-a-details__chevron lpv-a-details__chevron--closed">
           <Icon icon="rivet-icons:chevron-down" size={22} />
         </span>
-        <span aria-hidden="true" className="lpv-a-details__chevron lpv-a-details__chevron--ouvert">
+        <span aria-hidden="true" className="lpv-a-details__chevron lpv-a-details__chevron--open">
           <Icon icon="rivet-icons:chevron-up" size={22} />
         </span>
         <span className="lpv-a-details__summary-text">{summary}</span>
       </summary>
-      <div className="lpv-a-details__texte">{children}</div>
+      <div className="lpv-a-details__text">{children}</div>
     </details>
   )
 }

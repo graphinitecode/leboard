@@ -37,7 +37,7 @@
     padding-left: 0;
   }
 
-  &__lien {
+  &__link {
     color: var(--lpv-portail-dark);
 
     &:hover {
@@ -52,7 +52,7 @@
     }
   }
 
-  &__actuel {
+  &__current {
     color: var(--lpv-text);
   }
 
@@ -66,7 +66,7 @@
   }
 
   /* Variante inverse : posée sur un fond coloré (portail) */
-  &--inverse &__lien {
+  &--inverse &__link {
     color: var(--lpv-surface);
   }
 
@@ -75,7 +75,7 @@
     opacity: 0.7;
   }
 
-  &--inverse &__actuel {
+  &--inverse &__current {
     color: var(--lpv-surface);
   }
 }
@@ -125,7 +125,7 @@
     }
   }
 
-  &__resume {
+  &__summary {
     align-items: center;
     color: var(--lpv-portail-dark);
     cursor: pointer;
@@ -170,7 +170,7 @@
 .lpv-m-accordion {
   margin-bottom: 1.5rem;
 
-  &__bouton-tout {
+  &__toggle-all {
     background: transparent;
     border: 0;
     color: var(--lpv-portail-dark);
@@ -202,7 +202,7 @@
     }
   }
 
-  &__section-en-tete {
+  &__section-header {
     margin: 0;
     padding: 0;
   }
@@ -214,7 +214,7 @@
     margin: 0;
   }
 
-  &__bouton {
+  &__button {
     align-items: center;
     background: transparent;
     border: 0;
@@ -252,14 +252,14 @@
     flex: 1;
   }
 
-  &__resume {
+  &__summary {
     color: var(--lpv-text-muted);
     font-size: 1rem;
     font-weight: 400;
     margin: 0.25rem 0 0 1.25rem;
   }
 
-  &__contenu {
+  &__content {
     padding: 0.5rem 0 1rem;
 
     &--hidden {
@@ -307,7 +307,7 @@
     }
   }
 
-  &__onglet {
+  &__tab {
     font-size: 1.1rem;
     font-weight: 400;
     padding: 0.7rem 1.2rem;
@@ -337,7 +337,7 @@
     }
   }
 
-  &__panneau {
+  &__panel {
     padding-block: var(--lpv-spacing-2xl);
 
     &--hidden {
@@ -352,7 +352,7 @@
     }
   }
 
-  &__panneau-titre {
+  &__panel-title {
     display: none;
 
     @media (max-width: 639px) {
@@ -394,7 +394,7 @@
     }
   }
 
-  &__lien {
+  &__link {
     align-items: center;
     color: var(--lpv-portail-dark);
     display: inline-flex;
@@ -423,8 +423,8 @@
     }
   }
 
-  &__precedent,
-  &__suivant {
+  &__previous,
+  &__next {
     display: inline-flex;
   }
 
@@ -433,18 +433,18 @@
     flex-shrink: 0;
   }
 
-  &__lien-titre {
+  &__link-title {
     text-decoration: underline;
   }
 
-  &__lien-libelle {
+  &__link-label {
     display: block;
     font-size: 0.875rem;
     font-weight: 400;
   }
 
   /* Variante bloc : Précédent et Suivant empilés descriptifs */
-  &--bloc {
+  &--block {
     justify-content: flex-start;
 
     .lpv-m-pagination__previous,

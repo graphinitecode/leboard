@@ -57,7 +57,7 @@
     letter-spacing: -0.02em;
     line-height: 1.1;
 
-    &--alerte {
+    &--alert {
       color: var(--lpv-orange);
     }
   }
@@ -107,7 +107,7 @@
     background-color: var(--lpv-grey-border);
   }
 
-  &__haut {
+  &__top {
     align-items: center;
     display: flex;
     gap: 0.75rem;
@@ -122,7 +122,7 @@
     font-size: 0.9rem;
   }
 
-  &__lien {
+  &__link {
     color: var(--lpv-portail-dark);
     font-size: 0.9rem;
     font-weight: 700;

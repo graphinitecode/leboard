@@ -75,11 +75,11 @@ export function Radios({
     <div className={groupClass}>
       <fieldset aria-describedby={ariaDescribedBy} className="lpv-fieldset">
         {isPageHeading ? (
-          <legend className={`lpv-fieldset__legende${legendSize !== 'l' ? ` lpv-fieldset__legende--${legendSize}` : ''}`}>
-            <h1 className="lpv-fieldset__titre">{name}</h1>
+          <legend className={`lpv-fieldset__legend${legendSize !== 'l' ? ` lpv-fieldset__legend--${legendSize}` : ''}`}>
+            <h1 className="lpv-fieldset__title">{name}</h1>
           </legend>
         ) : (
-          <legend className={`lpv-fieldset__legende${legendSize !== 'l' ? ` lpv-fieldset__legende--${legendSize}` : ''}`}>
+          <legend className={`lpv-fieldset__legend${legendSize !== 'l' ? ` lpv-fieldset__legend--${legendSize}` : ''}`}>
             {name}
           </legend>
         )}

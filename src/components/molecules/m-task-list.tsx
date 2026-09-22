@@ -52,7 +52,7 @@ export function TaskList({
                 </div>
               ) : null}
             </div>
-            <div className="lpv-m-task-list__statut" id={statusId}>
+            <div className="lpv-m-task-list__status" id={statusId}>
               {typeof task.status === 'string' ? (
                 task.status
               ) : (

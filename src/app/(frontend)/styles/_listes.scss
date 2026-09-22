@@ -196,7 +196,7 @@ a.lpv-m-list-row {
   }
 
   /* Variante espacée (disponibilités) */
-  &--dispos {
+  &--spaced {
     margin-bottom: 1.5rem;
 
     .lpv-m-summary-list__row {
@@ -241,7 +241,7 @@ a.lpv-m-list-row {
     min-width: 0;
   }
 
-  &__lien {
+  &__link {
     color: var(--lpv-portail-dark);
     font-weight: 700;
     text-decoration: none;
@@ -258,7 +258,7 @@ a.lpv-m-list-row {
     margin-top: 0.25rem;
   }
 
-  &__statut {
+  &__status {
     flex-shrink: 0;
   }
 }

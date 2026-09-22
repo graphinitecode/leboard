@@ -15,11 +15,11 @@ export function WarningText({
   return (
     <div className="lpv-a-warning-text">
       <Icon
-        className="lpv-a-warning-text__icone-svg"
+        className="lpv-a-warning-text__icon-svg"
         icon="rivet-icons:exclamation-mark-circle-solid"
         size={32}
       />
-      <p className="lpv-a-warning-text__texte">
+      <p className="lpv-a-warning-text__text">
         <span className="lpv-visually-hidden">{hiddenLabel} : </span>
         {children}
       </p>

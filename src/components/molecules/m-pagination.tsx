@@ -36,7 +36,7 @@ export function Pagination({
   return (
     <nav aria-label={ariaLabel} className={`lpv-m-pagination${variant === 'block' ? ' lpv-m-pagination--block' : ''}`}>
       {previous && (
-        <div className="lpv-m-pagination__precedent">
+        <div className="lpv-m-pagination__previous">
           <Link
             className="lpv-link lpv-m-pagination__link"
             href={previous.href}
@@ -44,22 +44,22 @@ export function Pagination({
           >
             {variant === 'block' && previous.label ? (
               <>
-                <span aria-hidden="true" className="lpv-m-pagination__icone">
+                <span aria-hidden="true" className="lpv-m-pagination__icon">
                   <Icon icon="rivet-icons:arrow-left" size={16} />
                 </span>
-                <span className="lpv-m-pagination__link-titre">
+                <span className="lpv-m-pagination__link-title">
                   Précédent
                   {previous.label && (
                     <>
                       <span className="lpv-visually-hidden"> :</span>
-                      <span className="lpv-m-pagination__link-libelle"> {previous.label}</span>
+                      <span className="lpv-m-pagination__link-label"> {previous.label}</span>
                     </>
                   )}
                 </span>
               </>
             ) : (
               <>
-                <span aria-hidden="true" className="lpv-m-pagination__icone">
+                <span aria-hidden="true" className="lpv-m-pagination__icon">
                   <Icon icon="rivet-icons:arrow-left" size={16} />
                 </span>
                 Précédent
@@ -70,7 +70,7 @@ export function Pagination({
       )}
 
       {variant === 'list' && (
-        <ul className="lpv-m-pagination__liste">
+        <ul className="lpv-m-pagination__list">
           {items.map((item, index) =>
             'ellipsis' in item ? (
               <li aria-hidden="true" className="lpv-m-pagination__item lpv-m-pagination__item--ellipsis" key={`ellipsis-${index}`}>
@@ -108,7 +108,7 @@ export function Pagination({
       )}
 
       {next && (
-        <div className="lpv-m-pagination__suivant">
+        <div className="lpv-m-pagination__next">
           <Link
             className="lpv-link lpv-m-pagination__link"
             href={next.href}
@@ -116,23 +116,23 @@ export function Pagination({
           >
             {variant === 'block' && next.label ? (
               <>
-                <span className="lpv-m-pagination__link-titre">
+                <span className="lpv-m-pagination__link-title">
                   Suivant
                   {next.label && (
                     <>
                       <span className="lpv-visually-hidden"> :</span>
-                      <span className="lpv-m-pagination__link-libelle"> {next.label}</span>
+                      <span className="lpv-m-pagination__link-label"> {next.label}</span>
                     </>
                   )}
                 </span>
-                <span aria-hidden="true" className="lpv-m-pagination__icone">
+                <span aria-hidden="true" className="lpv-m-pagination__icon">
                   <Icon icon="rivet-icons:arrow-right" size={16} />
                 </span>
               </>
             ) : (
               <>
                 Suivant
-                <span aria-hidden="true" className="lpv-m-pagination__icone">
+                <span aria-hidden="true" className="lpv-m-pagination__icon">
                   <Icon icon="rivet-icons:arrow-right" size={16} />
                 </span>
               </>

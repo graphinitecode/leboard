@@ -26,7 +26,7 @@ describe('Accordion', () => {
 
   it('ne montre pas de bouton tout ouvrir pour une seule section', () => {
     const { container } = render(<Accordion id="test-acc1" sections={[sections[0]]} />)
-    const toutOuvrirBtn = container.querySelector('.lpv-m-accordion__button-all')
+    const toutOuvrirBtn = container.querySelector('.lpv-m-accordion__toggle-all')
     expect(toutOuvrirBtn).toBeNull()
   })
 

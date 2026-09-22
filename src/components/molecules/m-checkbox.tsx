@@ -72,7 +72,7 @@ function OptionWithRevelation({
       </div>
       {option.conditional ? (
         <div
-          className={`lpv-m-checkbox__conditionnel${revealed ? '' : ' lpv-m-checkbox__conditionnel--hidden'}`}
+          className={`lpv-m-checkbox__conditional${revealed ? '' : ' lpv-m-checkbox__conditional--hidden'}`}
           id={conditionalId}
         >
           {option.conditional}
@@ -112,11 +112,11 @@ export function Checkbox({
     <div className={groupClass}>
       <fieldset aria-describedby={ariaDescribedBy} className="lpv-fieldset">
         {isPageHeading ? (
-          <legend className={`lpv-fieldset__legende${legendSize !== 'l' ? ` lpv-fieldset__legende--${legendSize}` : ''}`}>
-            <h1 className="lpv-fieldset__titre">{name}</h1>
+          <legend className={`lpv-fieldset__legend${legendSize !== 'l' ? ` lpv-fieldset__legend--${legendSize}` : ''}`}>
+            <h1 className="lpv-fieldset__title">{name}</h1>
           </legend>
         ) : (
-          <legend className={`lpv-fieldset__legende${legendSize !== 'l' ? ` lpv-fieldset__legende--${legendSize}` : ''}`}>
+          <legend className={`lpv-fieldset__legend${legendSize !== 'l' ? ` lpv-fieldset__legend--${legendSize}` : ''}`}>
             {name}
           </legend>
         )}
@@ -126,7 +126,7 @@ export function Checkbox({
           {options.map((option, index) => {
             if (option.divider) {
               return (
-                <div className="lpv-m-checkbox__diviseur" key={`divider-${index}`}>
+                <div className="lpv-m-checkbox__divider" key={`divider-${index}`}>
                   {option.divider}
                 </div>
               )

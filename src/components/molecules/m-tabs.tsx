@@ -50,11 +50,11 @@ export function Tabs({
 
   return (
     <div className="lpv-m-tabs" id={id}>
-      <h2 className="lpv-m-tabs__titre">{title}</h2>
-      <ul className="lpv-m-tabs__liste" role="tablist">
+      <h2 className="lpv-m-tabs__title">{title}</h2>
+      <ul className="lpv-m-tabs__list" role="tablist">
         {tabs.map((tab) => (
           <li
-            className={`lpv-m-tabs__item${active === tab.id ? ' lpv-m-tabs__item--selectionne' : ''}`}
+            className={`lpv-m-tabs__item${active === tab.id ? ' lpv-m-tabs__item--selected' : ''}`}
             key={tab.id}
             role="presentation"
           >
@@ -80,12 +80,12 @@ export function Tabs({
       {tabs.map((tab) => (
         <div
           aria-labelledby={`tab-${tab.id}`}
-          className={`lpv-m-tabs__panneau${active === tab.id ? '' : ' lpv-m-tabs__panneau--cache'}`}
+          className={`lpv-m-tabs__panel${active === tab.id ? '' : ' lpv-m-tabs__panel--hidden'}`}
           id={`panel-${tab.id}`}
           key={tab.id}
           role="tabpanel"
         >
-          <h3 className="lpv-m-tabs__panneau-titre">{tab.label}</h3>
+          <h3 className="lpv-m-tabs__panel-title">{tab.label}</h3>
           {tab.content}
         </div>
       ))}

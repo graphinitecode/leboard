@@ -101,7 +101,7 @@ export function Accordion({
     <div className="lpv-m-accordion" id={id} ref={ref}>
       {sections.length > 1 && (
         <button
-          className="lpv-m-accordion__bouton-tout"
+          className="lpv-m-accordion__toggle-all"
           onClick={toggleAll}
           type="button"
         >
@@ -116,32 +116,32 @@ export function Accordion({
 
         return (
           <div className={`lpv-m-accordion__section${isOpen ? ' lpv-m-accordion__section--open' : ''}`} key={sectionId}>
-            <div className="lpv-m-accordion__section-en-tete">
-              <Heading className="lpv-m-accordion__titre" level={headingLevel}>
+            <div className="lpv-m-accordion__section-header">
+              <Heading className="lpv-m-accordion__title" level={headingLevel}>
                 <button
                   aria-controls={contentId}
                   aria-expanded={isOpen}
-                  className="lpv-m-accordion__bouton"
+                  className="lpv-m-accordion__button"
                   id={buttonId}
                   onClick={() => toggleSection(sectionId)}
                   type="button"
                 >
-                  <span aria-hidden="true" className="lpv-m-accordion__icone">
+                  <span aria-hidden="true" className="lpv-m-accordion__icon">
                     <Icon icon={isOpen ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} size={12} />
                   </span>
-                  <span className="lpv-m-accordion__texte-bouton">{section.title}</span>
-                  <span className="lpv-m-accordion__texte-toggle lpv-visually-hidden">
+                  <span className="lpv-m-accordion__button-text">{section.title}</span>
+                  <span className="lpv-m-accordion__toggle-text lpv-visually-hidden">
                     {isOpen ? closeSectionLabel : openSectionLabel}
                   </span>
                 </button>
               </Heading>
               {section.summary && !isOpen ? (
-                <div className="lpv-m-accordion__resume">{section.summary}</div>
+                <div className="lpv-m-accordion__summary">{section.summary}</div>
               ) : null}
             </div>
             <div
               aria-labelledby={buttonId}
-              className={`lpv-m-accordion__content${isOpen ? '' : ' lpv-m-accordion__content--cache'}`}
+              className={`lpv-m-accordion__content${isOpen ? '' : ' lpv-m-accordion__content--hidden'}`}
               id={contentId}
               role="region"
             >

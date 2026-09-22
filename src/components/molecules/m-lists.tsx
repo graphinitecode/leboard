@@ -108,7 +108,7 @@ export function SummaryList({
       {items.map((item, index) => {
         const hasActions = Array.isArray(item.actions) && item.actions.length > 0
         const isNew = highlightKey !== undefined && item.key === highlightKey
-        const rowClass = `lpv-m-summary-list__row${hasActions ? '' : ' lpv-m-summary-list__row--no-actions'}${isNew ? ' lpv-table__nouvelle' : ''}`
+        const rowClass = `lpv-m-summary-list__row${hasActions ? '' : ' lpv-m-summary-list__row--no-actions'}${isNew ? ' lpv-m-summary-list__row--new' : ''}`
 
         return (
           <div className={rowClass} key={`${item.key}-${index}`}>

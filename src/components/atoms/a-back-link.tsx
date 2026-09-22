@@ -18,7 +18,7 @@ export function BackLink({
       href={href}
       onClick={onClick}
     >
-      <span aria-hidden="true" className="lpv-a-back-link__icone">
+      <span aria-hidden="true" className="lpv-a-back-link__icon">
         <Icon icon="rivet-icons:arrow-left" size={16} />
       </span>
       {children}

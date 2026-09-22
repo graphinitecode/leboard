@@ -13,7 +13,7 @@
   line-height: 1.4;
   margin-bottom: 0.25rem;
 
-  &__optionnel {
+  &__optional {
     color: var(--lpv-text-muted);
     font-size: 1rem;
     font-weight: 400;
@@ -113,7 +113,7 @@
   min-width: 0;
   padding: 0;
 
-  &__legende {
+  &__legend {
     box-sizing: border-box;
     color: var(--lpv-text);
     font-size: 1rem;
@@ -183,7 +183,7 @@
     text-align: center;
   }
 
-  &__conditionnel {
+  &__conditional {
     margin-left: 2.5ex;
     padding: 0.5rem 0;
 
@@ -246,14 +246,14 @@
     margin: 0 0 0 2.5ex;
   }
 
-  &__diviseur {
+  &__divider {
     color: var(--lpv-text-muted);
     font-size: 1rem;
     margin: 0.25rem 0;
     text-align: center;
   }
 
-  &__conditionnel {
+  &__conditional {
     margin-left: 2.5ex;
     padding: 0.5rem 0;
 
@@ -307,20 +307,15 @@
     &:focus {
       @include mixins.lpv-focus;
     }
-
-    &--width-2 {
-      width: 4.5em;
-    }
-
-    &--width-4 {
-      width: 6.5em;
-    }
-
-    &--error {
-      border-color: var(--lpv-red);
-      border-width: 3px;
-    }
   }
+}
+
+.lpv-a-input--width-2 {
+  width: 4.5em;
+}
+
+.lpv-a-input--width-4 {
+  width: 6.5em;
 }
 
 /* --- Compteur de caractères ----------------------------------------------- */
@@ -346,32 +341,32 @@
 .lpv-a-input--password-group {
   max-width: 30rem;
   position: relative;
+}
 
-  &__input {
-    padding-right: 3rem;
+.lpv-a-input--password-input {
+  padding-right: 3rem;
+}
+
+.lpv-a-input--password-toggle {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--lpv-text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  inset-block: 0;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 0.6rem;
+  position: absolute;
+  right: 0;
+
+  &:hover {
+    color: var(--lpv-text);
   }
 
-  &__oeil {
-    align-items: center;
-    background: transparent;
-    border: 0;
-    color: var(--lpv-text-muted);
-    cursor: pointer;
-    display: inline-flex;
-    inset-block: 0;
-    justify-content: center;
-    min-height: 44px;
-    padding: 0 0.6rem;
-    position: absolute;
-    right: 0;
-
-    &:hover {
-      color: var(--lpv-text);
-    }
-
-    &:focus {
-      @include mixins.lpv-focus;
-    }
+  &:focus {
+    @include mixins.lpv-focus;
   }
 }
 
@@ -413,7 +408,7 @@
   flex-direction: column;
   gap: 0 1rem;
 
-  &__pleine {
+  &__full {
     flex: 1 1 100%;
 
     .lpv-a-button {
@@ -421,31 +416,31 @@
     }
   }
 
-  &__moitie {
+  &__half {
     flex: 1 1 50%;
   }
 
-  &__champ,
-  &__pleine,
-  &__moitie {
+  &__field,
+  &__full,
+  &__half {
     min-width: 0;
   }
 
-  &__pleine .lpv-form-group,
-  &__moitie .lpv-form-group,
-  &__champ .lpv-form-group {
+  &__full .lpv-form-group,
+  &__half .lpv-form-group,
+  &__field .lpv-form-group {
     display: flex;
     flex-direction: column;
     height: 100%;
     margin-bottom: 1.25rem;
   }
 
-  &__pleine .lpv-a-select,
-  &__pleine .lpv-a-input,
-  &__moitie .lpv-a-select,
-  &__moitie .lpv-a-input,
-  &__champ .lpv-a-select,
-  &__champ .lpv-a-input {
+  &__full .lpv-a-select,
+  &__full .lpv-a-input,
+  &__half .lpv-a-select,
+  &__half .lpv-a-input,
+  &__field .lpv-a-select,
+  &__field .lpv-a-input {
     margin-top: auto;
   }
 }
@@ -455,7 +450,7 @@
     flex-direction: row;
     align-items: stretch;
 
-    &__pleine {
+    &__full {
       flex: 1 1 0;
 
       .lpv-a-button {
@@ -465,7 +460,7 @@
       }
     }
 
-    &__moitie {
+    &__half {
       flex: 1 1 0;
     }
   }
@@ -506,28 +501,28 @@
   display: grid;
   gap: 0.5rem;
   grid-template-columns: 1fr 1fr;
+}
 
-  &__option {
-    background-color: var(--lpv-surface);
-    border: 2px solid var(--lpv-grey-border);
-    border-radius: var(--lpv-radius-lg);
-    cursor: pointer;
-    font-size: 1.125rem;
-    min-height: 44px;
-    padding: 0.5rem 0.75rem;
-    text-align: center;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
+.lpv-o-availability-wizard__day-option {
+  background-color: var(--lpv-surface);
+  border: 2px solid var(--lpv-grey-border);
+  border-radius: var(--lpv-radius-lg);
+  cursor: pointer;
+  font-size: 1.125rem;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  text-align: center;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 
-    &:hover {
-      border-color: var(--lpv-text-muted);
-    }
+  &:hover {
+    border-color: var(--lpv-text-muted);
+  }
 
-    &--active {
-      background-color: var(--lpv-portail-soft);
-      border-color: var(--lpv-portail);
-      color: var(--lpv-portail-dark);
-      font-weight: 700;
-    }
+  &--active {
+    background-color: var(--lpv-portail-soft);
+    border-color: var(--lpv-portail);
+    color: var(--lpv-portail-dark);
+    font-weight: 700;
   }
 }
 

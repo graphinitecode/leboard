@@ -58,8 +58,8 @@ export function ServiceHeader({
 
       {heroTitle && (
         <div className="lpv-o-header__hero">
-          <h1 className="lpv-o-header__hero-titre">{heroTitle}</h1>
-          {heroText ? <p className="lpv-o-header__hero-texte">{heroText}</p> : null}
+          <h1 className="lpv-o-header__hero-title">{heroTitle}</h1>
+          {heroText ? <p className="lpv-o-header__hero-text">{heroText}</p> : null}
         </div>
       )}
     </header>
