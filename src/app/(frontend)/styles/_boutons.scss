@@ -108,6 +108,10 @@
   text-underline-offset: var(--lpv-text-underline-offset);
   text-decoration-thickness: var(--lpv-decoration-thickness);
 
+  &:visited {
+    color: var(--lpv-visited);
+  }
+
   &:hover {
     color: var(--lpv-text);
     text-underline-offset: var(--lpv-text-underline-offset-hover);

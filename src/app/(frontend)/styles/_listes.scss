@@ -90,6 +90,10 @@ a.lpv-m-list-row {
       padding: 0 0.25rem;
       text-decoration: underline;
 
+      &:visited {
+        color: var(--lpv-visited);
+      }
+
       &:hover {
         color: var(--lpv-text);
       }
@@ -99,6 +103,12 @@ a.lpv-m-list-row {
       color: var(--lpv-red);
       text-decoration-thickness: var(--lpv-decoration-thickness);
       text-underline-offset: var(--lpv-text-underline-offset);
+
+      /* Variante sémantique : conserve sa couleur même sur lien visité
+         (sinon a:visited gagne par spécificité) */
+      &:visited {
+        color: var(--lpv-red);
+      }
 
       &:hover {
         color: var(--lpv-red);
@@ -111,6 +121,10 @@ a.lpv-m-list-row {
       color: var(--lpv-a-tag--orange-text);
       text-decoration-thickness: var(--lpv-decoration-thickness);
       text-underline-offset: var(--lpv-text-underline-offset);
+
+      &:visited {
+        color: var(--lpv-a-tag--orange-text);
+      }
 
       &:hover {
         color: var(--lpv-a-tag--orange-text);
@@ -142,6 +156,10 @@ a.lpv-m-list-row {
       padding: 0 0.25rem;
       text-decoration: underline;
 
+      &:visited {
+        color: var(--lpv-visited);
+      }
+
       &:hover {
         color: var(--lpv-text);
       }
@@ -151,6 +169,10 @@ a.lpv-m-list-row {
       color: var(--lpv-red);
       text-decoration-thickness: var(--lpv-decoration-thickness);
       text-underline-offset: var(--lpv-text-underline-offset);
+
+      &:visited {
+        color: var(--lpv-red);
+      }
 
       &:hover {
         color: var(--lpv-red);
@@ -177,6 +199,10 @@ a.lpv-m-list-row {
 
     .lpv-m-summary-list__action--warning {
       color: var(--lpv-a-tag--orange-text);
+
+      &:visited {
+        color: var(--lpv-a-tag--orange-text);
+      }
 
       &:hover {
         color: var(--lpv-a-tag--orange-text);

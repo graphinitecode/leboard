@@ -14,10 +14,15 @@
   outline: none;
 }
 
-/* Lien piloté par le portail : couleur portail-dark, soulignement
-   renforcé au hover (motif répété des liens du design system) */
+/* Lien piloté par le portail : couleur portail-dark, violet sur lien
+   déjà visité, soulignement renforcé au hover (motif répété des liens
+   du design system). Le hover passe après :visited pour rester réactif. */
 @mixin lpv-link-portal {
   color: var(--lpv-portail-dark);
+
+  &:visited {
+    color: var(--lpv-visited);
+  }
 
   &:hover {
     color: var(--lpv-text);

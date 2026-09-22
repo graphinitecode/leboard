@@ -40,6 +40,10 @@
   &__link {
     color: var(--lpv-portail-dark);
 
+    &:visited {
+      color: var(--lpv-visited);
+    }
+
     &:hover {
       color: var(--lpv-text);
       text-decoration: underline;
@@ -89,6 +93,10 @@
   gap: 0.375rem;
   margin-bottom: 0.75rem;
   text-decoration: none;
+
+  &:visited {
+    color: var(--lpv-visited);
+  }
 
   &:hover {
     text-decoration: underline;
