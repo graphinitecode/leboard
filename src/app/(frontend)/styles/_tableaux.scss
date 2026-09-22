@@ -35,12 +35,12 @@
   }
 
   tr#{&}__nouvelle,
-  .lpv-summary-list .lpv-table__nouvelle {
-    animation: lpv-ligne-nouvelle 1.5s ease-out;
+  .lpv-m-summary-list .lpv-table__nouvelle {
+    animation: lpv-row-new 1.5s ease-out;
   }
 }
 
-@keyframes lpv-ligne-nouvelle {
+@keyframes lpv-row-new {
   0% {
     background-color: var(--lpv-portail-soft);
     opacity: 0;
@@ -60,7 +60,7 @@
 
 /* --- Tableau (Table, pattern GOV.UK) -------------------------------------- */
 
-.lpv-tableau {
+.lpv-m-table {
   border-collapse: separate;
   border-spacing: 0;
   width: 100%;
@@ -91,7 +91,7 @@
     border-bottom: 2px solid var(--lpv-text);
   }
 
-  &__entete {
+  &__head {
     color: var(--lpv-text-muted);
     font-size: 0.875rem;
     font-weight: 700;
@@ -100,7 +100,7 @@
     text-align: left;
     text-transform: uppercase;
 
-    &--numerique {
+    &--numeric {
       text-align: right;
     }
   }
@@ -109,7 +109,7 @@
     vertical-align: top;
   }
 
-  &__ligne:nth-child(even) {
+  &__row:nth-child(even) {
     background-color: var(--lpv-grey-bg);
   }
 
@@ -118,7 +118,7 @@
     padding: 0.75rem 1rem;
     vertical-align: top;
 
-    &--numerique {
+    &--numeric {
       text-align: right;
     }
   }

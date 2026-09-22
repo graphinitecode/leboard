@@ -8,5 +8,5 @@ export function Tag({
   children: string
   color?: TagColor
 }) {
-  return <span className={`lpv-tag lpv-tag--${color}`}>{children}</span>
+  return <span className={`lpv-a-tag lpv-a-tag--${color}`}>{children}</span>
 }

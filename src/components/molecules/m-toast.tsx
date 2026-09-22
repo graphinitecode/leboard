@@ -35,7 +35,7 @@ export function Toast({
 
   return (
     <div
-      className={`lpv-toast${type === 'error' ? ' lpv-m-toast--error' : ''}`}
+      className={`lpv-m-toast${type === 'error' ? ' lpv-m-toast--error' : ''}`}
       role="status"
     >
       {message}

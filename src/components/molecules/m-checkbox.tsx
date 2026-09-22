@@ -61,11 +61,11 @@ function OptionWithRevelation({
           type="checkbox"
           value={option.value}
         />
-        <label className="lpv-label lpv-m-checkbox__label" htmlFor={optionId}>
+        <label className="lpv-a-label lpv-m-checkbox__label" htmlFor={optionId}>
           {option.label}
         </label>
         {option.hint ? (
-          <div className="lpv-hint lpv-m-checkbox__hint" id={hintId}>
+          <div className="lpv-a-hint lpv-m-checkbox__hint" id={hintId}>
             {option.hint}
           </div>
         ) : null}

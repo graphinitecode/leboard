@@ -124,7 +124,7 @@ export default function DesignSystemPage() {
 
       <section id="buttons" style={{ marginBottom: '3.7rem' }}>
         <h2 className="lpv-h2">Boutons</h2>
-        <div className="lpv-demo-exemples">
+        <div className="lpv-demo-examples">
           <Button type="button">Primaire</Button>
           <Button type="button" variant="secondary">
             Secondaire
@@ -143,7 +143,7 @@ export default function DesignSystemPage() {
 
       <section id="tags" style={{ marginBottom: '3.7rem' }}>
         <h2 className="lpv-h2">Tags & toggle</h2>
-        <div className="lpv-demo-exemples">
+        <div className="lpv-demo-examples">
           <Tag color="green">Actif</Tag>
           <Tag color="yellow">En attente</Tag>
           <Tag color="orange">À faire</Tag>
@@ -439,7 +439,7 @@ export default function DesignSystemPage() {
             {
               key: 'Certificat médical',
               value: (
-                <a href="#renseigner" className="lpv-lien-inline">
+                <a href="#renseigner" className="lpv-link-inline">
                   Renseigner…
                 </a>
               ),
@@ -471,7 +471,7 @@ export default function DesignSystemPage() {
           }}
         >
           <Avatar email="olivier.durand@lpv.fr" nom="Olivier Durand" />
-          <span aria-hidden="true" className="lpv-entete-separateur" />
+          <span aria-hidden="true" className="lpv-o-header__separator" />
           <button aria-expanded={false} className="lpv-m-collapsible-menu__button" type="button">
             <span aria-hidden="true" className="lpv-m-collapsible-menu__button-icon">
               <Icon icon="rivet-icons:menu" size={22} />

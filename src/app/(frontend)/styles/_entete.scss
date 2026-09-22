@@ -6,10 +6,10 @@
 /* Bande bleue pleine largeur : logo blanc + Menu dépliant en haut,
    gros titre blanc du portail en dessous (comme la home GOV.UK). */
 
-.lpv-entete-bleue {
+.lpv-o-header {
   background-color: var(--lpv-portail);
-  color: var(--lpv-sur-portail);
-  margin-bottom: var(--lpv-spacing-xxl);
+  color: var(--lpv-on-portal);
+  margin-bottom: var(--lpv-spacing-2xl);
   /* Le hero du template remonte avec une marge négative et un positionnement
      relatif : sans stacking context, il recouvre la nav et intercepte les clics. */
   position: relative;
@@ -31,7 +31,7 @@
 
   &__logo {
     align-items: center;
-    color: var(--lpv-sur-portail);
+    color: var(--lpv-on-portal);
     display: flex;
     gap: 0.5rem;
     text-decoration: none;
@@ -94,9 +94,9 @@
 
 /* --- Séparateur vertical (zone actions, connecté) --------------------------- */
 
-.lpv-entete-separateur {
+.lpv-o-header__separator {
   align-self: center;
-  background-color: var(--lpv-sur-portail);
+  background-color: var(--lpv-on-portal);
   height: 1.5rem;
   opacity: 0.4;
   width: 1px;
@@ -104,7 +104,7 @@
 
 /* --- Navigation du site vitrine (liens pilotés par le global header du panel) */
 
-.lpv-entete-nav {
+.lpv-o-header-nav {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -113,7 +113,7 @@
   &__lien {
     align-items: center;
     border-radius: var(--lpv-radius);
-    color: var(--lpv-sur-portail);
+    color: var(--lpv-on-portal);
     display: inline-flex;
     font-size: 1.05rem;
     font-weight: 600;
@@ -127,7 +127,7 @@
       text-decoration-thickness: var(--lpv-decoration-thickness-hover);
     }
 
-    &--actif {
+    &--active {
       font-weight: 600;
     }
   }
@@ -135,14 +135,14 @@
   /* Focus : double anneau jaune, motif commun des contrôles sur fond coloré */
   &__lien:focus-visible,
   &__recherche:focus-visible {
-    @include mixins.lpv-focus-sur-portail;
+    @include mixins.lpv-focus-on-portal;
   }
 
   /* Bouton recherche (loupe) de la nav vitrine */
   &__recherche {
     align-items: center;
     border-radius: var(--lpv-radius);
-    color: var(--lpv-sur-portail);
+    color: var(--lpv-on-portal);
     display: inline-flex;
     justify-content: center;
     min-height: 44px;
@@ -158,7 +158,7 @@
 
 /* --- Menu déroulant de la nav vitrine : bouton + chevron, panneau vertical */
 
-.lpv-entete-dropdown {
+.lpv-o-header-dropdown {
   position: relative;
 
   &__bouton {
@@ -185,7 +185,7 @@
     z-index: 50;
   }
 
-  &__liste {
+  &__list {
     list-style: none;
     margin: 0;
     padding: 0.75rem 0;
@@ -211,13 +211,13 @@
 /* Mobile (< 48rem) : bouton icône (menu/close), panneau en accordéon vertical.
    Tablette/desktop (≥ 48rem) : bouton texte + chevron, panneau 2 colonnes. */
 
-.lpv-menu-bouton {
+.lpv-m-collapsible-menu__button {
   align-items: center;
   background: transparent;
   border: 0;
   /* sur-portail (blanc constant) et non surface (presque noir en dark) :
      l'icône menu/close et le texte restent blancs sur la bande colorée */
-  color: var(--lpv-sur-portail);
+  color: var(--lpv-on-portal);
   cursor: pointer;
   display: inline-flex;
   font-size: 1.125rem;
@@ -225,7 +225,7 @@
   min-height: 44px;
   padding: 0.5rem 0.75rem;
 
-  &__icone {
+  &__icon {
     display: inline-flex;
   }
 
@@ -235,12 +235,12 @@
     margin-right: 0.4rem;
   }
 
-  &__libelle {
+  &__label {
     display: none;
   }
 
   @media (width >= 48rem) {
-    &__icone {
+    &__icon {
       display: none;
     }
 
@@ -248,7 +248,7 @@
       display: inline-flex;
     }
 
-    &__libelle {
+    &__label {
       display: inline;
     }
   }
@@ -258,11 +258,11 @@
   }
 
   &:focus-visible {
-    @include mixins.lpv-focus-sur-portail;
+    @include mixins.lpv-focus-on-portal;
   }
 }
 
-.lpv-menu-panneau {
+.lpv-m-collapsible-menu {
   background-color: var(--lpv-surface);
   border-bottom: 4px solid var(--lpv-portail);
   box-shadow: 0 12px 24px rgb(15 20 25 / 20%);
@@ -319,7 +319,7 @@
     }
   }
 
-  &__titre-bouton {
+  &__column-title {
     align-items: center;
     background: none;
     border: 0;
@@ -345,7 +345,7 @@
     }
   }
 
-  &__titre-chevron {
+  &__column-chevron {
     display: inline-flex;
   }
 
@@ -354,7 +354,7 @@
 
   /* Tablette/desktop : sections toujours dépliées en 2 colonnes,
      les boutons de titre redeviennent des titres simples */
-  &__titre-bouton {
+  &__column-title {
     @media (width >= 48rem) {
       border-bottom: 1px solid var(--lpv-grey-border);
       cursor: default;
@@ -365,7 +365,7 @@
     }
   }
 
-  &__titre-chevron {
+  &__column-chevron {
     @media (width >= 48rem) {
       display: none;
     }
@@ -425,14 +425,14 @@
    email) et déconnexion. Aligné à droite, motif mini du menu-panneau.
    Mobile : prénom masqué (l'avatar seul porte l'identité, aria-label complet). */
 
-.lpv-avatar-entete {
+.lpv-m-avatar-header {
   position: relative;
 
   &__bouton {
     align-items: center;
     background: transparent;
     border: 0;
-    color: var(--lpv-sur-portail);
+    color: var(--lpv-on-portal);
     cursor: pointer;
     display: inline-flex;
     gap: 0.5rem;
@@ -442,7 +442,7 @@
     /* L'avatar portail-soft/texte reste lisible sur le fond portail :
        on inverse avec les couleurs de surface pour le contraste */
     .lpv-avatar {
-      background-color: var(--lpv-sur-portail);
+      background-color: var(--lpv-on-portal);
       color: var(--lpv-portail);
       height: 2.25rem;
       width: 2.25rem;
@@ -455,11 +455,11 @@
     }
 
     &:focus-visible {
-      @include mixins.lpv-focus-sur-portail;
+      @include mixins.lpv-focus-on-portal;
     }
   }
 
-  &__nom {
+  &__name {
     font-weight: 400;
 
     @media (width < 48rem) {
@@ -472,7 +472,7 @@
   }
 }
 
-.lpv-avatar-panneau {
+.lpv-m-avatar-panel {
   background-color: var(--lpv-surface);
   border-bottom: 4px solid var(--lpv-portail);
   box-shadow: var(--lpv-shadow-hover);
@@ -487,7 +487,7 @@
     padding: 0.75rem 1rem;
   }
 
-  &__nom {
+  &__name {
     font-weight: 700;
     margin: 0;
   }
@@ -499,7 +499,7 @@
     overflow-wrap: anywhere;
   }
 
-  &__liste {
+  &__list {
     list-style: none;
     margin: 0;
     padding: 0.5rem 0;
@@ -536,7 +536,7 @@
 
 /* --- Pied de page --------------------------------------------------------- */
 
-.lpv-pied {
+.lpv-m-footer {
   background-color: var(--lpv-surface);
   border-top: 1px solid var(--lpv-grey-border);
   margin-top: 4rem;
@@ -604,7 +604,7 @@
 
 /* --- Bascule de thème ------------------------------------------------------ */
 
-.lpv-bascule-theme {
+.lpv-m-theme-toggle {
   align-items: center;
   background: transparent;
   border: 0;
@@ -624,14 +624,14 @@
     @include mixins.lpv-focus;
   }
 
-  &__icone {
+  &__icon {
     display: block;
     margin: auto;
   }
 }
 
 /* Variante panneau : ligne libellé + icône dans le pied du menu dépliant */
-.lpv-bascule-theme-panneau {
+.lpv-m-theme-toggle--panel {
   align-items: center;
   background: none;
   border: 0;

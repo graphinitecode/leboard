@@ -6,7 +6,7 @@
 
 /* --- Champs de formulaire ---------------------------------------------- */
 
-.lpv-label {
+.lpv-a-label {
   display: block;
   font-size: 1.5rem;
   font-weight: 700;
@@ -22,21 +22,21 @@
 
 /* --- Labels & légendes (guide GOV.UK labels-legends-headings) ------------- */
 
-.lpv-label-wrapper {
+.lpv-a-label-wrapper {
   margin: 0 0 0.25rem;
 }
 
-.lpv-label.lpv-label--m {
+.lpv-a-label.lpv-a-label--m {
   font-size: 1.25rem;
   font-weight: 700;
 }
 
-.lpv-label.lpv-label--s {
+.lpv-a-label.lpv-a-label--s {
   font-size: 1rem;
   font-weight: 700;
 }
 
-.lpv-hint {
+.lpv-a-hint {
   color: var(--lpv-text);
   opacity: 77%;
   font-size: 1rem;
@@ -44,7 +44,7 @@
   margin-bottom: var(--lpv-spacing-sm);
 }
 
-.lpv-error-message {
+.lpv-a-error-message {
   color: var(--lpv-red);
   font-size: 1rem;
   font-weight: 700;
@@ -61,9 +61,9 @@
   }
 }
 
-.lpv-input,
-.lpv-select,
-.lpv-textarea {
+.lpv-a-input,
+.lpv-a-select,
+.lpv-a-textarea {
   appearance: none;
   background-color: var(--lpv-surface);
   border: 2px solid var(--lpv-text);
@@ -85,12 +85,12 @@
   }
 }
 
-.lpv-textarea {
+.lpv-a-textarea {
   min-height: 8rem;
   resize: vertical;
 }
 
-.lpv-select {
+.lpv-a-select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 24'%3E%3Cpath fill='%235a6369' d='m15.146 6.263-1.292-1.526L8 9.69 2.146 4.737.854 6.263 8 12.31z'/%3E%3C/svg%3E");
   background-position: right 0.5rem center;
   background-repeat: no-repeat;
@@ -100,7 +100,7 @@
 }
 
 /* Champ en erreur : bordure épaissie (le dark surcharge la couleur dans _dark.scss) */
-.lpv-input--error {
+.lpv-a-input--error {
   border-color: var(--lpv-red);
   border-width: 3px;
 }
@@ -132,7 +132,7 @@
     }
   }
 
-  &__titre {
+  &__title {
     font-size: 2rem;
     font-weight: 700;
     line-height: 1.2;
@@ -142,7 +142,7 @@
 
 /* --- Cases à cocher (Checkboxes) ----------------------------------------- */
 
-.lpv-cases {
+.lpv-m-checkbox {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -195,7 +195,7 @@
 
 /* --- Boutons radio -------------------------------------------------------- */
 
-.lpv-radios {
+.lpv-m-radios {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -264,14 +264,14 @@
 }
 
 @media (max-width: 639px) {
-  .lpv-radios--inline {
+  .lpv-m-radios--inline {
     flex-direction: column;
   }
 }
 
 /* --- Champ de date -------------------------------------------------------- */
 
-.lpv-champ-date {
+.lpv-m-date-input {
   display: flex;
   gap: 1rem;
 
@@ -325,7 +325,7 @@
 
 /* --- Compteur de caractères ----------------------------------------------- */
 
-.lpv-compteur {
+.lpv-m-character-count {
   position: relative;
 
   &__message {
@@ -334,7 +334,7 @@
     line-height: 1.4;
     margin-top: 0.25rem;
 
-    &--erreur {
+    &--error {
       color: var(--lpv-red);
       font-weight: 700;
     }
@@ -343,7 +343,7 @@
 
 /* --- Champ mot de passe (œil afficher/masquer) ------------------------------ */
 
-.lpv-password {
+.lpv-a-input--password-group {
   max-width: 30rem;
   position: relative;
 
@@ -377,7 +377,7 @@
 
 /* --- Téléversement (File upload) ------------------------------------------ */
 
-.lpv-file-upload {
+.lpv-a-file-upload {
   appearance: none;
   background-color: var(--lpv-surface);
   border: 2px solid var(--lpv-text);
@@ -407,7 +407,7 @@
 /* Mobile-first : jour pleine largeur, De/À côte à côte, bouton pleine largeur.
    ≥ 640px : les quatre éléments tiennent sur une ligne alignée. */
 
-.lpv-champs-inline {
+.lpv-fields-inline {
   align-items: stretch;
   display: flex;
   flex-direction: column;
@@ -416,7 +416,7 @@
   &__pleine {
     flex: 1 1 100%;
 
-    .lpv-bouton {
+    .lpv-a-button {
       width: 100%;
     }
   }
@@ -440,25 +440,25 @@
     margin-bottom: 1.25rem;
   }
 
-  &__pleine .lpv-select,
-  &__pleine .lpv-input,
-  &__moitie .lpv-select,
-  &__moitie .lpv-input,
-  &__champ .lpv-select,
-  &__champ .lpv-input {
+  &__pleine .lpv-a-select,
+  &__pleine .lpv-a-input,
+  &__moitie .lpv-a-select,
+  &__moitie .lpv-a-input,
+  &__champ .lpv-a-select,
+  &__champ .lpv-a-input {
     margin-top: auto;
   }
 }
 
 @media (min-width: 640px) {
-  .lpv-champs-inline {
+  .lpv-fields-inline {
     flex-direction: row;
     align-items: stretch;
 
     &__pleine {
       flex: 1 1 0;
 
-      .lpv-bouton {
+      .lpv-a-button {
         width: auto;
         align-self: end;
         margin-bottom: 1.25rem;
@@ -474,7 +474,7 @@
 /* --- Assistant d'ajout (stepper) --------------------------------------------- */
 
 .lpv-stepper {
-  &__etape {
+  &__step {
     color: var(--lpv-text-muted);
     display: block;
     font-size: 1rem;
@@ -502,7 +502,7 @@
   }
 }
 
-.lpv-choix-jour {
+.lpv-o-availability-wizard__days {
   display: grid;
   gap: 0.5rem;
   grid-template-columns: 1fr 1fr;
@@ -522,7 +522,7 @@
       border-color: var(--lpv-text-muted);
     }
 
-    &--actif {
+    &--active {
       background-color: var(--lpv-portail-soft);
       border-color: var(--lpv-portail);
       color: var(--lpv-portail-dark);
@@ -532,7 +532,7 @@
 }
 
 @media (min-width: 640px) {
-  .lpv-choix-jour {
+  .lpv-o-availability-wizard__days {
     grid-template-columns: repeat(3, 1fr);
   }
 }
@@ -563,22 +563,22 @@
       @include mixins.lpv-focus;
     }
 
-    &--actif {
+    &--active {
       border-color: var(--lpv-text);
       border-width: 3px;
       font-weight: 800;
 
-      &[data-statut='present'] {
+      &[data-status='present'] {
         background-color: var(--lpv-green-soft);
         border-color: var(--lpv-green);
       }
 
-      &[data-statut='absent-justifie'] {
+      &[data-status='absent-justifie'] {
         background-color: var(--lpv-yellow-soft);
         border-color: var(--lpv-yellow);
       }
 
-      &[data-statut='absent'] {
+      &[data-status='absent'] {
         background-color: var(--lpv-red-soft);
         border-color: var(--lpv-red);
       }
@@ -593,13 +593,13 @@
   border-radius: var(--lpv-radius);
   padding: 0.85rem 1rem;
 
-  &__ligne {
+  &__row {
     display: flex;
     justify-content: space-between;
     padding: 0.25rem 0;
   }
 
-  &__cle {
+  &__key {
     color: var(--lpv-text-muted);
     font-weight: 700;
   }

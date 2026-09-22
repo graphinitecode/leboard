@@ -44,7 +44,7 @@ export default function SeanceProfView({ seanceId }: SeanceProfViewProps) {
         ) : (
           <div>
             {viewModel.presences.map((presence) => (
-              <div className="lpv-ligne" key={presence.eleveId}>
+              <div className="lpv-m-list-row" key={presence.eleveId}>
                 <span>
                   <a
                     href={`/profs/eleves/${presence.eleveId}`}

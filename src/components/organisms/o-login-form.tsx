@@ -56,7 +56,7 @@ export function LoginForm({ portail, cible, title = 'Connexion', subtitle }: Log
         type="password"
         value={password}
       />
-      <p className="lpv-login__oublie">
+      <p className="lpv-login__forgot">
         Mot de passe oublié ? <Link href="/admin/forgot-password" className="lpv-link">Réinitialiser ici</Link>
       </p>
       <Button disabled={isPending} type="submit" className="w-full md:w-auto">

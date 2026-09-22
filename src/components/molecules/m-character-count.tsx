@@ -87,7 +87,7 @@ export function CharacterCount({
         aria-describedby={ariaDescribedBy}
         aria-invalid={error ? true : undefined}
         autoComplete={autoComplete}
-        className={`lpv-textarea${error ? ' lpv-a-input--error' : ''} lpv-js-character-count`}
+        className={`lpv-a-textarea${error ? ' lpv-a-input--error' : ''} lpv-js-character-count`}
         defaultValue={value}
         id={id}
         name={name}
@@ -102,7 +102,7 @@ export function CharacterCount({
       />
       <div
         aria-live="polite"
-        className={`lpv-hint lpv-m-character-count__message${limitReached ? ' lpv-m-character-count__message--error' : ''}`}
+        className={`lpv-a-hint lpv-m-character-count__message${limitReached ? ' lpv-m-character-count__message--error' : ''}`}
         id={`${id}-count`}
       >
         {counterMessage()}

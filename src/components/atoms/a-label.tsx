@@ -33,7 +33,7 @@ export function Label({
   )
 
   if (isPageHeading) {
-    return <h1 className="lpv-label-wrapper">{label}</h1>
+    return <h1 className="lpv-a-label-wrapper">{label}</h1>
   }
 
   return label
@@ -41,7 +41,7 @@ export function Label({
 
 export function Hint({ id, children }: { id: string; children: string }) {
   return (
-    <div className="lpv-hint" id={id}>
+    <div className="lpv-a-hint" id={id}>
       {children}
     </div>
   )
@@ -49,7 +49,7 @@ export function Hint({ id, children }: { id: string; children: string }) {
 
 export function ErrorMessage({ id, children }: { id: string; children: string }) {
   return (
-    <p className="lpv-error-message" id={id}>
+    <p className="lpv-a-error-message" id={id}>
       <span className="lpv-visually-hidden">Erreur : </span>
       {children}
     </p>

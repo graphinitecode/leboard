@@ -60,7 +60,7 @@ export function DateInput({
         <div className="lpv-m-date-input">
           <div className="lpv-m-date-input__item">
             <div className="lpv-form-group">
-              <label className="lpv-label lpv-m-date-input__label" htmlFor={`${id}-day`}>
+              <label className="lpv-a-label lpv-m-date-input__label" htmlFor={`${id}-day`}>
                 Jour
               </label>
               <input
@@ -78,7 +78,7 @@ export function DateInput({
           </div>
           <div className="lpv-m-date-input__item">
             <div className="lpv-form-group">
-              <label className="lpv-label lpv-m-date-input__label" htmlFor={`${id}-month`}>
+              <label className="lpv-a-label lpv-m-date-input__label" htmlFor={`${id}-month`}>
                 Mois
               </label>
               <input
@@ -96,7 +96,7 @@ export function DateInput({
           </div>
           <div className="lpv-m-date-input__item">
             <div className="lpv-form-group">
-              <label className="lpv-label lpv-m-date-input__label" htmlFor={`${id}-year`}>
+              <label className="lpv-a-label lpv-m-date-input__label" htmlFor={`${id}-year`}>
                 Année
               </label>
               <input

@@ -12,19 +12,19 @@ export async function Footer() {
   const navItems = footerData?.navItems || []
 
   return (
-    <footer className="lpv-pied">
-      <div className="lpv-pied__inner">
+    <footer className="lpv-m-footer">
+      <div className="lpv-m-footer__inner">
         <div>
-          <Link className="lpv-pied__logo" href="/">
+          <Link className="lpv-m-footer__logo" href="/">
             <Logo />
           </Link>
         </div>
 
-        <div className="lpv-pied__nav-zone">
+        <div className="lpv-m-footer__nav-zone">
           <ThemeSelector />
-          <nav aria-label="Liens de pied de page" className="lpv-pied__nav">
+          <nav aria-label="Liens de pied de page" className="lpv-m-footer__nav">
             {navItems.map(({ link }, i) => {
-              return <CMSLink className="lpv-pied__lien" key={i} {...link} appearance="inline" />
+              return <CMSLink className="lpv-m-footer__lien" key={i} {...link} appearance="inline" />
             })}
           </nav>
         </div>

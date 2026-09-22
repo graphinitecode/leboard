@@ -62,10 +62,10 @@ export function DemoModale() {
       <Button onClick={() => setOpen(true)} type="button">Ouvrir la modale</Button>
       {open && (
         <Modal onClose={() => setOpen(false)} title="Confirmer l'action">
-          <p className="lpv-modale__texte">
+          <p className="lpv-m-modal__text">
             Êtes-vous sûr de vouloir continuer ? Cette action est irréversible.
           </p>
-          <div className="lpv-modale__actions">
+          <div className="lpv-m-modal__actions">
             <Button onClick={() => setOpen(false)} type="button" variant="secondary">
               Annuler
             </Button>

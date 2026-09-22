@@ -38,7 +38,7 @@ describe('SummaryList', () => {
             actions: [
               <a href="#aj" key="a">Ajouter</a>,
               <a href="#mod" key="m">Modifier</a>,
-              <a className="lpv-action--danger" href="#sup" key="s">Supprimer</a>,
+              <a className="lpv-m-summary-list__action--danger" href="#sup" key="s">Supprimer</a>,
             ],
           },
         ]}
@@ -46,14 +46,14 @@ describe('SummaryList', () => {
     )
     expect(screen.getByText('Ajouter')).toBeDefined()
     expect(screen.getByText('Supprimer')).toBeDefined()
-    const items = container.querySelectorAll('.lpv-summary-list__actions-list-item')
+    const items = container.querySelectorAll('.lpv-m-summary-list__actions-list-item')
     expect(items).toHaveLength(3)
   })
 
   it('ne rend pas la colonne actions quand aucune action', () => {
     const { container } = render(<SummaryList items={[{ key: 'Nom', value: 'Dupont' }]} />)
-    expect(container.querySelector('.lpv-summary-list__actions')).toBeNull()
-    expect(container.querySelector('.lpv-summary-list__row--no-actions')).not.toBeNull()
+    expect(container.querySelector('.lpv-m-summary-list__actions')).toBeNull()
+    expect(container.querySelector('.lpv-m-summary-list__row--no-actions')).not.toBeNull()
   })
 
   it('rend les actions declaratives avec la classe du type', () => {
@@ -73,9 +73,9 @@ describe('SummaryList', () => {
       />,
     )
     const liens = container.querySelectorAll('a')
-    expect(liens[0]).toHaveClass('lpv-action--normal')
-    expect(liens[1]).toHaveClass('lpv-action--warning')
-    expect(liens[2]).toHaveClass('lpv-action--danger')
+    expect(liens[0]).toHaveClass('lpv-m-summary-list__action--normal')
+    expect(liens[1]).toHaveClass('lpv-m-summary-list__action--warning')
+    expect(liens[2]).toHaveClass('lpv-m-summary-list__action--danger')
     expect(screen.getByText('Suspendre')).toBeDefined()
   })
 

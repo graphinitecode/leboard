@@ -2,7 +2,7 @@
 
 /* --- Tags de statut ------------------------------------------------------ */
 
-.lpv-tag {
+.lpv-a-tag {
   border-left: 3px solid currentColor;
   display: inline-block;
   font-size: 0.875rem;
@@ -10,14 +10,14 @@
   padding: 0.15rem 0.6rem;
   white-space: nowrap;
 
-  &--vert { background-color: var(--lpv-tag-vert-bg); color: var(--lpv-tag-vert-texte); }
-  &--jaune { background-color: var(--lpv-tag-jaune-bg); color: var(--lpv-tag-jaune-texte); }
-  &--orange { background-color: var(--lpv-tag-orange-bg); color: var(--lpv-tag-orange-texte); }
-  &--rouge { background-color: var(--lpv-tag-rouge-bg); color: var(--lpv-tag-rouge-texte); }
-  &--bleu { background-color: var(--lpv-tag-bleu-bg); color: var(--lpv-tag-bleu-texte); }
-  &--violet { background-color: var(--lpv-tag-violet-bg); color: var(--lpv-tag-violet-texte); }
-  &--magenta { background-color: var(--lpv-tag-magenta-bg); color: var(--lpv-tag-magenta-texte); }
-  &--sarcelle { background-color: var(--lpv-tag-sarcelle-bg); color: var(--lpv-tag-sarcelle-texte); }
+  &--vert { background-color: var(--lpv-a-tag--green-bg); color: var(--lpv-a-tag--green-text); }
+  &--jaune { background-color: var(--lpv-a-tag--yellow-bg); color: var(--lpv-a-tag--yellow-text); }
+  &--orange { background-color: var(--lpv-a-tag--orange-bg); color: var(--lpv-a-tag--orange-text); }
+  &--rouge { background-color: var(--lpv-a-tag--red-bg); color: var(--lpv-a-tag--red-text); }
+  &--bleu { background-color: var(--lpv-a-tag--blue-bg); color: var(--lpv-a-tag--blue-text); }
+  &--violet { background-color: var(--lpv-a-tag--violet-bg); color: var(--lpv-a-tag--violet-text); }
+  &--magenta { background-color: var(--lpv-a-tag--magenta-bg); color: var(--lpv-a-tag--magenta-text); }
+  &--sarcelle { background-color: var(--lpv-a-tag--teal-bg); color: var(--lpv-a-tag--teal-text); }
 }
 
 /* Les couleurs dark sont gérées par la surcharge des variables dans _dark.scss :

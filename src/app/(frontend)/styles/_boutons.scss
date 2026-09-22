@@ -4,7 +4,7 @@
 
 /* --- Boutons ------------------------------------------------------------ */
 
-.lpv-bouton {
+.lpv-a-button {
   background-color: var(--lpv-portail);
   border: 2px solid transparent;
   border-radius: var(--lpv-radius);
@@ -92,7 +92,7 @@
 
 /* --- Lien inline (variante « link ») : même corps que le texte environnant */
 
-.lpv-lien-inline {
+.lpv-link-inline {
   color: var(--lpv-portail-dark);
   text-decoration: underline;
   text-underline-offset: var(--lpv-text-underline-offset);
@@ -107,7 +107,7 @@
 
 /* --- Bouton icône (suppression) --------------------------------------------- */
 
-.lpv-bouton-icone {
+.lpv-a-button-icon {
   background: var(--lpv-surface);
   border: 1px solid var(--lpv-grey-border);
   border-radius: var(--lpv-radius);
@@ -127,7 +127,7 @@
 /* --- Bouton d'ajout (bordure pointillée) ------------------------------------ */
 /* Réservé aux endroits où le flux invite à créer depuis une liste vide. */
 
-.lpv-bouton-ajout {
+.lpv-a-button-add {
   background: transparent;
   border: 2px dashed var(--lpv-portail);
   border-radius: var(--lpv-radius-lg);

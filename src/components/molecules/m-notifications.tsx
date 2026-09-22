@@ -67,7 +67,7 @@ export function ErrorSummary({
 export function NotificationBanner({ title, type = 'success' }: { title: string; type?: 'success' | 'info' }) {
   return (
     <div
-      className={`lpv-banner${type === 'success' ? ' lpv-banner--success' : ''}`}
+      className={`lpv-m-banner${type === 'success' ? ' lpv-m-banner--success' : ''}`}
       role={type === 'success' ? 'status' : 'region'}
     >
       <strong>{title}</strong>

@@ -28,47 +28,47 @@ html[data-theme='dark'] {
   --lpv-red-hover: #ff6b6e;
 
   /* Tags : identiques en dark (contraste déjà valide sur les deux fonds) */
-  --lpv-tag-vert: #00a14c;
-  --lpv-tag-jaune: #f4d35e;
-  --lpv-tag-orange: #ff6b00;
-  --lpv-tag-rouge: #ff0004;
-  --lpv-tag-bleu: #0080ff;
-  --lpv-tag-violet: #9000b3;
-  --lpv-tag-magenta: #c62991;
-  --lpv-tag-sarcelle: #007c8c;
+  --lpv-a-tag--green: #00a14c;
+  --lpv-a-tag--yellow: #f4d35e;
+  --lpv-a-tag--orange: #ff6b00;
+  --lpv-a-tag--red: #ff0004;
+  --lpv-a-tag--blue: #0080ff;
+  --lpv-a-tag--violet: #9000b3;
+  --lpv-a-tag--magenta: #c62991;
+  --lpv-a-tag--teal: #007c8c;
 
   /* Tags doux en dark : fond assombri, texte éclairci */
-  --lpv-tag-vert-bg: #0d3b24;
-  --lpv-tag-vert-texte: #4cd98a;
-  --lpv-tag-jaune-bg: #3a3015;
-  --lpv-tag-jaune-texte: #f4d35e;
-  --lpv-tag-orange-bg: #3a1d0a;
-  --lpv-tag-orange-texte: #ff9c4d;
-  --lpv-tag-rouge-bg: #3a1215;
-  --lpv-tag-rouge-texte: #ff8083;
-  --lpv-tag-bleu-bg: #0d2137;
-  --lpv-tag-bleu-texte: #66b5ff;
-  --lpv-tag-violet-bg: #2d1435;
-  --lpv-tag-violet-texte: #c04fd8;
-  --lpv-tag-magenta-bg: #331122;
-  --lpv-tag-magenta-texte: #e06db8;
-  --lpv-tag-sarcelle-bg: #0a2a30;
-  --lpv-tag-sarcelle-texte: #4dc3d4;
+  --lpv-a-tag--green-bg: #0d3b24;
+  --lpv-a-tag--green-text: #4cd98a;
+  --lpv-a-tag--yellow-bg: #3a3015;
+  --lpv-a-tag--yellow-text: #f4d35e;
+  --lpv-a-tag--orange-bg: #3a1d0a;
+  --lpv-a-tag--orange-text: #ff9c4d;
+  --lpv-a-tag--red-bg: #3a1215;
+  --lpv-a-tag--red-text: #ff8083;
+  --lpv-a-tag--blue-bg: #0d2137;
+  --lpv-a-tag--blue-text: #66b5ff;
+  --lpv-a-tag--violet-bg: #2d1435;
+  --lpv-a-tag--violet-text: #c04fd8;
+  --lpv-a-tag--magenta-bg: #331122;
+  --lpv-a-tag--magenta-text: #e06db8;
+  --lpv-a-tag--teal-bg: #0a2a30;
+  --lpv-a-tag--teal-text: #4dc3d4;
 
   /* Panel : fond bleu nuit, texte bleu clair */
-  --lpv-panel-bg: #002549;
-  --lpv-panel-texte: #3d9eff;
-  --lpv-panel-success-bg: #01582a;
-  --lpv-panel-success-texte: #ffffff;
+  --lpv-a-panel-bg: #002549;
+  --lpv-a-panel-text: #3d9eff;
+  --lpv-a-panel-success-bg: #01582a;
+  --lpv-a-panel-success-text: #ffffff;
 
   /* Bannière succès : fond vert foncé, texte blanc */
-  --lpv-banner-success-bg: #01582a;
+  --lpv-m-banner-success-bg: #01582a;
 
   --lpv-background: #0c0c0c;
 
   /* Boutons : fond tag identique, ombre assombrie pour le fond sombre */
-  --lpv-bouton-primaire-ombre: #004080;
-  --lpv-bouton-avertissement-ombre: #803300;
+  --lpv-a-button-primary-shadow: #004080;
+  --lpv-a-button-warning-shadow: #803300;
 
   --lpv-overlay: rgb(0 0 0 / 60%);
   --lpv-overlay-heavy: rgb(0 0 0 / 40%);
@@ -81,9 +81,9 @@ html[data-theme='dark'] {
      Ils reprennent les couleurs des tags.
      Le hover assombrit le fond (plus sombre que le repos). */
 
-  .lpv-bouton {
-    background-color: var(--lpv-tag-bleu);
-    box-shadow: 0 2px 0 var(--lpv-bouton-primaire-ombre);
+  .lpv-a-button {
+    background-color: var(--lpv-a-tag--blue);
+    box-shadow: 0 2px 0 var(--lpv-a-button-primary-shadow);
     color: #ffffff;
 
     &:hover {
@@ -91,9 +91,9 @@ html[data-theme='dark'] {
     }
   }
 
-  .lpv-bouton--avertissement {
-    background-color: var(--lpv-tag-orange);
-    box-shadow: 0 2px 0 var(--lpv-bouton-avertissement-ombre);
+  .lpv-a-button--warning {
+    background-color: var(--lpv-a-tag--orange);
+    box-shadow: 0 2px 0 var(--lpv-a-button-warning-shadow);
     color: #ffffff;
 
     &:hover {
@@ -101,8 +101,8 @@ html[data-theme='dark'] {
     }
   }
 
-  .lpv-bouton--danger {
-    background-color: var(--lpv-tag-rouge);
+  .lpv-a-button--danger {
+    background-color: var(--lpv-a-tag--red);
     box-shadow: 0 2px 0 var(--lpv-red-shadow);
     color: #ffffff;
 
@@ -113,7 +113,7 @@ html[data-theme='dark'] {
 
   /* Secondaire : fond relevé et texte clair (le grey-bg clair devient un bloc
      noir illisible sur les fonds sombres, ex. hero image) */
-  .lpv-bouton--secondaire {
+  .lpv-a-button--secondary {
     background-color: #2a242a;
     box-shadow: 0 2px 0 #1e1a1e;
     color: #f2eef2;
@@ -125,32 +125,32 @@ html[data-theme='dark'] {
 
   /* --- Entête ------------------------------------------------------------- */
 
-  .lpv-entete-bleue {
-    background-color: var(--lpv-tag-bleu);
+  .lpv-o-header {
+    background-color: var(--lpv-a-tag--blue);
   }
 
   /* --- Formulaires -------------------------------------------------------- */
 
-  .lpv-error-message {
-    color: var(--lpv-tag-rouge);
+  .lpv-a-error-message {
+    color: var(--lpv-a-tag--red);
   }
 
   .lpv-form-group--error {
-    border-color: var(--lpv-tag-rouge);
+    border-color: var(--lpv-a-tag--red);
   }
 
   /* Couleur du champ en erreur : la bordure passe à la couleur de marque tag */
-  .lpv-input--error {
-    border-color: var(--lpv-tag-rouge);
+  .lpv-a-input--error {
+    border-color: var(--lpv-a-tag--red);
   }
 
   /* --- Résumé des erreurs --------------------------------------------------- */
 
-  .lpv-error-summary {
-    border-color: var(--lpv-tag-rouge);
+  .lpv-m-error-summary {
+    border-color: var(--lpv-a-tag--red);
 
     li a {
-      color: var(--lpv-tag-rouge);
+      color: var(--lpv-a-tag--red);
 
       &:hover {
         color: var(--lpv-text);
@@ -162,38 +162,38 @@ html[data-theme='dark'] {
 
   /* --- Bannières & panels ---------------------------------------------------- */
 
-  .lpv-banner--success {
-    background-color: var(--lpv-banner-success-bg);
+  .lpv-m-banner--success {
+    background-color: var(--lpv-m-banner-success-bg);
   }
 
   /* Panel : couleurs de marque (fond bleu nuit, texte bleu clair) */
-  .lpv-panel {
-    background-color: var(--lpv-panel-bg);
-    color: var(--lpv-panel-texte);
+  .lpv-a-panel {
+    background-color: var(--lpv-a-panel-bg);
+    color: var(--lpv-a-panel-text);
   }
 
-  .lpv-panel--success {
-    background-color: var(--lpv-panel-success-bg);
-    color: var(--lpv-panel-success-texte);
+  .lpv-a-panel--success {
+    background-color: var(--lpv-a-panel-success-bg);
+    color: var(--lpv-a-panel-success-text);
   }
 
   /* --- Listes ----------------------------------------------------------------- */
 
-  .lpv-summary-list__actions .lpv-action--danger,
-  .lpv-summary-list__actions-list .lpv-action--danger {
-    color: var(--lpv-tag-rouge);
+  .lpv-m-summary-list__actions .lpv-m-summary-list__action--danger,
+  .lpv-m-summary-list__actions-list .lpv-m-summary-list__action--danger {
+    color: var(--lpv-a-tag--red);
 
     &:hover {
-      color: var(--lpv-tag-rouge);
+      color: var(--lpv-a-tag--red);
     }
   }
 
-  .lpv-summary-list__actions .lpv-action--warning,
-  .lpv-summary-list__actions-list .lpv-action--warning {
-    color: var(--lpv-tag-orange-texte);
+  .lpv-m-summary-list__actions .lpv-m-summary-list__action--warning,
+  .lpv-m-summary-list__actions-list .lpv-m-summary-list__action--warning {
+    color: var(--lpv-a-tag--orange-text);
 
     &:hover {
-      color: var(--lpv-tag-orange-texte);
+      color: var(--lpv-a-tag--orange-text);
     }
   }
 }

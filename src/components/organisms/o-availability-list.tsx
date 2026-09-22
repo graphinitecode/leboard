@@ -81,10 +81,10 @@ export function AvailabilityList({ dispos }: { dispos: DispoItem[] }) {
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
       {deleteTarget && (
         <Modal onClose={() => setDeleteTarget(null)} title="Supprimer cette disponibilité ?">
-          <p className="lpv-modale__texte">
+          <p className="lpv-m-modal__text">
             {deleteTarget.jour} · {deleteTarget.heureDebut} → {deleteTarget.heureFin} — cette action est définitive.
           </p>
-          <div className="lpv-modale__actions">
+          <div className="lpv-m-modal__actions">
             <Button onClick={() => setDeleteTarget(null)} type="button" variant="secondary">
               Annuler
             </Button>

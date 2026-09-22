@@ -9,14 +9,14 @@
 }
 
 /* Focus sur fond coloré (portail) : anneau blanc du portail + jaune */
-@mixin lpv-focus-sur-portail {
-  box-shadow: 0 0 0 2px var(--lpv-sur-portail), 0 0 0 5px var(--lpv-focus);
+@mixin lpv-focus-on-portal {
+  box-shadow: 0 0 0 2px var(--lpv-on-portal), 0 0 0 5px var(--lpv-focus);
   outline: none;
 }
 
 /* Lien piloté par le portail : couleur portail-dark, soulignement
    renforcé au hover (motif répété des liens du design system) */
-@mixin lpv-lien-portail {
+@mixin lpv-link-portal {
   color: var(--lpv-portail-dark);
 
   &:hover {
