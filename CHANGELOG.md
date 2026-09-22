@@ -6,6 +6,9 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+### Modifié
+- Bascule de thème : nouveau mode « suivre la machine » (icône d'écran) qui applique automatiquement le thème du système et suit ses changements en temps réel ; le cycle machine → clair → sombre remplace l'ancienne bascule à deux états
+
 ## [0.5.0] — 2026-09-21
 
 ### Ajouté
