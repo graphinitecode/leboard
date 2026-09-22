@@ -1,0 +1,62 @@
+/* LPV Board Design System — Page couleurs
+   Swatches façon GOV.UK : rangée alternée, bloc couleur + nom + hex.
+   Le bloc utilise la variable CSS : il reflète le thème actif (light/dark),
+   le hex affiché documente la valeur du thème clair. */
+
+@use 'mixins';
+
+.lpv-ds-swatch-grid {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0 0 1.5rem;
+}
+
+.lpv-ds-swatch {
+  align-items: center;
+  border-radius: var(--lpv-radius);
+  display: flex;
+  gap: 1rem;
+  overflow: hidden;
+  padding: 0.5rem;
+
+  &:nth-child(odd) {
+    background-color: var(--lpv-grey-bg);
+  }
+
+  &__color {
+    border: 1px solid var(--lpv-grey-border);
+    border-radius: var(--lpv-radius);
+    flex-shrink: 0;
+    height: 3.5rem;
+    width: 6rem;
+  }
+
+  &__name {
+    font-family: GeistMono, monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+  }
+
+  &__hex {
+    color: var(--lpv-text-muted);
+    font-family: GeistMono, monospace;
+    font-size: 0.9rem;
+    margin-left: auto;
+    text-align: right;
+  }
+
+  &:focus {
+    @include mixins.lpv-focus;
+  }
+}
+
+@media (max-width: 639px) {
+  .lpv-ds-swatch {
+    flex-wrap: wrap;
+
+    &__hex {
+      margin-left: 0;
+    }
+  }
+}

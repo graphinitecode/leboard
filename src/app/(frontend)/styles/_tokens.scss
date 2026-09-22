@@ -27,6 +27,7 @@
   --lpv-text: #241623;         /* noir du projet */
   --lpv-text-muted: #565656;
   --lpv-grey-bg: #f4f5f6;
+  --lpv-darkgrey-bg: #ececec;
   --lpv-grey-border: #d8dadc;
   --lpv-surface: #f8f8f8;
   --lpv-bg-feedback: #fff8f8;
@@ -89,9 +90,13 @@
   --lpv-overlay: rgb(15 20 25 / 50%);
   --lpv-overlay-heavy: rgb(15 20 25 / 30%);
 
-  --lpv-radius: 6px;
+  --lpv-radius: 4px;
   --lpv-radius-lg: 4px;
-  --lpv-container: 960px;
+  --lpv-radius-xl: 7px;
+  --lpv-radius-2xl: 10px;
+  --lpv-radius-3xl: 14px;
+  --lpv-container: 1020px;
+  --lpv-container-sm: 960px;
   --lpv-shadow: 0 1px 2px rgb(15 20 25 / 6%), 0 4px 16px rgb(15 20 25 / 7%);
   --lpv-shadow-hover: 0 2px 4px rgb(15 20 25 / 8%), 0 8px 24px rgb(15 20 25 / 10%);
 

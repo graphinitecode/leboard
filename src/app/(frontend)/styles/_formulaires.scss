@@ -375,14 +375,15 @@
 .lpv-a-file-upload {
   appearance: none;
   background-color: var(--lpv-surface);
-  border: 2px solid var(--lpv-text);
-  border-radius: var(--lpv-radius-lg);
+  border: 2px dashed var(--lpv-text);
+  border-radius: var(--lpv-radius-2xl);
   box-sizing: border-box;
   font-size: 1.125rem;
   line-height: 1.4;
+  text-align: center;
   max-width: 40rem;
   min-height: 44px;
-  padding: 0.3rem 0.5rem;
+  padding: 0.6rem 0.5rem;
 
   &:hover {
     border-color: var(--lpv-text);

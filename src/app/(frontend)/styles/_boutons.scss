@@ -39,7 +39,7 @@
 
   /* Variante « Modifier » (orange) */
   &--secondary {
-    background-color: var(--lpv-grey-bg);
+    background-color: var(--lpv-darkgrey-bg);
     box-shadow: 0 2px 0 var(--lpv-grey-border);
     color: var(--lpv-text);
 
@@ -65,6 +65,16 @@
 
     &:hover {
       background-color: var(--lpv-red-hover);
+    }
+  }
+
+  &--success {
+    background-color: var(--lpv-green);
+    box-shadow: 0 2px 0 var(--lpv-a-tag--green-text);
+    color: var(--lpv-surface);
+
+    &:hover {
+      background-color: var(--lpv-a-tag--green);
     }
   }
 

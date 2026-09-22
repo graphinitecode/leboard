@@ -56,6 +56,18 @@ describe('SummaryList', () => {
     expect(container.querySelector('.lpv-m-summary-list__row--no-actions')).not.toBeNull()
   })
 
+  it('porte la variante sans séparateurs quand dividers=false', () => {
+    const { container } = render(
+      <SummaryList dividers={false} items={[{ key: 'Nom', value: 'Dupont' }]} />,
+    )
+    expect(container.querySelector('.lpv-m-summary-list--no-dividers')).not.toBeNull()
+  })
+
+  it('ne porte pas la variante sans séparateurs par défaut', () => {
+    const { container } = render(<SummaryList items={[{ key: 'Nom', value: 'Dupont' }]} />)
+    expect(container.querySelector('.lpv-m-summary-list--no-dividers')).toBeNull()
+  })
+
   it('rend les actions declaratives avec la classe du type', () => {
     const { container } = render(
       <SummaryList

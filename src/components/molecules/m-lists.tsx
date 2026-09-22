@@ -90,9 +90,12 @@ export function ListRow({
 // Les actions sont déclaratives (ActionSummaryList) ou JSX libre (ReactNode).
 // Les rows sans action portent le modifier --no-actions (bordures correctes).
 // `highlightKey` : clé de la row à mettre en évidence à l'apparition (animation).
+// `dividers` : séparateurs entre rows et entre actions (défaut true) ;
+// false rend le listé sans bordures (empilement compact).
 export function SummaryList({
   items,
   highlightKey,
+  dividers = true,
 }: {
   items: {
     key: string
@@ -100,11 +103,12 @@ export function SummaryList({
     actions?: (ActionSummaryList | ReactNode)[]
   }[]
   highlightKey?: string
+  dividers?: boolean
 }) {
   if (items.length === 0) return null
 
   return (
-    <dl className="lpv-m-summary-list">
+    <dl className={`lpv-m-summary-list${dividers ? '' : ' lpv-m-summary-list--no-dividers'}`}>
       {items.map((item, index) => {
         const hasActions = Array.isArray(item.actions) && item.actions.length > 0
         const isNew = highlightKey !== undefined && item.key === highlightKey

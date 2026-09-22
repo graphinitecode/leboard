@@ -9,6 +9,7 @@ html[data-theme='dark'] {
   --lpv-text: #f2eef2;
   --lpv-text-muted: #a3adb3;
   --lpv-grey-bg: #1e1a1e;
+  --lpv-darkgrey-bg: #312a31;
   --lpv-grey-border: #3a343a;
   --lpv-surface: #161216;
   --lpv-bg-feedback: #251011;
@@ -26,6 +27,8 @@ html[data-theme='dark'] {
   --lpv-orange-hover: #f97b1a;
   --lpv-red-shadow: #8a2528;
   --lpv-red-hover: #ff6b6e;
+
+  --lpv-green-shadow: #007436;
 
   /* Tags : identiques en dark (contraste déjà valide sur les deux fonds) */
   --lpv-a-tag--green: #00a14c;
@@ -88,6 +91,16 @@ html[data-theme='dark'] {
 
     &:hover {
       background-color: #0066cc;
+    }
+  }
+
+  .lpv-a-button--success {
+    background-color: var(--lpv-a-tag--green);
+    box-shadow: 0 2px 0 var(--lpv-green-shadow);
+    color: #ffffff;
+
+    &:hover {
+      background-color: #008942;
     }
   }
 

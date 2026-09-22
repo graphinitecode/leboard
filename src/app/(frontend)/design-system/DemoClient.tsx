@@ -85,7 +85,7 @@ export function DemoToast() {
   return (
     <>
       <div style={{ display: 'flex', gap: '0.75rem' }}>
-        <Button onClick={() => setToast({ message: 'Action enregistrée', type: 'success' })} type="button">
+        <Button onClick={() => setToast({ message: 'Action enregistrée', type: 'success' })} type="button" variant="success">
           Toast succès
         </Button>
         <Button onClick={() => setToast({ message: 'Une erreur est survenue', type: 'error' })} type="button" variant="danger">

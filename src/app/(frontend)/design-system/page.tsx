@@ -103,7 +103,7 @@ const PAGES_LAST: (PageNumber | { ellipsis: true })[] = [
 export default function DesignSystemPage() {
   return (
     <div className="lpv-container">
-      <h1 className="lpv-h1">Design system&nbsp;LPV Board</h1>
+      <h1 className="lpv-h1">Design system</h1>
       <p className="lpv-muted">
         Composants inspirés du GOV.UK Design System, adaptés aux couleurs et aux conventions LPV.
       </p>
@@ -118,6 +118,7 @@ export default function DesignSystemPage() {
             { href: '#forms', label: 'Formulaires' },
             { href: '#data', label: 'Données' },
             { href: '#surfaces', label: 'Surfaces' },
+            { href: '/design-system/colors', label: 'Couleurs' },
           ]}
         />
       </nav>
@@ -128,6 +129,9 @@ export default function DesignSystemPage() {
           <Button type="button">Primaire</Button>
           <Button type="button" variant="secondary">
             Secondaire
+          </Button>
+          <Button type="button" variant="success">
+            Succès
           </Button>
           <Button type="button" variant="warning">
             Avertissement
@@ -444,6 +448,20 @@ export default function DesignSystemPage() {
                 </a>
               ),
             },
+          ]}
+        />
+
+        <h3 className="lpv-h3">SummaryList sans séparateurs</h3>
+        <p className="lpv-muted" style={{ marginTop: 0 }}>
+          Avec <code>dividers&#123;=&#123;false&#125;&#125;</code>, les rows s&apos;empilent sans bordure
+          et les actions perdent le trait vertical.
+        </p>
+        <SummaryList
+          dividers={false}
+          items={[
+            { key: 'Nom', value: 'Dupont' },
+            { key: 'Prénom', value: 'Marie' },
+            { key: 'Niveau', value: '6e' },
           ]}
         />
       </section>
