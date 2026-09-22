@@ -103,7 +103,7 @@ const PAGES_LAST: (PageNumber | { ellipsis: true })[] = [
 export default function DesignSystemPage() {
   return (
     <div className="lpv-container">
-      <h1 className="lpv-h1">Design system&nbsp;LPV Board</h1>
+      <h1 className="lpv-h1">Design system</h1>
       <p className="lpv-muted">
         Composants inspirés du GOV.UK Design System, adaptés aux couleurs et aux conventions LPV.
       </p>
@@ -118,6 +118,7 @@ export default function DesignSystemPage() {
             { href: '#forms', label: 'Formulaires' },
             { href: '#data', label: 'Données' },
             { href: '#surfaces', label: 'Surfaces' },
+            { href: '/design-system/colors', label: 'Couleurs' },
           ]}
         />
       </nav>
