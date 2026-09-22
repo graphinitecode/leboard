@@ -2,7 +2,7 @@ import configPromise from '@payload-config'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { getPayload } from 'payload'
 
-import { ContenuPage, EnteteService } from '@/components/molecules/EnteteService'
+import { ContenuPage, EnteteService } from '@/components/molecules/m-service-header'
 
 export const dynamic = 'force-dynamic'
 

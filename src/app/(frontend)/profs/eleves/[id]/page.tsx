@@ -5,7 +5,7 @@ import configPromise from '@payload-config'
 import { BackLink, Tag, WarningText } from '@/components/atoms'
 import { Table } from '@/components/molecules'
 import type { TableauHeadCell, TableauRowCell } from '@/components/molecules'
-import { SummaryList } from '@/components/molecules/Listes'
+import { SummaryList } from '@/components/molecules/m-lists'
 import { requireProf } from '@/utilities/profAuth'
 import { niveauLabel, texteLexical } from '@/utilities/rapports'
 

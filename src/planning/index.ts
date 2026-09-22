@@ -19,7 +19,7 @@ import {
   useModifierDisponibilite,
   DISPONIBILITES_QUERY_KEY,
 } from './application/planning.hooks'
-import { ListeDispos } from './presentation/components/organisms/ListeDispos'
+import { ListeDispos } from '@/components/organisms/o-availability-list'
 
 export {
   planningRepository,

@@ -6,7 +6,7 @@ import { useRef, useState } from 'react'
 
 import type { Header as HeaderType } from '@/payload-types'
 
-import { Icon } from '@/components/atoms/Icon'
+import { Icon } from '@/components/atoms/a-icon'
 import { useFermerHorsClic } from '@/hooks/useFermerHorsClic'
 
 export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {

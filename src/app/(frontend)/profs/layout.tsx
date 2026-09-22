@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 
-import { ContenuPage, EnteteService } from '@/components/molecules/EnteteService'
+import { ContenuPage, EnteteService } from '@/components/molecules/m-service-header'
 import { getMeUserServer } from '@/utilities/profAuth'
 
 export const dynamic = 'force-dynamic'

@@ -2,12 +2,12 @@
 
 import { useState } from 'react'
 
-import { Button } from '@/components/atoms/Button'
-import { Radios, type OptionRadio } from '@/components/molecules/Radios'
-import { Input } from '@/components/molecules/Input'
-import { Modale } from '@/components/molecules/Modale'
-import { Toast } from '@/components/molecules/Toast'
-import { ToggleSegmentes } from '@/components/molecules/ToggleSegmentes'
+import { Button } from '@/components/atoms/a-button'
+import { Radios, type OptionRadio } from '@/components/molecules/m-radios'
+import { Input } from '@/components/molecules/m-input'
+import { Modale } from '@/components/molecules/m-modal'
+import { Toast } from '@/components/molecules/m-toast'
+import { ToggleSegmentes } from '@/components/molecules/m-segmented-toggle'
 
 const RADIO_OPTIONS: OptionRadio[] = [
   {

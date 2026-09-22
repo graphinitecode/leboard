@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { Button, BackLink, Breadcrumbs, Icon, InsetText, Panel, Tag, WarningText, Details, FileUpload } from '@/components/atoms'
-import { Label } from '@/components/atoms/Label'
+import { Label } from '@/components/atoms/a-label'
 import { Accordeon, Avatar, Checkbox, DateInput, InputField, Input, CharacterCount, ListeTaches, NotificationBanner, Tabs, PaginationLPV, ResumeErreurs, SummaryList, Table, ToggleTheme } from '@/components/molecules'
 import type { SectionAccordeon, Onglet, OptionCase, TableauHeadCell, TableauRowCell, Tache, PageNumero } from '@/components/molecules'
 

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-import { SummaryList } from '@/components/molecules/Listes'
+import { SummaryList } from '@/components/molecules/m-lists'
 
 describe('SummaryList', () => {
   it('affiche les cles et les valeurs', () => {
