@@ -8,12 +8,13 @@ export type ActionSummaryListType = 'normal' | 'warning' | 'danger'
 
 // Action déclarative d'une row de summary list : lien (href) ou bouton (onClick).
 // `confirmation` : libellé de la fenêtre de confirmation (action destructive).
+// `onClick` est typé HTMLElement : l'action est rendue soit en <a>, soit en <button>.
 export type ActionSummaryList = {
   type?: ActionSummaryListType
   texte: string
   key?: string
   href?: string
-  onClick?: MouseEventHandler<HTMLAnchorElement>
+  onClick?: MouseEventHandler<HTMLElement>
   confirmation?: string
   disabled?: boolean
 }
@@ -37,7 +38,7 @@ export function ActionSummaryListElement({ action }: { action: ActionSummaryList
   return (
     <button
       disabled={action.disabled}
-      onClick={action.onClick as MouseEventHandler<HTMLButtonElement>}
+      onClick={action.onClick}
       type="button"
       {...propsCommunes}
     />
