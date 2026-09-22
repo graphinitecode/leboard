@@ -20,8 +20,8 @@ import { seancesRepository } from './infrastructure/seances.repository'
 import type { SeanceLigneViewModel, SeanceDetailViewModel } from './presentation/seance.presenter'
 import { presentSeanceLigne, presentSeanceDetail, statutPresenceLabel } from './presentation/seance.presenter'
 import { useSeancesStore } from './presentation/store/seances.store'
-import { TogglePresence } from '@/components/organisms/o-presence-toggle'
-import { FormRetour } from '@/components/organisms/o-return-form'
+import { PresenceToggle } from '@/components/organisms/o-presence-toggle'
+import { ReturnForm } from '@/components/organisms/o-return-form'
 
 export type {
   Seance,
@@ -47,6 +47,6 @@ export {
   presentSeanceDetail,
   statutPresenceLabel,
   useSeancesStore,
-  TogglePresence,
-  FormRetour,
+  PresenceToggle,
+  ReturnForm,
 }

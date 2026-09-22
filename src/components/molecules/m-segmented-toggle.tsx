@@ -2,52 +2,52 @@
 
 import { useState } from 'react'
 
-export interface OptionSegmentee {
+export interface SegmentedOption {
   label: string
-  libelle: string
+  ariaLabel: string
   value: string
 }
 
 // Molécule : toggle segmenté (un tap), générique.
 // L'état actif est communiqué par la couleur + le graisse + aria-pressed (jamais la couleur seule).
-export function ToggleSegmentes({
+export function SegmentedToggle({
   options,
-  valeurInitiale,
-  onChanger,
+  initialValue,
+  onChange,
   ariaLabel,
-  attributData,
+  dataAttribute,
 }: {
-  options: OptionSegmentee[]
-  valeurInitiale: string
-  onChanger: (valeur: string) => void
+  options: SegmentedOption[]
+  initialValue: string
+  onChange: (value: string) => void
   ariaLabel: string
-  attributData?: (option: OptionSegmentee) => Record<string, string>
+  dataAttribute?: (option: SegmentedOption) => Record<string, string>
 }) {
-  const [actifLocal, setActifLocal] = useState<string | null>(null)
+  const [pendingLocal, setPendingLocal] = useState<string | null>(null)
 
   return (
     <div aria-label={ariaLabel} className="lpv-toggle" role="group">
       {options.map((option) => {
-        const actif = valeurInitiale === option.value
-        const dataProps = attributData?.(option) ?? {}
+        const active = initialValue === option.value
+        const dataProps = dataAttribute?.(option) ?? {}
 
         return (
           <button
             key={option.value}
-            aria-label={option.libelle}
-            aria-pressed={actif}
-            className={`lpv-toggle-option${actif ? ' lpv-toggle-option--actif' : ''}`}
-            disabled={actifLocal !== null}
+            aria-label={option.ariaLabel}
+            aria-pressed={active}
+            className={`lpv-toggle-option${active ? ' lpv-toggle-option--active' : ''}`}
+            disabled={pendingLocal !== null}
             onClick={() => {
-              if (actif || actifLocal !== null) return
-              setActifLocal(option.value)
+              if (active || pendingLocal !== null) return
+              setPendingLocal(option.value)
               try {
-                onChanger(option.value)
+                onChange(option.value)
               } finally {
-                setActifLocal(null)
+                setPendingLocal(null)
               }
             }}
-            title={option.libelle}
+            title={option.ariaLabel}
             type="button"
             {...dataProps}
           >

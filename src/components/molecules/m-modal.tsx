@@ -5,49 +5,49 @@ import { useEffect, useRef } from 'react'
 // Molécule : modale accessible (dialog).
 // Escape ferme, clic à l'extérieur ferme, focus piégé sur le bouton principal.
 // L'appelant passe le contenu (texte, actions) en children.
-export function Modale({
-  titre,
-  onFerme,
+export function Modal({
+  title,
+  onClose,
   children,
   labelledBy,
 }: {
-  titre: string
-  onFerme: () => void
+  title: string
+  onClose: () => void
   children: React.ReactNode
   labelledBy?: string
 }) {
-  const modaleRef = useRef<HTMLDivElement>(null)
-  const boutonRef = useRef<HTMLButtonElement>(null)
+  const modalRef = useRef<HTMLDivElement>(null)
+  const primaryButtonRef = useRef<HTMLButtonElement>(null)
 
-  const modaleId = labelledBy ?? `modale-${titre.replace(/\s+/g, '-').toLowerCase()}`
+  const modalId = labelledBy ?? `modal-${title.replace(/\s+/g, '-').toLowerCase()}`
 
   useEffect(() => {
-    boutonRef.current?.focus()
+    primaryButtonRef.current?.focus()
     function escape(e: KeyboardEvent) {
-      if (e.key === 'Escape') onFerme()
+      if (e.key === 'Escape') onClose()
     }
     document.addEventListener('keydown', escape)
     return () => {
       document.removeEventListener('keydown', escape)
     }
-  }, [onFerme])
+  }, [onClose])
 
   return (
     <div
-      className="lpv-modale-fond"
+      className="lpv-m-modal-overlay"
       onClick={(e) => {
-        if (!modaleRef.current?.contains(e.target as Node)) onFerme()
+        if (!modalRef.current?.contains(e.target as Node)) onClose()
       }}
     >
       <div
-        aria-labelledby={modaleId}
+        aria-labelledby={modalId}
         aria-modal="true"
-        className="lpv-modale"
-        ref={modaleRef}
+        className="lpv-m-modal"
+        ref={modalRef}
         role="dialog"
       >
-        <h2 className="lpv-modale__titre" id={modaleId}>
-          {titre}
+        <h2 className="lpv-m-modal__title" id={modalId}>
+          {title}
         </h2>
         {children}
       </div>

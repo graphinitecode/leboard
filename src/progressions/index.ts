@@ -13,7 +13,7 @@ import {
 import { progressionsRepository } from './infrastructure/progressions.repository'
 import type { ProgressionViewModel } from './presentation/progression.presenter'
 import { presentProgression } from './presentation/progression.presenter'
-import { FormProgression } from '@/components/organisms/o-progression-form'
+import { ProgressionForm } from '@/components/organisms/o-progression-form'
 
 export type { ProgressionViewModel }
 export {
@@ -23,5 +23,5 @@ export {
   useAjouterProgression,
   progressionsRepository,
   presentProgression,
-  FormProgression,
+  ProgressionForm,
 }

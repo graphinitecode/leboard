@@ -6,17 +6,17 @@ import { Icon } from '@/components/atoms/a-icon'
 import { ErrorMessage, Hint, Label } from '@/components/atoms/a-label'
 
 // Molécule : champ de formulaire complet (Label + Hint + Erreur + contrôle).
-// Convention : `optionnel` affiche « (optionnel) » dans le label ; un champ
+// Convention : `optional` affiche « (optional) » dans le label ; un champ
 // sans cette mention est obligatoire (attribut required appliqué au contrôle).
 export function Input({
   as = 'input',
   label,
   hint,
-  erreur,
+  error,
   id,
   type = 'text',
   autoComplete,
-  optionnel = false,
+  optional = false,
   name,
   defaultValue,
   value,
@@ -27,16 +27,16 @@ export function Input({
   rows = 4,
   options,
   isPageHeading,
-  taille,
+  size,
 }: {
   as?: 'input' | 'textarea' | 'select'
   label: string
   hint?: string
-  erreur?: string
+  error?: string
   id: string
   type?: string
   autoComplete?: string
-  optionnel?: boolean
+  optional?: boolean
   name?: string
   defaultValue?: string
   value?: string
@@ -47,30 +47,30 @@ export function Input({
   rows?: number
   options?: { label: string; value: string }[]
   isPageHeading?: boolean
-  taille?: 'l' | 'm' | 's'
+  size?: 'l' | 'm' | 's'
 }) {
-  const describedBy = [hint ? `${id}-hint` : null, erreur ? `${id}-error` : null]
+  const describedBy = [hint ? `${id}-hint` : null, error ? `${id}-error` : null]
     .filter(Boolean)
     .join(' ')
 
-  const required = !optionnel
-  const classeErreur = erreur ? ' lpv-input--error' : ''
-  const groupeClasse = `lpv-form-group${erreur ? ' lpv-form-group--error' : ''}`
+  const required = !optional
+  const errorClass = error ? ' lpv-a-input--error' : ''
+  const groupClass = `lpv-form-group${error ? ' lpv-form-group--error' : ''}`
   const [visible, setVisible] = useState(false)
 
   return (
-    <div className={groupeClasse}>
-      <Label htmlFor={id} optionnel={optionnel} isPageHeading={isPageHeading} taille={taille}>
+    <div className={groupClass}>
+      <Label htmlFor={id} optional={optional} isPageHeading={isPageHeading} size={size}>
         {label}
       </Label>
       {hint ? <Hint id={`${id}-hint`}>{hint}</Hint> : null}
-      {erreur ? <ErrorMessage id={`${id}-error`}>{erreur}</ErrorMessage> : null}
+      {error ? <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage> : null}
 
       {as === 'textarea' ? (
         <textarea
           aria-describedby={describedBy || undefined}
-          aria-invalid={erreur ? true : undefined}
-          className={`lpv-textarea${classeErreur}`}
+          aria-invalid={error ? true : undefined}
+          className={`lpv-a-textarea${errorClass}`}
           defaultValue={defaultValue}
           id={id}
           name={name ?? id}
@@ -82,8 +82,8 @@ export function Input({
       ) : as === 'select' ? (
         <select
           aria-describedby={describedBy || undefined}
-          aria-invalid={erreur ? true : undefined}
-          className={`lpv-select${classeErreur}`}
+          aria-invalid={error ? true : undefined}
+          className={`lpv-a-select${errorClass}`}
           defaultValue={defaultValue}
           id={id}
           name={name ?? id}
@@ -97,12 +97,12 @@ export function Input({
           ))}
         </select>
       ) : type === 'password' ? (
-        <div className="lpv-password">
+        <div className="lpv-a-input--password-group">
           <input
             aria-describedby={describedBy || undefined}
-            aria-invalid={erreur ? true : undefined}
+            aria-invalid={error ? true : undefined}
             autoComplete={autoComplete}
-            className={`lpv-input lpv-password__input${classeErreur}`}
+            className={`lpv-a-input lpv-a-input--password-input${errorClass}`}
             defaultValue={defaultValue}
             id={id}
             name={name ?? id}
@@ -115,19 +115,19 @@ export function Input({
           <button
             aria-label={visible ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
             aria-pressed={visible}
-            className="lpv-password__oeil"
+            className="lpv-a-input--password-toggle"
             onClick={() => setVisible((v) => !v)}
             type="button"
           >
-            <Icon icone={visible ? 'rivet-icons:eye-off' : 'rivet-icons:eye'} taille={26} />
+            <Icon icon={visible ? 'rivet-icons:eye-off' : 'rivet-icons:eye'} size={26} />
           </button>
         </div>
       ) : (
         <input
           aria-describedby={describedBy || undefined}
-          aria-invalid={erreur ? true : undefined}
+          aria-invalid={error ? true : undefined}
           autoComplete={autoComplete}
-          className={`lpv-input${classeErreur}`}
+          className={`lpv-a-input${errorClass}`}
           defaultValue={defaultValue}
           id={id}
           max={max}

@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 
-export interface Onglet {
+export interface Tab {
   id: string
-  libelle: string
-  contenu: React.ReactNode
+  label: string
+  content: React.ReactNode
 }
 
 // Molécule : onglets. Inspiré de GOV.UK Tabs.
@@ -13,14 +13,14 @@ export interface Onglet {
 // Avec JS : tablist/tab/tabpanel, roving tabindex, flèches, état dans l'URL.
 export function Tabs({
   id,
-  titre = 'Contenu',
-  onglets,
+  title = 'Contenu',
+  tabs,
 }: {
   id: string
-  titre?: string
-  onglets: Onglet[]
+  title?: string
+  tabs: Tab[]
 }) {
-  const [actif, setActif] = useState(onglets[0]?.id ?? '')
+  const [active, setActive] = useState(tabs[0]?.id ?? '')
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLAnchorElement>) {
     const links = Array.from(
@@ -46,47 +46,47 @@ export function Tabs({
     }
   }
 
-  if (onglets.length === 0) return null
+  if (tabs.length === 0) return null
 
   return (
-    <div className="lpv-onglets" id={id}>
-      <h2 className="lpv-onglets__titre">{titre}</h2>
-      <ul className="lpv-onglets__liste" role="tablist">
-        {onglets.map((onglet) => (
+    <div className="lpv-m-tabs" id={id}>
+      <h2 className="lpv-m-tabs__titre">{title}</h2>
+      <ul className="lpv-m-tabs__liste" role="tablist">
+        {tabs.map((tab) => (
           <li
-            className={`lpv-onglets__item${actif === onglet.id ? ' lpv-onglets__item--selectionne' : ''}`}
-            key={onglet.id}
+            className={`lpv-m-tabs__item${active === tab.id ? ' lpv-m-tabs__item--selectionne' : ''}`}
+            key={tab.id}
             role="presentation"
           >
             <a
-              aria-controls={`panel-${onglet.id}`}
-              aria-selected={actif === onglet.id}
-              className={`lpv-onglets__onglet${actif === onglet.id ? ' lpv-onglets__onglet--actif' : ''}`}
-              href={`#panel-${onglet.id}`}
-              id={`tab-${onglet.id}`}
+              aria-controls={`panel-${tab.id}`}
+              aria-selected={active === tab.id}
+              className={`lpv-m-tabs__tab${active === tab.id ? ' lpv-m-tabs__tab--active' : ''}`}
+              href={`#panel-${tab.id}`}
+              id={`tab-${tab.id}`}
               onClick={(e) => {
                 e.preventDefault()
-                setActif(onglet.id)
+                setActive(tab.id)
               }}
               onKeyDown={handleKeyDown}
               role="tab"
-              tabIndex={actif === onglet.id ? 0 : -1}
+              tabIndex={active === tab.id ? 0 : -1}
             >
-              {onglet.libelle}
+              {tab.label}
             </a>
           </li>
         ))}
       </ul>
-      {onglets.map((onglet) => (
+      {tabs.map((tab) => (
         <div
-          aria-labelledby={`tab-${onglet.id}`}
-          className={`lpv-onglets__panneau${actif === onglet.id ? '' : ' lpv-onglets__panneau--cache'}`}
-          id={`panel-${onglet.id}`}
-          key={onglet.id}
+          aria-labelledby={`tab-${tab.id}`}
+          className={`lpv-m-tabs__panneau${active === tab.id ? '' : ' lpv-m-tabs__panneau--cache'}`}
+          id={`panel-${tab.id}`}
+          key={tab.id}
           role="tabpanel"
         >
-          <h3 className="lpv-onglets__panneau-titre">{onglet.libelle}</h3>
-          {onglet.contenu}
+          <h3 className="lpv-m-tabs__panneau-titre">{tab.label}</h3>
+          {tab.content}
         </div>
       ))}
     </div>

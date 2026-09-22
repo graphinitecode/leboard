@@ -17,23 +17,23 @@ const COLLECTIONS: Record<Collection, IconSet> = {
 }
 
 // Atome : icône SVG rendue côté serveur depuis les JSON Iconify.
-// Usage : <Icon icone="rivet-icons:chevron-down" taille={16} />
-// L'icône est décorative par défaut (aria-hidden) — passer un libelle
+// Usage : <Icon icon="rivet-icons:chevron-down" size={16} />
+// L'icône est décorative par défaut (aria-hidden) — pass a label
 // pour une icône informative.
 export function Icon({
-  icone,
-  taille = 16,
-  libelle,
-  classe,
+  icon,
+  size = 16,
+  label,
+  className,
   style,
 }: {
-  icone: string
-  taille?: number
-  libelle?: string
-  classe?: string
+  icon: string
+  size?: number
+  label?: string
+  className?: string
   style?: CSSProperties
 }) {
-  const [prefix, nom] = icone.split(':') as [Collection, string]
+  const [prefix, name] = icon.split(':') as [Collection, string]
   const collection = COLLECTIONS[prefix]
 
   if (!collection) {
@@ -43,11 +43,11 @@ export function Icon({
     return null
   }
 
-  const donnees = collection.icons[nom]
+  const data = collection.icons[name]
 
-  if (!donnees) {
+  if (!data) {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn(`Icon: icône inconnue « ${icone} »`)
+      console.warn(`Icon: unknown icon « ${icon} »`)
     }
     return null
   }
@@ -56,22 +56,22 @@ export function Icon({
   // height est absent). Largeur = largeur de l'icône si définie, sinon
   // largeur du set, sinon carrée (= hauteur). rivet-icons est 16x16,
   // boxicons 24x24.
-  const hauteurSet = collection.height ?? 16
-  const largeurSet = collection.width ?? hauteurSet
-  const largeur = donnees.width ?? largeurSet
+  const iconHeight = collection.height ?? 16
+  const setWidth = collection.width ?? iconHeight
+  const width = data.width ?? setWidth
 
   return (
     <svg
-      aria-hidden={libelle ? undefined : true}
-      aria-label={libelle}
-      className={classe}
-      dangerouslySetInnerHTML={{ __html: donnees.body }}
+      aria-hidden={label ? undefined : true}
+      aria-label={label}
+      className={className}
+      dangerouslySetInnerHTML={{ __html: data.body }}
       fill="currentColor"
-      height={taille}
-      role={libelle ? 'img' : undefined}
+      height={size}
+      role={label ? 'img' : undefined}
       style={style}
-      viewBox={`0 0 ${largeur} ${hauteurSet}`}
-      width={(taille * largeur) / hauteurSet}
+      viewBox={`0 0 ${width} ${iconHeight}`}
+      width={(size * width) / iconHeight}
       xmlns="http://www.w3.org/2000/svg"
     />
   )

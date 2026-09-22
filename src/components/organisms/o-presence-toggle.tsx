@@ -1,41 +1,41 @@
 'use client'
 
-import { ToggleSegmentes, type OptionSegmentee } from '@/components/molecules/m-segmented-toggle'
+import { SegmentedToggle, type SegmentedOption } from '@/components/molecules/m-segmented-toggle'
 import { useTogglePresence } from '@/seances/application/seances.hooks'
 
-const OPTIONS: OptionSegmentee[] = [
-  { label: 'Présent', libelle: 'Présent', value: 'present' },
-  { label: 'Absent', libelle: 'Absent', value: 'absent' },
-  { label: 'Justifié', libelle: 'Absent (justifié)', value: 'absent-justifie' },
+const OPTIONS: SegmentedOption[] = [
+  { label: 'Présent', ariaLabel: 'Présent', value: 'present' },
+  { label: 'Absent', ariaLabel: 'Absent', value: 'absent' },
+  { label: 'Justifié', ariaLabel: 'Absent (justifié)', value: 'absent-justifie' },
 ]
 
 // Toggle à un tap : boutons segmentés LPV Board (cibles ≥ 44 px, aria-pressed,
 // état communiqué par couleur + graisse + data-statut — jamais la couleur seule).
-export function TogglePresence({
+export function PresenceToggle({
   presenceId,
-  statutInitial,
-  nomEleve,
+  initialStatus,
+  studentName,
 }: {
   presenceId: number
-  statutInitial: string
-  nomEleve: string
+  initialStatus: string
+  studentName: string
 }) {
   const toggle = useTogglePresence()
 
   return (
-    <ToggleSegmentes
-      ariaLabel={`Présence de ${nomEleve}`}
-      attributData={(option) => ({ 'data-statut': option.value })}
-      onChanger={(valeur) =>
+    <SegmentedToggle
+      ariaLabel={`Présence de ${studentName}`}
+      dataAttribute={(option) => ({ 'data-status': option.value })}
+      onChange={(value) =>
         toggle.mutate(
-          { presenceId, statut: valeur as 'present' },
+          { presenceId, statut: value as 'present' },
           {
             onError: () => undefined,
           },
         )
       }
       options={OPTIONS}
-      valeurInitiale={statutInitial}
+      initialValue={initialStatus}
     />
   )
 }

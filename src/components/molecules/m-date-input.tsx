@@ -9,106 +9,106 @@ export function DateInput({
   namePrefix,
   label,
   hint,
-  erreur,
+  error,
   isPageHeading,
-  valeurs,
-  jourErreur,
-  moisErreur,
-  anneeErreur,
+  values,
+  dayError,
+  monthError,
+  yearError,
   autoCompletePrefix,
-  jourAutocomplete,
-  moisAutocomplete,
-  anneeAutocomplete,
-  optionnel,
+  dayAutocomplete,
+  monthAutocomplete,
+  yearAutocomplete,
+  optional,
 }: {
   id: string
   namePrefix?: string
   label: string
   hint?: string
-  erreur?: string
+  error?: string
   isPageHeading?: boolean
-  valeurs?: { jour?: string; mois?: string; annee?: string }
-  jourErreur?: boolean
-  moisErreur?: boolean
-  anneeErreur?: boolean
+  values?: { day?: string; month?: string; year?: string }
+  dayError?: boolean
+  monthError?: boolean
+  yearError?: boolean
   autoCompletePrefix?: string
-  jourAutocomplete?: string
-  moisAutocomplete?: string
-  anneeAutocomplete?: string
-  optionnel?: boolean
+  dayAutocomplete?: string
+  monthAutocomplete?: string
+  yearAutocomplete?: string
+  optional?: boolean
 }) {
   const prefix = namePrefix ?? id
-  const groupeClasse = `lpv-form-group${erreur ? ' lpv-form-group--error' : ''}`
+  const groupClass = `lpv-form-group${error ? ' lpv-form-group--error' : ''}`
   const ariaDescribedByParts: string[] = []
   if (hint) ariaDescribedByParts.push(`${id}-hint`)
-  if (erreur) ariaDescribedByParts.push(`${id}-error`)
+  if (error) ariaDescribedByParts.push(`${id}-error`)
   const ariaDescribedBy = ariaDescribedByParts.length > 0 ? ariaDescribedByParts.join(' ') : undefined
 
   const labelElement = (
-    <Label htmlFor={`${id}-jour`} optionnel={optionnel} isPageHeading={isPageHeading}>
+    <Label htmlFor={`${id}-day`} optional={optional} isPageHeading={isPageHeading}>
       {label}
     </Label>
   )
 
   return (
-    <div className={groupeClasse}>
+    <div className={groupClass}>
       {isPageHeading ? labelElement : labelElement}
       {hint ? <Hint id={`${id}-hint`}>{hint}</Hint> : null}
-      {erreur ? <ErrorMessage id={`${id}-error`}>{erreur}</ErrorMessage> : null}
+      {error ? <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage> : null}
       <fieldset aria-describedby={ariaDescribedBy} className="lpv-fieldset" role="group">
-        <legend className="lpv-fieldset__legende lpv-sr-only">{label}</legend>
-        <div className="lpv-champ-date">
-          <div className="lpv-champ-date__item">
+        <legend className="lpv-fieldset__legend lpv-visually-hidden">{label}</legend>
+        <div className="lpv-m-date-input">
+          <div className="lpv-m-date-input__item">
             <div className="lpv-form-group">
-              <label className="lpv-label lpv-champ-date__label" htmlFor={`${id}-jour`}>
+              <label className="lpv-label lpv-m-date-input__label" htmlFor={`${id}-day`}>
                 Jour
               </label>
               <input
-                autoComplete={jourAutocomplete ?? (autoCompletePrefix ? `${autoCompletePrefix}-day` : undefined)}
-                className={`lpv-input lpv-champ-date__input lpv-input--width-2${jourErreur ? ' lpv-input--error' : ''}`}
-                id={`${id}-jour`}
+                autoComplete={dayAutocomplete ?? (autoCompletePrefix ? `${autoCompletePrefix}-day` : undefined)}
+                className={`lpv-a-input lpv-m-date-input__input lpv-a-input--width-2${dayError ? ' lpv-a-input--error' : ''}`}
+                id={`${id}-day`}
                 inputMode="numeric"
                 maxLength={2}
-                name={`${prefix}-jour`}
+                name={`${prefix}-day`}
                 pattern="[0-9]*"
                 type="text"
-                defaultValue={valeurs?.jour}
+                defaultValue={values?.day}
               />
             </div>
           </div>
-          <div className="lpv-champ-date__item">
+          <div className="lpv-m-date-input__item">
             <div className="lpv-form-group">
-              <label className="lpv-label lpv-champ-date__label" htmlFor={`${id}-mois`}>
+              <label className="lpv-label lpv-m-date-input__label" htmlFor={`${id}-month`}>
                 Mois
               </label>
               <input
-                autoComplete={moisAutocomplete ?? (autoCompletePrefix ? `${autoCompletePrefix}-month` : undefined)}
-                className={`lpv-input lpv-champ-date__input lpv-input--width-2${moisErreur ? ' lpv-input--error' : ''}`}
-                id={`${id}-mois`}
+                autoComplete={monthAutocomplete ?? (autoCompletePrefix ? `${autoCompletePrefix}-month` : undefined)}
+                className={`lpv-a-input lpv-m-date-input__input lpv-a-input--width-2${monthError ? ' lpv-a-input--error' : ''}`}
+                id={`${id}-month`}
                 inputMode="numeric"
                 maxLength={2}
-                name={`${prefix}-mois`}
+                name={`${prefix}-month`}
                 pattern="[0-9]*"
                 type="text"
-                defaultValue={valeurs?.mois}
+                defaultValue={values?.month}
               />
             </div>
           </div>
-          <div className="lpv-champ-date__item">
+          <div className="lpv-m-date-input__item">
             <div className="lpv-form-group">
-              <label className="lpv-label lpv-champ-date__label" htmlFor={`${id}-annee`}>
+              <label className="lpv-label lpv-m-date-input__label" htmlFor={`${id}-year`}>
                 Année
               </label>
               <input
-                autoComplete={anneeAutocomplete ?? (autoCompletePrefix ? `${autoCompletePrefix}-year` : undefined)}
-                className={`lpv-input lpv-champ-date__input lpv-input--width-4${anneeErreur ? ' lpv-input--error' : ''}`}
-                id={`${id}-annee`}
+                autoComplete={yearAutocomplete ?? (autoCompletePrefix ? `${autoCompletePrefix}-year` : undefined)}
+                className={`lpv-a-input lpv-m-date-input__input lpv-a-input--width-4${yearError ? ' lpv-a-input--error' : ''}`}
+                id={`${id}-year`}
                 inputMode="numeric"
                 maxLength={4}
-                name={`${prefix}-annee`}
+                name={`${prefix}-year`}
                 pattern="[0-9]*"
                 type="text"
-                defaultValue={valeurs?.annee}
+                defaultValue={values?.year}
               />
             </div>
           </div>

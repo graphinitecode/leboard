@@ -1,34 +1,34 @@
 // Atomes typographiques de champ : Label, Hint, ErrorMessage
 //
-// Convention des labels : un champ SANS mention « (optionnel) » est obligatoire.
+// Convention des labels : un champ sans mention « (optional) » est obligatoire.
 // L'astérisque n'est pas utilisée — la mention suffit (pas de sémantique couleur/seule).
 //
 // Guide GOV.UK « Making labels and legends headings » :
 // - isPageHeading enveloppe le label dans un <h1> (page-question).
-// - taille pilote la classe de taille : 'l' (défaut), 'm', 's'.
+// - size pilote la classe de taille : 'l' (défaut), 'm', 's'.
 
-type TailleLabel = 'l' | 'm' | 's'
+type LabelSize = 'l' | 'm' | 's'
 
 export function Label({
   htmlFor,
   children,
-  optionnel,
+  optional,
   isPageHeading,
-  taille,
+  size,
 }: {
   htmlFor: string
   children: string
-  optionnel?: boolean
+  optional?: boolean
   isPageHeading?: boolean
-  taille?: TailleLabel
+  size?: LabelSize
 }) {
-  const classeTaille = taille && taille !== 'l' ? ` lpv-label--${taille}` : ''
-  const classe = `lpv-label${classeTaille}`
+  const sizeClass = size && size !== 'l' ? ` lpv-a-label--${size}` : ''
+  const classes = `lpv-a-label${sizeClass}`
 
   const label = (
-    <label className={classe} htmlFor={htmlFor}>
+    <label className={classes} htmlFor={htmlFor}>
       {children}
-      {optionnel ? <span className="lpv-label__optionnel"> (optionnel)</span> : null}
+      {optional ? <span className="lpv-a-label__optional"> (optional)</span> : null}
     </label>
   )
 

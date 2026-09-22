@@ -6,7 +6,7 @@ import { Button } from '@/components/atoms/a-button'
 import {
   Input,
   NotificationBanner,
-  ResumeErreurs,
+  ErrorSummary,
 } from '@/components/molecules'
 import { useAjouterProgression, useListCompetences, type NiveauProgression } from '@/progressions/application/progressions.hooks'
 
@@ -16,22 +16,22 @@ const OPTIONS_NIVEAU: { label: string; value: NiveauProgression }[] = [
   { label: 'À revoir', value: 'a-revoir' },
 ]
 
-export function FormProgression({
+export function ProgressionForm({
   seanceId,
-  eleves,
+  students,
 }: {
   seanceId?: number
-  eleves: { id: number; label: string }[]
+  students: { id: number; label: string }[]
 }) {
   const competences = useListCompetences()
   const ajouter = useAjouterProgression(seanceId)
   const [success, setSuccess] = useState<string | null>(null)
-  const [ouvert, setOuvert] = useState(false)
-  const [erreurFormulaire, setErreurFormulaire] = useState<string | null>(null)
+  const [open, setOpen] = useState(false)
+  const [formError, setFormError] = useState<string | null>(null)
 
-  if (!ouvert) {
+  if (!open) {
     return (
-      <Button onClick={() => setOuvert(true)} type="button">
+      <Button onClick={() => setOpen(true)} type="button">
         Ajouter une progression
       </Button>
     )
@@ -44,10 +44,10 @@ export function FormProgression({
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
         setSuccess(null)
-        setErreurFormulaire(null)
+        setFormError(null)
         ajouter.mutate(
           {
-            eleveId: Number(formData.get('eleve')),
+            eleveId: Number(formData.get('student')),
             competenceId: Number(formData.get('competence')),
             niveau: String(formData.get('niveau')) as NiveauProgression,
             commentaire: String(formData.get('commentaire') ?? '') || undefined,
@@ -55,22 +55,22 @@ export function FormProgression({
           {
             onSuccess: () => {
               setSuccess('Progression enregistrée')
-              setOuvert(false)
+              setOpen(false)
             },
-            onError: (err) => setErreurFormulaire(err.message),
+            onError: (err) => setFormError(err.message),
           },
         )
       }}
     >
-      {success && <NotificationBanner titre={success} type="success" />}
-      <ResumeErreurs erreurs={erreurFormulaire ? [erreurFormulaire] : []} />
+      {success && <NotificationBanner title={success} type="success" />}
+      <ErrorSummary errors={formError ? [formError] : []} />
       <Input
         as="select"
         hint="Seuls les élèves de cette séance sont proposés."
-        id="eleve-progression"
+        id="student-progression"
         label="Élève"
-        name="eleve"
-        options={eleves.map((eleve) => ({ label: eleve.label, value: String(eleve.id) }))}
+        name="student"
+        options={students.map((student) => ({ label: student.label, value: String(student.id) }))}
       />
       <Input
         as="select"
@@ -89,13 +89,13 @@ export function FormProgression({
         id="commentaire-progression"
         label="Commentaire"
         name="commentaire"
-        optionnel
+        optional
       />
       <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-start' }}>
         <Button disabled={ajouter.isPending} type="submit">
           {ajouter.isPending ? 'Enregistrement…' : 'Enregistrer'}
         </Button>
-        <Button onClick={() => setOuvert(false)} type="button" variante="secondaire">
+        <Button onClick={() => setOpen(false)} type="button" variant="secondary">
           Annuler
         </Button>
       </div>

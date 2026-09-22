@@ -8,34 +8,34 @@ import { useEffect, useRef, useState } from 'react'
 export function Toast({
   message,
   type = 'success',
-  duree = 5000,
-  onFerme,
+  duration = 5000,
+  onClose,
 }: {
   message: string
-  type?: 'success' | 'erreur'
-  duree?: number
-  onFerme?: () => void
+  type?: 'success' | 'error'
+  duration?: number
+  onClose?: () => void
 }) {
   const [visible, setVisible] = useState(true)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
-    if (duree > 0) {
+    if (duration > 0) {
       timerRef.current = setTimeout(() => {
         setVisible(false)
-        onFerme?.()
-      }, duree)
+        onClose?.()
+      }, duration)
     }
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current)
     }
-  }, [duree, onFerme])
+  }, [duration, onClose])
 
   if (!visible) return null
 
   return (
     <div
-      className={`lpv-toast${type === 'erreur' ? ' lpv-toast--erreur' : ''}`}
+      className={`lpv-toast${type === 'error' ? ' lpv-m-toast--error' : ''}`}
       role="status"
     >
       {message}

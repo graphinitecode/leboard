@@ -1,63 +1,63 @@
-export interface TableauHeadCell {
-  texte: string
-  format?: 'numerique'
+export interface TableHeadCell {
+  text: string
+  format?: 'numeric'
   colspan?: number
 }
 
-export interface TableauRowCell {
-  texte?: string
+export interface TableRowCell {
+  text?: string
   html?: string
-  contenu?: React.ReactNode
-  format?: 'numerique'
+  content?: React.ReactNode
+  format?: 'numeric'
   colspan?: number
   rowspan?: number
 }
 
 // Molécule : tableau accessible. Inspiré de GOV.UK Table.
-// - Caption (légende) avec tailles s/m/l/xl
+// - Caption avec tailles s/m/l/xl
 // - En-têtes de colonne avec scope="col"
-// - premiereCelluleEntete = th scope="row" pour la première cellule de chaque ligne
+// - firstColumnHeader = th scope="row" pour la première cellule de chaque ligne
 // - Cellules numériques alignées à droite
 export function Table({
   caption,
-  captionTaille = 'm',
+  captionSize = 'm',
   head,
   rows,
-  premiereCelluleEntete = false,
+  firstColumnHeader = false,
 }: {
   caption: string
-  captionTaille?: 's' | 'm' | 'l' | 'xl'
-  head?: TableauHeadCell[]
-  rows: TableauRowCell[][]
-  premiereCelluleEntete?: boolean
+  captionSize?: 's' | 'm' | 'l' | 'xl'
+  head?: TableHeadCell[]
+  rows: TableRowCell[][]
+  firstColumnHeader?: boolean
 }) {
   return (
-    <table className="lpv-tableau">
-      <caption className={`lpv-tableau__legende lpv-tableau__legende--${captionTaille}`}>
+    <table className="lpv-m-table">
+      <caption className={`lpv-m-table__caption lpv-m-table__caption--${captionSize}`}>
         {caption}
       </caption>
       {head && head.length > 0 && (
-        <thead className="lpv-tableau__tete">
-          <tr className="lpv-tableau__ligne">
+        <thead className="lpv-m-table__head">
+          <tr className="lpv-m-table__row">
             {head.map((cell, index) => (
               <th
-                className={`lpv-tableau__entete${cell.format === 'numerique' ? ' lpv-tableau__entete--numerique' : ''}`}
+                className={`lpv-m-table__head-cell${cell.format === 'numeric' ? ' lpv-m-table__head-cell--numeric' : ''}`}
                 colSpan={cell.colspan}
                 key={index}
                 scope="col"
               >
-                {cell.texte}
+                {cell.text}
               </th>
             ))}
           </tr>
         </thead>
       )}
-      <tbody className="lpv-tableau__corps">
+      <tbody className="lpv-m-table__body">
         {rows.map((row, rowIndex) => (
-          <tr className="lpv-tableau__ligne" key={rowIndex}>
+          <tr className="lpv-m-table__row" key={rowIndex}>
             {row.map((cell, cellIndex) => {
-              const isHeader = premiereCelluleEntete && cellIndex === 0
-              const cellClass = `lpv-tableau__cellule${cell.format === 'numerique' ? ' lpv-tableau__cellule--numerique' : ''}`
+              const isHeader = firstColumnHeader && cellIndex === 0
+              const cellClass = `lpv-m-table__cell${cell.format === 'numeric' ? ' lpv-m-table__cell--numeric' : ''}`
 
               if (isHeader) {
                 return (
@@ -69,7 +69,7 @@ export function Table({
                     rowSpan={cell.rowspan}
                     scope="row"
                   >
-                    {cell.html ? null : cell.texte}
+                    {cell.html ? null : cell.text}
                   </th>
                 )
               }
@@ -82,7 +82,7 @@ export function Table({
                   key={cellIndex}
                   rowSpan={cell.rowspan}
                 >
-                  {cell.contenu ?? (cell.html ? null : cell.texte)}
+                  {cell.content ?? (cell.html ? null : cell.text)}
                 </td>
               )
             })}

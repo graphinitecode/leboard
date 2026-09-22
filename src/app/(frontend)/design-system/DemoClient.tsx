@@ -3,84 +3,84 @@
 import { useState } from 'react'
 
 import { Button } from '@/components/atoms/a-button'
-import { Radios, type OptionRadio } from '@/components/molecules/m-radios'
+import { Radios, type RadioOption } from '@/components/molecules/m-radios'
 import { Input } from '@/components/molecules/m-input'
-import { Modale } from '@/components/molecules/m-modal'
+import { Modal } from '@/components/molecules/m-modal'
 import { Toast } from '@/components/molecules/m-toast'
-import { ToggleSegmentes } from '@/components/molecules/m-segmented-toggle'
+import { SegmentedToggle } from '@/components/molecules/m-segmented-toggle'
 
-const RADIO_OPTIONS: OptionRadio[] = [
+const RADIO_OPTIONS: RadioOption[] = [
   {
-    conditionnel: <Input hint="Précisez les modalités." id="demo-radio-modalites" label="Modalités" optionnel />,
-    texte: 'Oui',
-    valeur: 'oui',
+    conditional: <Input hint="Précisez les modalités." id="demo-radio-modalites" label="Modalités" optional />,
+    label: 'Oui',
+    value: 'oui',
   },
-  { texte: 'Non', valeur: 'non' },
+  { label: 'Non', value: 'non' },
 ]
 
 export function DemoRadio() {
-  const [valeur, setValeur] = useState('non')
+  const [value, setValue] = useState('non')
 
   return (
     <Radios
       idPrefix="demo-radio"
-      nom="accord"
-      onChange={(e) => setValeur(e.target.value)}
+      name="accord"
+      onChange={(e) => setValue(e.target.value)}
       options={RADIO_OPTIONS}
-      valeur={valeur}
+      value={value}
     />
   )
 }
 
 export function DemoToggle() {
-  const [valeur, setValeur] = useState('profs')
+  const [value, setValue] = useState('profs')
 
-  async function onChanger(nouvelleValeur: string) {
-    setValeur(nouvelleValeur)
+  async function onChange(newValue: string) {
+    setValue(newValue)
     return { ok: true }
   }
 
   return (
-    <ToggleSegmentes
+    <SegmentedToggle
       ariaLabel="Portail"
-      onChanger={onChanger}
+      onChange={onChange}
       options={[
-        { label: 'Profs', libelle: 'Professeurs', value: 'profs' },
-        { label: 'Parents', libelle: 'Parents', value: 'parents' },
-        { label: 'Élèves', libelle: 'Élèves', value: 'eleves' },
+        { label: 'Profs', ariaLabel: 'Professeurs', value: 'profs' },
+        { label: 'Parents', ariaLabel: 'Parents', value: 'parents' },
+        { label: 'Élèves', ariaLabel: 'Élèves', value: 'eleves' },
       ]}
-      valeurInitiale={valeur}
+      initialValue={value}
     />
   )
 }
 
 export function DemoModale() {
-  const [ouverte, setOuverte] = useState(false)
+  const [open, setOpen] = useState(false)
 
   return (
     <>
-      <Button onClick={() => setOuverte(true)} type="button">Ouvrir la modale</Button>
-      {ouverte && (
-        <Modale onFerme={() => setOuverte(false)} titre="Confirmer l'action">
+      <Button onClick={() => setOpen(true)} type="button">Ouvrir la modale</Button>
+      {open && (
+        <Modal onClose={() => setOpen(false)} title="Confirmer l'action">
           <p className="lpv-modale__texte">
             Êtes-vous sûr de vouloir continuer ? Cette action est irréversible.
           </p>
           <div className="lpv-modale__actions">
-            <Button onClick={() => setOuverte(false)} type="button" variante="secondaire">
+            <Button onClick={() => setOpen(false)} type="button" variant="secondary">
               Annuler
             </Button>
-            <Button onClick={() => setOuverte(false)} type="button" variante="danger">
+            <Button onClick={() => setOpen(false)} type="button" variant="danger">
               Confirmer
             </Button>
           </div>
-        </Modale>
+        </Modal>
       )}
     </>
   )
 }
 
 export function DemoToast() {
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'erreur' } | null>(null)
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
 
   return (
     <>
@@ -88,11 +88,11 @@ export function DemoToast() {
         <Button onClick={() => setToast({ message: 'Action enregistrée', type: 'success' })} type="button">
           Toast succès
         </Button>
-        <Button onClick={() => setToast({ message: 'Une erreur est survenue', type: 'erreur' })} type="button" variante="danger">
+        <Button onClick={() => setToast({ message: 'Une erreur est survenue', type: 'error' })} type="button" variant="danger">
           Toast erreur
         </Button>
       </div>
-      {toast && <Toast message={toast.message} type={toast.type} onFerme={() => setToast(null)} />}
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
     </>
   )
 }

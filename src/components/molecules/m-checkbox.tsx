@@ -4,78 +4,78 @@ import { useState } from 'react'
 
 import { ErrorMessage, Hint } from '@/components/atoms/a-label'
 
-type TailleLabel = 'l' | 'm' | 's'
+type LegendSize = 'l' | 'm' | 's'
 
-export type OptionCase = {
-  valeur: string
-  texte: string
+export type CheckboxOption = {
+  value: string
+  label: string
   hint?: string
-  coche?: boolean
-  diviseur?: never
-  conditionnel?: React.ReactNode
+  checked?: boolean
+  divider?: never
+  conditional?: React.ReactNode
   disabled?: boolean
 } | {
-  diviseur: string
-  valeur?: never
-  texte?: never
+  divider: string
+  value?: never
+  label?: never
   hint?: never
-  coche?: never
-  conditionnel?: never
+  checked?: never
+  conditional?: never
   disabled?: never
 }
 
 // Molécule : une option de case à cocher avec révélation conditionnelle.
 // Composant séparé pour respecter les règles des hooks (pas de useState dans une boucle).
-function OptionAvecRevelation({
+function OptionWithRevelation({
   option,
   optionId,
   hintId,
   conditionalId,
-  nom,
-  onChangeExterne,
+  name,
+  onExternalChange,
 }: {
-  option: OptionCase & { diviseur?: never }
+  option: CheckboxOption & { divider?: never }
   optionId: string
   hintId: string | undefined
   conditionalId: string | undefined
-  nom: string
-  onChangeExterne?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  name: string
+  onExternalChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }) {
-  const [revealed, setRevealed] = useState(option.coche ?? false)
+  const [revealed, setRevealed] = useState(option.checked ?? false)
 
   return (
-    <div key={option.valeur}>
-      <div className="lpv-cases__item">
+    <div key={option.value}>
+      <div className="lpv-m-checkbox__item">
         <input
           aria-describedby={hintId}
-          checked={option.coche}
-          className="lpv-cases__input"
+          checked={option.checked}
+          className="lpv-m-checkbox__input"
           data-aria-controls={conditionalId}
           disabled={option.disabled}
           id={optionId}
-          name={nom}
+          name={name}
           onChange={(e) => {
             setRevealed(e.target.checked)
-            onChangeExterne?.(e)
+            onExternalChange?.(e)
           }}
           type="checkbox"
-          value={option.valeur}
+          value={option.value}
         />
-        <label className="lpv-label lpv-cases__label" htmlFor={optionId}>
-          {option.texte}
+        <label className="lpv-label lpv-m-checkbox__label" htmlFor={optionId}>
+          {option.label}
         </label>
         {option.hint ? (
-          <div className="lpv-hint lpv-cases__hint" id={hintId}>
+          <div className="lpv-hint lpv-m-checkbox__hint" id={hintId}>
             {option.hint}
           </div>
         ) : null}
       </div>
-      {option.conditionnel ? (
+      {option.conditional ? (
         <div
-          className={`lpv-cases__conditionnel${revealed ? '' : ' lpv-cases__conditionnel--hidden'}`}
+          className={`lpv-m-checkbox__conditionnel${revealed ? '' : ' lpv-m-checkbox__conditionnel--hidden'}`}
           id={conditionalId}
         >
-          {option.conditionnel}
+          {option.conditional}
         </div>
       ) : null}
     </div>
@@ -83,67 +83,67 @@ function OptionAvecRevelation({
 }
 
 export function Checkbox({
-  nom,
+  name,
   options,
   idPrefix,
   hint,
-  erreur,
+  error,
   isPageHeading,
-  tailleLegende = 'l',
+  legendSize = 'l',
   onChange,
 }: {
-  nom: string
-  options: OptionCase[]
+  name: string
+  options: CheckboxOption[]
   idPrefix?: string
   hint?: string
-  erreur?: string
+  error?: string
   isPageHeading?: boolean
-  tailleLegende?: TailleLabel
+  legendSize?: LegendSize
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }) {
-  const prefix = idPrefix ?? nom
-  const groupeClasse = `lpv-form-group${erreur ? ' lpv-form-group--error' : ''}`
+  const prefix = idPrefix ?? name
+  const groupClass = `lpv-form-group${error ? ' lpv-form-group--error' : ''}`
   const ariaDescribedByParts: string[] = []
   if (hint) ariaDescribedByParts.push(`${prefix}-hint`)
-  if (erreur) ariaDescribedByParts.push(`${prefix}-error`)
+  if (error) ariaDescribedByParts.push(`${prefix}-error`)
   const ariaDescribedBy = ariaDescribedByParts.length > 0 ? ariaDescribedByParts.join(' ') : undefined
 
   return (
-    <div className={groupeClasse}>
+    <div className={groupClass}>
       <fieldset aria-describedby={ariaDescribedBy} className="lpv-fieldset">
         {isPageHeading ? (
-          <legend className={`lpv-fieldset__legende${tailleLegende !== 'l' ? ` lpv-fieldset__legende--${tailleLegende}` : ''}`}>
-            <h1 className="lpv-fieldset__titre">{nom}</h1>
+          <legend className={`lpv-fieldset__legende${legendSize !== 'l' ? ` lpv-fieldset__legende--${legendSize}` : ''}`}>
+            <h1 className="lpv-fieldset__titre">{name}</h1>
           </legend>
         ) : (
-          <legend className={`lpv-fieldset__legende${tailleLegende !== 'l' ? ` lpv-fieldset__legende--${tailleLegende}` : ''}`}>
-            {nom}
+          <legend className={`lpv-fieldset__legende${legendSize !== 'l' ? ` lpv-fieldset__legende--${legendSize}` : ''}`}>
+            {name}
           </legend>
         )}
         {hint ? <Hint id={`${prefix}-hint`}>{hint}</Hint> : null}
-        {erreur ? <ErrorMessage id={`${prefix}-error`}>{erreur}</ErrorMessage> : null}
-        <div className="lpv-cases">
+        {error ? <ErrorMessage id={`${prefix}-error`}>{error}</ErrorMessage> : null}
+        <div className="lpv-m-checkbox">
           {options.map((option, index) => {
-            if (option.diviseur) {
+            if (option.divider) {
               return (
-                <div className="lpv-cases__diviseur" key={`divider-${index}`}>
-                  {option.diviseur}
+                <div className="lpv-m-checkbox__diviseur" key={`divider-${index}`}>
+                  {option.divider}
                 </div>
               )
             }
 
             const optionId = `${prefix}-${index + 1}`
             const hintId = option.hint ? `${optionId}-hint` : undefined
-            const conditionalId = option.conditionnel ? `${optionId}-conditionnel` : undefined
+            const conditionalId = option.conditional ? `${optionId}-conditional` : undefined
 
             return (
-              <OptionAvecRevelation
+              <OptionWithRevelation
                 conditionalId={conditionalId}
                 hintId={hintId}
-                key={option.valeur}
-                nom={nom}
-                onChangeExterne={onChange}
-                option={option as OptionCase & { diviseur?: never; valeur: string; texte: string }}
+                key={option.value}
+                name={name}
+                onExternalChange={onChange}
+                option={option as CheckboxOption & { divider?: never; value: string; label: string }}
                 optionId={optionId}
               />
             )

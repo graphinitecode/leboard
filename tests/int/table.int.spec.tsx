@@ -2,19 +2,19 @@ import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
 import { Table } from '@/components/molecules/m-table'
-import type { TableauHeadCell, TableauRowCell } from '@/components/molecules/m-table'
+import type { TableHeadCell, TableRowCell } from '@/components/molecules/m-table'
 
-const head: TableauHeadCell[] = [
-  { texte: 'Nom' },
-  { texte: 'Âge', format: 'numerique' },
+const head: TableHeadCell[] = [
+  { text: 'Nom' },
+  { text: 'Âge', format: 'numeric' },
 ]
 
-const rows: TableauRowCell[][] = [
-  [{ texte: 'Alice' }, { texte: '30', format: 'numerique' }],
-  [{ texte: 'Bob' }, { texte: '25', format: 'numerique' }],
+const rows: TableRowCell[][] = [
+  [{ text: 'Alice' }, { text: '30', format: 'numeric' }],
+  [{ text: 'Bob' }, { text: '25', format: 'numeric' }],
 ]
 
-describe('Tableau', () => {
+describe('Table', () => {
   it('affiche la légende et les en-têtes', () => {
     render(<Table caption="Liste" head={head} rows={rows} />)
     expect(screen.getAllByText('Liste').length).toBeGreaterThanOrEqual(1)
@@ -29,22 +29,22 @@ describe('Tableau', () => {
   })
 
   it('affiche du contenu React dans une cellule via contenu', () => {
-    const rowsWithReactNode: TableauRowCell[][] = [
-      [{ texte: 'Alice' }, { contenu: <strong>Important</strong> }],
+    const rowsWithReactNode: TableRowCell[][] = [
+      [{ text: 'Alice' }, { content: <strong>Important</strong> }],
     ]
     render(<Table caption="Liste" head={head} rows={rowsWithReactNode} />)
     expect(screen.getByText('Important')).toBeDefined()
   })
 
-  it('utilise th pour la première colonne quand premiereCelluleEntete', () => {
-    render(<Table caption="Liste" head={head} rows={rows} premiereCelluleEntete />)
+  it('utilise th pour la première colonne quand firstColumnHeader', () => {
+    render(<Table caption="Liste" head={head} rows={rows} firstColumnHeader />)
     const thElements = screen.getAllByRole('rowheader')
     expect(thElements.length).toBeGreaterThanOrEqual(1)
   })
 
   it('affiche la légende avec la taille xl', () => {
-    const { container } = render(<Table caption="Liste" head={head} rows={rows} captionTaille="xl" />)
-    const caption = container.querySelector('.lpv-tableau__legende--xl')
+    const { container } = render(<Table caption="Liste" head={head} rows={rows} captionSize="xl" />)
+    const caption = container.querySelector('.lpv-m-table__caption--xl')
     expect(caption).not.toBeNull()
   })
 })

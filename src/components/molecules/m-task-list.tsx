@@ -1,62 +1,62 @@
 import { Tag } from '@/components/atoms'
 
-export interface TacheStatut {
-  texte: string
-  couleur?: 'vert' | 'jaune' | 'orange' | 'rouge' | 'bleu'
+export interface TaskStatus {
+  text: string
+  color?: 'green' | 'yellow' | 'orange' | 'red' | 'blue'
 }
 
-export interface Tache {
-  titre: string
+export interface Task {
+  title: string
   href?: string
   hint?: string
-  statut: TacheStatut | string
+  status: TaskStatus | string
 }
 
 // Molécule : liste de tâches avec statut. Inspiré de GOV.UK Task list.
 // Chaque tâche affiche un titre (lien si href), un hint optionnel, et un statut
 // (texte ou Tag). Le statut est lié au titre via aria-describedby pour l'accessibilité.
-export function ListeTaches({
-  taches,
-  idPrefix = 'tache',
+export function TaskList({
+  tasks,
+  idPrefix = 'task',
 }: {
-  taches: Tache[]
+  tasks: Task[]
   idPrefix?: string
 }) {
   return (
-    <ul className="lpv-liste-taches">
-      {taches.map((tache, index) => {
-        const statutId = `${idPrefix}-${index + 1}-statut`
-        const hintId = tache.hint ? `${idPrefix}-${index + 1}-hint` : undefined
-        const describedBy = [hintId, statutId].filter(Boolean).join(' ')
+    <ul className="lpv-m-task-list">
+      {tasks.map((task, index) => {
+        const statusId = `${idPrefix}-${index + 1}-status`
+        const hintId = task.hint ? `${idPrefix}-${index + 1}-hint` : undefined
+        const describedBy = [hintId, statusId].filter(Boolean).join(' ')
 
         return (
           <li
-            className={`lpv-liste-taches__item${tache.href ? ' lpv-liste-taches__item--avec-lien' : ''}`}
-            key={`${tache.titre}-${index}`}
+            className={`lpv-m-task-list__item${task.href ? ' lpv-m-task-list__item--with-link' : ''}`}
+            key={`${task.title}-${index}`}
           >
-            <div className="lpv-liste-taches__nom-et-hint">
-              {tache.href ? (
+            <div className="lpv-m-task-list__name-and-hint">
+              {task.href ? (
                 <a
                   aria-describedby={describedBy || undefined}
-                  className="lpv-link lpv-liste-taches__lien"
-                  href={tache.href}
+                  className="lpv-link lpv-m-task-list__link"
+                  href={task.href}
                 >
-                  {tache.titre}
+                  {task.title}
                 </a>
               ) : (
-                <span aria-describedby={describedBy || undefined}>{tache.titre}</span>
+                <span aria-describedby={describedBy || undefined}>{task.title}</span>
               )}
-              {tache.hint ? (
-                <div className="lpv-liste-taches__hint" id={hintId}>
-                  {tache.hint}
+              {task.hint ? (
+                <div className="lpv-m-task-list__hint" id={hintId}>
+                  {task.hint}
                 </div>
               ) : null}
             </div>
-            <div className="lpv-liste-taches__statut" id={statutId}>
-              {typeof tache.statut === 'string' ? (
-                tache.statut
+            <div className="lpv-m-task-list__statut" id={statusId}>
+              {typeof task.status === 'string' ? (
+                task.status
               ) : (
-                <Tag couleur={tache.statut.couleur}>{tache.statut.texte}</Tag>
+                <Tag color={task.status.color}>{task.status.text}</Tag>
               )}
             </div>
           </li>

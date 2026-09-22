@@ -1,16 +1,16 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-import { Accordeon } from '@/components/molecules/m-accordion'
+import { Accordion } from '@/components/molecules/m-accordion'
 
 const sections = [
-  { titre: 'Section un', contenu: <p>Contenu un</p> },
-  { titre: 'Section deux', contenu: <p>Contenu deux</p> },
+  { title: 'Section un', content: <p>Contenu un</p> },
+  { title: 'Section deux', content: <p>Contenu deux</p> },
 ]
 
-describe('Accordeon', () => {
+describe('Accordion', () => {
   it('affiche toutes les sections', () => {
-    render(<Accordeon id="test-acc" sections={sections} />)
+    render(<Accordion id="test-acc" sections={sections} />)
     const buttons = screen.getAllByRole('button')
     const sectionUnBtn = buttons.find((b) => b.textContent?.includes('Section un'))
     const sectionDeuxBtn = buttons.find((b) => b.textContent?.includes('Section deux'))
@@ -19,19 +19,19 @@ describe('Accordeon', () => {
   })
 
   it('affiche un bouton tout ouvrir quand il y a plusieurs sections', () => {
-    render(<Accordeon id="test-acc" sections={sections} />)
+    render(<Accordion id="test-acc" sections={sections} />)
     const toutOuvrirButtons = screen.getAllByRole('button', { name: 'Tout ouvrir' })
     expect(toutOuvrirButtons.length).toBeGreaterThanOrEqual(1)
   })
 
   it('ne montre pas de bouton tout ouvrir pour une seule section', () => {
-    const { container } = render(<Accordeon id="test-acc1" sections={[sections[0]]} />)
-    const toutOuvrirBtn = container.querySelector('.lpv-accordeon__bouton-tout')
+    const { container } = render(<Accordion id="test-acc1" sections={[sections[0]]} />)
+    const toutOuvrirBtn = container.querySelector('.lpv-m-accordion__button-all')
     expect(toutOuvrirBtn).toBeNull()
   })
 
   it('bascule une section au clic', () => {
-    render(<Accordeon id="test-acc2" sections={sections} souvenirOuverture={false} />)
+    render(<Accordion id="test-acc2" sections={sections} rememberState={false} />)
     const buttons = screen.getAllByRole('button')
     const bouton = buttons.find((b) => b.textContent?.includes('Section un'))!
     expect(bouton).toHaveAttribute('aria-expanded', 'false')
@@ -42,9 +42,9 @@ describe('Accordeon', () => {
 
   it('affiche le résumé quand la section est fermée', () => {
     render(
-      <Accordeon
+      <Accordion
         id="test-acc4"
-        sections={[{ titre: 'Avec résumé', resume: 'Résumé visible', contenu: <p>Contenu</p> }]}
+        sections={[{ title: 'Avec résumé', summary: 'Résumé visible', content: <p>Contenu</p> }]}
       />,
     )
     expect(screen.getAllByText('Résumé visible').length).toBeGreaterThanOrEqual(1)

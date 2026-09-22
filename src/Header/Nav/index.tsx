@@ -7,7 +7,7 @@ import { useRef, useState } from 'react'
 import type { Header as HeaderType } from '@/payload-types'
 
 import { Icon } from '@/components/atoms/a-icon'
-import { useFermerHorsClic } from '@/hooks/useFermerHorsClic'
+import { useCloseOnClickOutside } from '@/hooks/useCloseOnClickOutside'
 
 export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
   const navItems = data?.navItems || []
@@ -55,7 +55,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
       })}
       {data?.afficherRecherche !== false && (
         <Link aria-label="Recherche" className="lpv-entete-nav__recherche" href="/search">
-          <Icon icone="rivet-icons:magnifying-glass" taille={20} />
+          <Icon icon="rivet-icons:magnifying-glass" size={20} />
           <span className="lpv-visually-hidden">Recherche</span>
         </Link>
       )}
@@ -75,7 +75,7 @@ function DropdownNav({
   const [ouvert, setOuvert] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
-  useFermerHorsClic(ref, () => setOuvert(false))
+  useCloseOnClickOutside(ref, () => setOuvert(false))
 
   function lienHref(
     lien: NonNullable<HeaderType['navItems']>[number]['link'],
@@ -101,7 +101,7 @@ function DropdownNav({
         type="button"
       >
         <span aria-hidden="true" className="lpv-entete-dropdown__chevron">
-          <Icon icone={ouvert ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} taille={20} />
+          <Icon icon={ouvert ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} size={20} />
         </span>
         {label}
       </button>

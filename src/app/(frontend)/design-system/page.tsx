@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 
 import { Button, BackLink, Breadcrumbs, Icon, InsetText, Panel, Tag, WarningText, Details, FileUpload } from '@/components/atoms'
 import { Label } from '@/components/atoms/a-label'
-import { Accordeon, Avatar, Checkbox, DateInput, InputField, Input, CharacterCount, ListeTaches, NotificationBanner, Tabs, PaginationLPV, ResumeErreurs, SummaryList, Table, ToggleTheme } from '@/components/molecules'
-import type { SectionAccordeon, Onglet, OptionCase, TableauHeadCell, TableauRowCell, Tache, PageNumero } from '@/components/molecules'
+import { Accordion, Avatar, Checkbox, DateInput, InputField, Input, CharacterCount, TaskList, NotificationBanner, Tabs, Pagination, ErrorSummary, SummaryList, Table, ThemeToggle } from '@/components/molecules'
+import type { AccordionSection, Tab, CheckboxOption, TableHeadCell, TableRowCell, Task, PageNumber } from '@/components/molecules'
 
 import { DemoModale, DemoRadio, DemoToggle, DemoToast } from './DemoClient'
 
@@ -14,17 +14,17 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 }
 
-const ACCORDEON_SECTIONS: SectionAccordeon[] = [
-  { titre: 'Section un', resume: 'Résumé de la section un', contenu: <p>Contenu détaillé de la première section.</p> },
-  { titre: 'Section deux', contenu: <p>Contenu de la deuxième section, sans résumé.</p> },
-  { titre: 'Section trois', resume: 'Résumé court', contenu: <p>Et un troisième contenu.</p> },
+const ACCORDION_SECTIONS: AccordionSection[] = [
+  { title: 'Section un', summary: 'Résumé de la section un', content: <p>Contenu détaillé de la première section.</p> },
+  { title: 'Section deux', content: <p>Contenu de la deuxième section, sans résumé.</p> },
+  { title: 'Section trois', summary: 'Résumé court', content: <p>Et un troisième contenu.</p> },
 ]
 
-const ONGLETS: Onglet[] = [
+const TABS: Tab[] = [
   {
     id: 'lundi',
-    libelle: 'Lundi',
-    contenu: (
+    label: 'Lundi',
+    content: (
       <p>
         Cours de <strong>mathématiques</strong> le lundi.
       </p>
@@ -32,8 +32,8 @@ const ONGLETS: Onglet[] = [
   },
   {
     id: 'mardi',
-    libelle: 'Mardi',
-    contenu: (
+    label: 'Mardi',
+    content: (
       <p>
         Cours de{' '}
         <strong>
@@ -43,61 +43,61 @@ const ONGLETS: Onglet[] = [
       </p>
     ),
   },
-  { id: 'mercredi', libelle: 'Mercredi', contenu: <p>Pas de cours le mercredi.</p> },
+  { id: 'mercredi', label: 'Mercredi', content: <p>Pas de cours le mercredi.</p> },
 ]
 
-const CASES_OPTIONS: OptionCase[] = [
-  { valeur: 'email', texte: 'Notification par e-mail' },
-  { valeur: 'sms', texte: 'Notification par SMS', hint: 'Des frais peuvent s\'appliquer.' },
-  { valeur: 'courrier', texte: 'Notification par courrier' },
-  { diviseur: 'ou' },
-  { valeur: 'aucun', texte: 'Aucune notification' },
+const CHECKBOX_OPTIONS: CheckboxOption[] = [
+  { value: 'email', label: 'Notification par e-mail' },
+  { value: 'sms', label: 'Notification par SMS', hint: 'Des frais peuvent s\'appliquer.' },
+  { value: 'courrier', label: 'Notification par courrier' },
+  { divider: 'ou' },
+  { value: 'none', label: 'Aucune notification' },
 ]
 
-const TABLEAU_HEAD: TableauHeadCell[] = [
-  { texte: 'Nom' },
-  { texte: 'Niveau', format: 'numerique' },
-  { texte: 'Statut' },
+const TABLE_HEAD: TableHeadCell[] = [
+  { text: 'Nom' },
+  { text: 'Niveau', format: 'numeric' },
+  { text: 'Statut' },
 ]
 
-const TABLEAU_ROWS: TableauRowCell[][] = [
-  [{ texte: 'Alice' }, { texte: '6e', format: 'numerique' }, { contenu: <Tag couleur="vert">Présent</Tag> }],
-  [{ texte: 'Bob' }, { texte: '5e', format: 'numerique' }, { contenu: <Tag couleur="rouge">Absent</Tag> }],
-  [{ texte: 'Clara' }, { texte: '4e', format: 'numerique' }, { contenu: <Tag couleur="jaune">Absent (justifié)</Tag> }],
+const TABLE_ROWS: TableRowCell[][] = [
+  [{ text: 'Alice' }, { text: '6e', format: 'numeric' }, { content: <Tag color="green">Présent</Tag> }],
+  [{ text: 'Bob' }, { text: '5e', format: 'numeric' }, { content: <Tag color="red">Absent</Tag> }],
+  [{ text: 'Clara' }, { text: '4e', format: 'numeric' }, { content: <Tag color="yellow">Absent (justifié)</Tag> }],
 ]
 
-const TACHES: Tache[] = [
-  { titre: 'Inscription élève', href: '#', hint: 'À compléter avant le 15 septembre', statut: { texte: 'À faire', couleur: 'orange' } },
-  { titre: 'Consentement RGPD', href: '#', statut: { texte: 'Fait', couleur: 'vert' } },
-  { titre: 'Certificat médical', statut: { texte: 'En attente', couleur: 'jaune' } },
+const TASKS: Task[] = [
+  { title: 'Inscription élève', href: '#', hint: 'À compléter avant le 15 septembre', status: { text: 'À faire', color: 'orange' } },
+  { title: 'Consentement RGPD', href: '#', status: { text: 'Fait', color: 'green' } },
+  { title: 'Certificat médical', status: { text: 'En attente', color: 'yellow' } },
 ]
 
-const PAGES: (PageNumero | { ellipsis: true })[] = [
-  { numero: 1, href: '#' },
+const PAGES: (PageNumber | { ellipsis: true })[] = [
+  { number: 1, href: '#' },
   { ellipsis: true },
-  { numero: 6, href: '#' },
-  { numero: 7, href: '#', courant: true },
-  { numero: 8, href: '#' },
+  { number: 6, href: '#' },
+  { number: 7, href: '#', current: true },
+  { number: 8, href: '#' },
   { ellipsis: true },
-  { numero: 42, href: '#' },
+  { number: 42, href: '#' },
 ]
 
-const PAGES_COURTE: (PageNumero | { ellipsis: true })[] = [
-  { numero: 1, href: '#' },
-  { numero: 2, href: '#', courant: true },
-  { numero: 3, href: '#' },
+const PAGES_SHORT: (PageNumber | { ellipsis: true })[] = [
+  { number: 1, href: '#' },
+  { number: 2, href: '#', current: true },
+  { number: 3, href: '#' },
 ]
 
-const PAGES_PREMIERE: (PageNumero | { ellipsis: true })[] = [
-  { numero: 1, href: '#', courant: true },
-  { numero: 2, href: '#' },
-  { numero: 3, href: '#' },
+const PAGES_FIRST: (PageNumber | { ellipsis: true })[] = [
+  { number: 1, href: '#', current: true },
+  { number: 2, href: '#' },
+  { number: 3, href: '#' },
 ]
 
-const PAGES_DERNIERE: (PageNumero | { ellipsis: true })[] = [
-  { numero: 1, href: '#' },
-  { numero: 2, href: '#' },
-  { numero: 3, href: '#', courant: true },
+const PAGES_LAST: (PageNumber | { ellipsis: true })[] = [
+  { number: 1, href: '#' },
+  { number: 2, href: '#' },
+  { number: 3, href: '#', current: true },
 ]
 
 export default function DesignSystemPage() {
@@ -110,29 +110,29 @@ export default function DesignSystemPage() {
 
       <nav aria-label="Sommaire" style={{ marginBottom: '2rem' }}>
         <Breadcrumbs
-          liens={[
-            { href: '#boutons', libelle: 'Boutons' },
-            { href: '#tags', libelle: 'Tags & toggle' },
-            { href: '#messages', libelle: 'Messages' },
-            { href: '#navigation', libelle: 'Navigation' },
-            { href: '#formulaires', libelle: 'Formulaires' },
-            { href: '#donnees', libelle: 'Données' },
-            { href: '#surfaces', libelle: 'Surfaces' },
+          items={[
+            { href: '#buttons', label: 'Boutons' },
+            { href: '#tags', label: 'Tags & toggle' },
+            { href: '#messages', label: 'Messages' },
+            { href: '#navigation', label: 'Navigation' },
+            { href: '#forms', label: 'Formulaires' },
+            { href: '#data', label: 'Données' },
+            { href: '#surfaces', label: 'Surfaces' },
           ]}
         />
       </nav>
 
-      <section id="boutons" style={{ marginBottom: '3.7rem' }}>
+      <section id="buttons" style={{ marginBottom: '3.7rem' }}>
         <h2 className="lpv-h2">Boutons</h2>
         <div className="lpv-demo-exemples">
           <Button type="button">Primaire</Button>
-          <Button type="button" variante="secondaire">
+          <Button type="button" variant="secondary">
             Secondaire
           </Button>
-          <Button type="button" variante="avertissement">
+          <Button type="button" variant="warning">
             Avertissement
           </Button>
-          <Button type="button" variante="danger">
+          <Button type="button" variant="danger">
             Danger
           </Button>
           <Button href="/design-system" type="button">
@@ -144,14 +144,14 @@ export default function DesignSystemPage() {
       <section id="tags" style={{ marginBottom: '3.7rem' }}>
         <h2 className="lpv-h2">Tags & toggle</h2>
         <div className="lpv-demo-exemples">
-          <Tag couleur="vert">Actif</Tag>
-          <Tag couleur="jaune">En attente</Tag>
-          <Tag couleur="orange">À faire</Tag>
-          <Tag couleur="rouge">Urgent</Tag>
-          <Tag couleur="bleu">Info</Tag>
-          <Tag couleur="violet">Réservé</Tag>
-          <Tag couleur="magenta">Nouveau</Tag>
-          <Tag couleur="sarcelle">Archivé</Tag>
+          <Tag color="green">Actif</Tag>
+          <Tag color="yellow">En attente</Tag>
+          <Tag color="orange">À faire</Tag>
+          <Tag color="red">Urgent</Tag>
+          <Tag color="blue">Info</Tag>
+          <Tag color="violet">Réservé</Tag>
+          <Tag color="magenta">Nouveau</Tag>
+          <Tag color="teal">Archivé</Tag>
         </div>
         <h3 className="lpv-h3">Toggle segmenté</h3>
         <DemoToggle />
@@ -174,13 +174,13 @@ export default function DesignSystemPage() {
         </WarningText>
 
         <h3 className="lpv-h3">NotificationBanner</h3>
-        <NotificationBanner titre="Vos disponibilités ont été enregistrées" type="success" />
+        <NotificationBanner title="Vos disponibilités ont été enregistrées" type="success" />
 
-        <h3 className="lpv-h3">ResumeErreurs</h3>
-        <ResumeErreurs
-          erreurs={[
-            { champId: 'nom', texte: 'Le nom est requis' },
-            { champId: 'email', texte: "L'adresse e-mail n'est pas valide" },
+        <h3 className="lpv-h3">ErrorSummary</h3>
+        <ErrorSummary
+          errors={[
+            { fieldId: 'nom', text: 'Le nom est requis' },
+            { fieldId: 'email', text: "L'adresse e-mail n'est pas valide" },
           ]}
         />
 
@@ -196,10 +196,10 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">FilAriane</h3>
         <Breadcrumbs
-          liens={[
-            { href: '/', libelle: 'Accueil' },
-            { href: '/profs', libelle: 'Mes séances' },
-            { libelle: 'Disponibilités' },
+          items={[
+            { href: '/', label: 'Accueil' },
+            { href: '/profs', label: 'Mes séances' },
+            { label: 'Disponibilités' },
           ]}
         />
 
@@ -208,30 +208,30 @@ export default function DesignSystemPage() {
           La page courante est un bloc plein inversé, non cliquable. « Précédent » n&apos;est pas
           rendu en première page, « Suivant » en dernière page.
         </p>
-        <PaginationLPV items={PAGES} precedente={{ href: '#' }} suivante={{ href: '#' }} />
-        <PaginationLPV items={PAGES_COURTE} precedente={{ href: '#' }} suivante={{ href: '#' }} />
-        <PaginationLPV items={PAGES_PREMIERE} suivante={{ href: '#' }} />
-        <PaginationLPV items={PAGES_DERNIERE} precedente={{ href: '#' }} />
-        <PaginationLPV
+        <Pagination items={PAGES} previous={{ href: '#' }} next={{ href: '#' }} />
+        <Pagination items={PAGES_SHORT} previous={{ href: '#' }} next={{ href: '#' }} />
+        <Pagination items={PAGES_FIRST} next={{ href: '#' }} />
+        <Pagination items={PAGES_LAST} previous={{ href: '#' }} />
+        <Pagination
           items={PAGES}
-          precedente={{ href: '#', libelle: 'Disponibilités' }}
-          suivante={{ href: '#', libelle: 'Élèves' }}
-          variante="bloc"
+          previous={{ href: '#', label: 'Disponibilités' }}
+          next={{ href: '#', label: 'Élèves' }}
+          variant="block"
         />
 
         <h3 className="lpv-h3">Details</h3>
-        <Details resume="Quelles sont les horaires possibles ?" open>
+        <Details summary="Quelles sont les horaires possibles ?" open>
           Les cours ont lieu du lundi au samedi, de 8h à 18h.
         </Details>
-        <Details resume="Comment s'inscrire ?">
+        <Details summary="Comment s'inscrire ?">
           Contactez l&apos;association par e-mail ou via le formulaire en ligne.
         </Details>
 
         <h3 className="lpv-h3">Accordeon</h3>
-        <Accordeon id="demo-accordeon" sections={ACCORDEON_SECTIONS} />
+        <Accordion id="demo-accordion" sections={ACCORDION_SECTIONS} />
 
         <h3 className="lpv-h3">Onglets</h3>
-        <Tabs id="demo-onglets" onglets={ONGLETS} titre="Cours par jour" />
+        <Tabs id="demo-tabs" tabs={TABS} title="Cours par jour" />
       </section>
 
       <section id="formulaires" style={{ marginBottom: '3rem' }}>
@@ -239,17 +239,17 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">Label tailles & isPageHeading</h3>
         <div>
-          <Label htmlFor="demo-label-l" taille="l">
+          <Label htmlFor="demo-label-l" size="l">
             Label taille L
           </Label>
         </div>
         <div>
-          <Label htmlFor="demo-label-m" taille="m">
+          <Label htmlFor="demo-label-m" size="m">
             Label taille M
           </Label>
         </div>
         <div>
-          <Label htmlFor="demo-label-s" taille="s">
+          <Label htmlFor="demo-label-s" size="s">
             Label taille S
           </Label>
         </div>
@@ -269,7 +269,7 @@ export default function DesignSystemPage() {
         </div>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
           <Input
-            erreur="Entrez votre adresse e-mail"
+            error="Entrez votre adresse e-mail"
             hint="Nous ne partagerons pas votre e-mail."
             id="demo-champ-email"
             label="Adresse e-mail"
@@ -277,7 +277,7 @@ export default function DesignSystemPage() {
           />
         </div>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
-          <Input id="demo-champ-opt" label="Téléphone" optionnel />
+          <Input id="demo-champ-opt" label="Téléphone" optional />
         </div>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
           <Input
@@ -309,11 +309,11 @@ export default function DesignSystemPage() {
         <h3 className="lpv-h3">ChampEnsemble (fieldset)</h3>
         <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
           <InputField
-            erreur="Choisissez une option"
+            error="Choisissez une option"
             hint="Sélectionnez la fréquence souhaitée."
             isPageHeading
-            legende="Fréquence des rappels"
-            taille="m"
+            legend="Fréquence des rappels"
+            size="m"
           >
             <Input
               as="select"
@@ -332,8 +332,8 @@ export default function DesignSystemPage() {
           <Checkbox
             hint="Vous pouvez choisir plusieurs options."
             idPrefix="demo-cases"
-            nom="notifications"
-            options={CASES_OPTIONS}
+            name="notifications"
+            options={CHECKBOX_OPTIONS}
           />
         </div>
 
@@ -348,7 +348,7 @@ export default function DesignSystemPage() {
             hint="Décrivez votre situation en quelques mots."
             id="demo-compteur"
             label="Description"
-            limite={200}
+            limit={200}
             name="description"
           />
         </div>
@@ -361,7 +361,7 @@ export default function DesignSystemPage() {
             id="demo-upload"
             label="Attestation"
             name="attestation"
-            optionnel
+            optional
           />
         </div>
 
@@ -383,21 +383,21 @@ export default function DesignSystemPage() {
         <h3 className="lpv-h3">Tableau</h3>
         <Table
           caption="Élèves inscrits"
-          captionTaille="l"
-          head={TABLEAU_HEAD}
-          premiereCelluleEntete
-          rows={TABLEAU_ROWS}
+          captionSize="l"
+          head={TABLE_HEAD}
+          firstColumnHeader
+          rows={TABLE_ROWS}
         />
 
         <h3 className="lpv-h3">ListeTaches</h3>
-        <ListeTaches idPrefix="demo-tache" taches={TACHES} />
+        <TaskList idPrefix="demo-task" tasks={TASKS} />
 
         <h3 className="lpv-h3">SummaryList</h3>
         <SummaryList
           items={[
-            { cle: 'Nom', valeur: 'Dupont' },
-            { cle: 'Prénom', valeur: 'Marie' },
-            { cle: 'Niveau', valeur: '6e' },
+            { key: 'Nom', value: 'Dupont' },
+            { key: 'Prénom', value: 'Marie' },
+            { key: 'Niveau', value: '6e' },
           ]}
         />
 
@@ -411,34 +411,34 @@ export default function DesignSystemPage() {
         <SummaryList
           items={[
             {
-              cle: 'Élève',
-              valeur: 'Marie Dupont',
-              actions: [{ type: 'normal', texte: 'Modifier', href: '#modifier' }],
+              key: 'Élève',
+              value: 'Marie Dupont',
+              actions: [{ type: 'normal', label: 'Modifier', href: '#modifier' }],
             },
             {
-              cle: 'Adresse',
-              valeur: (
+              key: 'Adresse',
+              value: (
                 <>
                   12 rue des Lilas
                   <br />
                   75011 Paris
                 </>
               ),
-              actions: [{ type: 'normal', texte: 'Modifier', href: '#modifier' }],
+              actions: [{ type: 'normal', label: 'Modifier', href: '#modifier' }],
             },
             {
-              cle: 'Créneau',
-              valeur: 'Lundi 14h → 16h',
+              key: 'Créneau',
+              value: 'Lundi 14h → 16h',
               actions: [
-                { key: 'aj', texte: 'Ajouter', href: '#ajouter' },
-                { key: 'mod', texte: 'Modifier', href: '#modifier' },
-                { key: 'av', texte: 'Suspendre', href: '#suspendre', type: 'warning' },
-                { key: 'sup', texte: 'Supprimer', href: '#supprimer', type: 'danger', confirmation: 'Cette action est définitive' },
+                { key: 'aj', label: 'Ajouter', href: '#ajouter' },
+                { key: 'mod', label: 'Modifier', href: '#modifier' },
+                { key: 'av', label: 'Suspendre', href: '#suspendre', type: 'warning' },
+                { key: 'sup', label: 'Supprimer', href: '#supprimer', type: 'danger', confirmation: 'Cette action est définitive' },
               ],
             },
             {
-              cle: 'Certificat médical',
-              valeur: (
+              key: 'Certificat médical',
+              value: (
                 <a href="#renseigner" className="lpv-lien-inline">
                   Renseigner…
                 </a>
@@ -472,14 +472,14 @@ export default function DesignSystemPage() {
         >
           <Avatar email="olivier.durand@lpv.fr" nom="Olivier Durand" />
           <span aria-hidden="true" className="lpv-entete-separateur" />
-          <button aria-expanded={false} className="lpv-menu-bouton" type="button">
-            <span aria-hidden="true" className="lpv-menu-bouton__icone">
-              <Icon icone="rivet-icons:menu" taille={22} />
+          <button aria-expanded={false} className="lpv-m-collapsible-menu__button" type="button">
+            <span aria-hidden="true" className="lpv-m-collapsible-menu__button-icon">
+              <Icon icon="rivet-icons:menu" size={22} />
             </span>
-            <span aria-hidden="true" className="lpv-menu-bouton__chevron">
-              <Icon icone="rivet-icons:chevron-down" taille={22} />
+            <span aria-hidden="true" className="lpv-m-collapsible-menu__button-chevron">
+              <Icon icon="rivet-icons:chevron-down" size={22} />
             </span>
-            <span className="lpv-menu-bouton__libelle">Menu</span>
+            <span className="lpv-m-collapsible-menu__button-label">Menu</span>
           </button>
         </div>
 
@@ -501,7 +501,7 @@ export default function DesignSystemPage() {
           }}
         >
           <span>Thème actuel</span>
-          <ToggleTheme />
+          <ThemeToggle />
         </div>
 
         <h3 className="lpv-h3">Modale</h3>
@@ -509,18 +509,18 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">Récapitulatif (markup statique)</h3>
         <div className="lpv-recap" style={{ marginBottom: '1rem' }}>
-          <div className="lpv-recap__ligne">
-            <span className="lpv-recap__cle">Jour</span>
+          <div className="lpv-recap__row">
+            <span className="lpv-recap__key">Jour</span>
             <span>Lundi</span>
           </div>
-          <div className="lpv-recap__ligne">
-            <span className="lpv-recap__cle">Heure</span>
+          <div className="lpv-recap__row">
+            <span className="lpv-recap__key">Heure</span>
             <span>14h → 16h</span>
           </div>
         </div>
 
         <h3 className="lpv-h3">Stepper (markup statique)</h3>
-        <p className="lpv-stepper__etape">Étape 1 sur 3</p>
+        <p className="lpv-stepper__step">Étape 1 sur 3</p>
         <h2 className="lpv-stepper__question">Quel jour vous convient ?</h2>
         <p className="lpv-stepper__hint">Sélectionnez un jour de la semaine.</p>
       </section>

@@ -2,40 +2,40 @@ import type { ReactNode } from 'react'
 
 import { ErrorMessage, Hint } from '@/components/atoms/a-label'
 
-type TailleLegende = 'l' | 'm' | 's'
+type LegendSize = 'l' | 'm' | 's'
 
 // Molécule : ensemble de champs (<fieldset> + <legend>).
-// Utilisée par CasesACocher, BoutonsRadio, ChampDate, et tout groupe
+// Utilisée par Checkbox, Radios, DateInput, et tout groupe
 // de champs apparentés (ex. adresse).
 //
 // Guide GOV.UK « Making labels and legends headings » :
 // - isPageHeading place le <h1> DANS la <legend> (pas autour).
-// - taille pilote la classe de légende : 'l' (défaut), 'm', 's'.
+// - size pilote la classe de légende : 'l' (défaut), 'm', 's'.
 // - Le fieldset regroupe visuellement et accessiblement les champs du groupe.
 // - describedBy relie le fieldset au hint et/ou à l'erreur du groupe.
 export function InputField({
   children,
-  legende,
-  taille = 'l',
+  legend,
+  size = 'l',
   isPageHeading,
   hint,
-  erreur,
+  error,
   describedBy,
   role,
 }: {
   children: ReactNode
-  legende: string
-  taille?: TailleLegende
+  legend: string
+  size?: LegendSize
   isPageHeading?: boolean
   hint?: string
-  erreur?: string
+  error?: string
   describedBy?: string
   role?: string
 }) {
-  const classeTaille = taille !== 'l' ? ` lpv-fieldset__legende--${taille}` : ''
+  const sizeClass = size !== 'l' ? ` lpv-fieldset__legend--${size}` : ''
   const ids: string[] = []
   if (hint) ids.push(`${describedBy ?? ''}-hint`)
-  if (erreur) ids.push(`${describedBy ?? ''}-error`)
+  if (error) ids.push(`${describedBy ?? ''}-error`)
   const ariaDescribedBy = ids.length > 0 ? ids.join(' ') : undefined
 
   return (
@@ -44,11 +44,11 @@ export function InputField({
       className="lpv-fieldset"
       role={role}
     >
-      <legend className={`lpv-fieldset__legende${classeTaille}`}>
-        {isPageHeading ? <h1 className="lpv-fieldset__titre">{legende}</h1> : legende}
+      <legend className={`lpv-fieldset__legend${sizeClass}`}>
+        {isPageHeading ? <h1 className="lpv-fieldset__title">{legend}</h1> : legend}
       </legend>
       {hint ? <Hint id={`${describedBy ?? ''}-hint`}>{hint}</Hint> : null}
-      {erreur ? <ErrorMessage id={`${describedBy ?? ''}-error`}>{erreur}</ErrorMessage> : null}
+      {error ? <ErrorMessage id={`${describedBy ?? ''}-error`}>{error}</ErrorMessage> : null}
       {children}
     </fieldset>
   )

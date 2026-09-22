@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from 'react'
 
 import { Icon } from '@/components/atoms/a-icon'
 
-export interface SectionAccordeon {
-  titre: string
-  resume?: string
-  contenu: React.ReactNode
-  ouvert?: boolean
+export interface AccordionSection {
+  title: string
+  summary?: string
+  content: React.ReactNode
+  open?: boolean
 }
 
 function Heading({
@@ -32,120 +32,120 @@ function Heading({
   )
 }
 
-export function Accordeon({
+export function Accordion({
   id,
   sections,
   headingLevel = 2,
-  souvenirOuverture = true,
-  toutOuvrirTexte = 'Tout ouvrir',
-  toutMasquerTexte = 'Tout masquer',
-  ouvrirSectionTexte = 'Ouvrir',
-  masquerSectionTexte = 'Masquer',
+  rememberState = true,
+  openAllLabel = 'Tout ouvrir',
+  closeAllLabel = 'Tout masquer',
+  openSectionLabel = 'Ouvrir',
+  closeSectionLabel = 'Masquer',
 }: {
   id: string
-  sections: SectionAccordeon[]
+  sections: AccordionSection[]
   headingLevel?: number
-  souvenirOuverture?: boolean
-  toutOuvrirTexte?: string
-  toutMasquerTexte?: string
-  ouvrirSectionTexte?: string
-  masquerSectionTexte?: string
+  rememberState?: boolean
+  openAllLabel?: string
+  closeAllLabel?: string
+  openSectionLabel?: string
+  closeSectionLabel?: string
 }) {
-  const [ouverts, setOuverts] = useState<Record<string, boolean>>(() => {
+  const [openState, setOpenState] = useState<Record<string, boolean>>(() => {
     const init: Record<string, boolean> = {}
     sections.forEach((section, i) => {
       const sectionId = `${id}-section-${i + 1}`
-      init[sectionId] = section.ouvert ?? false
+      init[sectionId] = section.open ?? false
     })
     return init
   })
-  const allOpen = Object.values(ouverts).every(Boolean) && Object.keys(ouverts).length > 0
+  const allOpen = Object.values(openState).every(Boolean) && Object.keys(openState).length > 0
   const ref = useRef<HTMLDivElement>(null)
 
   // Lecture de la mémorisation après hydratation : sessionStorage n'existe pas
   // côté serveur, le premier rendu est volontairement neutre (SSR). Disable
   // justifié : lecture d'un système externe, cas d'usage légitime de useEffect.
   useEffect(() => {
-    if (!souvenirOuverture) return
+    if (!rememberState) return
     try {
-      const stored = sessionStorage.getItem(`lpv-accordeon-${id}`)
+      const stored = sessionStorage.getItem(`lpv-accordion-${id}`)
       if (stored) {
         const parsed = JSON.parse(stored) as Record<string, boolean>
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        if (parsed && typeof parsed === 'object') setOuverts(parsed)
+        if (parsed && typeof parsed === 'object') setOpenState(parsed)
       }
     } catch {}
-  }, [id, souvenirOuverture])
+  }, [id, rememberState])
 
   useEffect(() => {
-    if (!souvenirOuverture) return
+    if (!rememberState) return
     try {
-      sessionStorage.setItem(`lpv-accordeon-${id}`, JSON.stringify(ouverts))
+      sessionStorage.setItem(`lpv-accordion-${id}`, JSON.stringify(openState))
     } catch {}
-  }, [ouverts, id, souvenirOuverture])
+  }, [openState, id, rememberState])
 
   function toggleSection(sectionId: string) {
-    setOuverts((prev) => ({ ...prev, [sectionId]: !prev[sectionId] }))
+    setOpenState((prev) => ({ ...prev, [sectionId]: !prev[sectionId] }))
   }
 
   function toggleAll() {
     const newState = !allOpen
     const updated: Record<string, boolean> = {}
-    Object.keys(ouverts).forEach((key) => {
+    Object.keys(openState).forEach((key) => {
       updated[key] = newState
     })
-    setOuverts(updated)
+    setOpenState(updated)
   }
 
   return (
-    <div className="lpv-accordeon" id={id} ref={ref}>
+    <div className="lpv-m-accordion" id={id} ref={ref}>
       {sections.length > 1 && (
         <button
-          className="lpv-accordeon__bouton-tout"
+          className="lpv-m-accordion__bouton-tout"
           onClick={toggleAll}
           type="button"
         >
-          {allOpen ? toutMasquerTexte : toutOuvrirTexte}
+          {allOpen ? closeAllLabel : openAllLabel}
         </button>
       )}
       {sections.map((section, index) => {
         const sectionId = `${id}-section-${index + 1}`
-        const isOpen = ouverts[sectionId] ?? section.ouvert ?? false
-        const boutonId = `${id}-bouton-${index + 1}`
-        const contenuId = `${id}-contenu-${index + 1}`
+        const isOpen = openState[sectionId] ?? section.open ?? false
+        const buttonId = `${id}-bouton-${index + 1}`
+        const contentId = `${id}-content-${index + 1}`
 
         return (
-          <div className={`lpv-accordeon__section${isOpen ? ' lpv-accordeon__section--ouvert' : ''}`} key={sectionId}>
-            <div className="lpv-accordeon__section-en-tete">
-              <Heading className="lpv-accordeon__titre" level={headingLevel}>
+          <div className={`lpv-m-accordion__section${isOpen ? ' lpv-m-accordion__section--open' : ''}`} key={sectionId}>
+            <div className="lpv-m-accordion__section-en-tete">
+              <Heading className="lpv-m-accordion__titre" level={headingLevel}>
                 <button
-                  aria-controls={contenuId}
+                  aria-controls={contentId}
                   aria-expanded={isOpen}
-                  className="lpv-accordeon__bouton"
-                  id={boutonId}
+                  className="lpv-m-accordion__bouton"
+                  id={buttonId}
                   onClick={() => toggleSection(sectionId)}
                   type="button"
                 >
-                  <span aria-hidden="true" className="lpv-accordeon__icone">
-                    <Icon icone={isOpen ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} taille={12} />
+                  <span aria-hidden="true" className="lpv-m-accordion__icone">
+                    <Icon icon={isOpen ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} size={12} />
                   </span>
-                  <span className="lpv-accordeon__texte-bouton">{section.titre}</span>
-                  <span className="lpv-accordeon__texte-toggle lpv-visually-hidden">
-                    {isOpen ? masquerSectionTexte : ouvrirSectionTexte}
+                  <span className="lpv-m-accordion__texte-bouton">{section.title}</span>
+                  <span className="lpv-m-accordion__texte-toggle lpv-visually-hidden">
+                    {isOpen ? closeSectionLabel : openSectionLabel}
                   </span>
                 </button>
               </Heading>
-              {section.resume && !isOpen ? (
-                <div className="lpv-accordeon__resume">{section.resume}</div>
+              {section.summary && !isOpen ? (
+                <div className="lpv-m-accordion__resume">{section.summary}</div>
               ) : null}
             </div>
             <div
-              aria-labelledby={boutonId}
-              className={`lpv-accordeon__contenu${isOpen ? '' : ' lpv-accordeon__contenu--cache'}`}
-              id={contenuId}
+              aria-labelledby={buttonId}
+              className={`lpv-m-accordion__content${isOpen ? '' : ' lpv-m-accordion__content--cache'}`}
+              id={contentId}
               role="region"
             >
-              {section.contenu}
+              {section.content}
             </div>
           </div>
         )

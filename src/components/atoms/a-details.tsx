@@ -7,28 +7,28 @@ import { Icon } from '@/components/atoms/a-icon'
 // Utiliser pour du contenu secondaire que seul certains utilisateurs ont besoin de voir.
 // Ne pas utiliser pour cacher du contenu dont la majorité des utilisateurs a besoin.
 export function Details({
-  resume,
+  summary,
   open = false,
   children,
   id,
 }: {
-  resume: string
+  summary: string
   open?: boolean
   children: ReactNode
   id?: string
 }) {
   return (
-    <details className="lpv-details" id={id} open={open}>
-      <summary className="lpv-details__resume">
-        <span aria-hidden="true" className="lpv-details__chevron lpv-details__chevron--ferme">
-          <Icon icone="rivet-icons:chevron-down" taille={22} />
+    <details className="lpv-a-details" id={id} open={open}>
+      <summary className="lpv-a-details__summary">
+        <span aria-hidden="true" className="lpv-a-details__chevron lpv-a-details__chevron--ferme">
+          <Icon icon="rivet-icons:chevron-down" size={22} />
         </span>
-        <span aria-hidden="true" className="lpv-details__chevron lpv-details__chevron--ouvert">
-          <Icon icone="rivet-icons:chevron-up" taille={22} />
+        <span aria-hidden="true" className="lpv-a-details__chevron lpv-a-details__chevron--ouvert">
+          <Icon icon="rivet-icons:chevron-up" size={22} />
         </span>
-        <span className="lpv-details__resume-texte">{resume}</span>
+        <span className="lpv-a-details__summary-text">{summary}</span>
       </summary>
-      <div className="lpv-details__texte">{children}</div>
+      <div className="lpv-a-details__texte">{children}</div>
     </details>
   )
 }

@@ -8,7 +8,7 @@ export function LogoutButton() {
 
   return (
     <button
-      className="lpv-bouton lpv-bouton--secondaire"
+      className="lpv-a-button lpv-a-button--secondary"
       onClick={async () => {
         await fetch('/api/users/logout', { method: 'POST' })
         router.push('/')

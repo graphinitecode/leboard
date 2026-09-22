@@ -14,12 +14,12 @@ export function BackLink({
 }) {
   return (
     <a
-      className="lpv-back-link"
+      className="lpv-a-back-link"
       href={href}
       onClick={onClick}
     >
-      <span aria-hidden="true" className="lpv-back-link__icone">
-        <Icon icone="rivet-icons:arrow-left" taille={16} />
+      <span aria-hidden="true" className="lpv-a-back-link__icone">
+        <Icon icon="rivet-icons:arrow-left" size={16} />
       </span>
       {children}
     </a>

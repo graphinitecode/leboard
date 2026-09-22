@@ -7,20 +7,20 @@ import { Icon } from '@/components/atoms/a-icon'
 // le texte caché « Avertissement » est annoncé aux lecteurs d'écran.
 export function WarningText({
   children,
-  libelleCache = 'Avertissement',
+  hiddenLabel = 'Avertissement',
 }: {
   children: ReactNode
-  libelleCache?: string
+  hiddenLabel?: string
 }) {
   return (
-    <div className="lpv-avertissement">
+    <div className="lpv-a-warning-text">
       <Icon
-        classe="lpv-avertissement__icone-svg"
-        icone="rivet-icons:exclamation-mark-circle-solid"
-        taille={32}
+        className="lpv-a-warning-text__icone-svg"
+        icon="rivet-icons:exclamation-mark-circle-solid"
+        size={32}
       />
-      <p className="lpv-avertissement__texte">
-        <span className="lpv-visually-hidden">{libelleCache} : </span>
+      <p className="lpv-a-warning-text__texte">
+        <span className="lpv-visually-hidden">{hiddenLabel} : </span>
         {children}
       </p>
     </div>

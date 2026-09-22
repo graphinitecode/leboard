@@ -4,67 +4,67 @@ import Link from 'next/link'
 import { useRef, useState } from 'react'
 
 import { Icon } from '@/components/atoms/a-icon'
-import { ToggleTheme } from '@/components/molecules/m-theme-toggle'
-import { useFermerHorsClic } from '@/hooks/useFermerHorsClic'
+import { ThemeToggle } from '@/components/molecules/m-theme-toggle'
+import { useCloseOnClickOutside } from '@/hooks/useCloseOnClickOutside'
 
-type Section = 'services' | 'legales'
+type MenuSection = 'services' | 'legal'
 
-type LienMenu = { href: string; libelle: string; description?: string }
+type MenuLink = { href: string; label: string; description?: string }
 
 // Molécule : menu dépliant de l'entête portail (bouton Menu façon GOV.UK).
 // Desktop/tablette : bouton texte + chevron, panneau pleine largeur 2 colonnes.
 // Mobile : icône rivet-icons:menu qui devient close panneau ouvert, sections
 // en accordéon vertical (titres cliquables, liens dépliables dessous).
 // La bascule de thème vit dans le panneau (ligne dédiée), plus dans la barre.
-export function MenuDepliant({
+export function CollapsibleMenu({
   services,
-  legales,
+  legalLinks,
 }: {
-  services: LienMenu[]
-  legales: LienMenu[]
+  services: MenuLink[]
+  legalLinks: MenuLink[]
 }) {
-  const [ouvert, setOuvert] = useState(false)
-  const [sectionsOuvertes, setSectionsOuvertes] = useState<Set<Section>>(new Set())
+  const [open, setOpen] = useState(false)
+  const [openSections, setOpenSections] = useState<Set<MenuSection>>(new Set())
   const ref = useRef<HTMLDivElement>(null)
 
   // Ferme au clic extérieur ou à Escape
-  useFermerHorsClic(ref, () => setOuvert(false))
+  useCloseOnClickOutside(ref, () => setOpen(false))
 
-  function basculerSection(section: Section) {
-    setSectionsOuvertes((precedent) => {
-      const suivant = new Set(precedent)
-      if (suivant.has(section)) {
-        suivant.delete(section)
+  function toggleSection(section: MenuSection) {
+    setOpenSections((prev) => {
+      const next = new Set(prev)
+      if (next.has(section)) {
+        next.delete(section)
       } else {
-        suivant.add(section)
+        next.add(section)
       }
-      return suivant
+      return next
     })
   }
 
-  function colonne(section: Section, titre: string, liens: LienMenu[]) {
-    const ouverte = sectionsOuvertes.has(section)
+  function column(section: MenuSection, title: string, links: MenuLink[]) {
+    const isOpen = openSections.has(section)
 
     return (
-      <div className={`lpv-menu-panneau__colonne${ouverte ? ' lpv-menu-panneau__colonne--ouverte' : ''}`}>
+      <div className={`lpv-m-collapsible-menu__column${isOpen ? ' lpv-m-collapsible-menu__column--open' : ''}`}>
         <button
-          aria-expanded={ouverte}
-          className="lpv-menu-panneau__titre-bouton"
-          onClick={() => basculerSection(section)}
+          aria-expanded={isOpen}
+          className="lpv-m-collapsible-menu__column-title"
+          onClick={() => toggleSection(section)}
           type="button"
         >
-          {titre}
-          <span aria-hidden="true" className="lpv-menu-panneau__titre-chevron">
-            <Icon icone={ouverte ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} taille={20} />
+          {title}
+          <span aria-hidden="true" className="lpv-m-collapsible-menu__column-chevron">
+            <Icon icon={isOpen ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} size={20} />
           </span>
         </button>
         <ul>
-          {liens.map((lien) => (
-            <li key={`${lien.href} ${lien.libelle}`}>
-              <Link href={lien.href} onClick={() => setOuvert(false)}>
-                {lien.libelle}
+          {links.map((link) => (
+            <li key={`${link.href} ${link.label}`}>
+              <Link href={link.href} onClick={() => setOpen(false)}>
+                {link.label}
               </Link>
-              {lien.description ? <p>{lien.description}</p> : null}
+              {link.description ? <p>{link.description}</p> : null}
             </li>
           ))}
         </ul>
@@ -75,28 +75,28 @@ export function MenuDepliant({
   return (
     <div ref={ref}>
       <button
-        aria-expanded={ouvert}
-        className="lpv-menu-bouton"
-        onClick={() => setOuvert(!ouvert)}
+        aria-expanded={open}
+        className="lpv-m-collapsible-menu__button"
+        onClick={() => setOpen(!open)}
         type="button"
       >
-        <span aria-hidden="true" className="lpv-menu-bouton__icone">
-          <Icon icone={ouvert ? 'rivet-icons:close' : 'rivet-icons:menu'} taille={22} />
+        <span aria-hidden="true" className="lpv-m-collapsible-menu__button-icon">
+          <Icon icon={open ? 'rivet-icons:close' : 'rivet-icons:menu'} size={22} />
         </span>
-        <span aria-hidden="true" className="lpv-menu-bouton__chevron">
-          <Icon icone={ouvert ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} taille={22} />
+        <span aria-hidden="true" className="lpv-m-collapsible-menu__button-chevron">
+          <Icon icon={open ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} size={22} />
         </span>
-        <span className="lpv-menu-bouton__libelle">Menu</span>
+        <span className="lpv-m-collapsible-menu__button-label">Menu</span>
       </button>
 
-      {ouvert && (
-        <div className="lpv-menu-panneau">
-          <div className="lpv-menu-panneau__inner">
-            {colonne('services', 'Services et informations', services)}
-            {colonne('legales', 'Légales', legales)}
+      {open && (
+        <div className="lpv-m-collapsible-menu">
+          <div className="lpv-m-collapsible-menu__inner">
+            {column('services', 'Services et informations', services)}
+            {column('legal', 'Légales', legalLinks)}
           </div>
-          <div className="lpv-menu-panneau__pied">
-            <ToggleTheme variante="panneau" />
+          <div className="lpv-m-collapsible-menu__footer">
+            <ThemeToggle variant="panel" />
           </div>
         </div>
       )}

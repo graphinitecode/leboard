@@ -7,9 +7,9 @@ import { Icon } from '@/components/atoms/a-icon'
 // Molécule : bascule de thème (clair/sombre).
 // Utilise le ThemeProvider du template Payload (localStorage + prefers-color-scheme).
 // Icône lune en dark, soleil en light (boxicons filled).
-// variante 'barre' (défaut) : icône seule, blanc sur fond portail.
-// variante 'panneau' : ligne libellé + icône, couleurs du panneau (surface).
-export function ToggleTheme({ variante = 'barre' }: { variante?: 'barre' | 'panneau' }) {
+// variante 'bar' (défaut) : icône seule, blanc sur fond portail.
+// variante 'panel' : ligne libellé + icône, couleurs du panneau (surface).
+export function ThemeToggle({ variant = 'bar' }: { variant?: 'bar' | 'panel' }) {
   const [theme, setTheme] = useState<'dark' | 'light' | null>(null)
 
   // La préférence ne peut être lue qu'après hydratation (window n'existe pas
@@ -29,28 +29,28 @@ export function ToggleTheme({ variante = 'barre' }: { variante?: 'barre' | 'pann
     }
   }, [])
 
-  function basculer() {
+  function toggle() {
     const nouveau = theme === 'dark' ? 'light' : 'dark'
     setTheme(nouveau)
     window.localStorage.setItem('payload-theme', nouveau)
     document.documentElement.setAttribute('data-theme', nouveau)
   }
 
-  const icone = theme === 'dark' ? 'boxicons:moon-star-filled' : 'boxicons:sun-bright-filled'
-  const libelle = theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'
+  const icon = theme === 'dark' ? 'boxicons:moon-star-filled' : 'boxicons:sun-bright-filled'
+  const label = theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'
 
-  if (variante === 'panneau') {
+  if (variant === 'panel') {
     return (
-      <button aria-label={libelle} className="lpv-bascule-theme-panneau" onClick={basculer} type="button">
+      <button aria-label={label} className="lpv-m-theme-toggle--panel" onClick={toggle} type="button">
         <span>{theme === 'dark' ? 'Mode clair' : 'Mode sombre'}</span>
-        <Icon aria-hidden icone={icone} taille={20} />
+        <Icon aria-hidden icon={icon} size={20} />
       </button>
     )
   }
 
   return (
-    <button aria-label={libelle} className="lpv-bascule-theme" onClick={basculer} type="button">
-      <Icon classe="lpv-bascule-theme__icone" icone={icone} taille={20} />
+    <button aria-label={label} className="lpv-m-theme-toggle" onClick={toggle} type="button">
+      <Icon className="lpv-m-theme-toggle__icon" icon={icon} size={20} />
     </button>
   )
 }

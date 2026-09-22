@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react'
 
-type Variante = 'primaire' | 'secondaire' | 'avertissement' | 'danger'
+type Variant = 'primary' | 'secondary' | 'warning' | 'danger'
 
-const CLASSES: Record<Variante, string> = {
-  avertissement: 'lpv-bouton lpv-bouton--avertissement',
-  danger: 'lpv-bouton lpv-bouton--danger',
-  primaire: 'lpv-bouton',
-  secondaire: 'lpv-bouton lpv-bouton--secondaire',
+const CLASSES: Record<Variant, string> = {
+  warning: 'lpv-a-button lpv-a-button--warning',
+  danger: 'lpv-a-button lpv-a-button--danger',
+  primary: 'lpv-a-button',
+  secondary: 'lpv-a-button lpv-a-button--secondary',
 }
 
 // Atome : bouton du design system LPV Board
@@ -16,31 +16,31 @@ export function Button({
   disabled,
   onClick,
   type = 'button',
-  variante = 'primaire',
+  variant = 'primary',
   href,
-  titre,
+  title,
 }: {
   children: ReactNode
   className?: string
   disabled?: boolean
   onClick?: () => void
   type?: 'button' | 'submit'
-  variante?: Variante
+  variant?: Variant
   href?: string
-  titre?: string
+  title?: string
 }) {
-  const classe = `${CLASSES[variante]}${className ? ` ${className}` : ''}`
+  const classes = `${CLASSES[variant]}${className ? ` ${className}` : ''}`
 
   if (href) {
     return (
-      <a className={classe} href={href} title={titre}>
+      <a className={classes} href={href} title={title}>
         {children}
       </a>
     )
   }
 
   return (
-    <button className={classe} disabled={disabled} onClick={onClick} title={titre} type={type}>
+    <button className={classes} disabled={disabled} onClick={onClick} title={title} type={type}>
       {children}
     </button>
   )

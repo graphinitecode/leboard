@@ -2,34 +2,34 @@ import Link from 'next/link'
 
 // Atome : fil d'Ariane (breadcrumbs). Inspiré de GOV.UK Breadcrumbs.
 // Dernier item sans href = page courante (aria-current="page").
-// Sur mobile, l'option replierSurMobile ne montre que le premier et le dernier item.
+// Sur mobile, l'option collapseOnMobile ne montre que le premier et le dernier item.
 export function Breadcrumbs({
-  liens,
-  replierSurMobile = false,
+  items,
+  collapseOnMobile = false,
   ariaLabel = 'Fil d\'Ariane',
 }: {
-  liens: { href?: string; libelle: string }[]
-  replierSurMobile?: boolean
+  items: { href?: string; label: string }[]
+  collapseOnMobile?: boolean
   ariaLabel?: string
 }) {
-  if (liens.length === 0) return null
+  if (items.length === 0) return null
 
-  const classe = `lpv-fil-ariane${replierSurMobile ? ' lpv-fil-ariane--replier' : ''}`
+  const classe = `lpv-a-breadcrumbs${collapseOnMobile ? ' lpv-a-breadcrumbs--collapse' : ''}`
 
   return (
     <nav aria-label={ariaLabel} className={classe}>
-      <ol className="lpv-fil-ariane__liste">
-        {liens.map((lien, index) => {
-          const estDernier = index === liens.length - 1
+      <ol className="lpv-a-breadcrumbs__liste">
+        {items.map((item, index) => {
+          const isLast = index === items.length - 1
           return (
-            <li className="lpv-fil-ariane__item" key={lien.libelle}>
-              {lien.href && !estDernier ? (
-                <Link className="lpv-fil-ariane__lien" href={lien.href}>
-                  {lien.libelle}
+            <li className="lpv-a-breadcrumbs__item" key={item.label}>
+              {item.href && !isLast ? (
+                <Link className="lpv-a-breadcrumbs__lien" href={item.href}>
+                  {item.label}
                 </Link>
               ) : (
-                <span aria-current={estDernier ? 'page' : undefined} className="lpv-fil-ariane__actuel">
-                  {lien.libelle}
+                <span aria-current={isLast ? 'page' : undefined} className="lpv-a-breadcrumbs__actuel">
+                  {item.label}
                 </span>
               )}
             </li>

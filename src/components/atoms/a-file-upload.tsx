@@ -8,10 +8,10 @@ export function FileUpload({
   name,
   label,
   hint,
-  erreur,
+  error,
   accept,
   multiple = false,
-  optionnel = false,
+  optional = false,
   onChange,
   describedBy,
 }: {
@@ -19,29 +19,29 @@ export function FileUpload({
   name: string
   label: string
   hint?: string
-  erreur?: string
+  error?: string
   accept?: string
   multiple?: boolean
-  optionnel?: boolean
+  optional?: boolean
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   describedBy?: string
 }) {
   const ids: string[] = []
   if (hint) ids.push(`${describedBy ?? id}-hint`)
-  if (erreur) ids.push(`${describedBy ?? id}-error`)
+  if (error) ids.push(`${describedBy ?? id}-error`)
   const ariaDescribedBy = ids.length > 0 ? ids.join(' ') : undefined
-  const groupeClasse = `lpv-form-group${erreur ? ' lpv-form-group--error' : ''}`
+  const groupeClasse = `lpv-form-group${error ? ' lpv-form-group--error' : ''}`
 
   return (
     <div className={groupeClasse}>
-      <Label htmlFor={id} optionnel={optionnel}>{label}</Label>
+      <Label htmlFor={id} optional={optional}>{label}</Label>
       {hint ? <Hint id={`${describedBy ?? id}-hint`}>{hint}</Hint> : null}
-      {erreur ? <ErrorMessage id={`${describedBy ?? id}-error`}>{erreur}</ErrorMessage> : null}
+      {error ? <ErrorMessage id={`${describedBy ?? id}-error`}>{error}</ErrorMessage> : null}
       <input
         accept={accept}
         aria-describedby={ariaDescribedBy || undefined}
-        aria-invalid={erreur ? true : undefined}
-        className={`lpv-file-upload${erreur ? ' lpv-file-upload--error' : ''}`}
+        aria-invalid={error ? true : undefined}
+        className={`lpv-a-file-upload${error ? ' lpv-a-file-upload--error' : ''}`}
         id={id}
         multiple={multiple}
         name={name}
