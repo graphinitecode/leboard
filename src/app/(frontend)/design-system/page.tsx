@@ -131,6 +131,7 @@ export default function DesignSystemPage() {
           <EnterText hrf={'#templates'}>Les Templates</EnterText>
           {/*<EnterText hrf={'#calendrier'}>Le Calendrier</EnterText>*/}
           <EnterText hrf={'/design-system/colors'}>Les Couleurs</EnterText>
+          <EnterText hrf={'/design-system/typography'}>La Typographie</EnterText>
         </div>
       </section>
 

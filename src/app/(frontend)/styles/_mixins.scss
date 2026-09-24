@@ -1,9 +1,50 @@
 /* LPV Board Design System — Mixins partagés */
 
+@use 'sass:list';
+@use 'sass:map';
+
 /* Focus states — conformes au motif GOV.UK
    (https://design-system.service.gov.uk/get-started/focus-states/) :
    la combinaison jaune + noir garantit WCAG 2.2 1.4.11 (Non-text contrast)
    sur tout fond — le jaune contraste sur fond sombre, le noir sur fond clair. */
+
+/* --- Type scale responsive -------------------------------------------------- */
+/* Échelle typographique inspirée du type scale GOV.UK
+   (https://design-system.service.gov.uk/styles/type-scale/), avec les
+   principes du blog GDS : les grandes tailles rétrécissent en mobile mais
+   jamais sous 19px (accessibilité), line-height toujours multiple de 5px
+   pour un rythme vertical régulier. Unités rem : le texte suit le zoom
+   navigateur (WCAG 2.1 1.4.4 Resize text). Breakpoints alignés sur Tailwind
+   : 48rem (md, tablet) et 64rem (lg, desktop). */
+
+/* Map du type scale : point → paliers. `null` = mobile (< 48rem), les autres
+   clés sont des min-width en rem. Chaque valeur : font-size + line-height. */
+$lpv-type-scale: (
+  48: (null: 2rem 2.1875rem, 48rem: 2.5rem 2.8125rem, 64rem: 3rem 3.125rem),
+  24: (null: 1.3125rem 1.5625rem, 48rem: 1.5rem 1.875rem),
+  19: (null: 1.1875rem 1.5625rem),
+);
+
+/* Équivalent govuk-font-size : émet font-size + line-height pour le point
+   demandé, du mobile vers les paliers larges (mobile-first). */
+@mixin lpv-font-size($point) {
+  $scale: map.get($lpv-type-scale, $point);
+
+  @each $breakpoint, $values in $scale {
+    $font-size: list.nth($values, 1);
+    $line-height: list.nth($values, 2);
+
+    @if $breakpoint == null {
+      font-size: $font-size;
+      line-height: $line-height;
+    } @else {
+      @media (min-width: $breakpoint) {
+        font-size: $font-size;
+        line-height: $line-height;
+      }
+    }
+  }
+}
 
 /* Équivalent govuk-focus-width (token CSS --lpv-focus-width) */
 $lpv-focus-width: 3px !default;

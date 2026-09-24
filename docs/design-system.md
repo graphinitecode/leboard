@@ -110,6 +110,30 @@ Pour toute action à conséquence :
 - Cibles ≥ 44 px, contrastes AA, `sr-only` pour les libellés d'action implicites,
   skip link, libellé texte toujours accompagnant une couleur (tags, statuts).
 
+### 1.10 Type scale responsive
+
+Échelle typographique inspirée du [type scale GOV.UK](https://design-system.service.gov.uk/styles/type-scale/)
+(spec 14) : les titres s'adaptent à l'écran selon trois paliers. Breakpoints alignés sur
+Tailwind : mobile < 48rem, tablet ≥ 48rem (`md`), desktop ≥ 64rem (`lg`).
+
+| Point | Classe | Mobile < 48rem | Tablet ≥ 48rem | Desktop ≥ 64rem |
+|---|---|---|---|---|
+| 48 | `.lpv-h1` | 32px / lh 35px | 40px / lh 45px | 48px / lh 50px |
+| 24 | `.lpv-h2` | 21px / lh 25px | 24px / lh 30px | 24px / lh 30px |
+| 19 | `.lpv-h3` | 19px / lh 25px | 19px / lh 25px | 19px / lh 25px |
+| — | `.lpv-muted` (corps) | 16px | 16px | 16px |
+
+Règles (cf. [GDS 2022](https://designnotes.blog.gov.uk/2022/12/12/making-the-gov-uk-frontend-typography-scale-more-accessible/)) :
+
+- **Jamais de texte sous 19px** : les petites tailles ne rétrécissent pas en mobile.
+- Les **line-heights sont des multiples de 5px** (rythme vertical régulier).
+- Tailles en **`rem`** : le texte suit le zoom navigateur (WCAG 2.1 1.4.4).
+- Seules les grandes tailles rétrécissent en mobile ; le corps de texte reste fixe.
+
+Implémentation : map Sass `$lpv-type-scale` + mixin `lpv-font-size($point)` dans
+`src/app/(frontend)/styles/_mixins.scss`, consommés par `.lpv-h1/2/3` dans `_base.scss`.
+Vitrine : `/design-system/typography`.
+
 ## 2. Adaptations LPV assumées
 
 | Adaptation | Raison |

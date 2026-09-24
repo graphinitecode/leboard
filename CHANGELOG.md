@@ -17,6 +17,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Page « Couleurs » dans le design system : palette complète (couleurs fonctionnelles, groupes de marque, tags, neutres) avec swatches qui suivent le thème actif et note de contraste WCAG
 
 ### Modifié
+- Titres : taille adaptée à l'écran (plus lisibles en mobile), alignés sur l'échelle typographique GOV.UK — nouvelle page Typographie dans le design system
 - Bascule de thème : nouveau mode « suivre la machine » (icône d'écran) qui applique automatiquement le thème du système et suit ses changements en temps réel ; le cycle machine → clair → sombre remplace l'ancienne bascule à deux états
 - Liens de contenu (liens inline, fil d'Ariane, lien de retour, actions des résumés) : affichage en violet lorsqu'ils ont déjà été visités, dans les thèmes clair et sombre
 - Tableau de bord des profs : le calendrier de la semaine remplace les listes « Aujourd'hui » et « Cette semaine »
