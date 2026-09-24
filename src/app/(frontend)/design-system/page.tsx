@@ -11,6 +11,7 @@ import Link from 'next/link'
 import { IconCard } from '@/components/atoms/a-icon-card'
 import { ActionIconcard } from '@/components/molecules/m-action-iconcard'
 import { EnterText } from '@/components/atoms/a-enter-text'
+import { DashboardPage, DetailPage, FormPage, QuestionPage } from '@/components/templates'
 
 export const metadata: Metadata = {
   title: 'Design system — LPV Board',
@@ -127,24 +128,11 @@ export default function DesignSystemPage() {
           <EnterText hrf={'#donnees'}>Les Données</EnterText>
 
           <EnterText hrf={'#surfaces'}>Les Surfaces</EnterText>
+          <EnterText hrf={'#templates'}>Les Templates</EnterText>
+          {/*<EnterText hrf={'#calendrier'}>Le Calendrier</EnterText>*/}
           <EnterText hrf={'/design-system/colors'}>Les Couleurs</EnterText>
         </div>
       </section>
-
-      {/*<nav aria-label="Sommaire" style={{ marginBottom: '2rem' }}>*/}
-      {/*  <Breadcrumbs*/}
-      {/*    items={[*/}
-      {/*      { href: '#buttons', label: 'Boutons' },*/}
-      {/*      { href: '#tags', label: 'Tags & toggle' },*/}
-      {/*      { href: '#messages', label: 'Messages' },*/}
-      {/*      { href: '#navigation', label: 'Navigation' },*/}
-      {/*      { href: '#forms', label: 'Formulaires' },*/}
-      {/*      { href: '#data', label: 'Données' },*/}
-      {/*      { href: '#surfaces', label: 'Surfaces' },*/}
-      {/*      { href: '/design-system/colors', label: 'Couleurs' },*/}
-      {/*    ]}*/}
-      {/*  />*/}
-      {/*</nav>*/}
 
       <section id="buttons" style={{ marginBottom: '3.7rem' }}>
         <h2 className="lpv-h2">Boutons</h2>
@@ -288,8 +276,10 @@ export default function DesignSystemPage() {
         <Details summary="Quelles sont les horaires possibles ?" open>
           Les cours ont lieu du lundi au samedi, de 8h à 18h.
         </Details>
-        <Details summary="Comment s'inscrire ?">
-          Contactez l&apos;association par e-mail ou via le formulaire en ligne.
+        <Details summary="Aide concernant la nationalité">
+          Nous avons besoin de connaître votre nationalité afin de déterminer à quelles élections
+          vous avez le droit de voter. Si vous ne pouvez pas nous indiquer votre nationalité, vous
+          devrez nous envoyer par courrier des copies de vos pièces d&#39;identité.
         </Details>
 
         <h3 className="lpv-h3">Accordeon</h3>
@@ -527,6 +517,107 @@ export default function DesignSystemPage() {
             { key: 'Niveau', value: '6e' },
           ]}
         />
+      </section>
+
+      <section id="templates" style={{ marginBottom: '3rem' }}>
+        <h2 className="lpv-h2">Templates</h2>
+        <p className="lpv-muted">
+          Squelettes de pages de la couche Templates (atomic design) : ils assemblent les composants
+          en slots, sans micro-copy ni fetch. Utilisés par les portails (<code>/profs</code>,{' '}
+          <code>/parents</code>) et leurs pages.
+        </p>
+        <p className="lpv-muted">
+          <strong>PortalPage</strong> (shell de portail : skip link, header, main, footer, couleur
+          par <code>data-lpv-portail</code>) n&apos;est pas démontré ici — il enveloppe entièrement
+          une page et serait destructeur dans la vitrine ; voir les portails réels (
+          <code>/profs</code>, <code>/parents</code>).
+        </p>
+
+        <h3 className="lpv-h3">DetailPage (fiche entité)</h3>
+        <DetailPage
+          backHref="#templates"
+          backLabel="Retour"
+          meta={
+            <SummaryList
+              items={[
+                { key: 'Groupe', value: 'Maths-3e' },
+                { key: 'Présence', value: '86%' },
+              ]}
+            />
+          }
+          sections={[
+            {
+              title: 'Présences',
+              children: <Table caption="Présences" head={TABLE_HEAD} rows={TABLE_ROWS} />,
+            },
+            {
+              title: 'Section vide',
+              children: <p className="lpv-muted">Aucune donnée.</p>,
+            },
+          ]}
+          tag={<Tag color="blue">4e</Tag>}
+          title="Léa Martin"
+        />
+
+        <h3 className="lpv-h3">DashboardPage (stats + sections)</h3>
+        <DashboardPage
+          sections={[
+            { title: "Aujourd'hui", children: <p className="lpv-muted">2 séances.</p> },
+            { title: 'Cette semaine', children: <p className="lpv-muted">8 séances.</p> },
+          ]}
+          stats={[
+            { value: 2, label: "Séance(s) aujourd'hui" },
+            { value: 8, label: 'Cette semaine', detail: 'dont 2 aujourd’hui' },
+            { value: 5, label: 'Passées récentes' },
+            {
+              value: 12,
+              label: 'Mes élèves',
+              detail: '1 retour en attente',
+              detailColor: 'var(--lpv-orange)',
+            },
+          ]}
+        />
+
+        <h3 className="lpv-h3">FormPage (formulaire centré)</h3>
+        <FormPage subtitle="Démonstration du template, sans formulaire réel." title="Connexion">
+          <div className="lpv-card" style={{ padding: '1rem' }}>
+            Slot : formulaire (molécules Input, ErrorSummary…)
+          </div>
+        </FormPage>
+
+        <h3 className="lpv-h3">QuestionPage (page-question GOV.UK)</h3>
+        <p className="lpv-muted" style={{ marginTop: 0 }}>
+          Back link, caption « Étape N sur M », h1 = la question, actions alignées à gauche,
+          bloc « Vos réponses » avec liens « Modifier ». Conteneur fluide plafonné à la mesure de
+          lecture — utilisé par le parcours de création de séance et les disponibilités.
+        </p>
+        <QuestionPage
+          actions={
+            <Button type="button">Continuer</Button>
+          }
+          question="Quelle heure de début ?"
+          reponses={[{ question: 'Jour', valeur: 'Mercredi' }]}
+          retour={{ href: '#templates' }}
+          step="Étape 2 sur 3"
+        >
+          <div className="lpv-card" style={{ padding: '1rem' }}>
+            Slot : contrôle de réponse (Input, boutons de choix…)
+          </div>
+        </QuestionPage>
+      </section>
+
+      <section id="calendrier" style={{ marginBottom: '3rem' }}>
+        <h2 className="lpv-h2">Calendrier hebdomadaire</h2>
+        <p className="lpv-muted">
+          Vue agenda de la semaine (organism <code>o-week-calendar</code>) : pastilles de séances
+          positionnées par date et durée, bande hachurée des disponibilités, navigation ‹ ›. Le
+          toggle <code>Semaine | Jour | Liste</code> change de vue (jour par jour en mobile), le
+          bouton calendrier ouvre un mini-calendrier mensuel de navigation. Sur le portail profs, le
+          mode interactif permet de déplacer une pastille (glisser-déposer), de sélectionner une
+          plage au clic-tirer et de créer une séance via un assistant pas à pas — la démo ci-dessous
+          est en lecture seule avec des données d&apos;exemple.
+        </p>
+        {/*<WeekCalendar mode="demo" />*/}
       </section>
 
       <section id="surfaces">

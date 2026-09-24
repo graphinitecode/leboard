@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState, useTransition } from 'react'
 
-import { BackLink } from '@/components/atoms/a-back-link'
 import { Button } from '@/components/atoms/a-button'
 import { Input, Modal, NotificationBanner, ErrorSummary, SummaryList, Toast } from '@/components/molecules'
 import type { ActionSummaryList } from '@/components/molecules'
+import { QuestionPage, QuestionPageAnswers } from '@/components/templates'
 
 import {
   useAjouterDisponibilite,
@@ -143,9 +143,11 @@ export function AvailabilityList({ dispos }: { dispos: DispoItem[] }) {
   )
 }
 
-// Organisme : assistant d'ajout en 3 écrans.
-// Écran 1 : jour (boutons de choix) — Écran 2 : heure de début —
-// Écran 3 : heure de fin + récapitulatif, Valider (bleu) ou Modifier (orange).
+// Organisme : assistant d'ajout/modification de disponibilité en 3 écrans,
+// construit sur le template QuestionPage (pattern GOV.UK « question pages »).
+// Écran 1 : jour (boutons de choix) — Écran 2 : heure de début (avec
+// « Vos réponses ») — Écran 3 : heure de fin + récapitulatif + Valider.
+// Rendu à la place de la liste (pas dans une card), à la manière d'un parcours.
 export function AvailabilityWizard({
   open,
   onClose,
@@ -214,13 +216,22 @@ export function AvailabilityWizard({
   const isEditing = Boolean(previous)
 
   return (
-    <div className="lpv-card" style={{ marginTop: '1.5rem' }}>
+    <>
       {step === 1 && (
-        <>
-          <p className="lpv-stepper__step">Étape 1 sur 3</p>
-          <h2 className="lpv-stepper__question">
-            {isEditing ? 'Quel jour pour cet horaire ?' : 'Quel jour vous convient ?'}
-          </h2>
+        <QuestionPage
+          actions={
+            <>
+              <Button disabled={!jour} onClick={() => setStep(2)} type="button">
+                Continuer
+              </Button>
+              <Button onClick={reset} type="button" variant="secondary">
+                Annuler
+              </Button>
+            </>
+          }
+          question={isEditing ? 'Quel jour pour cet horaire ?' : 'Quel jour vous convient ?'}
+          step="Étape 1 sur 3"
+        >
           <div className="lpv-o-availability-wizard__days">
             {OPTIONS_JOUR.map((option) => (
               <button
@@ -233,22 +244,33 @@ export function AvailabilityWizard({
               </button>
             ))}
           </div>
-          <div className="lpv-stepper__actions">
-            <Button disabled={!jour} onClick={() => setStep(2)} type="button">
-              Continuer
-            </Button>
-            <Button onClick={reset} type="button" variant="secondary">
-              Annuler
-            </Button>
-          </div>
-        </>
+        </QuestionPage>
       )}
 
       {step === 2 && (
-        <>
-          <BackLink href="#" onClick={(e) => { e.preventDefault(); setErreur(null); setStep(1) }}>Retour</BackLink>
-          <p className="lpv-stepper__step">Étape 2 sur 3</p>
-          <h2 className="lpv-stepper__question">Quelle heure de début ?</h2>
+        <QuestionPage
+          actions={
+            <>
+              {erreur && <ErrorSummary errors={[erreur]} />}
+              <Button
+                disabled={!heureDebut}
+                onClick={() => {
+                  setErreur(null)
+                  setStep(3)
+                }}
+                type="button"
+              >
+                Continuer
+              </Button>
+            </>
+          }
+          question="Quelle heure de début ?"
+          reponses={[
+            { question: 'Jour', valeur: dayLabel, onClick: () => setStep(1) },
+          ]}
+          retour={{ href: '#', onClick: () => { setErreur(null); setStep(1) } }}
+          step="Étape 2 sur 3"
+        >
           <Input
             hint={`Début du créneau le ${dayLabel.toLowerCase()}.`}
             id="step-debut"
@@ -259,30 +281,27 @@ export function AvailabilityWizard({
             type="time"
             value={heureDebut}
           />
-          {erreur && <ErrorSummary errors={[erreur]} />}
-          <div className="lpv-stepper__actions">
-            <Button
-              disabled={!heureDebut}
-              onClick={() => {
-                setErreur(null)
-                setStep(3)
-              }}
-              type="button"
-            >
-              Continuer
-            </Button>
-            <Button onClick={reset} type="button" variant="secondary">
-              Annuler
-            </Button>
-          </div>
-        </>
+        </QuestionPage>
       )}
 
       {step === 3 && (
-        <>
-          <BackLink href="#" onClick={(e) => { e.preventDefault(); setErreur(null); setStep(2) }}>Retour</BackLink>
-          <p className="lpv-stepper__step">Étape 3 sur 3</p>
-          <h2 className="lpv-stepper__question">Quelle heure de fin ?</h2>
+        <QuestionPage
+          actions={
+            <>
+              {erreur && <ErrorSummary errors={[erreur]} />}
+              <Button disabled={!heureFin || pending} onClick={submit} type="button">
+                {pending ? 'Enregistrement…' : isEditing ? 'Enregistrer la modification' : 'Valider'}
+              </Button>
+            </>
+          }
+          question="Quelle heure de fin ?"
+          reponses={[
+            { question: 'Jour', valeur: dayLabel, onClick: () => setStep(1) },
+            { question: 'Heure de début', valeur: heureDebut || '—', onClick: () => setStep(2) },
+          ]}
+          retour={{ href: '#', onClick: () => { setErreur(null); setStep(2) } }}
+          step="Étape 3 sur 3"
+        >
           <Input
             hint={`Fin du créneau le ${dayLabel.toLowerCase()}.`}
             id="step-fin"
@@ -293,29 +312,15 @@ export function AvailabilityWizard({
             type="time"
             value={heureFin}
           />
-          <div className="lpv-recap" style={{ marginTop: '1rem' }}>
-            <div className="lpv-recap__row">
-              <span className="lpv-recap__key">Récapitulatif</span>
-              <span>
-                <strong>{dayLabel}</strong> · {heureDebut} → {heureFin || '…'}
-              </span>
-            </div>
-          </div>
-          {erreur && <ErrorSummary errors={[erreur]} />}
-          <div className="lpv-stepper__actions">
-            <Button disabled={!heureFin || pending} onClick={submit} type="button">
-              {pending ? 'Enregistrement…' : isEditing ? 'Enregistrer la modification' : 'Valider'}
-            </Button>
-            <Button onClick={() => setStep(1)} type="button" variant="warning">
-              Modifier
-            </Button>
-            <Button onClick={reset} type="button" variant="secondary">
-              Annuler
-            </Button>
-          </div>
-        </>
+          <QuestionPageAnswers
+            titre="Récapitulatif"
+            reponses={[
+              { question: 'Créneau', valeur: `${dayLabel} · ${heureDebut} → ${heureFin || '…'}` },
+            ]}
+          />
+        </QuestionPage>
       )}
-    </div>
+    </>
   )
 }
 

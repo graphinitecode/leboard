@@ -13,6 +13,7 @@
   line-height: 1.4;
   margin-bottom: 0.25rem;
 
+
   &__optional {
     color: var(--lpv-text-muted);
     font-size: 1rem;
@@ -41,7 +42,7 @@
   opacity: 77%;
   font-size: 1rem;
   line-height: 1.4;
-  margin-bottom: var(--lpv-spacing-sm);
+  margin-bottom: var(--lpv-spacing-lg);
 }
 
 .lpv-a-error-message {
@@ -59,13 +60,121 @@
     border-left: 5px solid var(--lpv-red);
     padding-left: 1rem;
   }
+
+  .lpv-hint {
+    color: var(--lpv-text-muted);
+    margin-block: var(--lpv-spacing-md);
+  }
+  .lpv-label {
+    margin-block: var(--lpv-spacing-md);
+  }
+}
+
+/* Template t-question-page (pattern GOV.UK « question pages ») : conteneur
+   fluide comme lpv-o-header__inner — pleine largeur jusqu'à la mesure de
+   lecture (--lpv-container-xs), puis plafonnée ; toujours aligné à gauche et
+   de largeur stable quelle que soit la longueur de la question.
+   (Le padding horizontal vient du lpv-container parent.) */
+.lpv-t-question-page {
+  max-width: var(--lpv-container-xs);
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  margin-top: 4rem;
+  margin-inline: auto;
+  padding-inline: calc(var(--spacing) * 6);
+
+  /* La question a toujours la même taille, quelle que soit la page. */
+  &__question {
+    font-size: 1.97rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: -0.3rem 0 1.47rem;
+    overflow-wrap: break-word;
+  }
+
+  &__content {
+    width: auto;
+  }
+
+  &__step {
+    color: var(--lpv-text-muted);
+    display: block;
+    font-size: 1.37rem;
+    font-weight: 400;
+    margin: 2.7rem 0 0.25rem;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: flex-start;
+    margin-top: 2rem;
+    width: 100wv;
+  }
+
+  &__choice {
+    display: block;
+    margin-bottom: 0.5rem;
+    min-height: 44px;
+  }
+
+  /* Bloc « Vos réponses » (pattern GOV.UK). */
+  &__answers {
+    margin-top: 4.7rem;
+  }
+
+  &__answers-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+  }
+
+  &__answers-list {
+    margin: 0;
+  }
+
+  &__answers-row {
+    border-bottom: 1px solid var(--lpv-grey-border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+  }
+
+  &__answers-key {
+    font-weight: 700;
+    margin: 0;
+    min-width: 10rem;
+  }
+
+  &__answers-value {
+    flex: 1;
+    margin: 0;
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
+  &__answers-action {
+    margin: 0;
+
+    a {
+      color: var(--lpv-portail-dark);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: var(--lpv-text-underline-offset);
+      text-decoration-thickness: var(--lpv-decoration-thickness);
+    }
+  }
 }
 
 .lpv-a-input,
 .lpv-a-select,
 .lpv-a-textarea {
   appearance: none;
-  background-color: var(--lpv-surface);
+  //background-color: var(--lpv-surface);
   border: 2px solid var(--lpv-text);
   border-radius: var(--lpv-radius-lg);
   box-sizing: border-box;
@@ -103,6 +212,11 @@
 .lpv-a-input--error {
   border-color: var(--lpv-red);
   border-width: 3px;
+
+  &:focus,  {
+    outline-color:var(--lpv-red);
+    outline-width: 1px;
+  }
 }
 
 /* --- Fieldset & légendes -------------------------------------------------- */
@@ -310,12 +424,30 @@
   }
 }
 
+/* Largeurs proportionnelles au contenu attendu (convention GOV.UK) :
+   1ex ≈ un caractère. Un champ time « HH:mm » reçoit 5 caractères. */
 .lpv-a-input--width-2 {
-  width: 4.5em;
+  width: 3em;
 }
 
 .lpv-a-input--width-4 {
-  width: 6.5em;
+  width: 5.5em;
+}
+
+.lpv-a-input--width-5 {
+  width: 6.5em; /* ex. heure « HH:mm » (5 caractères) */
+}
+
+.lpv-a-input--width-10 {
+  width: 12em; /* ex. libellé court */
+}
+
+.lpv-a-input--width-20 {
+  width: 22em; /* ex. une phrase */
+}
+
+.lpv-a-input--width-30 {
+  width: 32em; /* ex. une adresse */
 }
 
 /* --- Compteur de caractères ----------------------------------------------- */
@@ -378,12 +510,10 @@
   border: 2px dashed var(--lpv-text);
   border-radius: var(--lpv-radius-2xl);
   box-sizing: border-box;
-  font-size: 1.125rem;
   line-height: 1.4;
-  text-align: center;
   max-width: 40rem;
   min-height: 44px;
-  padding: 0.6rem 2.1rem 0.6rem 1.1rem;
+  padding: 0.6rem 1.1rem;
   width: fit-content;
 
   &:hover {
@@ -392,10 +522,9 @@
     background-color: var(--lpv-a-tag--blue-bg);
   }
   &__icon {
-    //inline-flex absolute -translate-x-9 translate-y-3.5
     display: inline-flex;
     position: absolute;
-    transform: translateX(-36px) translateY(13px);
+    transform: translateX(-36px) translateY(11px);
   }
 
   .lpv-form-group:hover &__icon {
@@ -514,7 +643,7 @@
 .lpv-o-availability-wizard__days {
   display: grid;
   gap: 0.5rem;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
 }
 
 .lpv-o-availability-wizard__day-option {
@@ -542,7 +671,7 @@
 
 @media (min-width: 640px) {
   .lpv-o-availability-wizard__days {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
   }
 }
 

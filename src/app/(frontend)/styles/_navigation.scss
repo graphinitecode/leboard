@@ -52,7 +52,7 @@
     }
 
     &:focus {
-      @include mixins.lpv-focus;
+      @include mixins.lpv-focused-text;
     }
   }
 
@@ -105,7 +105,8 @@
   }
 
   &:focus {
-    @include mixins.lpv-focus;
+    @include mixins.lpv-focused-text;
+    color: black;
   }
 
   &__icon {
@@ -117,9 +118,9 @@
 /* --- Details (disclosure) -------------------------------------------------- */
 
 .lpv-a-details {
-  border-left: 5px solid var(--lpv-portail);
+  //border-left: 5px solid var(--lpv-portail);
   margin: 1rem 0;
-  padding: 0.5rem 1rem 0.5rem 1.25rem;
+  padding: 0.5rem 1rem 0.5rem 0;
 
   &[open] {
     padding-bottom: 1rem;
@@ -139,7 +140,10 @@
     cursor: pointer;
     display: flex;
     font-size: 1.125rem;
-    font-weight: 700;
+    font-weight: 400;
+    text-decoration: underline;
+    text-underline-offset: var(--lpv-text-underline-offset);
+    text-decoration-thickness: var(--lpv-decoration-thickness);
     gap: 0.5rem;
     list-style: none;
 
@@ -153,7 +157,7 @@
     }
 
     &:focus {
-      @include mixins.lpv-focus;
+      @include mixins.lpv-focused-text;
     }
   }
 
@@ -169,7 +173,11 @@
   }
 
   &__text {
-    margin-top: 0.75rem;
+    padding-block: 0.75rem;
+    margin-top: .4rem;
+    padding-left: .9rem;
+    margin-left: 0.35rem;
+    border-left: 5px solid var(--lpv-portail);
   }
 }
 
@@ -197,7 +205,7 @@
     }
 
     &:focus {
-      @include mixins.lpv-focus;
+      @include mixins.lpv-focused-text;
     }
   }
 
@@ -243,7 +251,7 @@
     }
 
     &:focus {
-      @include mixins.lpv-focus;
+      @include mixins.lpv-focused-text;
     }
   }
 
@@ -332,7 +340,7 @@
     }
 
     &:focus {
-      @include mixins.lpv-focus;
+      @include mixins.lpv-focused-text;
     }
 
     &--active {
@@ -420,7 +428,7 @@
     }
 
     &:focus {
-      @include mixins.lpv-focus;
+      @include mixins.lpv-focused-text;
     }
 
     /* Page courante : bloc plein inversé (motif GOV.UK), pas un lien */

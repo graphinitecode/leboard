@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation'
 import { BackLink, Tag } from '@/components/atoms'
 import { Table } from '@/components/molecules'
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
+import { WeekCalendar } from '@/calendrier'
+import type { EventCalendrier } from '@/calendrier'
+import { matiereFiable } from '@/calendrier/domain/calendrier.utils'
 import { requireParent } from '@/utilities/parentAuth'
 import { getPayloadInstance, verifierParentEleve } from '@/utilities/parentPortal'
 
@@ -25,8 +28,15 @@ function niveauLabel(niveau: string): string {
   }
 }
 
-export default async function EnfantPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function EnfantPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ semaine?: string }>
+}) {
   const { id } = await params
+  const { semaine } = await searchParams
   const user = await requireParent()
   const payload = await getPayloadInstance()
 
@@ -72,6 +82,16 @@ export default async function EnfantPage({ params }: { params: Promise<{ id: str
     limit: 20,
     where: { groupe: { equals: id } },
     sort: '-date',
+  })
+
+  // Semaine affichée : ancre `?semaine=YYYY-MM-DD` sinon semaine courante.
+  const ancre = semaine && /^\d{4}-\d{2}-\d{2}$/.test(semaine) ? new Date(`${semaine}T12:00:00`) : new Date()
+  const seancesSemaine = await payload.find({
+    collection: 'seances',
+    depth: 0,
+    limit: 50,
+    sort: 'date',
+    where: { groupe: { equals: id } },
   })
 
   const presentes = presences.docs.filter((p) => p.present === 'present').length
@@ -131,6 +151,15 @@ export default async function EnfantPage({ params }: { params: Promise<{ id: str
       </h1>
 
       <section>
+        <h2 className="lpv-h2">Cette semaine</h2>
+        <WeekCalendar
+          events={eventsSemaine(seancesSemaine.docs)}
+          mode="parent"
+          semaineInitiale={ancre}
+        />
+      </section>
+
+      <section>
         <h2 className="lpv-h2">Présences {taux !== null && `— ${taux}%`}</h2>
         {presences.docs.length === 0 ? (
           <p className="lpv-muted">Aucune séance enregistrée pour le moment.</p>
@@ -176,6 +205,20 @@ export default async function EnfantPage({ params }: { params: Promise<{ id: str
       </section>
     </>
   )
+}
+
+// Convertit les séances du groupe en événements de calendrier (lecture seule).
+function eventsSemaine(
+  docs: { id: number; date: string; matiere: string; duree?: number | null; groupe?: unknown }[],
+): EventCalendrier[] {
+  return docs.map((s) => ({
+    id: s.id,
+    debut: new Date(String(s.date)),
+    dureeMin: typeof s.duree === 'number' && s.duree > 0 ? s.duree : 60,
+    matiere: matiereFiable(String(s.matiere)),
+    labelGroupe: '',
+    href: '',
+  }))
 }
 
 // Extrait le texte brut d'un document lexical (squadJSON)

@@ -1,17 +1,39 @@
 /* LPV Board Design System — Mixins partagés */
 
-/* Motif focus commun des contrôles : double anneau (blanc + jaune GOV.UK) */
-@mixin lpv-focus {
-  box-shadow:
-    0 0 0 2px var(--lpv-surface),
-    0 0 0 5px var(--lpv-focus);
-  outline: none;
+/* Focus states — conformes au motif GOV.UK
+   (https://design-system.service.gov.uk/get-started/focus-states/) :
+   la combinaison jaune + noir garantit WCAG 2.2 1.4.11 (Non-text contrast)
+   sur tout fond — le jaune contraste sur fond sombre, le noir sur fond clair. */
+
+/* Équivalent govuk-focus-width (token CSS --lpv-focus-width) */
+$lpv-focus-width: 3px !default;
+
+/* Focus d'un texte focusable (liens, summary, contrôles texte) :
+   équivalent du mixin `govuk-focused-text` — fond jaune, bordure noire épaisse
+   en bas, outline jaune autour (contraste du jaune sur fond jaune), sans
+   soulignement (le fond portant l'indication). */
+@mixin lpv-focused-text {
+  background-color: var(--lpv-focus);
+  border-bottom: $lpv-focus-width solid var(--lpv-text);
+  color: var(--lpv-text-black);
+  outline: $lpv-focus-width solid transparent;
+  text-decoration: none;
 }
 
-/* Focus sur fond coloré (portail) : anneau blanc du portail + jaune */
+/* Focus d'un élément avec fond ou bordure (inputs, checkboxes, cards
+   interactives) : contour jaune épais + bordure noire épaisse. */
+@mixin lpv-focus {
+  outline: $lpv-focus-width solid var(--lpv-focus);
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 1px var(--lpv-text);
+}
+
+/* Focus sur fond coloré (portail) : anneau blanc du portail entre l'élément
+   et le contour jaune, pour rester lisible sur la bande colorée. */
 @mixin lpv-focus-on-portal {
-  box-shadow: 0 0 0 2px var(--lpv-on-portal), 0 0 0 5px var(--lpv-focus);
-  outline: none;
+  outline: $lpv-focus-width solid var(--lpv-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--lpv-on-portal);
 }
 
 /* Lien piloté par le portail : couleur portail-dark, violet sur lien
@@ -28,5 +50,17 @@
     color: var(--lpv-text);
     text-underline-offset: var(--lpv-text-underline-offset-hover);
     text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+  }
+}
+
+/* Bouton pleine largeur en mobile (< 48rem), taille naturelle au-delà —
+   motif GOV.UK mobile-first : les cibles d'action primaires occupent tout
+   l'écran pour être faciles à taper au pouce. S'applique aussi à <a>.
+   Usage : @include lpv-button-full-width-mobile; (dans .lpv-a-button). */
+@mixin lpv-button-full-width-mobile {
+  @media (max-width: 47.99rem) {
+    display: block;
+    text-align: center;
+    width: 100%;
   }
 }

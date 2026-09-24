@@ -2,10 +2,11 @@ import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
-import { BackLink, Tag, WarningText } from '@/components/atoms'
+import { Tag, WarningText } from '@/components/atoms'
 import { Table } from '@/components/molecules'
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
 import { SummaryList } from '@/components/molecules/m-lists'
+import { DetailPage } from '@/components/templates'
 import { requireProf } from '@/utilities/profAuth'
 import { niveauLabel, texteLexical } from '@/utilities/rapports'
 
@@ -123,68 +124,75 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
   })
 
   return (
-    <>
-      <BackLink href="/profs">Tableau de bord</BackLink>
-      <h1 className="lpv-h1">
-        {eleve.prenom} {eleve.nom} <Tag color="blue">{eleve.niveau}</Tag>
-      </h1>
-
-      <SummaryList
-        items={[
-          ...(eleve.groupe ? [{ key: 'Groupe', value: eleve.groupe }] : []),
-          { key: 'Présence', value: taux !== null ? `${taux}%` : '—' },
-        ]}
-      />
-
-      {alertes && alertes.totalDocs > 0 && (
-        <section>
-          <h2 className="lpv-h2">Alertes actives</h2>
-          {alertes.docs.map((alerte) => (
-            <WarningText key={String(alerte.id)}>
-              {alerte.message}{' '}
-              <span style={{ color: 'var(--lpv-text-muted)' }}>
-                ({new Date(String(alerte.dateCreation)).toLocaleDateString('fr-FR')})
-              </span>
-            </WarningText>
-          ))}
-        </section>
-      )}
-
-      <section>
-        <h2 className="lpv-h2">Présences</h2>
-        {presences.docs.length === 0 ? (
-          <p className="lpv-muted">Aucune présence enregistrée.</p>
-        ) : (
-          <Table caption="Présences" head={presencesHead} rows={presencesRows} />
-        )}
-      </section>
-
-      <section>
-        <h2 className="lpv-h2">Progressions</h2>
-        {progressions.docs.length === 0 ? (
-          <p className="lpv-muted">Aucune progression.</p>
-        ) : (
-          <Table caption="Progressions" head={progressionsHead} rows={progressionsRows} />
-        )}
-      </section>
-
-      <section>
-        <h2 className="lpv-h2">Retours de séance</h2>
-        {seances.docs.filter((s) => s.retour).length === 0 ? (
-          <p className="lpv-muted">Aucun retour.</p>
-        ) : (
-          seances.docs
-            .filter((s) => s.retour)
-            .map((s) => (
-              <article key={String(s.id)} style={{ borderBottom: '1px solid var(--lpv-grey-border)', padding: '0.5rem 0' }}>
-                <strong>
-                  {new Date(String(s.date)).toLocaleDateString('fr-FR')} · {s.matiere}
-                </strong>
-                <p style={{ whiteSpace: 'pre-line' }}>{texteLexical(s.retour)}</p>
-              </article>
-            ))
-        )}
-      </section>
-    </>
+    <DetailPage
+      backHref="/profs"
+      backLabel="Tableau de bord"
+      title={`${eleve.prenom} ${eleve.nom}`}
+      tag={<Tag color="blue">{eleve.niveau}</Tag>}
+      meta={
+        <SummaryList
+          items={[
+            ...(eleve.groupe ? [{ key: 'Groupe', value: eleve.groupe }] : []),
+            { key: 'Présence', value: taux !== null ? `${taux}%` : '—' },
+          ]}
+        />
+      }
+      sections={[
+        ...(alertes && alertes.totalDocs > 0
+          ? [
+              {
+                title: 'Alertes actives',
+                children: alertes.docs.map((alerte) => (
+                  <WarningText key={String(alerte.id)}>
+                    {alerte.message}{' '}
+                    <span style={{ color: 'var(--lpv-text-muted)' }}>
+                      ({new Date(String(alerte.dateCreation)).toLocaleDateString('fr-FR')})
+                    </span>
+                  </WarningText>
+                )),
+              },
+            ]
+          : []),
+        {
+          title: 'Présences',
+          children:
+            presences.docs.length === 0 ? (
+              <p className="lpv-muted">Aucune présence enregistrée.</p>
+            ) : (
+              <Table caption="Présences" head={presencesHead} rows={presencesRows} />
+            ),
+        },
+        {
+          title: 'Progressions',
+          children:
+            progressions.docs.length === 0 ? (
+              <p className="lpv-muted">Aucune progression.</p>
+            ) : (
+              <Table caption="Progressions" head={progressionsHead} rows={progressionsRows} />
+            ),
+        },
+        {
+          title: 'Retours de séance',
+          children:
+            seances.docs.filter((s) => s.retour).length === 0 ? (
+              <p className="lpv-muted">Aucun retour.</p>
+            ) : (
+              seances.docs
+                .filter((s) => s.retour)
+                .map((s) => (
+                  <article
+                    key={String(s.id)}
+                    style={{ borderBottom: '1px solid var(--lpv-grey-border)', padding: '0.5rem 0' }}
+                  >
+                    <strong>
+                      {new Date(String(s.date)).toLocaleDateString('fr-FR')} · {s.matiere}
+                    </strong>
+                    <p style={{ whiteSpace: 'pre-line' }}>{texteLexical(s.retour)}</p>
+                  </article>
+                ))
+            ),
+        },
+      ]}
+    />
   )
 }

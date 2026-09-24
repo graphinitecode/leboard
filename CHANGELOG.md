@@ -7,6 +7,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ## [Unreleased]
 
 ### Ajouté
+- Calendrier hebdomadaire pour les profs : vue agenda de la semaine avec pastilles de séances positionnées sur une grille jour × heure, navigation entre semaines, déplacement d'une séance par glisser-déposer et création par clic sur une case libre
+- Assistant de création de séance « une question par écran » (jour, heure de début, heure de fin, matière, élèves) avec sélection de la plage au clic-tirer sur le calendrier et bouton « + Nouvelle séance »
+- Vues du calendrier : Semaine, Jour (automatique en mobile) et Liste condensée, avec mini-calendrier mensuel pour sauter à une date éloignée
+- Calendrier de la semaine sur la fiche enfant côté parents (lecture seule)
+- Couche Templates du design system : pages portail, fiche détail, tableau de bord, formulaire centré et pages-question assemblées par slots, avec section vitrine sur la page design system
 - Bouton « Succès » : nouvelle variante verte pour valider une action (dans le design system)
 - SummaryList : nouvelle variante sans séparateurs (prop `dividers={false}`) pour empiler les rows sans bordures, dans le design system
 - Page « Couleurs » dans le design system : palette complète (couleurs fonctionnelles, groupes de marque, tags, neutres) avec swatches qui suivent le thème actif et note de contraste WCAG
@@ -14,6 +19,9 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ### Modifié
 - Bascule de thème : nouveau mode « suivre la machine » (icône d'écran) qui applique automatiquement le thème du système et suit ses changements en temps réel ; le cycle machine → clair → sombre remplace l'ancienne bascule à deux états
 - Liens de contenu (liens inline, fil d'Ariane, lien de retour, actions des résumés) : affichage en violet lorsqu'ils ont déjà été visités, dans les thèmes clair et sombre
+- Tableau de bord des profs : le calendrier de la semaine remplace les listes « Aujourd'hui » et « Cette semaine »
+- Assistant de disponibilités : parcours « une question par écran » à pleine page avec récapitulatif « Vos réponses », dans la continuité du design system
+- Boutons pleine largeur en mobile et focus textuel harmonisé sur les liens (entête, navigation, listes) ; lien de retour et accordéons affinés (chevrons)
 
 ## [0.5.0] — 2026-09-21
 
