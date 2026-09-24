@@ -1,6 +1,8 @@
 import type { MouseEventHandler, ReactNode } from 'react'
 
 import { BackLink } from '@/components/atoms/a-back-link'
+import { Label } from '@/components/atoms'
+import { Stepper } from '@/components/atoms/a-stepper'
 
 // Template : page-question du pattern GOV.UK « question pages »
 // (docs/design-system.md §1.5). Un objectif par page, le h1 est la question
@@ -14,13 +16,17 @@ export function QuestionPage({
   question,
   retour,
   step,
+  stepSize,
+  htmlFor = step ? `question_${step}` : 'question',
   reponses,
 }: {
   children: ReactNode
   actions?: ReactNode
   question: string
   retour?: { href: string; label?: string; onClick?: MouseEventHandler<HTMLAnchorElement> }
-  step?: string
+  step?: number
+  stepSize?: number
+  htmlFor?: string
   reponses?: QuestionPageReponse[]
 }) {
   return (
@@ -30,8 +36,10 @@ export function QuestionPage({
           {retour.label ?? 'Retour'}
         </BackLink>
       )}
-      {step && <p className="lpv-t-question-page__step">{step}</p>}
-      <h1 className="lpv-t-question-page__question">{question}</h1>
+      {step && <Stepper step={step} size={stepSize} />}
+      <Label htmlFor={`${htmlFor}`} size="l">
+        {question}
+      </Label>
       <div className="lpv-t-question-page__content">{children}</div>
       {reponses && reponses.length > 0 && <QuestionPageAnswers reponses={reponses} />}
       {actions && <div className="lpv-t-question-page__actions">{actions}</div>}

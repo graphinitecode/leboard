@@ -90,9 +90,12 @@
   align-items: center;
   color: var(--lpv-portail-dark);
   display: inline-flex;
-  gap: 0.375rem;
-  margin-bottom: 0.75rem;
-  text-decoration: none;
+  gap: 0.175rem;
+  transform: translateX(-0.97rem);
+  margin-bottom: 2.7rem;
+  text-decoration: underline;
+  text-decoration-thickness: var(--lpv-decoration-thickness);
+  text-underline-offset: var(--lpv-text-underline-offset);
 
   &:visited {
     color: var(--lpv-visited);
@@ -139,6 +142,7 @@
     color: var(--lpv-portail-dark);
     cursor: pointer;
     display: flex;
+    width: fit-content;
     font-size: 1.125rem;
     font-weight: 400;
     text-decoration: underline;

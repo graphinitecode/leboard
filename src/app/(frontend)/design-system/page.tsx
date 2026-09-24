@@ -12,6 +12,7 @@ import { IconCard } from '@/components/atoms/a-icon-card'
 import { ActionIconcard } from '@/components/molecules/m-action-iconcard'
 import { EnterText } from '@/components/atoms/a-enter-text'
 import { DashboardPage, DetailPage, FormPage, QuestionPage } from '@/components/templates'
+import { Stepper } from '@/components/atoms/a-stepper'
 
 export const metadata: Metadata = {
   title: 'Design system — LPV Board',
@@ -204,7 +205,7 @@ export default function DesignSystemPage() {
         </div>
       </section>
 
-      <section id="EnterText">
+      <section id="EnterText" style={{ marginBottom: '3.7rem' }}>
         <h2 className="lpv-h2">Enter Text</h2>
         <div>
           <EnterText hrf={`#messages`}>C&#39;est un peu cela le truc</EnterText>
@@ -588,18 +589,21 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">QuestionPage (page-question GOV.UK)</h3>
         <p className="lpv-muted" style={{ marginTop: 0 }}>
-          Back link, caption « Étape N sur M », h1 = la question, actions alignées à gauche,
-          bloc « Vos réponses » avec liens « Modifier ». Conteneur fluide plafonné à la mesure de
-          lecture — utilisé par le parcours de création de séance et les disponibilités.
+          Back link, caption « Étape N sur M », h1 = la question, actions alignées à gauche, bloc «
+          Vos réponses » avec liens « Modifier ». Conteneur fluide plafonné à la mesure de lecture —
+          utilisé par le parcours de création de séance et les disponibilités.
         </p>
         <QuestionPage
           actions={
-            <Button type="button">Continuer</Button>
+            <Button variant="success" type="button">
+              Continuer
+            </Button>
           }
-          question="Quelle heure de début ?"
-          reponses={[{ question: 'Jour', valeur: 'Mercredi' }]}
+          question="Quelle est ta date de naissance
+          ?"
+          reponses={[{ question: 'Prénom', valeur: 'Zayit' }]}
           retour={{ href: '#templates' }}
-          step="Étape 2 sur 3"
+          step={2}
         >
           <div className="lpv-card" style={{ padding: '1rem' }}>
             Slot : contrôle de réponse (Input, boutons de choix…)
@@ -693,8 +697,12 @@ export default function DesignSystemPage() {
         </div>
 
         <h3 className="lpv-h3">Stepper (markup statique)</h3>
-        <p className="lpv-stepper__step">Étape 1 sur 3</p>
-        <h2 className="lpv-stepper__question">Quel jour vous convient ?</h2>
+        <Stepper />
+        <Stepper step={3} />
+        <Stepper step={"sucrerie"} />
+        <Stepper step={3} size={4} />
+        <Stepper step={"forme"} size={"entrainement"} />
+        <Label htmlFor={''}>Quel jour vous convient ?</Label>
         <p className="lpv-stepper__hint">Sélectionnez un jour de la semaine.</p>
       </section>
     </div>

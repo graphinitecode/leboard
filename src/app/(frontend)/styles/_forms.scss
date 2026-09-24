@@ -8,10 +8,10 @@
 
 .lpv-a-label {
   display: block;
-  font-size: 1.5rem;
+  @include mixins.lpv-font-size(32);
   font-weight: 700;
-  line-height: 1.4;
-  margin-bottom: 0.25rem;
+  color: var(--lpv-text);
+  margin-bottom: var(--lpv-spacing-xl);
 
 
   &__optional {
@@ -27,20 +27,20 @@
   margin: 0 0 0.25rem;
 }
 
-.lpv-a-label.lpv-a-label--m {
-  font-size: 1.25rem;
+.lpv-a-label.lpv-a-label--l {
+  @include mixins.lpv-font-size(48);
   font-weight: 700;
 }
 
 .lpv-a-label.lpv-a-label--s {
-  font-size: 1rem;
+  @include mixins.lpv-font-size(24);
   font-weight: 700;
 }
 
 .lpv-a-hint {
   color: var(--lpv-text);
   opacity: 77%;
-  font-size: 1rem;
+  @include mixins.lpv-font-size(19);
   line-height: 1.4;
   margin-bottom: var(--lpv-spacing-lg);
 }
@@ -76,21 +76,18 @@
    de largeur stable quelle que soit la longueur de la question.
    (Le padding horizontal vient du lpv-container parent.) */
 .lpv-t-question-page {
-  max-width: var(--lpv-container-xs);
-  position: absolute;
-  left: 0;
-  right: 0;
-  width: 100%;
-  margin-top: 4rem;
-  margin-inline: auto;
-  padding-inline: calc(var(--spacing) * 6);
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  text-size-adjust: 100%;
 
   /* La question a toujours la même taille, quelle que soit la page. */
   &__question {
     font-size: 1.97rem;
     font-weight: 700;
     line-height: 1.25;
-    margin: -0.3rem 0 1.47rem;
+    @include mixins.lpv-font-size(37);
+    margin: -0.4rem 0 1.47rem;
     overflow-wrap: break-word;
   }
 
@@ -101,9 +98,9 @@
   &__step {
     color: var(--lpv-text-muted);
     display: block;
-    font-size: 1.37rem;
+    @include mixins.lpv-font-size(24);
     font-weight: 400;
-    margin: 2.7rem 0 0.25rem;
+    margin: 0 0 0.25rem;
   }
 
   &__actions {
@@ -265,14 +262,17 @@
     align-items: center;
     display: flex;
     gap: 0.5rem;
+    margin-block: var(--lpv-spacing-md);
   }
 
   &__input {
     flex-shrink: 0;
     height: 2.5ex;
+    width: 2.5ex;
     min-height: 44px;
     min-width: 44px;
-    width: 2.5ex;
+    border-radius: 3px;
+
   }
 
   &__label {
@@ -280,11 +280,12 @@
     font-size: 1.125rem;
     font-weight: 400;
     line-height: 1.4;
-    padding-top: 0.35rem;
+    margin-block: auto;
+    padding-left: var(--lpv-spacing-md);
   }
 
   &__hint {
-    color: var(--lpv-text-muted);
+    color: var(--lpv-text-red);
     font-size: 1rem;
     line-height: 1.4;
     margin: 0 0 0 2.5ex;
@@ -332,6 +333,7 @@
   }
 
   &__item {
+    margin-block: var(--lpv-spacing-md);
     align-items: center;
     display: flex;
     gap: 0.5rem;
@@ -350,7 +352,8 @@
     font-size: 1.125rem;
     font-weight: 400;
     line-height: 1.4;
-    padding-top: 0.35rem;
+    margin-block: auto;
+    padding-left: var(--lpv-spacing-md);
   }
 
   &__hint {
@@ -464,6 +467,16 @@
     &--error {
       color: var(--lpv-red);
       font-weight: 700;
+    }
+    &--equal_limit {
+      color: #00a14c;
+      font-weight: 700;
+    }
+    &--less_than_half_limit {
+      color: #e25809;
+    }
+    &--more_than_half_limit {
+      color: #00a14c;
     }
   }
 }
@@ -615,8 +628,8 @@
   &__step {
     color: var(--lpv-text-muted);
     display: block;
-    font-size: 1rem;
-    font-weight: 700;
+    @include mixins.lpv-font-size(24);
+    font-weight: 400;
     margin: 0 0 0.25rem;
   }
 
@@ -628,6 +641,7 @@
 
   &__hint {
     color: var(--lpv-text-muted);
+    @include mixins.lpv-font-size(19);
     margin: -0.5rem 0 1rem;
   }
 

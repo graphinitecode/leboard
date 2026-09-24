@@ -43,15 +43,20 @@ export function CharacterCount({
 }) {
   const [text, setText] = useState(value ?? '')
   const [exceededThreshold, setExceededThreshold] = useState(false)
-  const limitReached = type === 'characters' ? text.length >= limit : (text.trim().split(/\s+/).filter(Boolean).length >= limit)
+  const limitReached = type === 'characters' ? text.length >= limit+1 : (text.trim().split(/\s+/).filter(Boolean).length >= limit)
   const currentCount = type === 'characters' ? text.length : text.trim().split(/\s+/).filter(Boolean).length
   const remaining = limit - currentCount
 
   function counterMessage(): string {
     if (limitReached) {
       return type === 'characters'
-        ? `Vous avez dépassé la limite de ${limit} caractères de ${Math.abs(remaining)}`
-        : `Vous avez dépassé la limite de ${limit} mots de ${Math.abs(remaining)}`
+        ? `Vous avez dépassé de ${Math.abs(remaining)} caractère` +
+            `${Math.abs(remaining) > 1 ? 's' : ''} la limite autorisée`
+        : `Vous avez dépassé de ${Math.abs(remaining)} mot` +
+            `${Math.abs(remaining) > 1 ? 's' : ''} la limite autorisée`
+    }
+    if (remaining === 0) {
+      return `Vous avez atteint le maximum autorisé`
     }
 
     if (threshold && !exceededThreshold && currentCount < limit * (threshold / 100)) {
@@ -63,6 +68,28 @@ export function CharacterCount({
     return type === 'characters'
       ? `Il vous reste ${remaining} caractère${remaining > 1 ? 's' : ''}`
       : `Il vous reste ${remaining} mot${remaining > 1 ? 's' : ''}`
+  }
+
+  function changeMessageColor(): string {
+    if (remaining === 0) {
+      return 'lpv-m-character-count__message--equal_limit'
+    }
+    if (remaining > 0) {
+      if (remaining == limit) {
+        return ` lpv-m-character-count__message--empty`
+      }else{
+        if (remaining > limit / 2) {
+          return ` lpv-m-character-count__message--less_than_half_limit`
+        }
+        if (remaining <= limit/ 2) {
+          return ` lpv-m-character-count__message--more_than_half_limit`
+        }
+      }
+
+
+    }
+
+    return ` lpv-m-character-count__message--error`
   }
 
   const groupClass = `lpv-form-group${error ? ' lpv-form-group--error' : ''} lpv-m-character-count`
@@ -79,7 +106,12 @@ export function CharacterCount({
   )
 
   return (
-    <div className={groupClass} data-limit={limit} data-count-type={type} data-threshold={threshold}>
+    <div
+      className={groupClass}
+      data-limit={limit}
+      data-count-type={type}
+      data-threshold={threshold}
+    >
       {labelElement}
       {hint ? <Hint id={`${id}-hint`}>{hint}</Hint> : null}
       {error ? <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage> : null}
@@ -93,7 +125,10 @@ export function CharacterCount({
         name={name}
         onChange={(e) => {
           setText(e.target.value)
-          const count = type === 'characters' ? e.target.value.length : e.target.value.trim().split(/\s+/).filter(Boolean).length
+          const count =
+            type === 'characters'
+              ? e.target.value.length
+              : e.target.value.trim().split(/\s+/).filter(Boolean).length
           setExceededThreshold(threshold ? count >= limit * (threshold / 100) : true)
           onChange?.(e)
         }}
@@ -102,7 +137,7 @@ export function CharacterCount({
       />
       <div
         aria-live="polite"
-        className={`lpv-a-hint lpv-m-character-count__message${limitReached ? ' lpv-m-character-count__message--error' : ''}`}
+        className={`lpv-a-hint lpv-m-character-count__message${limitReached ? ' lpv-m-character-count__message--error' : ''} ${changeMessageColor()}`}
         id={`${id}-count`}
       >
         {counterMessage()}

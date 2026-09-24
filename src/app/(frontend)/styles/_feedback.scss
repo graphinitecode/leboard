@@ -165,7 +165,7 @@
   &__text {
     flex: 1;
     font-weight: 600;
-    font-size: var(--lpv-font-size-md);
+    @include mixins.lpv-font-size(19);
     color: var(--lpv-a-tag--blue-text);
     text-decoration: underline;
     text-decoration-thickness: var(--lpv-decoration-thickness);

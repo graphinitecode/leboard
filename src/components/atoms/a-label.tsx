@@ -22,7 +22,7 @@ export function Label({
   isPageHeading?: boolean
   size?: LabelSize
 }) {
-  const sizeClass = size && size !== 'l' ? ` lpv-a-label--${size}` : ''
+  const sizeClass = size ? ` lpv-a-label--${size}` : ''
   const classes = `lpv-a-label${sizeClass}`
 
   const label = (

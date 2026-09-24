@@ -34,7 +34,7 @@
 
 .lpv-muted {
   color: var(--lpv-text-muted);
-  font-size: 1rem;
+  @include mixins.lpv-font-size(19);
   margin-bottom: var(--lpv-spacing-md);
 }
 

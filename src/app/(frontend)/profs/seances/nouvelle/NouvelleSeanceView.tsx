@@ -129,230 +129,241 @@ function ParcoursNouvelleSeance() {
   }
 
   return (
-    <>
-      {step === 'jour' && (
-        <QuestionPage
-          actions={
-            <>
-              <Button onClick={() => setStep('debut')} type="button" variant="success">
+    <div className="lpv-container">
+      <section className="lpv-container">
+        {step === 'jour' && (
+          <QuestionPage
+            actions={
+              <>
+                <Button onClick={() => setStep('debut')} type="button" variant="success">
+                  Continuer
+                </Button>
+                {/*<Button href="/profs">*/}
+                {/*  Annuler*/}
+                {/*</Button>*/}
+              </>
+            }
+            question="Quel jour ?"
+            retour={{ href: '/profs', label: 'Retour au Tableau de bord' }}
+            htmlFor="seance-jour"
+            step={1}
+            stepSize={5}
+          >
+            <div className="lpv-o-availability-wizard__days" id="seance-jour">
+              {JOURS_GRILLE.map((label, index) => (
+                <button
+                  className={`lpv-o-availability-wizard__day-option${jourIndex === index ? ' lpv-o-availability-wizard__day-option--active' : ''}`}
+                  key={label}
+                  onClick={() => setJourIndex(index)}
+                  type="button"
+                >
+                  {label} {joursGrille(lundi)[index].getDate()}
+                </button>
+              ))}
+            </div>
+          </QuestionPage>
+        )}
+
+        {step === 'debut' && (
+          <QuestionPage
+            actions={
+              <Button
+                disabled={!heureDebut}
+                onClick={() => setStep('fin')}
+                type="button"
+                variant="success"
+              >
                 Continuer
               </Button>
-              {/*<Button href="/profs">*/}
-              {/*  Annuler*/}
-              {/*</Button>*/}
-            </>
-          }
-          question="Quel jour ?"
-          retour={{ href: '/profs', label: 'Retour au Tableau de bord' }}
-          step="Étape 1 sur 5"
-        >
-          <div className="lpv-o-availability-wizard__days">
-            {JOURS_GRILLE.map((label, index) => (
-              <button
-                className={`lpv-o-availability-wizard__day-option${jourIndex === index ? ' lpv-o-availability-wizard__day-option--active' : ''}`}
-                key={label}
-                onClick={() => setJourIndex(index)}
+            }
+            question="Quelle heure de début ?"
+            reponses={reponses}
+            retour={{ href: '#', onClick: () => setStep('jour') }}
+            htmlFor="seance-debut"
+            step={2}
+            stepSize={5}
+          >
+            <InputTime
+              hint={`Choisir une heure entre ${HEURE_DEBUT_GRILLE}h et ${HEURE_FIN_GRILLE}h.`}
+              id="seance-debut"
+              label=""
+              onChange={setHeureDebut}
+              value={heureDebut}
+            />
+          </QuestionPage>
+        )}
+
+        {step === 'fin' && (
+          <QuestionPage
+            actions={
+              <Button
+                disabled={!heureFin || (duree !== null && duree < 30)}
+                onClick={() => setStep('matiere')}
                 type="button"
+                variant="success"
               >
-                {label} {joursGrille(lundi)[index].getDate()}
-              </button>
-            ))}
-          </div>
-        </QuestionPage>
-      )}
-
-      {step === 'debut' && (
-        <QuestionPage
-          actions={
-            <Button
-              disabled={!heureDebut}
-              onClick={() => setStep('fin')}
-              type="button"
-              variant="success"
-            >
-              Continuer
-            </Button>
-          }
-          question="Quelle heure de début ?"
-          reponses={reponses}
-          retour={{ href: '#', onClick: () => setStep('jour') }}
-          step="Étape 2 sur 5"
-        >
-          <InputTime
-            hint={`Choisir une heure entre ${HEURE_DEBUT_GRILLE}h et ${HEURE_FIN_GRILLE}h.`}
-            id="seance-debut"
-            label=""
-            onChange={setHeureDebut}
-            value={heureDebut}
-          />
-        </QuestionPage>
-      )}
-
-      {step === 'fin' && (
-        <QuestionPage
-          actions={
-            <Button
-              disabled={!heureFin || (duree !== null && duree < 30)}
-              onClick={() => setStep('matiere')}
-              type="button"
-              variant="success"
-            >
-              Continuer
-            </Button>
-          }
-          question="Quelle heure de fin ?"
-          reponses={reponses}
-          retour={{ href: '#', onClick: () => setStep('debut') }}
-          step="Étape 3 sur 5"
-        >
-          <InputTime
-            hint={duree ? `Durée : ${duree} min.` : undefined}
-            id="seance-fin"
-            label=""
-            min={heureDebut || '08:00'}
-            onChange={setHeureFin}
-            value={heureFin}
-          />
-        </QuestionPage>
-      )}
-
-      {step === 'matiere' && (
-        <QuestionPage
-          actions={
-            <Button
-              disabled={matiere === ''}
-              onClick={() => setStep('eleves')}
-              type="button"
-              variant="success"
-            >
-              Continuer
-            </Button>
-          }
-          question="Quelle matière ?"
-          reponses={reponses}
-          retour={{ href: '#', onClick: () => setStep('fin') }}
-          step="Étape 4 sur 5"
-        >
-          <div className="lpv-o-availability-wizard__days">
-            {MATIERES.map((option) => (
-              <button
-                className={`lpv-o-availability-wizard__day-option${matiere === option.value ? ' lpv-o-availability-wizard__day-option--active' : ''}`}
-                key={option.value}
-                onClick={() => setMatiere(option.value)}
-                type="button"
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-        </QuestionPage>
-      )}
-
-      {step === 'eleves' && (
-        <QuestionPage
-          actions={
-            <Button
-              disabled={selection.length === 0}
-              onClick={() => setStep('recap')}
-              type="button"
-            >
-              Continuer
-            </Button>
-          }
-          question="Quels élèves ?"
-          reponses={reponses}
-          retour={{ href: '#', onClick: () => setStep('matiere') }}
-          step="Étape 5 sur 5"
-        >
-          {eleves.isLoading ? (
-            <p className="lpv-muted">Chargement des élèves…</p>
-          ) : (eleves.data ?? []).length === 0 ? (
-            <p className="lpv-muted">
-              Aucun élève référent. Vous pourrez compléter le groupe depuis la fiche de la séance.
-            </p>
-          ) : (
-            eleves.data?.map((e) => (
-              <label className="lpv-t-question-page__choice" key={e.id}>
-                <input
-                  checked={selection.includes(e.id)}
-                  onChange={() =>
-                    setSelection((s) =>
-                      s.includes(e.id) ? s.filter((x) => x !== e.id) : [...s, e.id],
-                    )
-                  }
-                  type="checkbox"
-                  value={e.id}
-                />{' '}
-                {e.prenom} {e.nom} ({e.niveau})
-              </label>
-            ))
-          )}
-        </QuestionPage>
-      )}
-
-      {step === 'recap' && (
-        <QuestionPage
-          actions={
-            <>
-              {erreur && <ErrorSummary errors={[erreur]} />}
-              <Button disabled={pending} onClick={valider} type="button">
-                {pending ? 'Enregistrement…' : 'Valider'}
+                Continuer
               </Button>
-            </>
-          }
-          question="Vérifiez vos réponses"
-          retour={{ href: '/profs', label: 'Tableau de bord' }}
-        >
-          <QuestionPageAnswers
-            reponses={[
-              {
-                question: 'Jour',
-                valeur: `${JOURS_GRILLE[jourIndex]} ${joursGrille(lundi)[jourIndex].getDate()}`,
-                onClick: () => setStep('jour'),
-              },
-              {
-                question: 'Heures',
-                valeur: `${heureDebut} → ${heureFin}`,
-                onClick: () => setStep('debut'),
-              },
-              {
-                question: 'Matière',
-                valeur: labelMatiere(matiere),
-                onClick: () => setStep('matiere'),
-              },
-              {
-                question: 'Élèves',
-                valeur: nomEleves || '—',
-                onClick: () => setStep('eleves'),
-              },
-            ]}
-          />
-          {conflit && (
-            <p className="lpv-warning-text">
-              Cette plage chevauche une séance existante ({labelMatiere(conflit.matiere)} à{' '}
-              {conflit.debut.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}).
-            </p>
-          )}
-        </QuestionPage>
-      )}
+            }
+            question="Quelle heure de fin ?"
+            reponses={reponses}
+            retour={{ href: '#', onClick: () => setStep('debut') }}
+            step={3}
+            htmlFor="seance-fin"
+            stepSize={5}
+          >
+            <InputTime
+              hint={duree ? `Durée : ${duree} min.` : undefined}
+              id="seance-fin"
+              label=""
+              min={heureDebut || '08:00'}
+              onChange={setHeureFin}
+              value={heureFin}
+            />
+          </QuestionPage>
+        )}
 
-      {step === 'confirme' && (
-        <QuestionPage question="Séance créée">
-          <Panel>
-            {JOURS_GRILLE[jourIndex]} {joursGrille(lundi)[jourIndex].getDate()} · {heureDebut} →{' '}
-            {heureFin} · {labelMatiere(matiere)} · {nomEleves}
-          </Panel>
-          <div className="lpv-t-question-page__actions" style={{ marginTop: '1.5rem' }}>
-            <Button onClick={() => router.push('/profs')} type="button">
-              Retour au tableau de bord
-            </Button>
-            <Button onClick={recommencer} type="button" variant="secondary">
-              Créer une autre séance
-            </Button>
-          </div>
-        </QuestionPage>
-      )}
-    </>
+        {step === 'matiere' && (
+          <QuestionPage
+            actions={
+              <Button
+                disabled={matiere === ''}
+                onClick={() => setStep('eleves')}
+                type="button"
+                variant="success"
+              >
+                Continuer
+              </Button>
+            }
+            question="Quelle matière ?"
+            reponses={reponses}
+            retour={{ href: '#', onClick: () => setStep('fin') }}
+            step={4}
+            stepSize={5}
+          >
+            <div className="lpv-o-availability-wizard__days">
+              {MATIERES.map((option) => (
+                <button
+                  className={`lpv-o-availability-wizard__day-option${matiere === option.value ? ' lpv-o-availability-wizard__day-option--active' : ''}`}
+                  key={option.value}
+                  onClick={() => setMatiere(option.value)}
+                  type="button"
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </QuestionPage>
+        )}
+
+        {step === 'eleves' && (
+          <QuestionPage
+            actions={
+              <Button
+                disabled={selection.length === 0}
+                onClick={() => setStep('recap')}
+                type="button"
+              >
+                Continuer
+              </Button>
+            }
+            question="Quels élèves ?"
+            reponses={reponses}
+            retour={{ href: '#', onClick: () => setStep('matiere') }}
+            step={5}
+            stepSize={5}
+          >
+            {eleves.isLoading ? (
+              <p className="lpv-muted">Chargement des élèves…</p>
+            ) : (eleves.data ?? []).length === 0 ? (
+              <p className="lpv-muted">
+                Aucun élève référent. Vous pourrez compléter le groupe depuis la fiche de la séance.
+              </p>
+            ) : (
+              eleves.data?.map((e) => (
+                <label className="lpv-t-question-page__choice" key={e.id}>
+                  <input
+                    checked={selection.includes(e.id)}
+                    onChange={() =>
+                      setSelection((s) =>
+                        s.includes(e.id) ? s.filter((x) => x !== e.id) : [...s, e.id],
+                      )
+                    }
+                    type="checkbox"
+                    value={e.id}
+                  />{' '}
+                  {e.prenom} {e.nom} ({e.niveau})
+                </label>
+              ))
+            )}
+          </QuestionPage>
+        )}
+
+        {step === 'recap' && (
+          <QuestionPage
+            actions={
+              <>
+                {erreur && <ErrorSummary errors={[erreur]} />}
+                <Button disabled={pending} onClick={valider} type="button">
+                  {pending ? 'Enregistrement…' : 'Valider'}
+                </Button>
+              </>
+            }
+            question="Vérifiez vos réponses"
+            retour={{ href: '/profs', label: 'Tableau de bord' }}
+          >
+            <QuestionPageAnswers
+              reponses={[
+                {
+                  question: 'Jour',
+                  valeur: `${JOURS_GRILLE[jourIndex]} ${joursGrille(lundi)[jourIndex].getDate()}`,
+                  onClick: () => setStep('jour'),
+                },
+                {
+                  question: 'Heures',
+                  valeur: `${heureDebut} → ${heureFin}`,
+                  onClick: () => setStep('debut'),
+                },
+                {
+                  question: 'Matière',
+                  valeur: labelMatiere(matiere),
+                  onClick: () => setStep('matiere'),
+                },
+                {
+                  question: 'Élèves',
+                  valeur: nomEleves || '—',
+                  onClick: () => setStep('eleves'),
+                },
+              ]}
+            />
+            {conflit && (
+              <p className="lpv-warning-text">
+                Cette plage chevauche une séance existante ({labelMatiere(conflit.matiere)} à{' '}
+                {conflit.debut.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+                ).
+              </p>
+            )}
+          </QuestionPage>
+        )}
+
+        {step === 'confirme' && (
+          <QuestionPage question="Séance créée">
+            <Panel>
+              {JOURS_GRILLE[jourIndex]} {joursGrille(lundi)[jourIndex].getDate()} · {heureDebut} →{' '}
+              {heureFin} · {labelMatiere(matiere)} · {nomEleves}
+            </Panel>
+            <div className="lpv-t-question-page__actions" style={{ marginTop: '1.5rem' }}>
+              <Button onClick={() => router.push('/profs')} type="button">
+                Retour au tableau de bord
+              </Button>
+              <Button onClick={recommencer} type="button" variant="secondary">
+                Créer une autre séance
+              </Button>
+            </div>
+          </QuestionPage>
+        )}
+      </section>
+    </div>
   )
 }
 

@@ -20,9 +20,12 @@
 /* Map du type scale : point → paliers. `null` = mobile (< 48rem), les autres
    clés sont des min-width en rem. Chaque valeur : font-size + line-height. */
 $lpv-type-scale: (
-  48: (null: 2rem 2.1875rem, 48rem: 2.5rem 2.8125rem, 64rem: 3rem 3.125rem),
+  48: (null: 1.97rem 2.1875rem, 48rem: 2.5rem 2.8125rem, 64rem: 2.77rem 3.125rem),
+  37: (null: 1.77rem 2.1875rem, 48rem: 2rem 2.8125rem, 64rem: 2rem 3.125rem),
+  32: (null: 1.47rem 1.75rem, 48rem: 1.67rem 2.125rem, 64rem: 1.77rem 2.185rem),
   24: (null: 1.3125rem 1.5625rem, 48rem: 1.5rem 1.875rem),
-  19: (null: 1.1875rem 1.5625rem),
+  19: (null: 1.1rem 1.575rem, 48rem: 1.1875rem 1.625rem, 64rem: 1.25rem 1.725rem),
+  14: (null: 0.9rem 1.27rem, 48rem: 1rem 1.425rem, 64rem: 1.1rem 1.525rem),
 );
 
 /* Équivalent govuk-font-size : émet font-size + line-height pour le point
@@ -66,7 +69,7 @@ $lpv-focus-width: 3px !default;
 @mixin lpv-focus {
   outline: $lpv-focus-width solid var(--lpv-focus);
   outline-offset: 0;
-  box-shadow: inset 0 0 0 1px var(--lpv-text);
+  //box-shadow: inset 0 0 0 1px var(--lpv-text);
 }
 
 /* Focus sur fond coloré (portail) : anneau blanc du portail entre l'élément
@@ -103,5 +106,29 @@ $lpv-focus-width: 3px !default;
     display: block;
     text-align: center;
     width: 100%;
+  }
+}
+
+/* --- Familles de couleurs sémantiques --------------------------------------- */
+/* Chaque famille de la charte (blue, gray, orange, red…) expose une palette
+   complète : base, --hover, -dark, -shadow, -shadow--hover. Le mapping
+   déclare les rôles sémantiques (portal, secondary, warning, danger) qui
+   pointent vers une famille — réaffecter un rôle = changer une ligne de map,
+   et l'interpolation garantit la cohérence des 5 tokens (pas de nom qui
+   dérive d'une famille à l'autre). */
+$lpv-color-families: (
+  portal: blue,
+  secondary: gray,
+  warning: orange,
+  danger: red,
+);
+
+@mixin lpv-color-families {
+  @each $semantic, $family in $lpv-color-families {
+    --lpv-#{$semantic}: var(--lpv-#{$family});
+    --lpv-#{$semantic}--hover: var(--lpv-#{$family}--hover);
+    --lpv-#{$semantic}-dark: var(--lpv-#{$family}-dark);
+    --lpv-#{$semantic}-shadow: var(--lpv-#{$family}-shadow);
+    --lpv-#{$semantic}-shadow--hover: var(--lpv-#{$family}-shadow--hover);
   }
 }
