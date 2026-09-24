@@ -16,7 +16,10 @@
 
   --lpv-blue-soft: #eaf5ff;    /* fond clair dérivé du bleu de marque */
   --lpv-violet: #9000b3;       /* portail parents */
+  --lpv-violet--hover: #5c0061;  /* hover violet (contraste AA sur blanc) */
   --lpv-violet-dark: #6b0087;  /* hover violet (contraste AA sur blanc) */
+  --lpv-violet-shadow: #5a0072;
+  --lpv-violet-shadow--hover: #3f004e;
   --lpv-violet-soft: #f6e8fb;  /* fond clair dérivé du violet */
   --lpv-visited: #551a8b;      /* violet classique navigateur — lien visité (AA sur blanc) */
   --lpv-green: #059e4c;        /* Medium Jungle — succès / présent */
@@ -29,16 +32,26 @@
   --lpv-orange-smart: #f96900;       /* Pumpkin Spice — « retour à faire », avertissements */
   --lpv-orange: #c45303;       /* Pumpkin Spice — « retour à faire », avertissements */
   --lpv-orange--hover: #a04507;       /* Pumpkin Spice — « retour à faire », avertissements */
+  --lpv-orange-dark: #7d3206;
   --lpv-orange-soft: #d35701;
   --lpv-orange-shadow: #a53215;
   --lpv-orange-shadow--hover: #a53215;
   --lpv-orange-portail: #e4572e; /* portail élèves (à venir) */
+
+  /* Famille gray — boutons secondaires / rôles `secondary` (light) */
+  --lpv-gray: #ececec;
+  --lpv-gray--hover: #d8dadc;
+  --lpv-gray-dark: #c9cbcf;
+  --lpv-gray-shadow: #b9bbbf;
+  --lpv-gray-shadow--hover: #a8aaae;
+  --lpv-gray-soft: #f4f5f6;
 
 
   --lpv-yellow: #f4d35e;       /* Royal Gold — absent justifié (texte foncé sur fond) */
   --lpv-yellow-soft: #fdf6e0;
   --lpv-red: #cd0408;         /* Vibrant Coral — absent / erreur */
   --lpv-red--hover: #a80205;         /* Vibrant Coral — absent / erreur */
+  --lpv-red-dark: #900306;
   --lpv-red-shadow: #8b090b;         /* Vibrant Coral — absent / erreur */
   --lpv-red-shadow--hover: #5e0003;         /* Vibrant Coral — absent / erreur */
   --lpv-red-smart: #e03a3d;          /* Vibrant Coral — absent / erreur */
@@ -170,7 +183,14 @@
 /* Portail parents : violet */
 .lpv-shell[data-lpv-portail='parents'] {
   --lpv-portail: var(--lpv-violet);
+  --lpv-portail--hover: var(--lpv-violet--hover);
   --lpv-portail-dark: var(--lpv-violet-dark);
+  --lpv-portail-shadow: var(--lpv-violet-shadow);
+  --lpv-portail-shadow--hover: var(--lpv-violet-shadow--hover);
   --lpv-portail-soft: var(--lpv-violet-soft);
+
+  /* Le rôle `portal` est ré-émis ici : figé dans :root, il résoudrait
+     --lpv-portail au niveau racine (bleu) même sous ce sélecteur. */
+  @include mixins.lpv-color-families;
 }
 

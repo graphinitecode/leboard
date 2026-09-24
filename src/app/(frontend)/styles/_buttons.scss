@@ -5,11 +5,11 @@
 /* --- Boutons ------------------------------------------------------------ */
 
 .lpv-a-button {
-  background-color: var(--lpv-portail);
+  background-color: var(--lpv-portal);
   border: 2px solid transparent;
   outline: none;
   border-radius: var(--lpv-radius);
-  box-shadow: 0 2px 0 var(--lpv-portail-shadow);
+  box-shadow: 0 2px 0 var(--lpv-portal-shadow);
   color: var(--lpv-surface);
   cursor: pointer;
   display: inline-block;
@@ -21,7 +21,8 @@
   text-decoration: none;
 
   &:hover {
-    background-color: var(--lpv-portail-dark);
+    background-color: var(--lpv-portal--hover);
+    box-shadow: 0 2px 0 var(--lpv-portal-shadow--hover);
   }
 
   &:active {
@@ -43,34 +44,37 @@
   /* Pleine largeur en mobile (motif GOV.UK mobile-first) */
   @include mixins.lpv-button-full-width-mobile;
 
-  /* Variante « Modifier » (orange) */
+  /* Variante « Modifier » (secondaire) */
   &--secondary {
-    background-color: var(--lpv-darkgrey-bg);
-    box-shadow: 0 2px 0 var(--lpv-grey-border);
+    background-color: var(--lpv-secondary);
+    box-shadow: 0 2px 0 var(--lpv-secondary-shadow);
     color: var(--lpv-text);
 
     &:hover {
-      background-color: var(--lpv-grey-border);
+      background-color: var(--lpv-secondary--hover);
+      box-shadow: 0 2px 0 var(--lpv-secondary-shadow--hover);
     }
   }
 
   &--warning {
-    background-color: var(--lpv-orange);
-    box-shadow: 0 2px 0 var(--lpv-orange-shadow);
+    background-color: var(--lpv-warning);
+    box-shadow: 0 2px 0 var(--lpv-warning-shadow);
     color: var(--lpv-surface);
 
     &:hover {
-      background-color: var(--lpv-orange-hover);
+      background-color: var(--lpv-warning--hover);
+      box-shadow: 0 2px 0 var(--lpv-warning-shadow--hover);
     }
   }
 
   &--danger {
-    background-color: var(--lpv-red);
-    box-shadow: 0 2px 0 var(--lpv-red-shadow);
+    background-color: var(--lpv-danger);
+    box-shadow: 0 2px 0 var(--lpv-danger-shadow);
     color: var(--lpv-surface);
 
     &:hover {
-      background-color: var(--lpv-red-hover);
+      background-color: var(--lpv-danger--hover);
+      box-shadow: 0 2px 0 var(--lpv-danger-shadow--hover);
     }
   }
 

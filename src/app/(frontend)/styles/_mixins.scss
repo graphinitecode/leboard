@@ -115,9 +115,11 @@ $lpv-focus-width: 3px !default;
    déclare les rôles sémantiques (portal, secondary, warning, danger) qui
    pointent vers une famille — réaffecter un rôle = changer une ligne de map,
    et l'interpolation garantit la cohérence des 5 tokens (pas de nom qui
-   dérive d'une famille à l'autre). */
+   dérive d'une famille à l'autre). Le rôle `portal` pointe vers la famille
+   `portail` (définie dans tokens.scss), qui suit la couleur du portail
+   courant (data-lpv-portail) : bleu profs, violet parents. */
 $lpv-color-families: (
-  portal: blue,
+  portal: portail,
   secondary: gray,
   warning: orange,
   danger: red,
