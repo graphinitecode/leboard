@@ -341,7 +341,7 @@
     }
 
     &:focus {
-      @include mixins.lpv-focus;
+      @include mixins.lpv-focused-text;
     }
   }
 
@@ -621,7 +621,7 @@
   }
 
   &:focus {
-    @include mixins.lpv-focus;
+    @include mixins.lpv-focused-text;
   }
 
   &__icon {
@@ -651,6 +651,6 @@
   }
 
   &:focus {
-    @include mixins.lpv-focus;
+    @include mixins.lpv-focused-text;
   }
 }

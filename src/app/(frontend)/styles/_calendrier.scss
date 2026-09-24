@@ -1,0 +1,376 @@
+@use 'mixins';
+
+/* LPV Board Design System — Organism o-week-calendar (calendrier hebdomadaire) */
+
+.lpv-o-week-calendar {
+  margin-block: 1.5rem;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+
+  /* Barre d'outils : bouton création + toggle vues + mini-calendrier */
+  &__toolbar {
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  &__tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    position: relative;
+  }
+
+  &__picker-panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.5rem);
+    z-index: 10;
+  }
+
+  /* Navigation au-dessus de la grille */
+  &__nav {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+
+    /* Les flèches ‹ › de navigation restent compactes en mobile
+       (exemption du motif bouton pleine largeur). */
+    .lpv-a-button {
+      @media (max-width: 47.99rem) {
+        display: inline-block;
+        width: auto;
+      }
+    }
+  }
+
+  &__nav-jour {
+    display: none;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  &__day-tag {
+    background: var(--lpv-surface);
+    border: 1px solid var(--lpv-grey-border);
+    border-radius: var(--lpv-radius);
+    font-size: 0.75rem;
+    padding: 0.15rem 0.4rem;
+  }
+
+  /* Navigation jour par jour (vue jour) */
+  &__day-nav {
+    align-items: center;
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  &__label {
+    font-weight: 600;
+    margin: 0 0.5rem;
+  }
+
+  /* Défilement horizontal en mobile */
+  &__scroller {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  &__grid {
+    min-width: 48rem;
+    width: 48rem; /* largeur fixe : la grille ne déborde pas de son conteneur */
+  }
+
+  /* Vue jour : colonne unique, pleine largeur */
+  &__day-view {
+    .lpv-o-week-calendar__grid {
+      grid-template-columns: 3.5rem 1fr;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .lpv-o-week-calendar__body {
+      grid-template-columns: 3.5rem 1fr;
+    }
+  }
+
+  /* Vue liste condensée */
+  &__list {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  &__list-title {
+    font-size: 1rem;
+    margin: 0 0 0.5rem;
+  }
+
+  &__list-day {
+    margin: 0;
+  }
+
+  /* Entête des jours */
+  &__head {
+    display: grid;
+    grid-template-columns: 3.5rem repeat(6, minmax(6.5rem, 1fr));
+  }
+
+  &__corner {
+    /* coin vide au-dessus de la colonne des heures */
+  }
+
+  &__day {
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    text-align: center;
+  }
+
+  &__today-dot {
+    background-color: var(--lpv-portail);
+    border-radius: 50%;
+    display: inline-block;
+    height: 0.5rem;
+    margin-inline-start: 0.35rem;
+    vertical-align: middle;
+    width: 0.5rem;
+  }
+
+  &__body {
+    display: grid;
+    grid-template-columns: 3.5rem repeat(6, minmax(6.5rem, 1fr));
+    position: relative;
+  }
+
+  /* Colonne des heures */
+  &__hours {
+    position: relative;
+  }
+
+  &__hour {
+    font-size: 0.8125rem;
+    padding-right: 0.5rem;
+    text-align: right;
+  }
+
+  /* Colonne d'un jour */
+  &__day-col {
+    border-left: 1px solid var(--lpv-grey-border);
+    min-height: 100%;
+    position: relative;
+  }
+
+  &__hour + &__day-col {
+    border-top: 1px solid var(--lpv-grey-border);
+  }
+
+  /* Créneau cliquable (mode prof) */
+  &__slot {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: block;
+    height: 44px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    transition: background-color 0.1s ease;
+    touch-action: none;
+
+    &:hover {
+      background-color: var(--lpv-portail-soft);
+    }
+
+    &--active,
+    &:hover {
+      background-color: var(--lpv-portail-soft);
+    }
+
+    &:focus-visible {
+      outline: var(--lpv-focus-width) solid var(--lpv-focus);
+      outline-offset: -3px;
+      z-index: 2;
+    }
+  }
+
+  /* Surbrillance de la plage sélectionnée */
+  &__selection {
+    background-color: var(--lpv-portail-soft);
+    border: 2px dashed var(--lpv-portail);
+    left: 2px;
+    pointer-events: none;
+    position: absolute;
+    right: 2px;
+    z-index: 1;
+  }
+
+  /* Bande de disponibilité (fond hachuré) */
+  &__dispo {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 6px,
+      color-mix(in srgb, var(--lpv-portail) 18%, transparent) 6px,
+      color-mix(in srgb, var(--lpv-portail) 18%, transparent) 12px
+    );
+    border-inline: 1px dashed var(--lpv-portail);
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+  }
+
+  /* Pastille de séance */
+  &__event {
+    border-inline-start: 4px solid;
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8125rem;
+    left: 2px;
+    line-height: 1.25;
+    overflow: hidden;
+    padding: 0.2rem 0.4rem;
+    position: absolute;
+    right: 2px;
+    text-decoration: none;
+
+    &:focus-visible {
+      outline: var(--lpv-focus-width) solid var(--lpv-focus);
+      outline-offset: 1px;
+      position: absolute;
+      z-index: 3;
+    }
+
+    &[draggable='true'] {
+      cursor: grab;
+    }
+  }
+
+  &__event--blue {
+    background-color: var(--lpv-blue-soft);
+    border-color: var(--lpv-blue-dark);
+  }
+
+  &__event--violet {
+    background-color: var(--lpv-violet-soft);
+    border-color: var(--lpv-violet-dark);
+  }
+
+  &__event--orange {
+    background-color: var(--lpv-a-tag--orange-bg);
+    border-color: var(--lpv-orange);
+  }
+
+  &__event--teal {
+    background-color: var(--lpv-a-tag--teal-bg);
+    border-color: var(--lpv-a-tag--teal);
+  }
+
+  &__event-matiere {
+    font-weight: 600;
+  }
+
+  &__event-groupe {
+    color: var(--lpv-text-muted);
+    font-size: 0.75rem;
+  }
+
+  /* Actions de la modale */
+  &__modal-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+  }
+}
+
+/* Mini-calendrier mensuel de navigation */
+.lpv-o-month-picker {
+  background: var(--lpv-surface);
+  border: 1px solid var(--lpv-grey-border);
+  border-radius: var(--lpv-radius-lg);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
+  min-width: 17rem;
+  padding: 0.75rem;
+
+  /* Les flèches ‹ › du mini-calendrier restent compactes en mobile
+     (exemption du motif bouton pleine largeur). */
+  &__head .lpv-a-button {
+    @media (max-width: 47.99rem) {
+      display: inline-block;
+      width: auto;
+    }
+  }
+
+  &__head {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  &__label {
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  &__weekday {
+    color: var(--lpv-text-muted);
+    font-size: 0.75rem;
+    text-align: center;
+  }
+
+  &__day {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: var(--lpv-radius);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8125rem;
+    justify-content: center;
+    min-height: 36px;
+    padding: 0.15rem;
+
+    &:hover {
+      background-color: var(--lpv-portail-soft);
+    }
+
+    &:focus-visible {
+      outline: var(--lpv-focus-width) solid var(--lpv-focus);
+      outline-offset: -3px;
+    }
+
+    &--active {
+      background-color: var(--lpv-portail-soft);
+      font-weight: 700;
+      outline: 1px solid var(--lpv-portail);
+    }
+  }
+
+  &__dot {
+    background-color: var(--lpv-portail);
+    border-radius: 50%;
+    height: 4px;
+    margin-top: 2px;
+    width: 4px;
+  }
+
+  &__pad {
+    min-height: 36px;
+  }
+}

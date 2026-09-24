@@ -20,6 +20,8 @@ export function Button({
   variant = 'primary',
   href,
   title,
+  ariaLabel,
+  ariaExpanded,
 }: {
   children: ReactNode
   className?: string
@@ -29,6 +31,8 @@ export function Button({
   variant?: Variant
   href?: string
   title?: string
+  ariaLabel?: string
+  ariaExpanded?: boolean
 }) {
   const classes = `${CLASSES[variant]}${className ? ` ${className}` : ''}`
 
@@ -41,7 +45,15 @@ export function Button({
   }
 
   return (
-    <button className={classes} disabled={disabled} onClick={onClick} title={title} type={type}>
+    <button
+      aria-expanded={ariaExpanded}
+      aria-label={ariaLabel}
+      className={classes}
+      disabled={disabled}
+      onClick={onClick}
+      title={title}
+      type={type}
+    >
       {children}
     </button>
   )

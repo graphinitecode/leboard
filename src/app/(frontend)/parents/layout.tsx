@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 
-import { PageContent, ServiceHeader } from '@/components/molecules/m-service-header'
+import { ServiceHeader } from '@/components/molecules/m-service-header'
+import { PortalPage } from '@/components/templates'
 import { getMeUserServer } from '@/utilities/parentAuth'
 
 export const dynamic = 'force-dynamic'
@@ -17,7 +18,7 @@ export default async function ParentsLayout({ children }: { children: ReactNode 
   const user = await getMeUserServer()
 
   return (
-    <PageContent
+    <PortalPage
       header={
         <ServiceHeader
           heroText="Le suivi de votre enfant : présences, retours et prêts."
@@ -37,6 +38,6 @@ export default async function ParentsLayout({ children }: { children: ReactNode 
       portail="parents"
     >
       {children}
-    </PageContent>
+    </PortalPage>
   )
 }

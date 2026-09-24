@@ -5,6 +5,10 @@ import { useMemo } from 'react'
 import { InsetText, Tag } from '@/components/atoms'
 import { presentSeanceLigne, useListMySeances } from '@/seances'
 import { useListElevesDuProf } from '@/students'
+import { WeekCalendar } from '@/calendrier'
+import { useListMesDisponibilites } from '@/planning'
+import type { EventCalendrier } from '@/calendrier'
+import { matiereFiable } from '@/calendrier/domain/calendrier.utils'
 
 interface ProfsDashboardProps {
   profId: number
@@ -83,13 +87,8 @@ export default function ProfsDashboard({ profId }: ProfsDashboardProps) {
         ]}
       />
 
-      <ListesSection
-        title="Aujourd'hui"
-        seances={groupes.aujourdhui}
-        empty="Aucune séance aujourd'hui."
-        dayMode
-      />
-      <ListesSection title="Cette semaine" seances={groupes.resteSemaine} empty="Aucune séance à afficher." />
+      <SectionCalendrier seances={seances.data ?? []} retards={groupes.retards} />
+
       <ListesSection title="Passées récentes" seances={groupes.passees} empty="Aucune séance à afficher." />
 
       <section>
@@ -119,6 +118,37 @@ export default function ProfsDashboard({ profId }: ProfsDashboardProps) {
         )}
       </section>
     </>
+  )
+}
+
+function SectionCalendrier({
+  seances,
+  retards,
+}: {
+  seances: { id: number; date: string; matiere: string; aRetour: boolean }[]
+  retards: number
+}) {
+  const disponibilites = useListMesDisponibilites()
+
+  const events: EventCalendrier[] = (seances ?? []).map((seance) => ({
+    id: seance.id,
+    debut: new Date(seance.date),
+    dureeMin: 60,
+    matiere: matiereFiable(seance.matiere),
+    labelGroupe: '',
+    href: `/profs/seances/${seance.id}`,
+  }))
+
+  return (
+    <section aria-label="Ma semaine">
+      <h2 className="lpv-h2">Ma semaine</h2>
+      {retards > 0 && (
+        <InsetText>
+          {retards} retour(s) de séance en attente d&apos;écriture.
+        </InsetText>
+      )}
+      <WeekCalendar dispos={disponibilites.data ?? []} events={events} mode="prof" />
+    </section>
   )
 }
 

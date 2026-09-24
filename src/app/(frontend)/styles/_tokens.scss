@@ -42,11 +42,15 @@
      quel que soit le thème (le portail reste coloré en mode sombre) */
   --lpv-on-portal: #ffffff;
 
+  /* la couleur sombre */
+  --lpv-text-black: #180f18;
+
   /* Afin d'avoir le même background quelque soit le theme */
   --lpv-background: var(--lpv-on-portal);
 
   /* Focus : jaune, conservé du GOV.UK pour la visibilité maximale */
   --lpv-focus: #fd0;
+  --lpv-focus-width: 3px;
 
   /* Couleurs des tags (marque, identiques light/dark) */
   --lpv-a-tag--green: #00a14c;
@@ -98,6 +102,7 @@
   --lpv-radius-3xl: 14px;
   --lpv-container: 1020px;
   --lpv-container-sm: 960px;
+  --lpv-container-xs: 570px;
   --lpv-shadow: 0 1px 2px rgb(15 20 25 / 6%), 0 4px 16px rgb(15 20 25 / 7%);
   --lpv-shadow-hover: 0 2px 4px rgb(15 20 25 / 8%), 0 8px 24px rgb(15 20 25 / 10%);
 

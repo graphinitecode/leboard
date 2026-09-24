@@ -13,13 +13,9 @@ export function BackLink({
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void
 }) {
   return (
-    <a
-      className="lpv-a-back-link"
-      href={href}
-      onClick={onClick}
-    >
+    <a className="lpv-a-back-link" href={href} onClick={onClick}>
       <span aria-hidden="true" className="lpv-a-back-link__icon">
-        <Icon icon="rivet-icons:arrow-left" size={16} />
+        <Icon icon="rivet-icons:chevron-left" size={14} />
       </span>
       {children}
     </a>

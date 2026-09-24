@@ -1,7 +1,5 @@
 import Link from 'next/link'
-import type { ReactNode } from 'react'
 
-import { Footer } from '@/components/molecules/m-footer'
 import { Avatar } from '@/components/molecules/m-avatar'
 
 import { CollapsibleMenu } from './m-collapsible-menu'
@@ -63,37 +61,5 @@ export function ServiceHeader({
         </div>
       )}
     </header>
-  )
-}
-
-// Molécule : conteneur principal des pages portail (shell).
-// portail: 'profs' (bleu, défaut) | 'parents' (violet) | 'eleves' (orange) —
-// pilote la couleur via data-lpv-portail. Masque le chrome du site vitrine.
-export function PageContent({
-  children,
-  header,
-  footerLinks,
-  portail = 'profs',
-}: {
-  children: ReactNode
-  header?: ReactNode
-  footerLinks?: { href: string; label: string }[]
-  portail?: 'profs' | 'parents' | 'eleves'
-}) {
-  return (
-    <div
-      className="lpv-shell"
-      data-lpv-portail={portail}
-      style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
-    >
-      <a className="lpv-skip-link" href="#contenu-principal">
-        Aller au contenu principal
-      </a>
-      {header}
-      <main className="lpv-container" id="contenu-principal" style={{ flex: 1 }}>
-        {children}
-      </main>
-      <Footer links={footerLinks} />
-    </div>
   )
 }

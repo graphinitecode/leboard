@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 
-import { PageContent, ServiceHeader } from '@/components/molecules/m-service-header'
+import { ServiceHeader } from '@/components/molecules/m-service-header'
+import { PortalPage } from '@/components/templates'
 import { getMeUserServer } from '@/utilities/profAuth'
 
 export const dynamic = 'force-dynamic'
@@ -17,7 +18,7 @@ export default async function ProfsLayout({ children }: { children: ReactNode })
   const user = await getMeUserServer()
 
   return (
-    <PageContent
+    <PortalPage
       header={
         <ServiceHeader
           heroText="Vos séances, présences et retours de séance, au même endroit."
@@ -36,6 +37,6 @@ export default async function ProfsLayout({ children }: { children: ReactNode })
       footerLinks={[{ href: '/profs/login', label: 'Connexion' }]}
     >
       {children}
-    </PageContent>
+    </PortalPage>
   )
 }
