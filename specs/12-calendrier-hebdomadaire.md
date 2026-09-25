@@ -73,8 +73,8 @@ Mobile-first : la grille passe en défilement horizontal avec colonnes de largeu
 
 ## 6. Spécification technique
 ### 6.1 Fichiers (nouveaux / modifiés)
-- **Nouveaux** : `src/calendrier/domain/calendrier.entity.ts`, `src/calendrier/domain/calendrier.utils.ts`, `src/calendrier/infrastructure/calendrier.repository.ts`, `src/calendrier/application/calendrier.handlers.ts`, `src/calendrier/application/calendrier.hooks.ts`, `src/calendrier/index.ts` ; `src/components/organisms/o-week-calendar.tsx` (+ client) ; `src/app/(frontend)/styles/_calendrier.scss` ; tests (`calendrier.utils.unit.spec.ts`, `o-week-calendar.int.spec.tsx`).
-- **Modifiés** : `lpvboard.scss` (@use calendrier), `ProfsDashboardView.tsx` (calendrier remplace 2 listes), `parents/enfants/[id]/page.tsx` (section Cette semaine), `design-system/page.tsx` (démo), `specs/README.md`.
+- **Nouveaux** : `src/calendrier/domain/calendrier.entity.ts`, `src/calendrier/domain/calendrier.utils.ts`, `src/calendrier/infrastructure/calendrier.repository.ts`, `src/calendrier/application/calendrier.handlers.ts`, `src/calendrier/application/calendrier.hooks.ts`, `src/calendrier/index.ts` ; `src/components/organisms/o-week-calendar.tsx` (+ client) ; `../src/app/(frontend)/styles/_calendar.scss` ; tests (`calendrier.utils.unit.spec.ts`, `o-week-calendar.int.spec.tsx`).
+- **Modifiés** : `themes.scss` (@use calendrier), `ProfsDashboardView.tsx` (calendrier remplace 2 listes), `parents/enfants/[id]/page.tsx` (section Cette semaine), `design-system/page.tsx` (démo), `specs/README.md`.
 
 ### 6.2 Données & persistance
 - Aucune nouvelle collection. Lectures : `seances` (fenêtre de dates, prof = soi via API ; côté serveur pour parents via `groupe = eleve`). Écritures : `create seances`, `patch seances` (date, duree) — access rules existantes.

@@ -26,6 +26,7 @@ export function DashboardPage({
 export interface DashboardStat {
   value: string | number
   label: string
+  type?: string
   detail?: string
   detailColor?: string
 }
@@ -40,7 +41,7 @@ function StatsGrid({ stats }: { stats: DashboardStat[] }) {
   return (
     <div className="lpv-cards-grid lpv-cards-grid--4">
       {stats.map((stat) => (
-        <div className="lpv-card lpv-stat" key={stat.label}>
+        <div className={`lpv-card lpv-stat ${stat.type}`} key={stat.label}>
           <span className="lpv-stat__value">{stat.value}</span>
           <div className="lpv-stat__label">{stat.label}</div>
           {stat.detail && (

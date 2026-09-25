@@ -71,7 +71,7 @@ Lun 22
 ## 6. Spécification technique
 ### 6.1 Fichiers (nouveaux / modifiés)
 - **Nouveaux** : `src/components/organisms/o-seance-wizard.tsx` (assistant 5 étapes, supprimé ensuite au profit d'une page dédiée `/profs/seances/nouvelle` sur le template `QuestionPage` — cf. spec 11), `o-month-picker.tsx` (mini-calendrier) ; tests `o-week-calendar.int.spec.tsx` enrichi, `seance-wizard.int.spec.tsx`.
-- **Modifiés** : `o-week-calendar.tsx` (états vue/jour, sélection plage, bouton, remplacement modale), `calendrier.utils.ts` (plages : `plageDepuisCases`, bornes), `calendrier.entity.ts` (`VueCalendrier`, `PlageSelectionnee`), `calendrier.repository.ts`/hooks si besoin, `_calendrier.scss` (suppression `min-width` en mobile, styles vues), `specs/README.md`, démo `/design-system` (toggle vues actif).
+- **Modifiés** : `o-week-calendar.tsx` (états vue/jour, sélection plage, bouton, remplacement modale), `calendrier.utils.ts` (plages : `plageDepuisCases`, bornes), `calendrier.entity.ts` (`VueCalendrier`, `PlageSelectionnee`), `calendrier.repository.ts`/hooks si besoin, `_calendar.scss` (suppression `min-width` en mobile, styles vues), `specs/README.md`, démo `/design-system` (toggle vues actif).
 
 ### 6.2 Données & persistance
 Aucune nouvelle collection. Écritures inchangées (`POST /seances`, `PATCH /seances/:id`) ; la vue est un état d'UI (localStorage pour la préférence).

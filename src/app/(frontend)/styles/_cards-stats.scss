@@ -49,9 +49,26 @@
 
 .lpv-stat {
   display: block;
+  background-color: var(--lpv-background-color);
+  border: 1px solid var(--lpv-grey-border);
+  border-top: 6px solid var(--lpv-a-tag--blue-text);
+  color: var(--lpv-a-tag--blue-text);
+  border-radius: 0;
+
+  &.success {
+    border-top-color: var(--lpv-a-tag--green-text);
+    color: var(--lpv-a-tag--green-text);
+  }
+  &.alert {
+    border-top-color: var(--lpv-a-tag--red-text);
+    color: var(--lpv-a-tag--red-text);
+  }
+  &.warning {
+    border-top-color: var(--lpv-a-tag--yellow-text);
+    color: var(--lpv-a-tag--yellow-text);
+  }
 
   &__value {
-    color: var(--lpv-portail);
     font-size: 2.25rem;
     font-weight: 700;
     letter-spacing: -0.02em;

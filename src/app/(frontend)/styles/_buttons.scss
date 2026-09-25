@@ -5,10 +5,11 @@
 /* --- Boutons ------------------------------------------------------------ */
 
 .lpv-a-button {
-  background-color: var(--lpv-portail);
+  background-color: var(--lpv-portal);
   border: 2px solid transparent;
+  outline: none;
   border-radius: var(--lpv-radius);
-  box-shadow: 0 2px 0 var(--lpv-portail-dark);
+  box-shadow: 0 2px 0 var(--lpv-portal-shadow);
   color: var(--lpv-surface);
   cursor: pointer;
   display: inline-block;
@@ -20,54 +21,60 @@
   text-decoration: none;
 
   &:hover {
-    background-color: var(--lpv-portail-dark);
+    background-color: var(--lpv-portal--hover);
+    box-shadow: 0 2px 0 var(--lpv-portal-shadow--hover);
   }
 
   &:active {
     box-shadow: none;
     transform: translateY(2px);
+    outline: 3px solid var(--lpv-focus);
+    outline-offset: 0;
   }
 
   &:disabled {
     cursor: default;
-    opacity: 0.5;
+    opacity: 0.7;
   }
 
   &:focus {
-    @include mixins.lpv-focus;
+    //box-shadow: 0 0 0 2px var(--lpv-on-portal);
   }
 
   /* Pleine largeur en mobile (motif GOV.UK mobile-first) */
   @include mixins.lpv-button-full-width-mobile;
 
-  /* Variante « Modifier » (orange) */
+  /* Variante « Modifier » (secondaire) */
   &--secondary {
-    background-color: var(--lpv-darkgrey-bg);
-    box-shadow: 0 2px 0 var(--lpv-grey-border);
+    background-color: var(--lpv-secondary);
+    box-shadow: 0 2px 0 var(--lpv-secondary-shadow);
     color: var(--lpv-text);
 
     &:hover {
-      background-color: var(--lpv-grey-border);
+      background-color: var(--lpv-secondary--hover);
+      box-shadow: 0 2px 0 var(--lpv-secondary-shadow--hover);
     }
   }
 
   &--warning {
-    background-color: var(--lpv-orange);
-    box-shadow: 0 2px 0 var(--lpv-orange-soft);
+    background-color: var(--lpv-warning);
+    box-shadow: 0 2px 0 var(--lpv-warning-shadow);
     color: var(--lpv-surface);
 
     &:hover {
-      background-color: var(--lpv-orange-hover);
+      background-color: var(--lpv-warning--hover);
+      box-shadow: 0 2px 0 var(--lpv-warning-shadow--hover);
     }
   }
 
   &--danger {
-    background-color: var(--lpv-red);
-    box-shadow: 0 2px 0 var(--lpv-red-shadow);
+    background-color: var(--lpv-danger);
+    box-shadow: 0 2px 0 var(--lpv-danger-shadow);
     color: var(--lpv-surface);
 
     &:hover {
-      background-color: var(--lpv-red-hover);
+      background-color: var(--lpv-danger--hover);
+      box-shadow: 0 2px 0 var(--lpv-danger-shadow--hover);
     }
   }
 
@@ -160,4 +167,74 @@
   &:hover {
     background-color: var(--lpv-portail-soft);
   }
+}
+
+/* ----------------------------DARK BUTTON------------------------*/
+/* LPV Board Design System — Mode sombre
+   Surcharges quand data-theme="dark" est posé sur <html>.
+   Les variables portail (bleu/violet) sont réinjectées en clair
+   pour que liens et hover restent lisibles sur fond sombre. */
+
+html[data-theme='dark'] {
+  /* --- Boutons ------------------------------------------------------------
+   Ils reprennent les couleurs des tags.
+   Le hover assombrit le fond (plus sombre que le repos). */
+
+  .lpv-a-button {
+    background-color: var(--lpv-portal);
+    box-shadow: 0 2px 0 var(--lpv-portal-shadow);
+    color: #ffffff;
+
+    &:hover {
+      background-color: var(--lpv-portal--hover);
+      box-shadow: 0 2px 0 var(--lpv-portal-shadow--hover);
+    }
+  }
+
+  .lpv-a-button--success {
+    background-color: var(--lpv-green);
+    box-shadow: 0 2px 0 var(--lpv-green-shadow);
+    color: #fff5f5;
+
+    &:hover {
+      background-color: var(--lpv-green--hover);
+      box-shadow: 0 2px 0 var(--lpv-green-shadow--hover);
+    }
+  }
+
+  .lpv-a-button--warning {
+    background-color: var(--lpv-warning);
+    box-shadow: 0 2px 0 var(--lpv-warning-shadow);
+    color: #ffffff;
+
+    &:hover {
+      background-color: var(--lpv-warning--hover);
+      box-shadow: 0 2px 0 var(--lpv-warning-shadow--hover);
+    }
+  }
+
+  .lpv-a-button--danger {
+    background-color: var(--lpv-red);
+    box-shadow: 0 2px 0 var(--lpv-red-shadow);
+    color: #fffafa;
+
+    &:hover {
+      background-color: var(--lpv-red--hover);
+      box-shadow: 0 2px 0 var(--lpv-red-shadow--hover);
+    }
+  }
+
+  /* Secondaire : fond relevé et texte clair (le grey-bg clair devient un bloc
+     noir illisible sur les fonds sombres, ex. hero image) */
+  .lpv-a-button--secondary {
+    background-color: var(--lpv-secondary);
+    box-shadow: 0 2px 0 var(--lpv-secondary-shadow);
+    color: #f2eef2;
+
+    &:hover {
+      background-color: var(--lpv-secondary--hover);
+      box-shadow: 0 2px 0 var(--lpv-secondary-shadow--hover);
+    }
+  }
+
 }
