@@ -7,6 +7,8 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ## [Unreleased]
 
 ### Ajouté
+- Tableau de bord des profs entièrement repensé : salutation personnelle, compteurs clés (séances de la semaine, retours en attente, alertes actives), listes « À traiter » et « Séances à venir » avec accès direct aux séances, mini-calendrier du mois avec détail des séances au clic et alertes de décrochage sur les élèves dans une colonne latérale
+- Page « Calendrier » dédiée pour les profs : le calendrier hebdomadaire interactif (déplacement et création de séances) quitte le tableau de bord pour sa propre page, accessible depuis le menu du portail
 - Carte calendrier mensuel : vue compacte d'un mois avec marqueurs colorés par catégorie (pastille ou carré, palette des tags), légende intégrée, jour courant en surbrillance et détail du jour au clic ; démonstration dans le design system
 - Calendrier hebdomadaire pour les profs : vue agenda de la semaine avec pastilles de séances positionnées sur une grille jour × heure, navigation entre semaines, déplacement d'une séance par glisser-déposer et création par clic sur une case libre
 - Assistant de création de séance « une question par écran » (jour, heure de début, heure de fin, matière, élèves) avec sélection de la plage au clic-tirer sur le calendrier et bouton « + Nouvelle séance »

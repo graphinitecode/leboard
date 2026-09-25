@@ -38,6 +38,71 @@ a.lpv-m-list-row {
   }
 }
 
+/* --- Ligne d'action du tableau de bord (m-action-row) --------------------- */
+
+.lpv-m-action-row {
+  align-items: center;
+  background-color: var(--lpv-background-color);
+  border: 1px solid var(--lpv-grey-border);
+  border-left: 6px solid var(--lpv-grey-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  padding: 0.9rem 1rem;
+
+  &--red {
+    border-left-color: var(--lpv-a-tag--red-text);
+  }
+
+  &--green {
+    border-left-color: var(--lpv-a-tag--green-text);
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  &__title {
+    font-weight: 700;
+  }
+
+  &__meta {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  &:focus-within {
+    @include mixins.lpv-focus;
+  }
+}
+
+/* --- Carte d'alerte (m-alert-card) ----------------------------------------- */
+
+.lpv-m-alert-card {
+  background-color: var(--lpv-grey-bg);
+  border-left: 6px solid var(--lpv-a-tag--red-text);
+  padding: 0.9rem 1rem;
+
+  &__title {
+    align-items: center;
+    display: flex;
+    font-weight: 700;
+    gap: 0.5rem;
+    margin: 0 0 0.4rem;
+  }
+
+  &__body {
+    margin: 0 0 0.4rem;
+  }
+}
+
 /* --- Summary list (pattern GOV.UK) ----------------------------------------- */
 
 .lpv-m-summary-list {
