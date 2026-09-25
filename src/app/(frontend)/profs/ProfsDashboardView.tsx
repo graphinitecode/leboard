@@ -10,6 +10,7 @@ import { presentSeanceLigne, useListMySeances } from '@/seances'
 import type { MarqueurJourCalendrier } from '@/calendrier'
 
 interface ProfsDashboardProps {
+  nom?: string
   prenom: string
   alertes: { eleveId: number; eleveLabel: string; message: string }[]
 }
@@ -82,9 +83,16 @@ export default function ProfsDashboard({ prenom, alertes }: ProfsDashboardProps)
 
   return (
     <>
-      <h1 className="lpv-h1">Tableau de bord</h1>
-      <p className="lpv-muted" style={{ fontSize: '1.125rem' }}>
-        Bonjour {prenom}
+      <h1 className="lpv-h1 mb-7">Tableau de bord</h1>
+      <p
+        className="lpv-muted pb-7"
+        style={{
+          fontSize: '1.225rem',
+          paddingBottom: '1.75rem',
+          fontWeight: '500',
+        }}
+      >
+        Bonjour {prenom} 👋🏾
       </p>
 
       <DashboardPage
@@ -96,7 +104,11 @@ export default function ProfsDashboard({ prenom, alertes }: ProfsDashboardProps)
                 {groupes.aTraiter.slice(0, LIMITE_A_TRAITER).map((seance) => (
                   <ActionRow
                     accent="red"
-                    action={{ href: `/profs/seances/${seance.id}`, label: 'Compléter', variant: 'success' }}
+                    action={{
+                      href: `/profs/seances/${seance.id}`,
+                      label: 'Compléter',
+                      variant: 'success',
+                    }}
                     key={seance.id}
                     meta={seance.dateLabel}
                     tag={<Tag color="orange">Retour en attente</Tag>}
@@ -114,7 +126,11 @@ export default function ProfsDashboard({ prenom, alertes }: ProfsDashboardProps)
                 {groupes.aVenir.slice(0, LIMITE_A_TRAITER).map((seance) => (
                   <ActionRow
                     accent="green"
-                    action={{ href: `/profs/seances/${seance.id}`, label: 'Voir', variant: 'secondary' }}
+                    action={{
+                      href: `/profs/seances/${seance.id}`,
+                      label: 'Voir',
+                      variant: 'secondary',
+                    }}
                     key={seance.id}
                     meta={`${seance.dateLabel}, ${seance.date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}`}
                     title={seance.matiereLabel}
@@ -133,7 +149,11 @@ export default function ProfsDashboard({ prenom, alertes }: ProfsDashboardProps)
                 <Details summary={`Afficher les ${groupes.passees.length} séances précédentes`}>
                   <div className="lpv-card__rows">
                     {groupes.passees.map((seance) => (
-                      <a className="lpv-m-list-row" href={`/profs/seances/${seance.id}`} key={seance.id}>
+                      <a
+                        className="lpv-m-list-row"
+                        href={`/profs/seances/${seance.id}`}
+                        key={seance.id}
+                      >
                         <span>
                           <span className="lpv-chip">{seance.dateLabel}</span>{' '}
                           <span className="lpv-m-list-row__title">{seance.matiereLabel}</span>
@@ -148,11 +168,13 @@ export default function ProfsDashboard({ prenom, alertes }: ProfsDashboardProps)
         ]}
         sidebar={
           <>
-            <div className="lpv-t-dashboard-page__aside-card">
+            <div className="">
               <MonthCalendarCard
                 marqueurs={marqueurs}
                 mois={new Date()}
-                renduDetailJour={(jour) => <DetailJour jour={jour} seancesParJour={seancesParJour} />}
+                renduDetailJour={(jour) => (
+                  <DetailJour jour={jour} seancesParJour={seancesParJour} />
+                )}
                 voirToutHref="/profs/calendrier"
               />
             </div>
@@ -175,10 +197,18 @@ export default function ProfsDashboard({ prenom, alertes }: ProfsDashboardProps)
             <div className="lpv-t-dashboard-page__aside-card">
               <h3 className="lpv-t-dashboard-page__aside-card__title">Accès rapides</h3>
               <nav className="lpv-t-dashboard-page__aside-card__links">
-                <Link href="/profs/calendrier">Calendrier</Link>
-                <Link href="/profs/disponibilites">Mes disponibilités</Link>
-                <Link href="/profs/eleves">Tous mes élèves</Link>
-                <Link href="/profs/bibliotheque">Catalogue bibliothèque</Link>
+                <Link href="/profs/calendrier" className="lpv-link-inline">
+                  Calendrier
+                </Link>
+                <Link href="/profs/disponibilites" className="lpv-link-inline">
+                  Mes disponibilités
+                </Link>
+                <Link href="/profs/eleves" className="lpv-link-inline">
+                  Tous mes élèves
+                </Link>
+                <Link href="/profs/bibliotheque" className="lpv-link-inline">
+                  Catalogue bibliothèque
+                </Link>
               </nav>
             </div>
           </>
@@ -192,7 +222,11 @@ export default function ProfsDashboard({ prenom, alertes }: ProfsDashboardProps)
             type: 'alert',
             value: groupes.retoursEnAttente,
           },
-          { label: 'Alerte(s) active(s)', type: alertes.length > 0 ? 'alert' : undefined, value: alertes.length },
+          {
+            label: 'Alerte(s) active(s)',
+            type: alertes.length > 0 ? 'alert' : undefined,
+            value: alertes.length,
+          },
         ]}
       />
     </>

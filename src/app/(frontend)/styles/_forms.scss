@@ -158,11 +158,17 @@
     margin: 0;
 
     a {
-      color: var(--lpv-portail-dark);
-      font-weight: 600;
+      color: var(--lpv-a-tag--blue-text);
+      font-weight: 400;
       text-decoration: underline;
       text-underline-offset: var(--lpv-text-underline-offset);
       text-decoration-thickness: var(--lpv-decoration-thickness);
+
+      &:hover {
+        color: var(--lpv-text);
+        text-underline-offset: var(--lpv-text-underline-offset-hover);
+        text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+      }
     }
   }
 }

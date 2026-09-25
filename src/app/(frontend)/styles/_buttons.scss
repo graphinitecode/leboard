@@ -113,7 +113,7 @@
 /* --- Lien inline (variante « link ») : même corps que le texte environnant */
 
 .lpv-link-inline {
-  color: var(--lpv-portail-dark);
+  color: var(--lpv-a-tag--blue-text);
   text-decoration: underline;
   text-underline-offset: var(--lpv-text-underline-offset);
   text-decoration-thickness: var(--lpv-decoration-thickness);

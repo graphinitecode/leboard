@@ -157,7 +157,10 @@ export function MonthCalendarCard({
           return (
             <div className="lpv-m-month-calendar__day" key={i}>
               {fondCarre ? (
-                <span className="lpv-m-month-calendar__event" style={variablesCouleur(fondCarre.couleur)}>
+                <span
+                  className="lpv-m-month-calendar__event"
+                  style={variablesCouleur(fondCarre.couleur)}
+                >
                   {jourDuMois}
                 </span>
               ) : (
@@ -184,7 +187,7 @@ export function MonthCalendarCard({
       </div>
 
       {detailOuvert && renduDetailJour && (
-        <div className="lpv-m-month-calendar__detail" id={detailId}>
+        <div className="lpv-m-month-calendar__detail lpv-recap" id={detailId}>
           <p className="lpv-m-month-calendar__detail-title">
             {detailOuvert.toLocaleDateString('fr-FR', {
               weekday: 'long',
