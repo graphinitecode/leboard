@@ -151,7 +151,7 @@
     background-color: var(--lpv-a-tag--blue-bg);
     padding: calc(var(--spacing) * 2.5);
     border-radius: 50%;
-    color: var(--lpv-portail-dark);
+    color: var(--lpv-a-tag--blue-text);
     display: inline-flex;
     flex-shrink: 0;
     justify-content: center;
@@ -159,7 +159,7 @@
 
   &__icon-svg {
     display: block;
-    fill: var(--lpv-surface);
+    fill: var(--lpv-blue);
   }
 
   &__text {

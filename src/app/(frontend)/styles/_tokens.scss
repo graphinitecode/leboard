@@ -14,6 +14,8 @@
   --lpv-blue-shadow: #0d61b1;    /* hover boutons / liens (contraste AA sur blanc) */
   --lpv-blue-shadow--hover: #084077;    /* hover boutons / liens (contraste AA sur blanc) */
 
+  --lpv-text-link: var(--lpv-blue-shadow) ;
+
   --lpv-blue-soft: #eaf5ff;    /* fond clair dérivé du bleu de marque */
   --lpv-violet: #9000b3;       /* portail parents */
   --lpv-violet--hover: #5c0061;  /* hover violet (contraste AA sur blanc) */
@@ -102,19 +104,19 @@
   --lpv-a-tag--green-bg: #e2f7ec;
   --lpv-a-tag--green-text: #04552e;
   --lpv-a-tag--yellow-bg: #fdf6e0;
-  --lpv-a-tag--yellow-text: #8a6d00;
+  --lpv-a-tag--yellow-text: #524002;
   --lpv-a-tag--orange-bg: #feefe4;
-  --lpv-a-tag--orange-text: #d94e00;
+  --lpv-a-tag--orange-text: #a83b04;
   --lpv-a-tag--red-bg: #ffeaeb;
   --lpv-a-tag--red-text: #cc3a3d;
   --lpv-a-tag--blue-bg: #eaf5ff;
-  --lpv-a-tag--blue-text: #1877d2;
+  --lpv-a-tag--blue-text: #0e5292;
   --lpv-a-tag--violet-bg: #f6e8fb;
-  --lpv-a-tag--violet-text: #6b0087;
+  --lpv-a-tag--violet-text: #8c249a;
   --lpv-a-tag--magenta-bg: #fbe4f2;
-  --lpv-a-tag--magenta-text: #a82278;
+  --lpv-a-tag--magenta-text: #93186a;
   --lpv-a-tag--teal-bg: #e0f2f4;
-  --lpv-a-tag--teal-text: #006470;
+  --lpv-a-tag--teal-text: #034b55;
 
   /* Panel info : fond bleu nuit, texte bleu clair */
   --lpv-a-panel-bg: #002549;

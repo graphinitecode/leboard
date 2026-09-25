@@ -139,7 +139,7 @@
 
   &__summary {
     align-items: center;
-    color: var(--lpv-portail-dark);
+    color: var(--lpv-text-link);
     cursor: pointer;
     display: flex;
     width: fit-content;
@@ -166,7 +166,7 @@
   }
 
   &__chevron {
-    color: var(--lpv-portail-dark);
+    color: var(--lpv-text-link);
     display: inline-flex;
     flex-shrink: 0;
 
@@ -193,7 +193,7 @@
   &__toggle-all {
     background: transparent;
     border: 0;
-    color: var(--lpv-portail-dark);
+    color: var(--lpv-text-link);
     cursor: pointer;
     font-size: 1rem;
     font-weight: 700;
@@ -203,7 +203,7 @@
     text-underline-offset: var(--lpv-text-underline-offset);
 
     &:hover {
-      color: var(--lpv-text);
+      color: var(--lpv-text-link);
       text-underline-offset: var(--lpv-text-underline-offset-hover);
       text-decoration-thickness: var(--lpv-decoration-thickness-hover);
     }
@@ -238,7 +238,7 @@
     align-items: center;
     background: transparent;
     border: 0;
-    color: var(--lpv-portail-dark);
+    color: var(--lpv-text-link);
     cursor: pointer;
     display: flex;
     font-size: 1.125rem;
@@ -260,9 +260,9 @@
   }
 
   &__icon {
-    color: var(--lpv-portail-dark);
+    color: var(--lpv-text-link);
     display: inline-flex;
-    border: 1px var(--lpv-portail-dark) solid;
+    border: 1px var(--lpv-text-link) solid;
     border-radius: 7rem;
     padding: 3px;
     flex-shrink: 0;
@@ -408,7 +408,7 @@
     &--ellipsis {
       align-items: center;
       display: inline-flex;
-      color: var(--lpv-text);
+      color: var(--lpv-text-link);
       min-height: 44px;
       padding: 0 0.5rem;
     }
@@ -416,7 +416,7 @@
 
   &__link {
     align-items: center;
-    color: var(--lpv-portail-dark);
+    color: var(--lpv-text-link);
     display: inline-flex;
     font-weight: 700;
     gap: 0.375rem;
@@ -437,7 +437,7 @@
 
     /* Page courante : bloc plein inversé (motif GOV.UK), pas un lien */
     &--current {
-      background-color: var(--lpv-portail);
+      background-color: var(--lpv-text-link);
       color: var(--lpv-surface);
       text-decoration: none;
     }

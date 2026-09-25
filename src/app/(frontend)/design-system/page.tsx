@@ -570,12 +570,13 @@ export default function DesignSystemPage() {
           stats={[
             { value: 2, label: "Séance(s) aujourd'hui" },
             { value: 8, label: 'Cette semaine', detail: 'dont 2 aujourd’hui' },
-            { value: 5, label: 'Passées récentes' },
+            { value: 5, label: 'Passées récentes', type: 'warning' },
             {
               value: 12,
               label: 'Mes élèves',
               detail: '1 retour en attente',
               detailColor: 'var(--lpv-orange)',
+              type: 'alert',
             },
           ]}
         />
@@ -699,9 +700,9 @@ export default function DesignSystemPage() {
         <h3 className="lpv-h3">Stepper (markup statique)</h3>
         <Stepper />
         <Stepper step={3} />
-        <Stepper step={"sucrerie"} />
+        <Stepper step={'sucrerie'} />
         <Stepper step={3} size={4} />
-        <Stepper step={"forme"} size={"entrainement"} />
+        <Stepper step={'forme'} size={'entrainement'} />
         <Label htmlFor={''}>Quel jour vous convient ?</Label>
         <p className="lpv-stepper__hint">Sélectionnez un jour de la semaine.</p>
       </section>
