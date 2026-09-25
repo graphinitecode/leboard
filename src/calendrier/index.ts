@@ -1,9 +1,12 @@
 export type {
   BandeDispo,
   BrouillonSeance,
+  CategorieMarqueurCalendrier,
   CibleCreneau,
   EventCalendrier,
+  FormeMarqueur,
   MatiereCalendrier,
+  MarqueurJourCalendrier,
   PlageSelectionnee,
   VueCalendrier,
   DragPayload,
@@ -58,3 +61,4 @@ export {
 export { WeekCalendar } from '@/components/organisms/o-week-calendar'
 export type { WeekCalendarMode, WeekCalendarEvent } from '@/components/organisms/o-week-calendar'
 export { MonthPicker } from '@/components/organisms/o-month-picker'
+export { MonthCalendarCard, CATEGORIES_DEFAUT } from '@/components/molecules/m-month-calendar'

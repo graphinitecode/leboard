@@ -44,3 +44,24 @@ export interface BrouillonSeance {
 export interface DragPayload {
   seanceId: number
 }
+
+// Forme du marqueur d'un jour sur la carte calendrier mensuel.
+export type FormeMarqueur = 'point' | 'carre'
+
+// Couleurs disponibles : palette des tags LPV (tokens --lpv-a-tag--{c}-bg/-text).
+export type CouleurTag = 'green' | 'yellow' | 'orange' | 'red' | 'blue' | 'violet' | 'magenta' | 'teal'
+
+// Catégorie de marqueur : pilote la couleur et la forme du marquage
+// d'un jour, ainsi que son entrée dans la légende de la carte.
+export interface CategorieMarqueurCalendrier {
+  id: string
+  label: string
+  couleur: CouleurTag
+  forme: FormeMarqueur
+}
+
+// Marqueur d'un jour : référence la catégorie à afficher.
+export interface MarqueurJourCalendrier {
+  date: Date
+  type: string
+}
