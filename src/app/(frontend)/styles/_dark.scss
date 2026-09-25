@@ -38,6 +38,8 @@ html[data-theme='dark'] {
   --lpv-violet-shadow: #a83cba;
   --lpv-violet-shadow--hover: #8a2f9c;
   --lpv-violet-soft: #2d1435;
+  /* Portail parents plus profond en dark, texte blanc lisible */
+  --lpv-violet: #6b0087;
   --lpv-visited: #c9a2ff;      /* violet clair, lisible sur fond sombre */
   --lpv-orange: #943e00;
   --lpv-orange--hover: #622d00;
@@ -123,8 +125,10 @@ html[data-theme='dark'] {
 
   /* --- Entête ------------------------------------------------------------- */
 
+  /* Suit la couleur du portail courant (bleu profs, violet parents) :
+     un fond figé au bleu ici peindrait le portail parents en bleu. */
   .lpv-o-header {
-    background-color: var(--lpv-a-tag--blue);
+    background-color: var(--lpv-portail);
   }
 
   /* --- Formulaires -------------------------------------------------------- */

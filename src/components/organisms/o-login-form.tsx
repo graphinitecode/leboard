@@ -8,7 +8,7 @@ import { Input, ErrorSummary } from '@/components/molecules'
 import { useLoginParent, useLoginProf } from '@/auth/application/auth.hooks'
 
 interface LoginFormProps {
-  portail: 'prof' | 'parent'
+  portail: 'profs' | 'parents'
   cible: string
   title?: string
   subtitle?: string
@@ -28,7 +28,7 @@ export function LoginForm({ portail, cible, title = 'Connexion', subtitle }: Log
     setError(null)
 
     const onError = (err: Error) => setError(err.message)
-    if (portail === 'prof') {
+    if (portail === 'profs') {
       loginProf.mutate({ email, password }, { onError })
     } else {
       loginParent.mutate({ email, password }, { onError })

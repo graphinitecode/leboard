@@ -8,7 +8,7 @@ export default function ProfLoginPage() {
   return (
     <LoginForm
       cible="/profs"
-      portail="prof"
+      portail="profs"
       subtitle="Connectez pour accéder à votre espace de professeur."
     />
   )
