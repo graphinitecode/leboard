@@ -37,7 +37,7 @@ export function QuestionPage({
         </BackLink>
       )}
       {step && <Stepper step={step} size={stepSize} />}
-      <Label htmlFor={`${htmlFor}`} size="l">
+      <Label htmlFor={`${htmlFor}`} isPageHeading size="l">
         {question}
       </Label>
       <div className="lpv-t-question-page__content">{children}</div>

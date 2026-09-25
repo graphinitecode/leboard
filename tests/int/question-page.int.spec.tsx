@@ -10,7 +10,8 @@ describe('QuestionPage', () => {
         actions={<button type="button">Continuer</button>}
         question="Quelle heure de début ?"
         retour={{ href: '#', label: 'Retour' }}
-        step="Étape 2 sur 3"
+        step={2}
+        stepSize={3}
       >
         <p>Contrôle de réponse</p>
       </QuestionPage>,
@@ -18,7 +19,8 @@ describe('QuestionPage', () => {
     expect(screen.getByText('Retour')).toBeDefined()
     expect(screen.getByText('Étape 2 sur 3')).toBeDefined()
     expect(screen.getByText('Quelle heure de début ?')).toBeDefined()
-    expect(container.querySelector('.lpv-t-question-page__question')).not.toBeNull()
+    expect(container.querySelector('.lpv-t-question-page__actions')).not.toBeNull()
+    expect(container.querySelector('h1.lpv-a-label-wrapper')).not.toBeNull()
     expect(container.querySelector('.lpv-t-question-page__actions')).not.toBeNull()
     expect(screen.getByText('Continuer')).toBeDefined()
   })
@@ -44,7 +46,8 @@ describe('QuestionPage', () => {
           { question: 'Jour', valeur: 'Mercredi', href: '#jour' },
           { question: 'Heure de début', valeur: '14:00', onClick: () => (modifie = true) },
         ]}
-        step="Étape 3 sur 3"
+        step={3}
+        stepSize={3}
       >
         <p>Contrôle</p>
       </QuestionPage>,
