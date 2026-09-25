@@ -230,7 +230,8 @@ export function AvailabilityWizard({
             </>
           }
           question={isEditing ? 'Quel jour pour cet horaire ?' : 'Quel jour vous convient ?'}
-          step="Étape 1 sur 3"
+          step={1}
+          stepSize={3}
         >
           <div className="lpv-o-availability-wizard__days">
             {OPTIONS_JOUR.map((option) => (
@@ -269,7 +270,8 @@ export function AvailabilityWizard({
             { question: 'Jour', valeur: dayLabel, onClick: () => setStep(1) },
           ]}
           retour={{ href: '#', onClick: () => { setErreur(null); setStep(1) } }}
-          step="Étape 2 sur 3"
+          step={2}
+          stepSize={3}
         >
           <Input
             hint={`Début du créneau le ${dayLabel.toLowerCase()}.`}
@@ -300,7 +302,8 @@ export function AvailabilityWizard({
             { question: 'Heure de début', valeur: heureDebut || '—', onClick: () => setStep(2) },
           ]}
           retour={{ href: '#', onClick: () => { setErreur(null); setStep(2) } }}
-          step="Étape 3 sur 3"
+          step={3}
+          stepSize={3}
         >
           <Input
             hint={`Fin du créneau le ${dayLabel.toLowerCase()}.`}
