@@ -45,7 +45,7 @@ import { MonthPicker } from './o-month-picker'
 
 export type WeekCalendarMode = 'prof' | 'parent' | 'demo'
 
-// Vue model minimale attendue par l'organism (parents : servie côté serveur).
+// Vue model minimale attendue par organism (parents : servi côté serveur).
 export interface WeekCalendarEvent {
   id: number
   debut: Date

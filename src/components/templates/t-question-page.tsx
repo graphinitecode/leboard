@@ -72,7 +72,7 @@ export function QuestionPageAnswers({
             <dt className="lpv-t-question-page__answers-key">{reponse.question}</dt>
             <dd className="lpv-t-question-page__answers-value">{reponse.valeur}</dd>
             {(reponse.href || reponse.onClick) && (
-              <dd className="lpv-t-question-page__answers-action">
+              <dd className="lpv-t-question-page__answers-action lpv-link-inline">
                 <a
                   href={reponse.href ?? '#'}
                   onClick={(e) => {

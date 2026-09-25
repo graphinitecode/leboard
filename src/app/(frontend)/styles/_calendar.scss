@@ -492,7 +492,7 @@
     /* Jour courant : bloc plein en couleur du portail courant */
     &--today {
       background-color: var(--lpv-portail);
-      color: var(--lpv-background-color);
+      color: white;
       font-weight: 700;
     }
 
@@ -545,7 +545,6 @@
 
   /* Panneau de détail du jour sélectionné (entre grille et légende) */
   &__detail {
-    border: 1px solid var(--lpv-grey-border);
     border-radius: var(--lpv-radius);
     margin: 0 0 1rem;
     padding: 0.75rem 0.9rem;
