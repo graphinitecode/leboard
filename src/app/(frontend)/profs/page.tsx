@@ -39,11 +39,5 @@ export default async function ProfsDashboard() {
     }
   })
 
-  return (
-    <ProfsDashboardView
-      alertes={alertesVm}
-      prenom={user.name.split(' ')[0] ?? user.name}
-      profId={Number(user.id)}
-    />
-  )
+  return <ProfsDashboardView alertes={alertesVm} prenom={user.name.split(' ')[0] ?? user.name} />
 }
