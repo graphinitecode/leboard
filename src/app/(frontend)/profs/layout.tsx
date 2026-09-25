@@ -28,6 +28,7 @@ export default async function ProfsLayout({ children }: { children: ReactNode })
           ]}
           services={[
             { description: 'Vos séances, présences et retours', href: '/profs', label: 'Mes séances' },
+            { description: 'Vues semaine, jour et liste', href: '/profs/calendrier', label: 'Calendrier' },
             { description: 'Vos disponibilités hebdomadaires', href: '/profs/disponibilites', label: 'Mes disponibilités' },
             { href: '/parents', label: 'Espace parents' },
           ]}
