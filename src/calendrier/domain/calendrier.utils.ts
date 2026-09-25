@@ -230,3 +230,25 @@ export const joursAvecSeances = (events: EventCalendrier[]): number[] => {
   })
   return [...presents].sort((a, b) => a - b)
 }
+
+// Grille du mois : 6 semaines × 7 cases, cases hors mois à null.
+// Commence lundi (semaine ISO), complète à 42 cases pour une hauteur stable.
+export const grilleMensuelle = (premier: Date): (Date | null)[][] => {
+  const cases: (Date | null)[] = []
+  const decalage = (premier.getDay() + 6) % 7
+  for (let i = 0; i < decalage; i += 1) cases.push(null)
+  const fin = new Date(premier.getFullYear(), premier.getMonth() + 1, 0).getDate()
+  for (let jour = 1; jour <= fin; jour += 1) {
+    cases.push(new Date(premier.getFullYear(), premier.getMonth(), jour))
+  }
+  while (cases.length % 7 !== 0) cases.push(null)
+  while (cases.length < 42) cases.push(null)
+
+  const semaines: (Date | null)[][] = []
+  for (let i = 0; i < cases.length; i += 7) semaines.push(cases.slice(i, i + 7))
+  return semaines
+}
+
+// Libellé « Juin 2026 » pour l'entête de la carte calendrier.
+export const libelleMoisTitre = (premier: Date): string =>
+  premier.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })

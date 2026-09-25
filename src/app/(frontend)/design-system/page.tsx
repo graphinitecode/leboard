@@ -5,7 +5,7 @@ import { Label } from '@/components/atoms/a-label'
 import { Accordion, Avatar, Checkbox, DateInput, InputField, Input, CharacterCount, TaskList, NotificationBanner, Tabs, Pagination, ErrorSummary, SummaryList, Table, ThemeToggle } from '@/components/molecules'
 import type { AccordionSection, Tab, CheckboxOption, TableHeadCell, TableRowCell, Task, PageNumber } from '@/components/molecules'
 
-import { DemoModale, DemoRadio, DemoToggle, DemoToast } from './DemoClient'
+import { DemoModale, DemoRadio, DemoToggle, DemoToast, DemoMonthCalendars } from './DemoClient'
 
 import Link from 'next/link'
 import { IconCard } from '@/components/atoms/a-icon-card'
@@ -624,6 +624,17 @@ export default function DesignSystemPage() {
           est en lecture seule avec des données d&apos;exemple.
         </p>
         {/*<WeekCalendar mode="demo" />*/}
+
+        <h3 className="lpv-h3">Carte calendrier mensuel</h3>
+        <p className="lpv-muted">
+          Molécule <code>m-month-calendar</code> : vue mensuelle compacte avec marqueurs
+          dynamiques — chaque catégorie choisit sa couleur dans la palette des tags, sa forme
+          (point ou carré) et alimente la légende. Un jour portant plusieurs marqueurs affiche le
+          carré en priorité. Avec <code>renduDetailJour</code>, les jours marqués sont cliquables :
+          le détail du jour s&apos;affiche entre la grille et la légende (re-clic pour refermer).
+          Jour courant inversé, lien « Voir tout » optionnel.
+        </p>
+        <DemoMonthCalendars />
       </section>
 
       <section id="surfaces">

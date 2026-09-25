@@ -8,6 +8,8 @@ import { Input } from '@/components/molecules/m-input'
 import { Modal } from '@/components/molecules/m-modal'
 import { Toast } from '@/components/molecules/m-toast'
 import { SegmentedToggle } from '@/components/molecules/m-segmented-toggle'
+import { MonthCalendarCard } from '@/calendrier'
+import type { CategorieMarqueurCalendrier, MarqueurJourCalendrier } from '@/calendrier'
 
 const RADIO_OPTIONS: RadioOption[] = [
   {
@@ -94,5 +96,77 @@ export function DemoToast() {
       </div>
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
     </>
+  )
+}
+
+const DEMO_CATEGORIES: CategorieMarqueurCalendrier[] = [
+  { couleur: 'blue', forme: 'point', id: 'seance', label: 'Séance programmée' },
+  { couleur: 'magenta', forme: 'carre', id: 'evenement', label: 'Événement association' },
+]
+
+const DEMO_CUSTOM: CategorieMarqueurCalendrier[] = [
+  { couleur: 'green', forme: 'point', id: 'presence', label: 'Présence validée' },
+  { couleur: 'orange', forme: 'point', id: 'retard', label: 'Retour en attente' },
+  { couleur: 'yellow', forme: 'carre', id: 'sortie', label: 'Sortie pédagogique' },
+]
+
+const DEMO_MARQUEURS: MarqueurJourCalendrier[] = [
+  { type: 'seance', date: new Date(2026, 5, 2) },
+  { type: 'seance', date: new Date(2026, 5, 4) },
+  { type: 'seance', date: new Date(2026, 5, 9) },
+  { type: 'seance', date: new Date(2026, 5, 11) },
+  { type: 'seance', date: new Date(2026, 5, 16) },
+  { type: 'seance', date: new Date(2026, 5, 18) },
+  { type: 'evenement', date: new Date(2026, 5, 14) },
+]
+
+const DEMO_MARQUEURS_CUSTOM: MarqueurJourCalendrier[] = [
+  { type: 'presence', date: new Date(2026, 5, 2) },
+  { type: 'retard', date: new Date(2026, 5, 4) },
+  { type: 'presence', date: new Date(2026, 5, 9) },
+  { type: 'sortie', date: new Date(2026, 5, 12) },
+  { type: 'presence', date: new Date(2026, 5, 16) },
+  { type: 'retard', date: new Date(2026, 5, 18) },
+  { type: 'presence', date: new Date(2026, 5, 18) },
+]
+
+function DemoDetailJour({ jour }: { jour: Date }) {
+  const seances: Record<number, { heure: string; label: string }[]> = {
+    2: [{ heure: '14:00', label: 'Maths — Alice, Bob' }],
+    4: [{ heure: '10:00', label: 'Français — Clara' }],
+    9: [{ heure: '16:00', label: 'Anglais — Dylan' }],
+    12: [{ heure: '09:00', label: 'Sortie musée (tous groupes)' }],
+    14: [{ heure: '18:00', label: 'Assemblée générale' }],
+    16: [{ heure: '14:00', label: 'Maths — Alice, Bob' }],
+    18: [{ heure: '10:00', label: 'Français — Clara' }, { heure: '15:00', label: 'Maths — Dylan' }],
+  }
+  const duJour = seances[jour.getDate()]
+  if (!duJour) return <p className="lpv-muted" style={{ margin: 0 }}>Aucune séance ce jour.</p>
+  return (
+    <ul style={{ margin: 0, paddingLeft: '1.25rem' }}>
+      {duJour.map((s) => (
+        <li key={`${s.heure}-${s.label}`}>{s.heure} — {s.label}</li>
+      ))}
+    </ul>
+  )
+}
+
+export function DemoMonthCalendars() {
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem' }}>
+      <MonthCalendarCard
+        categories={DEMO_CATEGORIES}
+        marqueurs={DEMO_MARQUEURS}
+        mois={new Date(2026, 5, 1)}
+        renduDetailJour={(jour) => <DemoDetailJour jour={jour} />}
+        voirToutHref="/profs"
+      />
+      <MonthCalendarCard
+        categories={DEMO_CUSTOM}
+        marqueurs={DEMO_MARQUEURS_CUSTOM}
+        mois={new Date(2026, 5, 1)}
+        renduDetailJour={(jour) => <DemoDetailJour jour={jour} />}
+      />
+    </div>
   )
 }
