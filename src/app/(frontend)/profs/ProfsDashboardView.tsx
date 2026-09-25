@@ -1,25 +1,23 @@
 'use client'
 
+import Link from 'next/link'
 import { useMemo } from 'react'
 
-import { InsetText, Tag } from '@/components/atoms'
+import { Details, InsetText, Tag } from '@/components/atoms'
 import { ActionRow, AlertCard, MonthCalendarCard } from '@/components/molecules'
 import { DashboardPage } from '@/components/templates'
 import { presentSeanceLigne, useListMySeances } from '@/seances'
-import { useListElevesDuProf } from '@/students'
 import type { MarqueurJourCalendrier } from '@/calendrier'
 
 interface ProfsDashboardProps {
   prenom: string
-  profId: number
   alertes: { eleveId: number; eleveLabel: string; message: string }[]
 }
 
 const LIMITE_A_TRAITER = 5
 
-export default function ProfsDashboard({ prenom, profId, alertes }: ProfsDashboardProps) {
+export default function ProfsDashboard({ prenom, alertes }: ProfsDashboardProps) {
   const seances = useListMySeances({ limite: 60 })
-  const eleves = useListElevesDuProf(profId)
 
   const groupes = useMemo(() => {
     const maintenant = new Date()
@@ -74,7 +72,7 @@ export default function ProfsDashboard({ prenom, profId, alertes }: ProfsDashboa
     return map
   }, [seances.data])
 
-  if (seances.isLoading || eleves.isLoading) {
+  if (seances.isLoading) {
     return <p className="lpv-muted">Chargement du tableau de bord…</p>
   }
 
@@ -127,54 +125,62 @@ export default function ProfsDashboard({ prenom, profId, alertes }: ProfsDashboa
             ),
           },
           {
-            title: `Mes élèves (${eleves.data?.length ?? 0})`,
+            title: 'Historique',
             children:
-              (eleves.data?.length ?? 0) === 0 ? (
-                <InsetText>Aucun élève référent.</InsetText>
+              groupes.passees.length === 0 ? (
+                <InsetText>Aucune séance passée.</InsetText>
               ) : (
-                <div className="lpv-eleves-grid">
-                  {eleves.data?.map((eleve) => (
-                    <a className="lpv-eleve-card" href={`/profs/eleves/${eleve.id}`} key={eleve.id}>
-                      <span className="lpv-eleve-card__top">
-                        <span aria-hidden="true" className="lpv-avatar">
-                          {`${eleve.prenom.charAt(0)}${eleve.nom.charAt(0)}`.toUpperCase()}
-                        </span>
+                <Details summary={`Afficher les ${groupes.passees.length} séances précédentes`}>
+                  <div className="lpv-card__rows">
+                    {groupes.passees.map((seance) => (
+                      <a className="lpv-m-list-row" href={`/profs/seances/${seance.id}`} key={seance.id}>
                         <span>
-                          <span className="lpv-eleve-card__name">
-                            {eleve.prenom} {eleve.nom}
-                          </span>
-                          <br />
-                          <span className="lpv-eleve-card__detail">{eleve.groupe ?? eleve.niveau}</span>
+                          <span className="lpv-chip">{seance.dateLabel}</span>{' '}
+                          <span className="lpv-m-list-row__title">{seance.matiereLabel}</span>
                         </span>
-                      </span>
-                      <span className="lpv-eleve-card__link">Voir la fiche →</span>
-                    </a>
-                  ))}
-                </div>
+                        {!seance.retourPresent && <Tag color="orange">Retour à faire</Tag>}
+                      </a>
+                    ))}
+                  </div>
+                </Details>
               ),
           },
         ]}
         sidebar={
           <>
-            <MonthCalendarCard
-              marqueurs={marqueurs}
-              mois={new Date()}
-              renduDetailJour={(jour) => <DetailJour jour={jour} seancesParJour={seancesParJour} />}
-              voirToutHref="/profs/calendrier"
-            />
+            <div className="lpv-t-dashboard-page__aside-card">
+              <MonthCalendarCard
+                marqueurs={marqueurs}
+                mois={new Date()}
+                renduDetailJour={(jour) => <DetailJour jour={jour} seancesParJour={seancesParJour} />}
+                voirToutHref="/profs/calendrier"
+              />
+            </div>
             {alertes.length > 0 && (
-              <div>
-                {alertes.map((alerte) => (
-                  <AlertCard
-                    href={`/profs/eleves/${alerte.eleveId}`}
-                    key={`${alerte.eleveId}-${alerte.message}`}
-                    titre={`Décrochage — ${alerte.eleveLabel}`}
-                  >
-                    {alerte.message}
-                  </AlertCard>
-                ))}
+              <div className="lpv-t-dashboard-page__aside-card">
+                <h3 className="lpv-t-dashboard-page__aside-card__title">Alertes sur mes élèves</h3>
+                <div style={{ display: 'grid', gap: '0.75rem' }}>
+                  {alertes.map((alerte) => (
+                    <AlertCard
+                      href={`/profs/eleves/${alerte.eleveId}`}
+                      key={`${alerte.eleveId}-${alerte.message}`}
+                      titre={`Décrochage — ${alerte.eleveLabel}`}
+                    >
+                      {alerte.message}
+                    </AlertCard>
+                  ))}
+                </div>
               </div>
             )}
+            <div className="lpv-t-dashboard-page__aside-card">
+              <h3 className="lpv-t-dashboard-page__aside-card__title">Accès rapides</h3>
+              <nav className="lpv-t-dashboard-page__aside-card__links">
+                <Link href="/profs/calendrier">Calendrier</Link>
+                <Link href="/profs/disponibilites">Mes disponibilités</Link>
+                <Link href="/profs/eleves">Tous mes élèves</Link>
+                <Link href="/profs/bibliotheque">Catalogue bibliothèque</Link>
+              </nav>
+            </div>
           </>
         }
         stats={[
