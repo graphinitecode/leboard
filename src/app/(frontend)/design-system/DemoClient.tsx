@@ -111,23 +111,23 @@ const DEMO_CUSTOM: CategorieMarqueurCalendrier[] = [
 ]
 
 const DEMO_MARQUEURS: MarqueurJourCalendrier[] = [
-  { type: 'seance', date: new Date(2026, 5, 2) },
-  { type: 'seance', date: new Date(2026, 5, 4) },
-  { type: 'seance', date: new Date(2026, 5, 9) },
-  { type: 'seance', date: new Date(2026, 5, 11) },
-  { type: 'seance', date: new Date(2026, 5, 16) },
-  { type: 'seance', date: new Date(2026, 5, 18) },
-  { type: 'evenement', date: new Date(2026, 5, 14) },
+  { type: 'seance', date: new Date(2026, 8, 2) },
+  { type: 'seance', date: new Date(2026, 8, 4) },
+  { type: 'seance', date: new Date(2026, 8, 9) },
+  { type: 'seance', date: new Date(2026, 8, 11) },
+  { type: 'seance', date: new Date(2026, 8, 16) },
+  { type: 'seance', date: new Date(2026, 8, 18) },
+  { type: 'evenement', date: new Date(2026, 8, 14) },
 ]
 
 const DEMO_MARQUEURS_CUSTOM: MarqueurJourCalendrier[] = [
-  { type: 'presence', date: new Date(2026, 5, 2) },
-  { type: 'retard', date: new Date(2026, 5, 4) },
-  { type: 'presence', date: new Date(2026, 5, 9) },
-  { type: 'sortie', date: new Date(2026, 5, 12) },
-  { type: 'presence', date: new Date(2026, 5, 16) },
-  { type: 'retard', date: new Date(2026, 5, 18) },
-  { type: 'presence', date: new Date(2026, 5, 18) },
+  { type: 'presence', date: new Date(2026, 9, 2) },
+  { type: 'retard', date: new Date(2026, 9, 4) },
+  { type: 'presence', date: new Date(2026, 9, 9) },
+  { type: 'sortie', date: new Date(2026, 9, 12) },
+  { type: 'presence', date: new Date(2026, 9, 16) },
+  { type: 'retard', date: new Date(2026, 9, 18) },
+  { type: 'presence', date: new Date(2026, 10, 18) },
 ]
 
 function DemoDetailJour({ jour }: { jour: Date }) {
@@ -157,14 +157,14 @@ export function DemoMonthCalendars() {
       <MonthCalendarCard
         categories={DEMO_CATEGORIES}
         marqueurs={DEMO_MARQUEURS}
-        mois={new Date(2026, 5, 1)}
+        mois={new Date(2026, 8, 1)}
         renduDetailJour={(jour) => <DemoDetailJour jour={jour} />}
         voirToutHref="/profs"
       />
       <MonthCalendarCard
         categories={DEMO_CUSTOM}
         marqueurs={DEMO_MARQUEURS_CUSTOM}
-        mois={new Date(2026, 5, 1)}
+        mois={new Date(2026, 9, 1)}
         renduDetailJour={(jour) => <DemoDetailJour jour={jour} />}
       />
     </div>
