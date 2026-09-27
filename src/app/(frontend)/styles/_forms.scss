@@ -81,26 +81,18 @@
   margin-left: auto;
   text-size-adjust: 100%;
 
-  /* La question a toujours la même taille, quelle que soit la page. */
-  &__question {
-    font-size: 1.97rem;
-    font-weight: 700;
-    line-height: 1.25;
-    @include mixins.lpv-font-size(37);
-    margin: -0.4rem 0 1.47rem;
-    overflow-wrap: break-word;
+  /* Caption « Étape N sur M » collée à la question (rythme GOV.UK). */
+  .lpv-stepper__step {
+    margin: 0;
+  }
+
+  /* La question (h1 = label page heading) respire avant le contrôle. */
+  .lpv-a-label-wrapper {
+    margin: 0 0 var(--lpv-spacing-xl);
   }
 
   &__content {
     width: auto;
-  }
-
-  &__step {
-    color: var(--lpv-text-muted);
-    display: block;
-    @include mixins.lpv-font-size(24);
-    font-weight: 400;
-    margin: 0 0 0.25rem;
   }
 
   &__actions {
@@ -108,19 +100,20 @@
     flex-wrap: wrap;
     gap: 0.75rem;
     justify-content: flex-start;
-    margin-top: 2rem;
-    width: 100wv;
+    margin-top: var(--lpv-spacing-xl);
   }
 
   &__choice {
     display: block;
-    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--lpv-grey-border);
+    margin-bottom: 0;
     min-height: 44px;
+    padding: var(--lpv-spacing-md) 0;
   }
 
   /* Bloc « Vos réponses » (pattern GOV.UK). */
   &__answers {
-    margin-top: 4.7rem;
+    margin-top: var(--lpv-spacing-2xl);
   }
 
   &__answers-title {
