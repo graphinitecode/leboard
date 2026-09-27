@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mes séances</title>
+<style>
+  :root{
+    --govuk-black:#0b0c0c; --govuk-blue:#1d70b8; --govuk-green:#00703c;
+    --govuk-red:#d4351c; --govuk-yellow:#ffdd00; --govuk-grey-border:#b1b4b6;
+    --govuk-grey-bg:#f3f2f1; --govuk-dark-grey:#505a5f;
+    --bg:#fff; --card-bg:#fff; --text:#0b0c0c;
+    padding-top: env(safe-area-inset-top,0px); padding-bottom: env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-padding-top: env(safe-area-inset-top,0px);}
+  body{margin:0; font-family: arial, "Helvetica Neue", sans-serif; color:var(--text); background:var(--bg); line-height:1.4;}
+  a{color:var(--govuk-blue);}
+  a:focus, button:focus{outline:3px solid var(--govuk-yellow); outline-offset:0; box-shadow:0 -2px var(--govuk-yellow), 0 4px var(--govuk-black); background:var(--govuk-yellow); color:var(--govuk-black);}
+
+  .topbar{background:var(--govuk-black); color:#fff; padding-top: calc(10px + env(safe-area-inset-top,0px));}
+  .topbar-inner{max-width:1100px; margin:0 auto; padding:10px 20px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;}
+  .topbar strong{font-size:19px;}
+  .nav{display:flex; gap:20px; flex-wrap:wrap; margin-left:auto; font-size:16px;}
+  .nav a{color:#fff; text-decoration:none; border-bottom:3px solid transparent; padding:4px 0;}
+  .nav a.active{border-bottom-color:var(--govuk-yellow); font-weight:700;}
+
+  .phase-banner{border-bottom:1px solid var(--govuk-grey-border); padding:8px 20px; font-size:15px; max-width:1100px; margin:0 auto;}
+  .tag--phase{background:var(--govuk-blue); color:#fff; font-weight:700; font-size:11px; text-transform:uppercase; padding:2px 7px; letter-spacing:1px; margin-right:8px;}
+
+  .container{max-width:1100px; margin:0 auto; padding:24px 20px 60px;}
+  h1{font-size:30px; margin:0 0 4px; font-weight:700;}
+  .caption{color:var(--govuk-dark-grey); font-size:17px; margin-bottom:20px;}
+
+  .filterbar{display:flex; gap:10px; margin-bottom:28px; flex-wrap:wrap; align-items:center;}
+  .filterbar select{border:2px solid var(--govuk-black); padding:9px 10px; font-size:15px; font-family:inherit; background:#fff;}
+  .filterbar .tabs{display:flex; gap:4px; margin-left:auto; border:2px solid var(--govuk-black);}
+  .filterbar .tabs a{padding:8px 14px; font-size:14px; font-weight:700; text-decoration:none; color:var(--govuk-black);}
+  .filterbar .tabs a.active{background:var(--govuk-black); color:#fff;}
+  .filterbar .tabs a + a{border-left:2px solid var(--govuk-black);}
+
+  h2{font-size:20px; font-weight:700; margin:0 0 14px; display:flex; align-items:center; gap:8px;}
+  .count{background:var(--govuk-grey-bg); color:var(--govuk-dark-grey); font-size:13px; font-weight:700; padding:2px 8px; border-radius:10px;}
+  .section{margin-bottom:36px;}
+
+  .cards{display:flex; flex-direction:column; gap:10px;}
+  .card{border:1px solid var(--govuk-grey-border); border-left:5px solid var(--govuk-red); padding:14px 16px; background:var(--card-bg); display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; text-decoration:none; color:inherit;}
+  .card.ok{border-left-color:var(--govuk-blue);}
+  .card.done{border-left-color:var(--govuk-green);}
+  .card-info strong{display:block; font-size:17px;}
+  .card-info span{font-size:15px; color:var(--govuk-dark-grey);}
+
+  .tag{display:inline-block; font-size:13px; font-weight:700; text-transform:uppercase; padding:2px 7px; letter-spacing:0.5px; margin-top:4px;}
+  .tag--red{background:#f6d7d2; color:#942514;}
+  .tag--green{background:#cce2d8; color:#00703c;}
+  .tag--grey{background:var(--govuk-grey-bg); color:var(--govuk-dark-grey);}
+
+  .btn{display:inline-block; background:var(--govuk-green); color:#fff; text-decoration:none; font-weight:700;
+    padding:8px 14px; border:none; border-bottom:2px solid #002d18; font-size:15px; cursor:pointer; white-space:nowrap;}
+  .btn--secondary{background:var(--govuk-grey-bg); color:var(--govuk-black); border-bottom:2px solid var(--govuk-grey-border);}
+
+  .load-more{text-align:center; margin-top:16px;}
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){--bg:#0b0c0c; --card-bg:#1a1a1a; --text:#f3f2f1;}
+    :root:not([data-theme="light"]) .card{border-color:#505a5f;}
+    :root:not([data-theme="light"]) .filterbar select{background:#262626; color:#f3f2f1;}
+    :root:not([data-theme="light"]) .filterbar .tabs a{color:#f3f2f1;}
+    :root:not([data-theme="light"]) .btn--secondary{background:#262626; color:#f3f2f1;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <strong>🏛️ Association Soutien Scolaire</strong>
+    <nav class="nav">
+      <a href="#">Tableau de bord</a>
+      <a href="#" class="active">Séances</a>
+      <a href="#">Élèves</a>
+      <a href="#">Bibliothèque</a>
+    </nav>
+  </div>
+</div>
+<div class="phase-banner"><span class="tag--phase">Bêta</span> Ceci est un modèle — vos retours sont les bienvenus.</div>
+
+<div class="container">
+  <h1>Mes séances</h1>
+  <p class="caption">Claire D. — CM2 Groupe B, 6e Groupe A</p>
+
+  <div class="filterbar">
+    <select><option>Tous les groupes</option><option>CM2 - Groupe B</option><option>6e - Groupe A</option></select>
+    <select><option>Toutes les matières</option><option>Maths</option><option>Français</option></select>
+    <div class="tabs">
+      <a href="#" class="active">À venir</a>
+      <a href="#">À traiter</a>
+      <a href="#">Terminées</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>À traiter <span class="count">2</span></h2>
+    <div class="cards">
+      <a href="#" class="card">
+        <div class="card-info">
+          <strong>CM2 · Groupe B — Maths</strong>
+          <span>Lundi 22 septembre</span>
+          <span class="tag tag--red">Retour en attente</span>
+        </div>
+        <span class="btn">Compléter</span>
+      </a>
+      <a href="#" class="card">
+        <div class="card-info">
+          <strong>6e · Groupe A — Français</strong>
+          <span>Mercredi 24 septembre</span>
+          <span class="tag tag--red">Retour en attente</span>
+        </div>
+        <span class="btn">Compléter</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>À venir <span class="count">3</span></h2>
+    <div class="cards">
+      <a href="#" class="card ok">
+        <div class="card-info">
+          <strong>CM2 · Groupe B — Maths</strong>
+          <span>Vendredi 26 septembre, 17h</span>
+        </div>
+        <span class="btn btn--secondary">Voir</span>
+      </a>
+      <a href="#" class="card ok">
+        <div class="card-info">
+          <strong>6e · Groupe A — Français</strong>
+          <span>Lundi 29 septembre, 17h</span>
+        </div>
+        <span class="btn btn--secondary">Voir</span>
+      </a>
+      <a href="#" class="card ok">
+        <div class="card-info">
+          <strong>CM2 · Groupe B — Maths</strong>
+          <span>Vendredi 3 octobre, 17h</span>
+        </div>
+        <span class="btn btn--secondary">Voir</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Terminées <span class="count">14</span></h2>
+    <div class="cards">
+      <a href="#" class="card done">
+        <div class="card-info">
+          <strong>CM2 · Groupe B — Maths</strong>
+          <span>Vendredi 18 septembre</span>
+          <span class="tag tag--green">Retour complété</span>
+        </div>
+        <span class="btn btn--secondary">Voir</span>
+      </a>
+      <a href="#" class="card done">
+        <div class="card-info">
+          <strong>6e · Groupe A — Français</strong>
+          <span>Mercredi 17 septembre</span>
+          <span class="tag tag--green">Retour complété</span>
+        </div>
+        <span class="btn btn--secondary">Voir</span>
+      </a>
+    </div>
+    <div class="load-more"><a href="#">Afficher les 12 séances précédentes ▾</a></div>
+  </div>
+</div>
+
+</body>
+</html>

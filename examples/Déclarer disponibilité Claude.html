@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Déclarer une disponibilité</title>
+<style>
+  :root{
+    --govuk-black:#0b0c0c; --govuk-blue:#1d70b8; --govuk-green:#00703c;
+    --govuk-red:#d4351c; --govuk-yellow:#ffdd00; --govuk-grey-border:#b1b4b6;
+    --govuk-grey-bg:#f3f2f1; --govuk-dark-grey:#505a5f;
+    --bg:#fff; --text:#0b0c0c;
+    padding-top: env(safe-area-inset-top,0px); padding-bottom: env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-padding-top: env(safe-area-inset-top,0px);}
+  body{margin:0; font-family: arial, "Helvetica Neue", sans-serif; color:var(--text); background:var(--bg); line-height:1.4;}
+  a{color:var(--govuk-blue);}
+  a:focus, button:focus{outline:3px solid var(--govuk-yellow); outline-offset:0; box-shadow:0 -2px var(--govuk-yellow), 0 4px var(--govuk-black); background:var(--govuk-yellow); color:var(--govuk-black);}
+
+  .topbar{background:var(--govuk-black); color:#fff; padding-top: calc(10px + env(safe-area-inset-top,0px));}
+  .topbar-inner{max-width:700px; margin:0 auto; padding:12px 20px;}
+  .topbar strong{font-size:19px;}
+  .phase-banner{border-bottom:1px solid var(--govuk-grey-border); padding:8px 20px; font-size:15px; max-width:700px; margin:0 auto;}
+  .tag--phase{background:var(--govuk-blue); color:#fff; font-weight:700; font-size:11px; text-transform:uppercase; padding:2px 7px; letter-spacing:1px; margin-right:8px;}
+
+  .container{max-width:560px; margin:0 auto; padding:24px 20px 60px;}
+  .back-link{display:inline-block; margin-bottom:20px; font-size:16px; text-decoration:none;}
+  .back-link::before{content:"← "; }
+
+  fieldset{border:none; padding:0; margin:0;}
+  legend{font-size:26px; font-weight:700; margin-bottom:20px; padding:0;}
+  .hint{font-size:16px; color:var(--govuk-dark-grey); margin-bottom:18px;}
+
+  .checkboxes label, .radios label{display:flex; align-items:center; gap:12px; padding:12px 0; font-size:18px; border-bottom:1px solid var(--govuk-grey-border); cursor:pointer;}
+  .checkboxes input, .radios input{width:24px; height:24px; flex-shrink:0;}
+
+  .btn{display:inline-block; background:var(--govuk-green); color:#fff; text-decoration:none; font-weight:700;
+    padding:11px 22px; border:none; border-bottom:2px solid #002d18; font-size:18px; cursor:pointer; margin-top:24px;}
+
+  .step{display:none;}
+  .step.active{display:block;}
+
+  .summary-list dt{font-size:15px; color:var(--govuk-dark-grey); margin-top:16px;}
+  .summary-list dt:first-child{margin-top:0;}
+  .summary-list dd{margin:2px 0 0; font-size:18px; display:flex; justify-content:space-between; border-bottom:1px solid var(--govuk-grey-border); padding-bottom:10px;}
+  .summary-list dd a{font-size:15px; white-space:nowrap;}
+
+  .confirmation-panel{background:var(--govuk-green); color:#fff; padding:28px 20px; margin-bottom:24px;}
+  .confirmation-panel h1{margin:0 0 6px; font-size:28px;}
+  .confirmation-panel p{margin:0; font-size:17px;}
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){--bg:#0b0c0c; --text:#f3f2f1;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-inner"><strong>🏛️ Association Soutien Scolaire</strong></div></div>
+<div class="phase-banner"><span class="tag--phase">Bêta</span> Ceci est un modèle — vos retours sont les bienvenus.</div>
+
+<div class="container">
+
+  <div id="step-1" class="step active">
+    <a href="#" class="back-link">Retour</a>
+    <fieldset>
+      <legend>Quels jours es-tu disponible ?</legend>
+      <p class="hint">Sélectionne un ou plusieurs jours.</p>
+      <div class="checkboxes">
+        <label><input type="checkbox" name="jours" value="lundi"> Lundi</label>
+        <label><input type="checkbox" name="jours" value="mardi"> Mardi</label>
+        <label><input type="checkbox" name="jours" value="mercredi"> Mercredi</label>
+        <label><input type="checkbox" name="jours" value="jeudi"> Jeudi</label>
+        <label><input type="checkbox" name="jours" value="vendredi"> Vendredi</label>
+        <label><input type="checkbox" name="jours" value="samedi"> Samedi</label>
+      </div>
+    </fieldset>
+    <button class="btn" onclick="goTo(2)">Continuer</button>
+  </div>
+
+  <div id="step-2" class="step">
+    <a href="#" class="back-link" onclick="goTo(1)">Retour</a>
+    <fieldset>
+      <legend>À quel moment de la journée ?</legend>
+      <p class="hint">Sélectionne un ou plusieurs créneaux.</p>
+      <div class="checkboxes">
+        <label><input type="checkbox" name="creneaux" value="matin"> Matin (9h–12h)</label>
+        <label><input type="checkbox" name="creneaux" value="apres-midi"> Après-midi (14h–17h)</label>
+        <label><input type="checkbox" name="creneaux" value="soir"> Soir (17h–19h)</label>
+      </div>
+    </fieldset>
+    <button class="btn" onclick="goTo(3)">Continuer</button>
+  </div>
+
+  <div id="step-3" class="step">
+    <a href="#" class="back-link" onclick="goTo(2)">Retour</a>
+    <fieldset>
+      <legend>Cette disponibilité est-elle récurrente ?</legend>
+      <div class="radios">
+        <label><input type="radio" name="recurrence" value="toute-annee" checked> Oui, toute l'année scolaire</label>
+        <label><input type="radio" name="recurrence" value="periode"> Non, seulement sur une période précise</label>
+      </div>
+    </fieldset>
+    <button class="btn" onclick="goTo(4)">Continuer</button>
+  </div>
+
+  <div id="step-4" class="step">
+    <a href="#" class="back-link" onclick="goTo(3)">Retour</a>
+    <h1 style="font-size:26px;">Vérifiez vos réponses</h1>
+    <dl class="summary-list">
+      <dt>Jours</dt>
+      <dd><span id="rec-jours">—</span><a href="#" onclick="goTo(1)">Modifier</a></dd>
+      <dt>Créneaux</dt>
+      <dd><span id="rec-creneaux">—</span><a href="#" onclick="goTo(2)">Modifier</a></dd>
+      <dt>Récurrence</dt>
+      <dd><span id="rec-recurrence">—</span><a href="#" onclick="goTo(3)">Modifier</a></dd>
+    </dl>
+    <button class="btn" onclick="confirmer()">Confirmer et envoyer</button>
+  </div>
+
+  <div id="step-5" class="step">
+    <div class="confirmation-panel">
+      <h1>✓ Disponibilité enregistrée</h1>
+      <p>Ton planning a été mis à jour.</p>
+    </div>
+    <a href="#">Retour au tableau de bord</a>
+  </div>
+
+</div>
+
+<script>
+function goTo(n){
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-' + n).classList.add('active');
+  if (n === 4) remplirRecap();
+  window.scrollTo(0,0);
+}
+function remplirRecap(){
+  const jours = [...document.querySelectorAll('input[name="jours"]:checked')].map(i => i.parentElement.textContent.trim());
+  const creneaux = [...document.querySelectorAll('input[name="creneaux"]:checked')].map(i => i.parentElement.textContent.trim());
+  const recurrence = document.querySelector('input[name="recurrence"]:checked').parentElement.textContent.trim();
+  document.getElementById('rec-jours').textContent = jours.join(', ') || 'Aucun sélectionné';
+  document.getElementById('rec-creneaux').textContent = creneaux.join(', ') || 'Aucun sélectionné';
+  document.getElementById('rec-recurrence').textContent = recurrence;
+}
+function confirmer(){ goTo(5); }
+</script>
+
+</body>
+</html>
