@@ -15,6 +15,7 @@ const mapDtoToPret = (dto: PretDto): Pret => {
     eleveLabel: eleve ? `${eleve.prenom} ${eleve.nom}` : null,
     exemplaireCode: exemplaire?.code ?? null,
     livreLabel: livre?.titre ?? null,
+    dateEmprunt: dto.dateEmprunt ?? dto.createdAt ?? null,
     dateRetourPrevue: dto.dateRetourPrevue ?? null,
     dateRetourEffective: dto.dateRetourEffective ?? null,
   }
@@ -132,9 +133,13 @@ export const bibliothequeRepository = {
           id: livre.id,
           titre: livre.titre,
           auteur: livre.auteur ?? null,
+          isbn: livre.isbn ?? null,
+          resume: livre.resume ?? null,
+          editeur: livre.editeur ?? null,
           niveau: livre.niveau ?? null,
           categorie: livre.categorie ?? null,
           archived: livre.archived ?? false,
+          createdAt: livre.createdAt,
           exemplaires: exemplaires.map((ex) => ({
             id: ex.id,
             code: ex.code ?? '',
@@ -154,12 +159,59 @@ export const bibliothequeRepository = {
     auteur?: string
     niveau?: string
     categorie?: string
+    resume?: string
   }): Promise<number> {
     try {
       const res = await httpClient.post<Livre>('/livres', command)
       return res.data.id
     } catch (err) {
       throw new Error(getAxiosErrorMessage(err, 'Impossible de créer le livre.'))
+    }
+  },
+
+  /** Modifier les métadonnées d'un livre (admin/bénévole — biblioWrite côté API). */
+  async modifierLivre(command: {
+    id: number
+    titre: string
+    auteur?: string
+    isbn?: string
+    niveau?: string
+    categorie?: string
+    editeur?: string
+    resume?: string
+  }): Promise<void> {
+    try {
+      const { id, ...champs } = command
+      await httpClient.patch(`/livres/${id}`, champs)
+    } catch (err) {
+      throw new Error(getAxiosErrorMessage(err, 'Impossible de modifier le livre.'))
+    }
+  },
+
+  /**
+   * Historique des emprunts d'un livre : tous les prêts dont un exemplaire
+   * appartient au livre. Filtrage client : le where relationnel imbriqué
+   * (exemplaire.livre) n'est pas supporté par l'adapter PG (Spec 02 §8).
+   */
+  async listPretsParLivre(livreId: number): Promise<Pret[]> {
+    try {
+      const res = await httpClient.get<{ docs: PretDto[]; totalDocs: number }>('/prets', {
+        params: {
+          depth: 2,
+          limit: 0,
+          sort: '-createdAt',
+        },
+      })
+      return res.data.docs
+        .filter((pret) => {
+          const exemplaire = typeof pret.exemplaire === 'object' ? pret.exemplaire : null
+          const livre =
+            exemplaire && typeof exemplaire.livre === 'object' ? exemplaire.livre : null
+          return livre?.id === livreId
+        })
+        .map(mapDtoToPret)
+    } catch (err) {
+      throw new Error(getAxiosErrorMessage(err, 'Impossible de charger les emprunts.'))
     }
   },
 }

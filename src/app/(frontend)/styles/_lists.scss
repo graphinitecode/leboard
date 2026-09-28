@@ -90,6 +90,11 @@ a.lpv-m-list-row {
   border-left: 6px solid var(--lpv-a-tag--red-text);
   padding: 0.9rem 1rem;
 
+  /* Rappel neutre (bibliothèque) : bordure bleue, sans icône d'avertissement */
+  &--blue {
+    border-left-color: var(--lpv-a-tag--blue-text);
+  }
+
   &__title {
     align-items: center;
     display: flex;

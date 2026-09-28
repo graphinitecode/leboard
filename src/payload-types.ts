@@ -342,6 +342,10 @@ export interface Livre {
   categorie?: ('lecture' | 'methodologie' | 'anglais' | 'manuel' | 'autre') | null;
   editeur?: string | null;
   /**
+   * Présentation de l’ouvrage, affichée sur la fiche du portail
+   */
+  resume?: string | null;
+  /**
    * Préférer l’archivage à la suppression : un livre avec historique de prêts ne peut pas être supprimé.
    */
   archived?: boolean | null;
@@ -1462,6 +1466,7 @@ export interface LivresSelect<T extends boolean = true> {
   niveau?: T;
   categorie?: T;
   editeur?: T;
+  resume?: T;
   archived?: T;
   updatedAt?: T;
   createdAt?: T;

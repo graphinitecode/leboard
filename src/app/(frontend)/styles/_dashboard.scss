@@ -105,7 +105,34 @@
   }
 }
 
+/* --- Liste de cards progression (fiche élève) ------------------------------ */
+
 .lpv-m-progression-list {
   display: grid;
   gap: 0.625rem;
+}
+
+/* --- Searchbar pleine largeur (bibliothèque) ------------------------------- */
+/* Motif maquette : input (flex 1, min 200px) + select + bouton, sous les stats */
+
+.lpv-o-bibliotheque__searchbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-bottom: 1.75rem;
+
+  input {
+    flex: 1 1 200px;
+    min-width: 200px;
+    width: auto;
+  }
+
+  select {
+    max-width: none;
+    width: auto;
+  }
+
+  .lpv-a-button {
+    width: auto;
+  }
 }

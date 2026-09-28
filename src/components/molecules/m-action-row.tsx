@@ -6,6 +6,7 @@ type Accent = 'red' | 'green'
 // Molécule : ligne d'action du tableau de bord — titre, méta (date),
 // tag optionnel et bouton à droite. Bordure gauche colorée :
 // rouge = à traiter, vert = à venir, aucune = neutre.
+// L'action est un lien (href) ou un bouton (onClick) — un seul des deux.
 export function ActionRow({
   title,
   meta,
@@ -16,7 +17,13 @@ export function ActionRow({
   title: string
   meta?: string
   tag?: React.ReactNode
-  action?: { label: string; href: string; variant?: Variant }
+  action?: {
+    label: string
+    href?: string
+    onClick?: () => void
+    variant?: Variant
+    disabled?: boolean
+  }
   accent?: Accent
 }) {
   const accentClass =
@@ -32,11 +39,20 @@ export function ActionRow({
           </span>
         )}
       </div>
-      {action && (
+      {action?.href ? (
         <Button href={action.href} variant={action.variant ?? 'secondary'}>
           {action.label}
         </Button>
-      )}
+      ) : action?.onClick ? (
+        <Button
+          disabled={action.disabled}
+          onClick={action.onClick}
+          type="button"
+          variant={action.variant ?? 'secondary'}
+        >
+          {action.label}
+        </Button>
+      ) : null}
     </div>
   )
 }

@@ -4,6 +4,19 @@ Tous les changements notables de LPV Board sont documentés ici.
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le versionnage suit [SemVer](https://semver.org/lang/fr/) (0.x pendant le développement initial).
 
+## [0.8.0] — 2026-09-28
+
+### Ajouté
+- Fiche livre repensée dans le portail : compteurs (niveau conseillé, exemplaires disponibles, retard en cours), résumé de l'ouvrage, historique complet des emprunts en tableau et encadrés latéraux (actions, retard, informations) — les actions d'enregistrement de prêt et de retour ne s'affichent que pour ceux qui gèrent la bibliothèque
+- Édition de la fiche d'un livre directement depuis le portail (titre, auteur, ISBN, niveau, catégorie, éditeur, résumé), réservée aux gestionnaires de la bibliothèque
+- Référencement d'un livre : le résumé peut être saisi lors de la création, en troisième étape de l'assistant
+- Le résumé des livres est éditable dans le panneau d'administration
+- Bibliothèque : barre de recherche pleine largeur sous les compteurs (recherche, filtre de niveau et bouton « Enregistrer un prêt »), retards en lignes d'action à bordure rouge, encadrés latéraux à bordure haute (rappels bleus sans avertissement, « Ajouter un livre ») au lieu des panneaux bleus
+- Bibliothèque : la ligne sous le titre décrit maintenant la page (gestion du catalogue, prêts et retards) au lieu de répéter le nombre d'ouvrages, déjà affiché dans les compteurs
+
+### Corrigé
+- Catalogue de la bibliothèque : le tableau s'étend maintenant sur toute la largeur de la colonne (espacement des colonnes lisible, comme le modèle) au lieu d'être compacté sur une portion d'écran ; titre du livre en gras et lien « Voir » souligné comme les autres actions de l'interface (Modifier, Supprimer) — les liens du même type dans les formulaires de connexion et de profil sont aussi corrigés
+
 ## [0.7.0] — 2026-09-28
 
 ### Ajouté

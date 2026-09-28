@@ -4,9 +4,10 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useMemo, useState } from 'react'
 
-import { InsetText, Panel, Tag } from '@/components/atoms'
+import { InsetText, Tag } from '@/components/atoms'
 import { Button } from '@/components/atoms/a-button'
-import { Toast } from '@/components/molecules'
+import { ActionRow, AlertCard, Table, Toast } from '@/components/molecules'
+import type { TableHeadCell, TableRowCell } from '@/components/molecules'
 import {
   estPretEnCours,
   joursDeRetard,
@@ -35,15 +36,15 @@ const formatDate = (iso: string | null): string => {
   return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })
 }
 
-export default function BibliothequeView() {
+export default function BibliothequeView({ peutGerer }: { peutGerer: boolean }) {
   return (
     <Suspense fallback={<p className="lpv-muted">Chargement…</p>}>
-      <VueBibliotheque />
+      <VueBibliotheque peutGerer={peutGerer} />
     </Suspense>
   )
 }
 
-function VueBibliotheque() {
+function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
   const router = useRouter()
   const params = useSearchParams()
   const prets = useListTousPretsEnCours()
@@ -88,6 +89,37 @@ function VueBibliotheque() {
     }
   }
 
+  const catalogueHead: TableHeadCell[] = [
+    { text: 'Titre' },
+    { text: 'Auteur' },
+    { text: 'Niveau' },
+    { text: 'Statut' },
+    { text: '' },
+  ]
+
+  const catalogueRows: TableRowCell[][] = catalogueFiltre.map((livre) => {
+    const dispo = livre.exemplaires.some((ex) => ex.disponible)
+    return [
+      { content: <strong>{livre.titre}</strong> },
+      { text: livre.auteur ?? '—' },
+      { text: livre.niveau ? NIVEAU_LABELS[livre.niveau] ?? livre.niveau : '—' },
+      {
+        content: (
+          <Tag color={dispo ? 'green' : 'red'}>
+            {dispo ? 'Disponible' : 'Emprunté'}
+          </Tag>
+        ),
+      },
+      {
+        content: (
+          <Link className="lpv-link-inline" href={`/profs/bibliotheque/livres/${livre.id}`}>
+            Voir
+          </Link>
+        ),
+      },
+    ]
+  })
+
   return (
     <>
       {(erreur || prets.isError || catalogue.isError) && (
@@ -107,14 +139,17 @@ function VueBibliotheque() {
       )}
 
       <h1 className="lpv-h1">Bibliothèque</h1>
-      <p className="lpv-muted">{catalogue.data?.length ?? '…'} ouvrages référencés au catalogue.</p>
+      <p className="lpv-muted">
+        Gérez le catalogue de livres de l&apos;association : suivez les prêts en cours,
+        repérez les retards et consultez les exemplaires disponibles.
+      </p>
 
       <div className="lpv-cards-grid lpv-cards-grid--3">
         <div className="lpv-card lpv-stat">
           <span className="lpv-stat__value">{catalogue.data?.length ?? '—'}</span>
           <div className="lpv-stat__label">Livres au catalogue</div>
         </div>
-        <div className="lpv-card lpv-stat success">
+        <div className="lpv-card lpv-stat">
           <span className="lpv-stat__value">{prets.isLoading ? '—' : enCours.length}</span>
           <div className="lpv-stat__label">Prêts en cours</div>
         </div>
@@ -122,6 +157,39 @@ function VueBibliotheque() {
           <span className="lpv-stat__value">{prets.isLoading ? '—' : retards.length}</span>
           <div className="lpv-stat__label">Retards</div>
         </div>
+      </div>
+
+      <div className="lpv-o-bibliotheque__searchbar">
+        <label className="lpv-visually-hidden" htmlFor="recherche-catalogue">
+          Rechercher un titre ou un auteur
+        </label>
+        <input
+          className="lpv-a-input"
+          id="recherche-catalogue"
+          onChange={(e) => setRecherche(e.target.value)}
+          placeholder="Rechercher un titre, un auteur…"
+          type="search"
+          value={recherche}
+        />
+        <label className="lpv-visually-hidden" htmlFor="filtre-niveau">
+          Filtrer par niveau
+        </label>
+        <select
+          className="lpv-a-select"
+          id="filtre-niveau"
+          onChange={(e) => setNiveauFiltre(e.target.value)}
+          value={niveauFiltre}
+        >
+          <option value="">Tous les niveaux</option>
+          <option value="primaire">Primaire</option>
+          <option value="college">Collège</option>
+          <option value="lycee">Lycée</option>
+        </select>
+        {peutGerer ? (
+          <Button href="/profs/bibliotheque/prets/nouveau" variant="success">
+            Enregistrer un prêt
+          </Button>
+        ) : null}
       </div>
 
       <div className="lpv-t-dashboard-page__columns">
@@ -136,29 +204,22 @@ function VueBibliotheque() {
               <InsetText>Aucun retard. Tous les prêts sont dans les temps.</InsetText>
             ) : (
               retards.map((pret) => (
-                <Panel key={pret.id}>
-                  <div className="lpv-m-list-row">
-                    <span>
-                      <span className="lpv-m-list-row__title">
-                        &laquo; {pret.livreLabel ?? pret.exemplaireCode ?? 'Livre'} &raquo; —{' '}
-                        {pret.eleveLabel ?? 'Élève'}
-                      </span>
-                      <span style={{ color: 'var(--lpv-text-muted)' }}>
-                        {' '}
-                        · Retour prévu le {formatDate(pret.dateRetourPrevue)} —{' '}
-                        {joursDeRetard(pret.dateRetourPrevue)} jour(s) de retard
-                      </span>
-                    </span>
-                    <Button
-                      disabled={marquerRetourne.isPending}
-                      onClick={() => retourner(pret.id)}
-                      type="button"
-                      variant="secondary"
-                    >
-                      Marquer comme retourné
-                    </Button>
-                  </div>
-                </Panel>
+                <ActionRow
+                  accent="red"
+                  action={
+                    peutGerer
+                      ? {
+                          disabled: marquerRetourne.isPending,
+                          label: 'Marquer comme retourné',
+                          onClick: () => retourner(pret.id),
+                          variant: 'secondary',
+                        }
+                      : undefined
+                  }
+                  key={pret.id}
+                  meta={`Retour prévu le ${formatDate(pret.dateRetourPrevue)} — ${joursDeRetard(pret.dateRetourPrevue)} jour(s) de retard`}
+                  title={`« ${pret.livreLabel ?? pret.exemplaireCode ?? 'Livre'} » — emprunté par ${pret.eleveLabel ?? 'un élève'}`}
+                />
               ))
             )}
           </section>
@@ -167,111 +228,50 @@ function VueBibliotheque() {
             <h2 className="lpv-h2" id="catalogue">
               Catalogue
             </h2>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.625rem' }}>
-              <label className="lpv-visually-hidden" htmlFor="recherche-catalogue">
-                Rechercher un titre ou un auteur
-              </label>
-              <input
-                className="lpv-a-input"
-                id="recherche-catalogue"
-                onChange={(e) => setRecherche(e.target.value)}
-                placeholder="Rechercher un titre, un auteur…"
-                style={{ flex: '1 1 200px' }}
-                type="search"
-                value={recherche}
-              />
-              <label className="lpv-visually-hidden" htmlFor="filtre-niveau">
-                Filtrer par niveau
-              </label>
-              <select
-                className="lpv-a-select"
-                id="filtre-niveau"
-                onChange={(e) => setNiveauFiltre(e.target.value)}
-                value={niveauFiltre}
-              >
-                <option value="">Tous les niveaux</option>
-                <option value="primaire">Primaire</option>
-                <option value="college">Collège</option>
-                <option value="lycee">Lycée</option>
-              </select>
-              <Link className="lpv-a-button" href="/profs/bibliotheque/prets/nouveau">
-                Enregistrer un prêt
-              </Link>
-            </div>
             {catalogue.isLoading ? (
               <p className="lpv-muted">Chargement du catalogue…</p>
             ) : catalogueFiltre.length === 0 ? (
               <InsetText>Aucun livre ne correspond à votre recherche.</InsetText>
             ) : (
-              <table className="lpv-a-table">
-                <thead>
-                  <tr>
-                    <th scope="col">Titre</th>
-                    <th scope="col">Auteur</th>
-                    <th scope="col">Niveau</th>
-                    <th scope="col">Statut</th>
-                    <th scope="col">
-                      <span className="lpv-visually-hidden">Actions</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {catalogueFiltre.map((livre) => {
-                    const dispo = livre.exemplaires.some((ex) => ex.disponible)
-                    return (
-                      <tr key={livre.id}>
-                        <td>{livre.titre}</td>
-                        <td>{livre.auteur ?? '—'}</td>
-                        <td>{livre.niveau ? NIVEAU_LABELS[livre.niveau] ?? livre.niveau : '—'}</td>
-                        <td>
-                          <Tag color={dispo ? 'green' : 'red'}>
-                            {dispo ? 'Disponible' : 'Emprunté'}
-                          </Tag>
-                        </td>
-                        <td>
-                          <Link className="lpv-link" href={`/profs/bibliotheque/livres/${livre.id}`}>
-                            Voir
-                          </Link>
-                        </td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
+              <div style={{ overflowX: 'auto' }}>
+                <Table caption="Catalogue" head={catalogueHead} rows={catalogueRows} />
+              </div>
             )}
           </section>
         </div>
 
         <aside className="lpv-t-dashboard-page__aside">
-          <Panel>
-            <h3 style={{ marginTop: 0 }}>Rappels à venir</h3>
+          <div className="lpv-t-dashboard-page__aside-card">
+            <h3 className="lpv-t-dashboard-page__aside-card__title">Rappels à venir</h3>
             {rappels.length === 0 ? (
               <p className="lpv-muted">Aucun rappel pour les prochains jours.</p>
             ) : (
-              rappels.map((pret) => (
-                <p key={pret.id} className="lpv-muted">
-                  <strong>{pret.eleveLabel}</strong>
-                  <br />
-                  &laquo; {pret.livreLabel ?? pret.exemplaireCode} &raquo; — retour prévu le{' '}
-                  {formatDate(pret.dateRetourPrevue)}
-                </p>
-              ))
+              <div style={{ display: 'grid', gap: '0.625rem' }}>
+                {rappels.map((pret) => (
+                  <AlertCard
+                    accent="blue"
+                    icon={false}
+                    key={pret.id}
+                    titre={pret.eleveLabel ?? 'Élève'}
+                  >
+                    &laquo; {pret.livreLabel ?? pret.exemplaireCode} &raquo; — retour prévu le{' '}
+                    {formatDate(pret.dateRetourPrevue)}
+                  </AlertCard>
+                ))}
+              </div>
             )}
-          </Panel>
-          <Panel>
-            <h3 style={{ marginTop: 0 }}>Enregistrer un prêt</h3>
-            <p className="lpv-muted">Prêter un exemplaire à un élève.</p>
-            <Link className="lpv-a-button" href="/profs/bibliotheque/prets/nouveau">
-              Nouveau prêt
-            </Link>
-          </Panel>
-          <Panel>
-            <h3 style={{ marginTop: 0 }}>Ajouter un livre</h3>
-            <p className="lpv-muted">Nouvel ouvrage à référencer au catalogue.</p>
-            <Link className="lpv-a-button" href="/profs/bibliotheque/livres/nouveau">
-              + Nouveau livre
-            </Link>
-          </Panel>
+          </div>
+          {peutGerer ? (
+            <div className="lpv-t-dashboard-page__aside-card">
+              <h3 className="lpv-t-dashboard-page__aside-card__title">Ajouter un livre</h3>
+              <p className="lpv-muted" style={{ marginTop: 0 }}>
+                Nouvel ouvrage à référencer au catalogue.
+              </p>
+              <Button href="/profs/bibliotheque/livres/nouveau" variant="secondary">
+                + Nouveau livre
+              </Button>
+            </div>
+          ) : null}
         </aside>
       </div>
     </>
