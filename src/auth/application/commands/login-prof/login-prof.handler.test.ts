@@ -25,11 +25,19 @@ describe('loginProfHandler', () => {
     expect(spy).toHaveBeenCalledWith({ email: 'prof@lpv.fr', password: 'secret' })
   })
 
-  it('refuse un utilisateur qui n est ni prof ni admin', async () => {
+  it('refuse un utilisateur qui n est ni prof ni admin ni benevole', async () => {
     vi.spyOn(userRepository, 'login').mockResolvedValue({ ...unProf(), role: 'parent' })
 
     await expect(loginProfHandler({ email: 'x@lpv.fr', password: 'secret' })).rejects.toThrow(
       'Accès réservé aux professeurs.',
     )
+  })
+
+  it('accepte un benevole bibliotheque (portail bibliotheque)', async () => {
+    vi.spyOn(userRepository, 'login').mockResolvedValue({ ...unProf(), role: 'benevole-bibliotheque' })
+
+    const user = await loginProfHandler({ email: 'benevole@lpv.fr', password: 'secret' })
+
+    expect(user.role).toBe('benevole-bibliotheque')
   })
 })
