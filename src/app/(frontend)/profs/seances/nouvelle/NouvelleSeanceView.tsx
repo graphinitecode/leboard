@@ -4,8 +4,8 @@ import { Suspense, useMemo, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import { Button } from '@/components/atoms/a-button'
-import { Panel } from '@/components/atoms/a-panel'
-import { ErrorSummary } from '@/components/molecules/m-notifications'
+import { Panel, WarningText } from '@/components/atoms'
+import { ErrorSummary, Input } from '@/components/molecules'
 import { QuestionPage, QuestionPageAnswers } from '@/components/templates'
 import type { QuestionPageReponse } from '@/components/templates'
 import {
@@ -130,18 +130,12 @@ function ParcoursNouvelleSeance() {
 
   return (
     <div className="lpv-container">
-      <section className="lpv-container">
-        {step === 'jour' && (
+      {step === 'jour' && (
           <QuestionPage
             actions={
-              <>
-                <Button onClick={() => setStep('debut')} type="button" variant="success">
-                  Continuer
-                </Button>
-                {/*<Button href="/profs">*/}
-                {/*  Annuler*/}
-                {/*</Button>*/}
-              </>
+              <Button onClick={() => setStep('debut')} type="button">
+                Continuer
+              </Button>
             }
             question="Quel jour ?"
             retour={{ href: '/profs', label: 'Retour au Tableau de bord' }}
@@ -167,12 +161,7 @@ function ParcoursNouvelleSeance() {
         {step === 'debut' && (
           <QuestionPage
             actions={
-              <Button
-                disabled={!heureDebut}
-                onClick={() => setStep('fin')}
-                type="button"
-                variant="success"
-              >
+              <Button disabled={!heureDebut} onClick={() => setStep('fin')} type="button">
                 Continuer
               </Button>
             }
@@ -183,11 +172,14 @@ function ParcoursNouvelleSeance() {
             step={2}
             stepSize={5}
           >
-            <InputTime
+            <Input
               hint={`Choisir une heure entre ${HEURE_DEBUT_GRILLE}h et ${HEURE_FIN_GRILLE}h.`}
               id="seance-debut"
-              label=""
-              onChange={setHeureDebut}
+              label="Heure de début"
+              max="20:00"
+              min="08:00"
+              onChange={(e) => setHeureDebut(e.target.value)}
+              type="time"
               value={heureDebut}
             />
           </QuestionPage>
@@ -200,7 +192,6 @@ function ParcoursNouvelleSeance() {
                 disabled={!heureFin || (duree !== null && duree < 30)}
                 onClick={() => setStep('matiere')}
                 type="button"
-                variant="success"
               >
                 Continuer
               </Button>
@@ -212,12 +203,14 @@ function ParcoursNouvelleSeance() {
             htmlFor="seance-fin"
             stepSize={5}
           >
-            <InputTime
+            <Input
               hint={duree ? `Durée : ${duree} min.` : undefined}
               id="seance-fin"
-              label=""
+              label="Heure de fin"
+              max="20:00"
               min={heureDebut || '08:00'}
-              onChange={setHeureFin}
+              onChange={(e) => setHeureFin(e.target.value)}
+              type="time"
               value={heureFin}
             />
           </QuestionPage>
@@ -226,12 +219,7 @@ function ParcoursNouvelleSeance() {
         {step === 'matiere' && (
           <QuestionPage
             actions={
-              <Button
-                disabled={matiere === ''}
-                onClick={() => setStep('eleves')}
-                type="button"
-                variant="success"
-              >
+              <Button disabled={matiere === ''} onClick={() => setStep('eleves')} type="button">
                 Continuer
               </Button>
             }
@@ -337,11 +325,11 @@ function ParcoursNouvelleSeance() {
               ]}
             />
             {conflit && (
-              <p className="lpv-warning-text">
+              <WarningText>
                 Cette plage chevauche une séance existante ({labelMatiere(conflit.matiere)} à{' '}
                 {conflit.debut.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
                 ).
-              </p>
+              </WarningText>
             )}
           </QuestionPage>
         )}
@@ -352,7 +340,7 @@ function ParcoursNouvelleSeance() {
               {JOURS_GRILLE[jourIndex]} {joursGrille(lundi)[jourIndex].getDate()} · {heureDebut} →{' '}
               {heureFin} · {labelMatiere(matiere)} · {nomEleves}
             </Panel>
-            <div className="lpv-t-question-page__actions" style={{ marginTop: '1.5rem' }}>
+            <div className="lpv-t-question-page__actions">
               <Button onClick={() => router.push('/profs')} type="button">
                 Retour au tableau de bord
               </Button>
@@ -362,8 +350,7 @@ function ParcoursNouvelleSeance() {
             </div>
           </QuestionPage>
         )}
-      </section>
-    </div>
+      </div>
   )
 }
 
@@ -389,43 +376,6 @@ function initialiserDepuisParams(params: URLSearchParams): {
     heureDebut: /^\d{2}:\d{2}$/.test(params.get('debut') ?? '') ? (params.get('debut') as string) : '',
     heureFin: /^\d{2}:\d{2}$/.test(params.get('fin') ?? '') ? (params.get('fin') as string) : '',
   }
-}
-
-function InputTime({
-  id,
-  label,
-  hint,
-  min = '08:00',
-  max = '20:00',
-  value,
-  onChange,
-}: {
-  id: string
-  label: string
-  hint?: string
-  min?: string
-  max?: string
-  value: string
-  onChange: (valeur: string) => void
-}) {
-  return (
-    <div className="lpv-form-group">
-      <label className="lpv-label" htmlFor={id}>
-        {label}
-      </label>
-      {hint && <p className="lpv-hint">{hint}</p>}
-      <input
-        className="lpv-a-input lpv-a-input--width-5"
-        id={id}
-        max={max}
-        min={min}
-        onChange={(e) => onChange(e.target.value)}
-        step={900}
-        type="time"
-        value={value}
-      />
-    </div>
-  )
 }
 
 function labelMatiere(matiere: MatiereCalendrier | ''): string {

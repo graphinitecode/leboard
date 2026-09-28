@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fiche élève — Lucas M.</title>
+<style>
+  :root{
+    --govuk-black:#0b0c0c; --govuk-blue:#1d70b8; --govuk-green:#00703c;
+    --govuk-red:#d4351c; --govuk-yellow:#ffdd00; --govuk-grey-border:#b1b4b6;
+    --govuk-grey-bg:#f3f2f1; --govuk-dark-grey:#505a5f;
+    --bg:#fff; --card-bg:#fff; --text:#0b0c0c;
+    padding-top: env(safe-area-inset-top,0px); padding-bottom: env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-padding-top: env(safe-area-inset-top,0px);}
+  body{margin:0; font-family: arial, "Helvetica Neue", sans-serif; color:var(--text); background:var(--bg); line-height:1.4;}
+  a{color:var(--govuk-blue);}
+  a:focus, button:focus, .btn:focus{outline:3px solid var(--govuk-yellow); outline-offset:0; box-shadow:0 -2px var(--govuk-yellow), 0 4px var(--govuk-black); background:var(--govuk-yellow); color:var(--govuk-black);}
+
+  .topbar{background:var(--govuk-black); color:#fff; padding-top: calc(10px + env(safe-area-inset-top,0px));}
+  .topbar-inner{max-width:1100px; margin:0 auto; padding:10px 20px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;}
+  .topbar strong{font-size:19px;}
+  .nav{display:flex; gap:20px; flex-wrap:wrap; margin-left:auto; font-size:16px;}
+  .nav a{color:#fff; text-decoration:none; border-bottom:3px solid transparent; padding:4px 0;}
+  .nav a.active{border-bottom-color:var(--govuk-yellow); font-weight:700;}
+
+  .phase-banner{border-bottom:1px solid var(--govuk-grey-border); padding:8px 20px; font-size:15px; max-width:1100px; margin:0 auto;}
+  .tag--phase{background:var(--govuk-blue); color:#fff; font-weight:700; font-size:11px; text-transform:uppercase; padding:2px 7px; letter-spacing:1px; margin-right:8px;}
+
+  .container{max-width:1100px; margin:0 auto; padding:24px 20px 60px;}
+  .breadcrumb{font-size:15px; margin-bottom:14px;}
+  .breadcrumb a{text-decoration:none;}
+  h1{font-size:30px; margin:0 0 4px; font-weight:700;}
+  .caption{color:var(--govuk-dark-grey); font-size:17px; margin-bottom:20px;}
+
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-bottom:32px;}
+  .stat{border:1px solid var(--govuk-grey-border); border-top:5px solid var(--govuk-blue); padding:14px 16px; background:var(--card-bg);}
+  .stat.red{border-top-color:var(--govuk-red);}
+  .stat.green{border-top-color:var(--govuk-green);}
+  .stat .num{font-size:32px; font-weight:700; display:block;}
+  .stat .label{font-size:15px; color:var(--govuk-dark-grey);}
+
+  .layout{display:grid; grid-template-columns:2fr 1fr; gap:28px;}
+  @media (max-width:760px){ .layout{grid-template-columns:1fr;} }
+
+  h2{font-size:22px; font-weight:700; margin:0 0 14px;}
+  .section{margin-bottom:36px;}
+
+  table{width:100%; border-collapse:collapse;}
+  th{text-align:left; border-bottom:2px solid var(--govuk-black); padding:8px; font-size:15px;}
+  td{border-bottom:1px solid var(--govuk-grey-border); padding:8px; font-size:16px;}
+  .overflow{overflow-x:auto;}
+
+  .cards{display:flex; flex-direction:column; gap:10px;}
+  .card{border:1px solid var(--govuk-grey-border); border-left:5px solid var(--govuk-green); padding:14px 16px; background:var(--card-bg);}
+  .card strong{display:block; font-size:16px; margin-bottom:2px;}
+  .card .meta{font-size:14px; color:var(--govuk-dark-grey); margin-bottom:6px;}
+
+  .tag{display:inline-block; font-size:13px; font-weight:700; text-transform:uppercase; padding:2px 7px; letter-spacing:0.5px;}
+  .tag--red{background:#f6d7d2; color:#942514;}
+  .tag--green{background:#cce2d8; color:#00703c;}
+  .tag--grey{background:var(--govuk-grey-bg); color:var(--govuk-dark-grey);}
+
+  .sidebar-card{border:1px solid var(--govuk-grey-border); border-top:5px solid var(--govuk-black); padding:16px; margin-bottom:16px; background:var(--card-bg);}
+  .sidebar-card h3{font-size:17px; margin:0 0 10px;}
+  .infolist dt{font-size:13px; color:var(--govuk-dark-grey); margin-top:10px;}
+  .infolist dt:first-child{margin-top:0;}
+  .infolist dd{margin:0; font-size:16px;}
+  .alert-item{border-left:5px solid var(--govuk-red); padding:8px 12px; background:var(--govuk-grey-bg); margin-bottom:10px; font-size:15px;}
+  .alert-item strong{display:block; margin-bottom:2px;}
+  .restricted-note{font-size:13px; color:var(--govuk-dark-grey); border-top:1px solid var(--govuk-grey-border); padding-top:10px; margin-top:10px;}
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){--bg:#0b0c0c; --card-bg:#1a1a1a; --text:#f3f2f1;}
+    :root:not([data-theme="light"]) .stat, :root:not([data-theme="light"]) .card, :root:not([data-theme="light"]) .sidebar-card, :root:not([data-theme="light"]) td{border-color:#505a5f;}
+    :root:not([data-theme="light"]) .alert-item{background:#262626;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <strong>🏛️ Association Soutien Scolaire</strong>
+    <nav class="nav">
+      <a href="#">Tableau de bord</a>
+      <a href="#">Séances</a>
+      <a href="#" class="active">Élèves</a>
+      <a href="#">Bibliothèque</a>
+    </nav>
+  </div>
+</div>
+<div class="phase-banner"><span class="tag--phase">Bêta</span> Ceci est un modèle — vos retours sont les bienvenus.</div>
+
+<div class="container">
+  <p class="breadcrumb"><a href="#">← Retour à mes élèves</a></p>
+  <h1>Lucas M.</h1>
+  <p class="caption">CM2 · Groupe B — Prof référent : Claire D.</p>
+
+  <div class="stats">
+    <div class="stat red"><span class="num">62%</span><span class="label">Taux de présence (année)</span></div>
+    <div class="stat red"><span class="num">1</span><span class="label">Alerte active</span></div>
+    <div class="stat"><span class="num">18 sept.</span><span class="label">Dernière séance</span></div>
+  </div>
+
+  <div class="layout">
+    <div>
+      <div class="section">
+        <h2>Historique de présence</h2>
+        <div class="overflow">
+        <table>
+          <tr><th>Date</th><th>Groupe</th><th>Statut</th></tr>
+          <tr><td>18 sept.</td><td>CM2 - Groupe B</td><td><span class="tag tag--red">Absent</span></td></tr>
+          <tr><td>11 sept.</td><td>CM2 - Groupe B</td><td><span class="tag tag--red">Absent</span></td></tr>
+          <tr><td>4 sept.</td><td>CM2 - Groupe B</td><td><span class="tag tag--green">Présent</span></td></tr>
+          <tr><td>28 août</td><td>CM2 - Groupe B</td><td><span class="tag tag--red">Absent</span></td></tr>
+        </table>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Progression</h2>
+        <div class="cards">
+          <div class="card">
+            <strong>Fractions — Niveau : en cours</strong>
+            <div class="meta">4 septembre — Claire D.</div>
+            Comprend le principe mais confond encore numérateur/dénominateur à l'oral.
+          </div>
+          <div class="card">
+            <strong>Conjugaison présent — Niveau : acquis</strong>
+            <div class="meta">28 août — Claire D.</div>
+            Bonne maîtrise des verbes du premier groupe, à consolider sur les irréguliers.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside>
+      <div class="sidebar-card">
+        <h3>⚠ Alerte active</h3>
+        <div class="alert-item">
+          <strong>Décrochage</strong>
+          3 absences sur les 4 dernières séances
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Informations</h3>
+        <dl class="infolist">
+          <dt>Niveau</dt><dd>CM2</dd>
+          <dt>Groupe</dt><dd>Groupe B</dd>
+          <dt>Prof référent</dt><dd>Claire D.</dd>
+          <dt>Inscrit depuis</dt><dd>Septembre 2025</dd>
+        </dl>
+        <p class="restricted-note">Coordonnées des parents et données RGPD visibles par l'administration uniquement.</p>
+      </div>
+    </aside>
+  </div>
+</div>
+
+</body>
+</html>

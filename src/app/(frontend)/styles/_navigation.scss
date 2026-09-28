@@ -92,7 +92,7 @@
   display: inline-flex;
   gap: 0.175rem;
   transform: translateX(-0.97rem);
-  margin-bottom: 2.7rem;
+  margin-bottom: var(--lpv-spacing-xl);
   text-decoration: underline;
   text-decoration-thickness: var(--lpv-decoration-thickness);
   text-underline-offset: var(--lpv-text-underline-offset);
