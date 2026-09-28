@@ -7,6 +7,10 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ## [Unreleased]
 
 ### Ajouté
+- L'enregistrement d'un prêt se fait en 4 questions : recherche de l'élève, choix de plusieurs livres, date de retour puis récapitulatif avant validation.
+- La recherche accepte prénom, nom, titre, auteur ou ISBN, sans se soucier des accents ni de la casse.
+- Un avertissement signale les livres en retard d'un élève dès qu'il est choisi, sans bloquer le prêt.
+- Un écran de confirmation récapitule le prêt enregistré et propose d'en enregistrer un autre.
 - Page « Mes élèves » repensée : compteurs (élèves suivis, présence moyenne, élèves à surveiller), barre de recherche avec filtres par groupe et par statut, tableau des élèves (présence en %, rouge sous 75 %, statut de suivi) avec pagination par pages de 10 (liens Précédent et Suivant) et encadré latéral « À surveiller » reprenant les alertes de décrochage avec accès direct aux fiches
 - Page « Mes élèves » : colonne « Actions » avec un lien « Voir » pour ouvrir la fiche de chaque élève
 - Fiche livre : le nom de l'élève emprunteur est cliquable dans l'historique des emprunts et mène à sa fiche (le lien « Retour » de la fiche élève ramène ensuite au livre)
