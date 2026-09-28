@@ -4,7 +4,7 @@ Tous les changements notables de LPV Board sont documentés ici.
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le versionnage suit [SemVer](https://semver.org/lang/fr/) (0.x pendant le développement initial).
 
-## [Unreleased]
+## [0.6.0] — 2026-09-28
 
 ### Ajouté
 - Page « Bibliothèque » dans le portail profs : compteurs (catalogue, prêts en cours, retards), recherche dans le catalogue, liste des retards avec marquage « retourné », rappels de retour à venir, enregistrement d'un prêt « une question par écran » (élève puis exemplaire) et référencement d'un nouveau livre en 2 questions ; accès aussi ouvert aux bénévoles bibliothèque via la connexion du portail
@@ -15,6 +15,13 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ### Modifié
 - Tableau de bord des profs : salutation avec le prénom du compte
+- Créneaux de disponibilité : l'ajout et la modification se font maintenant sur une page dédiée « une question par écran », à la place du formulaire incrusté dans la liste ; retour à la liste avec confirmation après enregistrement
+- Parcours d'ajout (nouvelle séance et disponibilités) : espacement harmonisé entre le lien de retour, la question et les boutons, aligné sur le modèle des pages-question ; avertissement de conflit d'horaire plus visible à l'étape de vérification
+- Titres : taille adaptée à l'écran (plus lisibles en mobile), alignés sur l'échelle typographique GOV.UK — nouvelle page Typographie dans le design system
+- Bascule de thème : nouveau mode « suivre la machine » (icône d'écran) qui applique automatiquement le thème du système et suit ses changements en temps réel ; le cycle machine → clair → sombre remplace l'ancienne bascule à deux états
+- Liens de contenu (liens inline, fil d'Ariane, lien de retour, actions des résumés) : affichage en violet lorsqu'ils ont déjà été visités, dans les thèmes clair et sombre
+- Tableau de bord des profs : le calendrier de la semaine remplace les listes « Aujourd'hui » et « Cette semaine »
+- Assistant de disponibilités : parcours « une question par écran » à pleine page avec récapitulatif « Vos réponses », dans la continuité du design system
 - Tableau de bord des profs entièrement repensé : salutation personnelle, compteurs clés (séances de la semaine, retours en attente, alertes actives), listes « À traiter » et « Séances à venir » avec accès direct aux séances, historique des séances passées en dépliant, mini-calendrier du mois avec détail des séances au clic, alertes de décrochage sur les élèves et accès rapides dans une colonne latérale
 - Page « Calendrier » dédiée pour les profs : le calendrier hebdomadaire interactif (déplacement et création de séances) quitte le tableau de bord pour sa propre page, accessible depuis le menu du portail
 - Carte calendrier mensuel : vue compacte d'un mois avec marqueurs colorés par catégorie (pastille ou carré, palette des tags), légende intégrée, jour courant en surbrillance et détail du jour au clic ; démonstration dans le design system
@@ -26,19 +33,12 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Bouton « Succès » : nouvelle variante verte pour valider une action (dans le design system)
 - SummaryList : nouvelle variante sans séparateurs (prop `dividers={false}`) pour empiler les rows sans bordures, dans le design system
 - Page « Couleurs » dans le design system : palette complète (couleurs fonctionnelles, groupes de marque, tags, neutres) avec swatches qui suivent le thème actif et note de contraste WCAG
-
-### Modifié
-- Créneaux de disponibilité : l'ajout et la modification se font maintenant sur une page dédiée « une question par écran », à la place du formulaire incrusté dans la liste ; retour à la liste avec confirmation après enregistrement
-- Parcours d'ajout (nouvelle séance et disponibilités) : espacement harmonisé entre le lien de retour, la question et les boutons, aligné sur le modèle des pages-question ; avertissement de conflit d'horaire plus visible à l'étape de vérification
-- Titres : taille adaptée à l'écran (plus lisibles en mobile), alignés sur l'échelle typographique GOV.UK — nouvelle page Typographie dans le design system
-- Bascule de thème : nouveau mode « suivre la machine » (icône d'écran) qui applique automatiquement le thème du système et suit ses changements en temps réel ; le cycle machine → clair → sombre remplace l'ancienne bascule à deux états
-- Liens de contenu (liens inline, fil d'Ariane, lien de retour, actions des résumés) : affichage en violet lorsqu'ils ont déjà été visités, dans les thèmes clair et sombre
-- Tableau de bord des profs : le calendrier de la semaine remplace les listes « Aujourd'hui » et « Cette semaine »
-- Assistant de disponibilités : parcours « une question par écran » à pleine page avec récapitulatif « Vos réponses », dans la continuité du design system
 - Boutons pleine largeur en mobile et focus textuel harmonisé sur les liens (entête, navigation, listes) ; lien de retour et accordéons affinés (chevrons)
 
 ### Corrigé
 - Présences pré-remplies à la création d'une séance : les feuilles de présence de chaque élève du groupe sont maintenant générées automatiquement (elles devaient être créées une à une)
+
+## [Unreleased]
 
 ## [0.5.0] — 2026-09-21
 
