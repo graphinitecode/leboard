@@ -7,6 +7,8 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ## [Unreleased]
 
 ### Ajouté
+- Réinitialisation du mot de passe depuis le site : nouvelle page publique « Mot de passe oublié » (depuis le lien sous le formulaire de connexion) et page « Nouveau mot de passe » accessible depuis le lien reçu par e-mail, sans passer par le panneau d'administration
+- Invitation automatique des parents : à la création d'un compte parent, un e-mail leur permet de choisir leur mot de passe via un lien sécurisé
 - Fiche élève repensée : compteurs en tête (taux de présence, alerte active, dernière séance), encadré latéral « Informations » (niveau, groupe, prof référent, ancienneté) avec rappel de confidentialité RGPD, et progressions en cartes colorées (vert = acquis, jaune = en cours, rouge = à revoir) à la place du tableau
 - Bibliothèque : filtre du catalogue par niveau (Primaire, Collège, Lycée) à côté de la recherche, et confirmation visuelle après l'enregistrement d'un prêt
 
