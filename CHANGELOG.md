@@ -18,6 +18,9 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ### Sécurisé
 - Bibliothèque : les actions patrimoniales — marquer un prêt comme retourné et enregistrer un nouveau prêt — demandent maintenant une confirmation avec le mot de passe du compte connecté (fenêtre dédiée, mot de passe revérifié par le serveur avant l'écriture), pour éviter qu'une personne de passage ne valide à la place du gestionnaire connecté
 
+### Modifié
+- Portail : les écritures sensibles demandent une confirmation avant l'enregistrement — retour de séance (visible par les parents), création d'une séance, création et modification d'un livre, suppression d'une disponibilité (fenêtre de confirmation unifiée, bouton Annuler systématique)
+
 ## [0.8.0] — 2026-09-28
 
 ### Ajouté

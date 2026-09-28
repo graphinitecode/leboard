@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/atoms/a-button'
 import { ErrorSummary, Input } from '@/components/molecules'
 import { QuestionPage, QuestionPageAnswers } from '@/components/templates'
+import { ConfirmAction } from '@/components/organisms/o-confirm-action'
 import { useCreerLivre } from '@/bibliotheque'
 
 const NIVEAUX = [
@@ -36,6 +37,7 @@ export default function NouveauLivreView() {
   const [resume, setResume] = useState('')
   const [erreur, setErreur] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
+  const [confirmOuvert, setConfirmOuvert] = useState(false)
 
   function annuler() {
     router.push('/profs/bibliotheque')
@@ -53,6 +55,7 @@ export default function NouveauLivreView() {
         resume: resume.trim() || undefined,
         titre: titre.trim(),
       })
+      setConfirmOuvert(false)
       router.push(`/profs/bibliotheque/livres/${id}?cree=1`)
     } catch (err) {
       setErreur(err instanceof Error ? err.message : 'Le livre n’a pas pu être créé.')
@@ -145,8 +148,8 @@ export default function NouveauLivreView() {
           actions={
             <>
               {erreur && <ErrorSummary errors={[erreur]} />}
-              <Button disabled={pending} onClick={enregistrer} type="button">
-                {pending ? 'Création…' : 'Créer le livre'}
+              <Button disabled={pending} onClick={() => setConfirmOuvert(true)} type="button">
+                Créer le livre
               </Button>
             </>
           }
@@ -190,6 +193,23 @@ export default function NouveauLivreView() {
           />
         </QuestionPage>
       )}
+
+      {confirmOuvert ? (
+        <ConfirmAction
+          confirmLabel="Créer le livre"
+          description={`« ${titre || 'sans titre'} »${auteur ? ` de ${auteur}` : ''} sera ajouté au catalogue de la bibliothèque.`}
+          onClose={() => {
+            setConfirmOuvert(false)
+            setErreur(null)
+          }}
+          onConfirm={() => {
+            void enregistrer()
+          }}
+          pending={pending}
+          pendingLabel="Création…"
+          title="Ajouter cet ouvrage au catalogue ?"
+        />
+      ) : null}
     </div>
   )
 }

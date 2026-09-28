@@ -8,6 +8,7 @@ import { Panel, WarningText } from '@/components/atoms'
 import { ErrorSummary, Input } from '@/components/molecules'
 import { QuestionPage, QuestionPageAnswers } from '@/components/templates'
 import type { QuestionPageReponse } from '@/components/templates'
+import { ConfirmAction } from '@/components/organisms/o-confirm-action'
 import {
   HEURE_DEBUT_GRILLE,
   HEURE_FIN_GRILLE,
@@ -48,6 +49,7 @@ function ParcoursNouvelleSeance() {
   const [step, setStep] = useState<Etape>('jour')
   const [erreur, setErreur] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
+  const [confirmOuvert, setConfirmOuvert] = useState(false)
 
   // Préremplissage depuis l'URL (clic-tirer sur le calendrier, bouton d'un jour).
   const initial = useMemo(() => initialiserDepuisParams(params), [params])
@@ -111,10 +113,12 @@ function ParcoursNouvelleSeance() {
         eleveIds: selection,
       })
       setPending(false)
+      setConfirmOuvert(false)
       setStep('confirme')
     } catch (err) {
       setErreur(err instanceof Error ? err.message : 'La séance n’a pas pu être créée.')
       setPending(false)
+      setConfirmOuvert(false)
     }
   }
 
@@ -292,8 +296,8 @@ function ParcoursNouvelleSeance() {
             actions={
               <>
                 {erreur && <ErrorSummary errors={[erreur]} />}
-                <Button disabled={pending} onClick={valider} type="button">
-                  {pending ? 'Enregistrement…' : 'Valider'}
+                <Button disabled={pending} onClick={() => setConfirmOuvert(true)} type="button">
+                  Valider
                 </Button>
               </>
             }
@@ -350,6 +354,23 @@ function ParcoursNouvelleSeance() {
             </div>
           </QuestionPage>
         )}
+
+        {confirmOuvert && step === 'recap' ? (
+          <ConfirmAction
+            confirmLabel="Créer la séance"
+            description={`${JOURS_GRILLE[jourIndex]} ${heureDebut} → ${heureFin}${matiere ? ` · ${labelMatiere(matiere)}` : ''}. Cette séance apparaîtra dans votre planning.`}
+            onClose={() => {
+              setConfirmOuvert(false)
+              setErreur(null)
+            }}
+            onConfirm={() => {
+              void valider()
+            }}
+            pending={pending}
+            pendingLabel="Enregistrement…"
+            title="Créer cette séance ?"
+          />
+        ) : null}
       </div>
   )
 }
