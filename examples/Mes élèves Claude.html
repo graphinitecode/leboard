@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mes élèves</title>
+<style>
+  :root{
+    --govuk-black:#0b0c0c; --govuk-blue:#1d70b8; --govuk-green:#00703c;
+    --govuk-red:#d4351c; --govuk-yellow:#ffdd00; --govuk-grey-border:#b1b4b6;
+    --govuk-grey-bg:#f3f2f1; --govuk-dark-grey:#505a5f;
+    --bg:#fff; --card-bg:#fff; --text:#0b0c0c;
+    padding-top: env(safe-area-inset-top,0px); padding-bottom: env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-padding-top: env(safe-area-inset-top,0px);}
+  body{margin:0; font-family: arial, "Helvetica Neue", sans-serif; color:var(--text); background:var(--bg); line-height:1.4;}
+  a{color:var(--govuk-blue);}
+  a:focus, button:focus, .btn:focus{outline:3px solid var(--govuk-yellow); outline-offset:0; box-shadow:0 -2px var(--govuk-yellow), 0 4px var(--govuk-black); background:var(--govuk-yellow); color:var(--govuk-black);}
+
+  .topbar{background:var(--govuk-black); color:#fff; padding-top: calc(10px + env(safe-area-inset-top,0px));}
+  .topbar-inner{max-width:1100px; margin:0 auto; padding:10px 20px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;}
+  .topbar strong{font-size:19px;}
+  .nav{display:flex; gap:20px; flex-wrap:wrap; margin-left:auto; font-size:16px;}
+  .nav a{color:#fff; text-decoration:none; border-bottom:3px solid transparent; padding:4px 0;}
+  .nav a.active{border-bottom-color:var(--govuk-yellow); font-weight:700;}
+
+  .phase-banner{border-bottom:1px solid var(--govuk-grey-border); padding:8px 20px; font-size:15px; max-width:1100px; margin:0 auto;}
+  .tag--phase{background:var(--govuk-blue); color:#fff; font-weight:700; font-size:11px; text-transform:uppercase; padding:2px 7px; letter-spacing:1px; margin-right:8px;}
+
+  .container{max-width:1100px; margin:0 auto; padding:24px 20px 60px;}
+  h1{font-size:30px; margin:0 0 4px; font-weight:700;}
+  .caption{color:var(--govuk-dark-grey); font-size:17px; margin-bottom:20px;}
+
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-bottom:28px;}
+  .stat{border:1px solid var(--govuk-grey-border); border-top:5px solid var(--govuk-blue); padding:14px 16px; background:var(--card-bg);}
+  .stat.red{border-top-color:var(--govuk-red);}
+  .stat.green{border-top-color:var(--govuk-green);}
+  .stat .num{font-size:32px; font-weight:700; display:block;}
+  .stat .label{font-size:15px; color:var(--govuk-dark-grey);}
+
+  .searchbar{display:flex; gap:10px; margin-bottom:28px; flex-wrap:wrap;}
+  .searchbar input{flex:1; min-width:200px; border:2px solid var(--govuk-black); padding:10px 12px; font-size:16px; font-family:inherit;}
+  .searchbar select{border:2px solid var(--govuk-black); padding:10px; font-size:16px; font-family:inherit; background:#fff;}
+
+  .layout{display:grid; grid-template-columns:2fr 1fr; gap:28px;}
+  @media (max-width:760px){ .layout{grid-template-columns:1fr;} }
+
+  h2{font-size:22px; font-weight:700; margin:0 0 14px;}
+  .section{margin-bottom:36px;}
+
+  table{width:100%; border-collapse:collapse;}
+  th{text-align:left; border-bottom:2px solid var(--govuk-black); padding:8px; font-size:15px;}
+  td{border-bottom:1px solid var(--govuk-grey-border); padding:12px 8px; font-size:16px; vertical-align:middle;}
+  td a.name{font-weight:700; text-decoration:none;}
+  td a.name:hover{text-decoration:underline;}
+  .overflow{overflow-x:auto;}
+  .pct{font-weight:700;}
+  .pct.low{color:var(--govuk-red);}
+
+  .tag{display:inline-block; font-size:13px; font-weight:700; text-transform:uppercase; padding:2px 7px; letter-spacing:0.5px;}
+  .tag--red{background:#f6d7d2; color:#942514;}
+  .tag--green{background:#cce2d8; color:#00703c;}
+  .tag--grey{background:var(--govuk-grey-bg); color:var(--govuk-dark-grey);}
+
+  .btn{display:inline-block; background:var(--govuk-green); color:#fff; text-decoration:none; font-weight:700;
+    padding:8px 14px; border:none; border-bottom:2px solid #002d18; font-size:15px; cursor:pointer; white-space:nowrap;}
+  .btn--secondary{background:var(--govuk-grey-bg); color:var(--govuk-black); border-bottom:2px solid var(--govuk-grey-border);}
+
+  .sidebar-card{border:1px solid var(--govuk-grey-border); border-top:5px solid var(--govuk-black); padding:16px; margin-bottom:16px; background:var(--card-bg);}
+  .sidebar-card h3{font-size:17px; margin:0 0 10px;}
+  .alert-item{border-left:5px solid var(--govuk-red); padding:8px 12px; background:var(--govuk-grey-bg); margin-bottom:10px; font-size:15px;}
+  .alert-item strong{display:block; margin-bottom:2px;}
+
+  .pagination{display:flex; justify-content:space-between; align-items:center; margin-top:16px; font-size:15px; color:var(--govuk-dark-grey);}
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){--bg:#0b0c0c; --card-bg:#1a1a1a; --text:#f3f2f1;}
+    :root:not([data-theme="light"]) .stat, :root:not([data-theme="light"]) .sidebar-card, :root:not([data-theme="light"]) td{border-color:#505a5f;}
+    :root:not([data-theme="light"]) .alert-item, :root:not([data-theme="light"]) .searchbar select{background:#262626; color:#f3f2f1;}
+    :root:not([data-theme="light"]) .searchbar input{background:#1a1a1a; color:#f3f2f1; border-color:#f3f2f1;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <strong>🏛️ Association Soutien Scolaire</strong>
+    <nav class="nav">
+      <a href="#">Tableau de bord</a>
+      <a href="#">Séances</a>
+      <a href="#" class="active">Élèves</a>
+      <a href="#">Bibliothèque</a>
+    </nav>
+  </div>
+</div>
+<div class="phase-banner"><span class="tag--phase">Bêta</span> Ceci est un modèle — vos retours sont les bienvenus.</div>
+
+<div class="container">
+  <h1>Mes élèves</h1>
+  <p class="caption">Claire D. — CM2 Groupe B, 6e Groupe A</p>
+
+  <div class="stats">
+    <div class="stat"><span class="num">14</span><span class="label">Élèves suivis</span></div>
+    <div class="stat green"><span class="num">84%</span><span class="label">Présence moyenne</span></div>
+    <div class="stat red"><span class="num">2</span><span class="label">Élèves à surveiller</span></div>
+  </div>
+
+  <div class="searchbar">
+    <input type="text" placeholder="Rechercher un élève...">
+    <select><option>Tous les groupes</option><option>CM2 - Groupe B</option><option>6e - Groupe A</option></select>
+    <select><option>Tous les statuts</option><option>À surveiller</option><option>Sans alerte</option></select>
+  </div>
+
+  <div class="layout">
+    <div class="section">
+      <h2>Tous mes élèves</h2>
+      <div class="overflow">
+      <table>
+        <tr><th>Élève</th><th>Groupe</th><th>Présence</th><th>Statut</th></tr>
+        <tr>
+          <td><a href="#" class="name">Lucas M.</a></td><td>CM2 · B</td>
+          <td><span class="pct low">62%</span></td>
+          <td><span class="tag tag--red">Décrochage</span></td>
+        </tr>
+        <tr>
+          <td><a href="#" class="name">Sarah K.</a></td><td>6e · A</td>
+          <td><span class="pct low">68%</span></td>
+          <td><span class="tag tag--red">À surveiller</span></td>
+        </tr>
+        <tr>
+          <td><a href="#" class="name">Emma R.</a></td><td>CM2 · B</td>
+          <td><span class="pct">92%</span></td>
+          <td><span class="tag tag--green">Régulier</span></td>
+        </tr>
+        <tr>
+          <td><a href="#" class="name">Nathan B.</a></td><td>CM2 · B</td>
+          <td><span class="pct">88%</span></td>
+          <td><span class="tag tag--green">Régulier</span></td>
+        </tr>
+        <tr>
+          <td><a href="#" class="name">Inès T.</a></td><td>6e · A</td>
+          <td><span class="pct">95%</span></td>
+          <td><span class="tag tag--green">Régulier</span></td>
+        </tr>
+      </table>
+      </div>
+      <div class="pagination">
+        <span>5 sur 14 élèves</span>
+        <a href="#">Afficher les suivants ▾</a>
+      </div>
+    </div>
+
+    <aside>
+      <div class="sidebar-card">
+        <h3>⚠ À surveiller</h3>
+        <div class="alert-item">
+          <strong>Lucas M.</strong>
+          3 absences sur les 4 dernières séances
+          <div style="margin-top:6px;"><a href="#">Voir la fiche</a></div>
+        </div>
+        <div class="alert-item">
+          <strong>Sarah K.</strong>
+          2 absences consécutives
+          <div style="margin-top:6px;"><a href="#">Voir la fiche</a></div>
+        </div>
+      </div>
+      <div class="sidebar-card">
+        <h3>Ajouter un élève</h3>
+        <p style="font-size:15px; color:var(--govuk-dark-grey); margin-top:0;">La fiche sera validée par l'administration.</p>
+        <a href="#" class="btn btn--secondary" style="display:block; text-align:center;">+ Nouvel élève</a>
+      </div>
+    </aside>
+  </div>
+</div>
+
+</body>
+</html>
