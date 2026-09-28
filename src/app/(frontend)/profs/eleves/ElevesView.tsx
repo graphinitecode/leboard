@@ -226,7 +226,14 @@ export default function ElevesView({ profId, alertes, retour }: ElevesViewProps)
         {retour === '/profs' ? 'Retour au tableau de bord' : 'Retour'}
       </BackLink>
       <h1 className="lpv-h1">Mes élèves</h1>
-      <p className="lpv-muted">
+      <p
+        className="lpv-muted pb-7"
+        style={{
+          fontSize: '1.225rem',
+          paddingBottom: '1.75rem',
+          fontWeight: '500',
+        }}
+      >
         Les élèves dont vous êtes référent : présence, statut de suivi et accès aux fiches.
       </p>
 
@@ -317,7 +324,9 @@ export default function ElevesView({ profId, alertes, retour }: ElevesViewProps)
             ) : (
               <div className="lpv-t-dashboard-page__aside-card__stack">
                 {liste
-                  .filter((e) => statutEleve(e.id, tauxQuery.data?.get(e.id) ?? null) === 'surveillance')
+                  .filter(
+                    (e) => statutEleve(e.id, tauxQuery.data?.get(e.id) ?? null) === 'surveillance',
+                  )
                   .map((eleve) => {
                     const alerte = alertes.find((a) => a.eleveId === eleve.id)
                     return (
@@ -329,8 +338,7 @@ export default function ElevesView({ profId, alertes, retour }: ElevesViewProps)
                         key={eleve.id}
                         titre={nomEleve(eleve)}
                       >
-                        {alerte?.message ??
-                          `Présence : ${tauxQuery.data?.get(eleve.id) ?? '—'}%`}
+                        {alerte?.message ?? `Présence : ${tauxQuery.data?.get(eleve.id) ?? '—'}%`}
                       </AlertCard>
                     )
                   })}
@@ -342,6 +350,7 @@ export default function ElevesView({ profId, alertes, retour }: ElevesViewProps)
     </>
   )
 }
+
 // URLs ?page=N (filtres préservés) pour la molécule Pagination GOV.UK.
 // Fenêtre ±2 autour de la page courante, bornes incluses, ellipsis.
 function itemsPagination(
