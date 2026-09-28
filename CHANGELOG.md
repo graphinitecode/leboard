@@ -7,6 +7,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ## [Unreleased]
 
 ### Ajouté
+- Page « Bibliothèque » dans le portail profs : compteurs (catalogue, prêts en cours, retards), recherche dans le catalogue, liste des retards avec marquage « retourné », rappels de retour à venir, enregistrement d'un prêt « une question par écran » (élève puis exemplaire) et référencement d'un nouveau livre en 2 questions ; accès aussi ouvert aux bénévoles bibliothèque via la connexion du portail
 - Page « Mes élèves » pour les profs : liste des élèves dont vous êtes référent, avec niveau et groupe, et accès direct à chaque fiche (le lien du tableau de bord fonctionnait mais la page n'existait pas)
 - Page « Mon profil » pour les profs et les parents : modification de vos nom, prénom et numéro de téléphone depuis le portail, avec confirmation visuelle après enregistrement ; le lien se trouve dans le menu du portail
 - Profils utilisateurs avec prénom et nom séparés : saisie claire à la création des comptes (profs, parents, bénévoles) dans le panneau d'administration, affichage « Prénom Nom » partout
