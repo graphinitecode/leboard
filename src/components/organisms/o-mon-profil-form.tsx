@@ -94,7 +94,7 @@ export function MonProfilForm({ portail, initial }: MonProfilProps) {
         <p className="lpv-muted">
           Pour modifier votre e-mail ou votre mot de passe,{' '}
           {portail === 'profs' ? (
-            <Link className="lpv-link" href="/admin">
+            <Link className="lpv-link-inline" href="/admin">
               utilisez le panneau d&apos;administration
             </Link>
           ) : (

@@ -100,7 +100,7 @@ function VueBibliotheque() {
   const catalogueRows: TableRowCell[][] = catalogueFiltre.map((livre) => {
     const dispo = livre.exemplaires.some((ex) => ex.disponible)
     return [
-      { text: livre.titre },
+      { content: <strong>{livre.titre}</strong> },
       { text: livre.auteur ?? '—' },
       { text: livre.niveau ? NIVEAU_LABELS[livre.niveau] ?? livre.niveau : '—' },
       {
@@ -112,7 +112,7 @@ function VueBibliotheque() {
       },
       {
         content: (
-          <Link className="lpv-link" href={`/profs/bibliotheque/livres/${livre.id}`}>
+          <Link className="lpv-link-inline" href={`/profs/bibliotheque/livres/${livre.id}`}>
             Voir
           </Link>
         ),
@@ -139,7 +139,10 @@ function VueBibliotheque() {
       )}
 
       <h1 className="lpv-h1">Bibliothèque</h1>
-      <p className="lpv-muted">{catalogue.data?.length ?? '…'} ouvrages référencés</p>
+      <p className="lpv-muted">
+        Gérez le catalogue de livres de l&apos;association : suivez les prêts en cours,
+        repérez les retards et consultez les exemplaires disponibles.
+      </p>
 
       <div className="lpv-cards-grid lpv-cards-grid--3">
         <div className="lpv-card lpv-stat">
