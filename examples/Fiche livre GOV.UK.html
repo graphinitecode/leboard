@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fiche livre — Le Petit Prince</title>
+<style>
+  :root{
+    --govuk-black:#0b0c0c; --govuk-blue:#1d70b8; --govuk-green:#00703c;
+    --govuk-red:#d4351c; --govuk-yellow:#ffdd00; --govuk-grey-border:#b1b4b6;
+    --govuk-grey-bg:#f3f2f1; --govuk-dark-grey:#505a5f;
+    --bg:#fff; --card-bg:#fff; --text:#0b0c0c;
+    padding-top: env(safe-area-inset-top,0px); padding-bottom: env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-padding-top: env(safe-area-inset-top,0px);}
+  body{margin:0; font-family: arial, "Helvetica Neue", sans-serif; color:var(--text); background:var(--bg); line-height:1.4;}
+  a{color:var(--govuk-blue);}
+  a:focus, button:focus, .btn:focus{outline:3px solid var(--govuk-yellow); outline-offset:0; box-shadow:0 -2px var(--govuk-yellow), 0 4px var(--govuk-black); background:var(--govuk-yellow); color:var(--govuk-black);}
+
+  .topbar{background:var(--govuk-black); color:#fff; padding-top: calc(10px + env(safe-area-inset-top,0px));}
+  .topbar-inner{max-width:1100px; margin:0 auto; padding:10px 20px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;}
+  .topbar strong{font-size:19px;}
+  .nav{display:flex; gap:20px; flex-wrap:wrap; margin-left:auto; font-size:16px;}
+  .nav a{color:#fff; text-decoration:none; border-bottom:3px solid transparent; padding:4px 0;}
+  .nav a.active{border-bottom-color:var(--govuk-yellow); font-weight:700;}
+
+  .phase-banner{border-bottom:1px solid var(--govuk-grey-border); padding:8px 20px; font-size:15px; max-width:1100px; margin:0 auto;}
+  .tag--phase{background:var(--govuk-blue); color:#fff; font-weight:700; font-size:11px; text-transform:uppercase; padding:2px 7px; letter-spacing:1px; margin-right:8px;}
+
+  .container{max-width:1100px; margin:0 auto; padding:24px 20px 60px;}
+  .breadcrumb{font-size:15px; margin-bottom:14px;}
+  .breadcrumb a{text-decoration:none;}
+  h1{font-size:30px; margin:0 0 4px; font-weight:700;}
+  .caption{color:var(--govuk-dark-grey); font-size:17px; margin-bottom:12px;}
+
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin:20px 0 32px;}
+  .stat{border:1px solid var(--govuk-grey-border); border-top:5px solid var(--govuk-blue); padding:14px 16px; background:var(--card-bg);}
+  .stat.red{border-top-color:var(--govuk-red);}
+  .stat.green{border-top-color:var(--govuk-green);}
+  .stat .num{font-size:26px; font-weight:700; display:block;}
+  .stat .label{font-size:15px; color:var(--govuk-dark-grey);}
+
+  .layout{display:grid; grid-template-columns:2fr 1fr; gap:28px;}
+  @media (max-width:760px){ .layout{grid-template-columns:1fr;} }
+
+  h2{font-size:22px; font-weight:700; margin:0 0 14px;}
+  .section{margin-bottom:36px;}
+  .section p{font-size:17px; margin:0;}
+
+  table{width:100%; border-collapse:collapse;}
+  th{text-align:left; border-bottom:2px solid var(--govuk-black); padding:8px; font-size:15px;}
+  td{border-bottom:1px solid var(--govuk-grey-border); padding:10px 8px; font-size:16px;}
+  .overflow{overflow-x:auto;}
+
+  .tag{display:inline-block; font-size:13px; font-weight:700; text-transform:uppercase; padding:2px 7px; letter-spacing:0.5px;}
+  .tag--red{background:#f6d7d2; color:#942514;}
+  .tag--green{background:#cce2d8; color:#00703c;}
+  .tag--grey{background:var(--govuk-grey-bg); color:var(--govuk-dark-grey);}
+
+  .btn{display:block; text-align:center; background:var(--govuk-green); color:#fff; text-decoration:none; font-weight:700;
+    padding:10px 14px; border:none; border-bottom:2px solid #002d18; font-size:16px; cursor:pointer; margin-bottom:10px;}
+  .btn--secondary{background:var(--govuk-grey-bg); color:var(--govuk-black); border-bottom:2px solid var(--govuk-grey-border);}
+
+  .sidebar-card{border:1px solid var(--govuk-grey-border); border-top:5px solid var(--govuk-black); padding:16px; margin-bottom:16px; background:var(--card-bg);}
+  .sidebar-card h3{font-size:17px; margin:0 0 10px;}
+  .alert-item{border-left:5px solid var(--govuk-red); padding:8px 12px; background:var(--govuk-grey-bg); font-size:15px;}
+  .alert-item strong{display:block; margin-bottom:2px;}
+  .infolist dt{font-size:13px; color:var(--govuk-dark-grey); margin-top:10px;}
+  .infolist dt:first-child{margin-top:0;}
+  .infolist dd{margin:0; font-size:16px;}
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){--bg:#0b0c0c; --card-bg:#1a1a1a; --text:#f3f2f1;}
+    :root:not([data-theme="light"]) .stat, :root:not([data-theme="light"]) .sidebar-card, :root:not([data-theme="light"]) td{border-color:#505a5f;}
+    :root:not([data-theme="light"]) .alert-item, :root:not([data-theme="light"]) .btn--secondary{background:#262626; color:#f3f2f1;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <strong>🏛️ Association Soutien Scolaire</strong>
+    <nav class="nav">
+      <a href="#">Tableau de bord</a>
+      <a href="#">Séances</a>
+      <a href="#">Élèves</a>
+      <a href="#" class="active">Bibliothèque</a>
+    </nav>
+  </div>
+</div>
+<div class="phase-banner"><span class="tag--phase">Bêta</span> Ceci est un modèle — vos retours sont les bienvenus.</div>
+
+<div class="container">
+  <p class="breadcrumb"><a href="#">← Retour au catalogue</a></p>
+  <h1>Le Petit Prince</h1>
+  <p class="caption">Antoine de Saint-Exupéry</p>
+  <span class="tag tag--red">Emprunté</span>
+
+  <div class="stats">
+    <div class="stat"><span class="num">CM1–CM2</span><span class="label">Niveau conseillé</span></div>
+    <div class="stat green"><span class="num">1 / 2</span><span class="label">Exemplaires disponibles</span></div>
+    <div class="stat red"><span class="num">8 jours</span><span class="label">Retard sur l'exemplaire emprunté</span></div>
+  </div>
+
+  <div class="layout">
+    <div>
+      <div class="section">
+        <h2>Résumé</h2>
+        <p>Un aviateur tombé en panne dans le désert rencontre un petit garçon venu d'une autre planète. À travers ses rencontres, le petit prince livre une réflexion sur l'amitié, l'amour et le regard des adultes.</p>
+      </div>
+
+      <div class="section">
+        <h2>Historique des emprunts</h2>
+        <div class="overflow">
+        <table>
+          <tr><th>Élève</th><th>Emprunté le</th><th>Retour</th><th>Statut</th></tr>
+          <tr><td>Lucas M.</td><td>11 sept.</td><td>—</td><td><span class="tag tag--red">En retard</span></td></tr>
+          <tr><td>Emma R.</td><td>2 juin</td><td>16 juin</td><td><span class="tag tag--green">Rendu</span></td></tr>
+          <tr><td>Nathan B.</td><td>12 mai</td><td>26 mai</td><td><span class="tag tag--green">Rendu</span></td></tr>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <aside>
+      <div class="sidebar-card">
+        <h3>Actions</h3>
+        <a href="#" class="btn">Enregistrer un prêt</a>
+        <a href="#" class="btn btn--secondary">Marquer un retour</a>
+        <a href="#" class="btn btn--secondary" style="margin-bottom:0;">Modifier la fiche</a>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>⚠ Retard en cours</h3>
+        <div class="alert-item">
+          <strong>Lucas M.</strong>
+          Retour prévu le 18 sept.
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Informations</h3>
+        <dl class="infolist">
+          <dt>Catégorie</dt><dd>Roman jeunesse</dd>
+          <dt>ISBN</dt><dd>978-2-07-040850-4</dd>
+          <dt>Exemplaires</dt><dd>2</dd>
+          <dt>Ajouté au catalogue</dt><dd>Septembre 2024</dd>
+        </dl>
+      </div>
+    </aside>
+  </div>
+</div>
+
+</body>
+</html>
