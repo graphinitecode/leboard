@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 export const metadata = { title: 'Livre — LPV Board' }
 
 export default async function FicheLivrePage({ params }: { params: Promise<{ id: string }> }) {
-  await requireProf()
+  const user = await requireProf()
   const { id } = await params
 
   const livreId = Number(id)
@@ -14,5 +14,8 @@ export default async function FicheLivrePage({ params }: { params: Promise<{ id:
     return <p className="lpv-muted">Livre introuvable.</p>
   }
 
-  return <FicheLivreView livreId={livreId} />
+  // Gestion bibliothèque (boutons d'action) : admin et bénévole uniquement.
+  const peutGerer = user.role === 'admin' || user.role === 'benevole-bibliotheque'
+
+  return <FicheLivreView livreId={livreId} peutGerer={peutGerer} />
 }

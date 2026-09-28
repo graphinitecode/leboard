@@ -22,17 +22,18 @@ const CATEGORIES = [
   { label: 'Autre', value: 'autre' },
 ]
 
-// Assistant « référencer un ouvrage en 2 questions » :
-// titre (+ auteur) → niveau/catégorie + récap.
+// Assistant « référencer un ouvrage en 3 questions » (pattern question pages) :
+// titre (+ auteur) → niveau/catégorie → résumé (optionnel) + récap.
 export default function NouveauLivreView() {
   const router = useRouter()
   const creer = useCreerLivre()
 
-  const [step, setStep] = useState<1 | 2>(1)
+  const [step, setStep] = useState<1 | 2 | 3>(1)
   const [titre, setTitre] = useState('')
   const [auteur, setAuteur] = useState('')
   const [niveau, setNiveau] = useState('')
   const [categorie, setCategorie] = useState('')
+  const [resume, setResume] = useState('')
   const [erreur, setErreur] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
 
@@ -49,6 +50,7 @@ export default function NouveauLivreView() {
         auteur: auteur.trim() || undefined,
         categorie: categorie || undefined,
         niveau: niveau || undefined,
+        resume: resume.trim() || undefined,
         titre: titre.trim(),
       })
       router.push(`/profs/bibliotheque/livres/${id}?cree=1`)
@@ -75,7 +77,7 @@ export default function NouveauLivreView() {
           question="Quel ouvrage référencer ?"
           retour={{ href: '/profs/bibliotheque', label: 'Retour à la bibliothèque' }}
           step={1}
-          stepSize={2}
+          stepSize={3}
         >
           <Input
             id="livre-titre"
@@ -97,13 +99,8 @@ export default function NouveauLivreView() {
         <QuestionPage
           actions={
             <>
-              {erreur && <ErrorSummary errors={[erreur]} />}
-              <Button
-                disabled={pending || (!niveau && !categorie)}
-                onClick={enregistrer}
-                type="button"
-              >
-                {pending ? 'Création…' : 'Créer le livre'}
+              <Button disabled={!niveau && !categorie} onClick={() => setStep(3)} type="button">
+                Continuer
               </Button>
             </>
           }
@@ -120,7 +117,7 @@ export default function NouveauLivreView() {
             },
           }}
           step={2}
-          stepSize={2}
+          stepSize={3}
         >
           <Input
             as="select"
@@ -139,6 +136,48 @@ export default function NouveauLivreView() {
             optional
             options={[{ label: 'Choisir une catégorie…', value: '' }, ...CATEGORIES]}
             value={categorie}
+          />
+        </QuestionPage>
+      )}
+
+      {step === 3 && (
+        <QuestionPage
+          actions={
+            <>
+              {erreur && <ErrorSummary errors={[erreur]} />}
+              <Button disabled={pending} onClick={enregistrer} type="button">
+                {pending ? 'Création…' : 'Créer le livre'}
+              </Button>
+            </>
+          }
+          question="Un résumé à afficher sur la fiche ?"
+          reponses={[
+            { question: 'Titre', valeur: titre || '—', onClick: () => setStep(1) },
+            { question: 'Auteur', valeur: auteur || '—', onClick: () => setStep(1) },
+            {
+              question: 'Classement',
+              valeur: [niveau, categorie].filter(Boolean).join(' / ') || '—',
+              onClick: () => setStep(2),
+            },
+          ]}
+          retour={{
+            href: '#',
+            onClick: () => {
+              setErreur(null)
+              setStep(2)
+            },
+          }}
+          step={3}
+          stepSize={3}
+        >
+          <Input
+            as="textarea"
+            hint="Quelques phrases qui présentent l'ouvrage aux élèves et aux familles."
+            id="livre-resume"
+            label="Résumé"
+            onChange={(e) => setResume(e.target.value)}
+            optional
+            value={resume}
           />
           <QuestionPageAnswers
             titre="Récapitulatif"

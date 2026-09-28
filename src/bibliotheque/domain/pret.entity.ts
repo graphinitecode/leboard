@@ -4,6 +4,7 @@ export interface Pret {
   eleveLabel: string | null
   exemplaireCode: string | null
   livreLabel: string | null
+  dateEmprunt: string | null
   dateRetourPrevue: string | null
   dateRetourEffective: string | null
 }
@@ -14,9 +15,13 @@ export interface LivreCatalogue {
   id: number
   titre: string
   auteur: string | null
+  isbn: string | null
+  resume: string | null
+  editeur: string | null
   niveau: string | null
   categorie: string | null
   archived: boolean
+  createdAt: string
   exemplaires: {
     id: number
     code: string

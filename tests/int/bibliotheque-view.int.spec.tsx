@@ -47,6 +47,7 @@ const PRETS: Pret[] = [
     eleveLabel: 'Lucas Martin',
     exemplaireCode: 'LPV-0001',
     livreLabel: 'Le Petit Prince',
+    dateEmprunt: new Date(Date.now() - 29 * 86_400_000).toISOString(),
     dateRetourPrevue: new Date(Date.now() - 8 * 86_400_000).toISOString(),
     dateRetourEffective: null,
   },
@@ -56,6 +57,7 @@ const PRETS: Pret[] = [
     eleveLabel: 'Emma Roux',
     exemplaireCode: 'LPV-0002',
     livreLabel: 'Vendredi',
+    dateEmprunt: new Date(Date.now() - 19 * 86_400_000).toISOString(),
     dateRetourPrevue: new Date(Date.now() + 2 * 86_400_000).toISOString(),
     dateRetourEffective: null,
   },
@@ -66,28 +68,36 @@ const CATALOGUE: LivreCatalogue[] = [
     id: 100,
     titre: 'Le Petit Prince',
     auteur: 'A. de Saint-Exupéry',
+    isbn: '978-2-07-040850-4',
+    resume: null,
+    editeur: 'Gallimard',
     niveau: 'primaire',
     categorie: 'lecture',
     archived: false,
+    createdAt: '2026-09-01T00:00:00.000Z',
     exemplaires: [{ id: 1, code: 'LPV-0001', etat: 'bon', disponible: false }],
   },
   {
     id: 101,
     titre: 'Le Seigneur des Anneaux',
     auteur: 'J.R.R. Tolkien',
+    isbn: null,
+    resume: null,
+    editeur: null,
     niveau: 'college',
     categorie: 'lecture',
     archived: false,
+    createdAt: '2026-09-01T00:00:00.000Z',
     exemplaires: [{ id: 2, code: 'LPV-0003', etat: 'neuf', disponible: true }],
   },
 ]
 
-const rendre = () => {
+const rendre = (peutGerer = true) => {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   return render(
     <QueryClientProvider client={client}>
       <Suspense fallback={null}>
-        <BibliothequeView />
+        <BibliothequeView peutGerer={peutGerer} />
       </Suspense>
     </QueryClientProvider>,
   )
