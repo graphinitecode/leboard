@@ -7,6 +7,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ## [Unreleased]
 
 ### Ajouté
+- Profils utilisateurs avec prénom et nom séparés : saisie claire à la création des comptes (profs, parents, bénévoles) dans le panneau d'administration, affichage « Prénom Nom » partout
+- Création des élèves facilitée dans le panneau d'administration : instructions intégrées expliquant de créer d'abord le compte parent (rôle « Parent ») avant de relier l'élève, et rappel de la règle de consentement RGPD
+
+### Modifié
+- Tableau de bord des profs : salutation avec le prénom du compte
 - Tableau de bord des profs entièrement repensé : salutation personnelle, compteurs clés (séances de la semaine, retours en attente, alertes actives), listes « À traiter » et « Séances à venir » avec accès direct aux séances, historique des séances passées en dépliant, mini-calendrier du mois avec détail des séances au clic, alertes de décrochage sur les élèves et accès rapides dans une colonne latérale
 - Page « Calendrier » dédiée pour les profs : le calendrier hebdomadaire interactif (déplacement et création de séances) quitte le tableau de bord pour sa propre page, accessible depuis le menu du portail
 - Carte calendrier mensuel : vue compacte d'un mois avec marqueurs colorés par catégorie (pastille ou carré, palette des tags), légende intégrée, jour courant en surbrillance et détail du jour au clic ; démonstration dans le design system

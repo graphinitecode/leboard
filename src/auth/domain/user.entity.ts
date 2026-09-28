@@ -3,6 +3,8 @@ export type UserRole = 'admin' | 'prof' | 'benevole-bibliotheque' | 'parent'
 export interface User {
   id: number | string
   email: string
+  prenom: string
+  nom: string
   name: string
   role: UserRole
   telephone?: string | null
@@ -17,6 +19,8 @@ export interface LoginCommand {
 export const createEmptyUser = (): User => ({
   id: '',
   email: '',
+  prenom: '',
+  nom: '',
   name: '',
   role: 'parent',
   collection: 'users',

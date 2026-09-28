@@ -32,7 +32,7 @@ export default async function ProfsLayout({ children }: { children: ReactNode })
             { description: 'Vos disponibilités hebdomadaires', href: '/profs/disponibilites', label: 'Mes disponibilités' },
             { href: '/parents', label: 'Espace parents' },
           ]}
-          user={user ? { nom: user.name, email: user.email } : null}
+          user={user ? { nom: `${user.prenom} ${user.nom}`, email: user.email } : null}
         />
       }
       footerLinks={[{ href: '/profs/login', label: 'Connexion' }]}
