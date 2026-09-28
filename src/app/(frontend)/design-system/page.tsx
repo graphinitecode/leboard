@@ -5,7 +5,7 @@ import { Label } from '@/components/atoms/a-label'
 import { Accordion, Avatar, Checkbox, DateInput, InputField, Input, CharacterCount, TaskList, NotificationBanner, Tabs, Pagination, ErrorSummary, SummaryList, Table, ThemeToggle } from '@/components/molecules'
 import type { AccordionSection, Tab, CheckboxOption, TableHeadCell, TableRowCell, Task, PageNumber } from '@/components/molecules'
 
-import { DemoModale, DemoRadio, DemoToggle, DemoToast, DemoMonthCalendars } from './DemoClient'
+import { DemoCombobox, DemoModale, DemoRadio, DemoToggle, DemoToast, DemoMonthCalendars } from './DemoClient'
 
 import Link from 'next/link'
 import { IconCard } from '@/components/atoms/a-icon-card'
@@ -427,6 +427,11 @@ export default function DesignSystemPage() {
             label="Mot de passe"
             type="password"
           />
+        </div>
+
+        <h3 className="lpv-h3">Combobox</h3>
+        <div style={{ marginBottom: '1.5rem', maxWidth: '40rem' }}>
+          <DemoCombobox />
         </div>
       </section>
 

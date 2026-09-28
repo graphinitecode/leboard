@@ -1,4 +1,6 @@
 export { Input } from './m-input'
+export { Combobox } from './m-combobox'
+export type { ComboboxOption } from './m-combobox'
 export { ErrorSummary, NotificationBanner } from './m-notifications'
 export { SegmentedToggle } from './m-segmented-toggle'
 export type { SegmentedOption } from './m-segmented-toggle'
