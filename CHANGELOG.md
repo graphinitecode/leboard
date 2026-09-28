@@ -7,6 +7,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ## [Unreleased]
 
 ### Ajouté
+- Page « Mon profil » pour les profs et les parents : modification de vos nom, prénom et numéro de téléphone depuis le portail, avec confirmation visuelle après enregistrement ; le lien se trouve dans le menu du portail
 - Profils utilisateurs avec prénom et nom séparés : saisie claire à la création des comptes (profs, parents, bénévoles) dans le panneau d'administration, affichage « Prénom Nom » partout
 - Création des élèves facilitée dans le panneau d'administration : instructions intégrées expliquant de créer d'abord le compte parent (rôle « Parent ») avant de relier l'élève, et rappel de la règle de consentement RGPD
 

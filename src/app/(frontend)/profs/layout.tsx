@@ -30,6 +30,7 @@ export default async function ProfsLayout({ children }: { children: ReactNode })
             { description: 'Vos séances, présences et retours', href: '/profs', label: 'Mes séances' },
             { description: 'Vues semaine, jour et liste', href: '/profs/calendrier', label: 'Calendrier' },
             { description: 'Vos disponibilités hebdomadaires', href: '/profs/disponibilites', label: 'Mes disponibilités' },
+            { description: 'Vos informations personnelles', href: '/profs/mon-profil', label: 'Mon profil' },
             { href: '/parents', label: 'Espace parents' },
           ]}
           user={user ? { nom: `${user.prenom} ${user.nom}`, email: user.email } : null}
