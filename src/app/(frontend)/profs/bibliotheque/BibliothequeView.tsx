@@ -246,7 +246,7 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
             {rappels.length === 0 ? (
               <p className="lpv-muted">Aucun rappel pour les prochains jours.</p>
             ) : (
-              <div style={{ display: 'grid', gap: '0.625rem' }}>
+              <div className="lpv-t-dashboard-page__aside-card__stack">
                 {rappels.map((pret) => (
                   <AlertCard
                     accent="blue"
