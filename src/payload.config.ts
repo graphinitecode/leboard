@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { resendAdapter } from '@payloadcms/email-resend'
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
@@ -92,6 +93,17 @@ export default buildConfig({
     Categories,
     Users,
   ],
+  // Emails (Resend) : activé seulement si la clé est présente — sans adapter,
+  // Payload écrit les emails dans la console (dev/tests).
+  ...(process.env.RESEND_API_KEY
+    ? {
+        email: resendAdapter({
+          apiKey: process.env.RESEND_API_KEY,
+          defaultFromAddress: process.env.RESEND_FROM_EMAIL || '',
+          defaultFromName: 'Association Les Pierres Vivantes',
+        }),
+      }
+    : {}),
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, PolitiqueRgpd],
   plugins,
