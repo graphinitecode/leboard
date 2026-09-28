@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -188,5 +189,25 @@ describe('FicheLivreView (alignee maquette)', () => {
     rendre()
 
     expect(screen.getByText('Livre introuvable ou retiré du catalogue.')).toBeDefined()
+  })
+
+  it('demande le mot de passe avant de marquer un retour', async () => {
+    pretsLivreRetour.data = PRETS
+    const user = userEvent.setup()
+    rendre()
+
+    await user.click(screen.getByRole('button', { name: 'Marquer un retour' }))
+
+    expect(screen.getByText('Marquer le retour du prêt ?')).toBeDefined()
+    const champ = screen.getByLabelText('Mot de passe du compte connecté')
+    const confirmer = screen.getByRole('button', { name: 'Confirmer le retour' })
+    expect((confirmer as HTMLButtonElement).disabled).toBe(true)
+
+    await user.type(champ, 'secret')
+    await user.click(confirmer)
+
+    await waitFor(() => {
+      expect(mockMarquerRetourne).toHaveBeenCalledWith({ motDePasse: 'secret', pretId: 1 })
+    })
   })
 })

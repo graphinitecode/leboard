@@ -6,10 +6,13 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/atoms/a-button'
 import { ErrorSummary } from '@/components/molecules'
 import { QuestionPage, QuestionPageAnswers } from '@/components/templates'
+import { ConfirmAction } from '@/components/organisms/o-confirm-action'
 import { useEnregistrerPret, useListCatalogue } from '@/bibliotheque'
 import { useListElevesDuProf } from '@/students'
 
 type Etape = 1 | 2 | 3
+
+const DUREE_PRET_JOURS = 21
 
 // Assistant « un prêt en 3 questions » (pattern question pages) :
 // élève → exemplaire disponible → récap + validation.
@@ -26,6 +29,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
   const [exemplaireId, setExemplaireId] = useState<number | null>(null)
   const [erreur, setErreur] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
+  const [confirmOuvert, setConfirmOuvert] = useState(false)
 
   const eleveChoisi = (eleves.data ?? []).find((e) => e.id === eleveId) ?? null
   const dispos = (catalogue.data ?? [])
@@ -36,12 +40,12 @@ export default function NouveauPretView({ profId }: { profId: number }) {
     )
   const exemplaireChoisi = dispos.find((ex) => ex.id === exemplaireId) ?? null
 
-  async function validerPret() {
-    if (!eleveId || !exemplaireId) return
+  async function validerPret(motDePasse?: string) {
+    if (!eleveId || !exemplaireId || !motDePasse) return
     setErreur(null)
     setPending(true)
     try {
-      await enregistrer.mutateAsync({ eleveId, exemplaireId })
+      await enregistrer.mutateAsync({ eleveId, exemplaireId, motDePasse })
       router.push('/profs/bibliotheque?pret=enregistre')
     } catch (err) {
       setErreur(err instanceof Error ? err.message : 'Le prêt n’a pas pu être enregistré.')
@@ -144,8 +148,8 @@ export default function NouveauPretView({ profId }: { profId: number }) {
           actions={
             <>
               {erreur && <ErrorSummary errors={[erreur]} />}
-              <Button disabled={pending} onClick={validerPret} type="button">
-                {pending ? 'Enregistrement…' : 'Valider le prêt'}
+              <Button disabled={pending} onClick={() => setConfirmOuvert(true)} type="button">
+                Valider le prêt
               </Button>
             </>
           }
@@ -185,6 +189,24 @@ export default function NouveauPretView({ profId }: { profId: number }) {
           />
         </QuestionPage>
       )}
+
+      {confirmOuvert && eleveChoisi && exemplaireChoisi ? (
+        <ConfirmAction
+          confirmLabel="Confirmer le prêt"
+          description={`« ${exemplaireChoisi.livreTitre} » sera prêté à ${eleveChoisi.prenom} ${eleveChoisi.nom} pour ${DUREE_PRET_JOURS} jours. Confirmez avec votre mot de passe.`}
+          onClose={() => {
+            setConfirmOuvert(false)
+            setErreur(null)
+          }}
+          onConfirm={(motDePasse) => {
+            void validerPret(motDePasse)
+          }}
+          pending={pending}
+          pendingLabel="Enregistrement…"
+          requirePassword
+          title="Enregistrer ce prêt ?"
+        />
+      ) : null}
     </div>
   )
 }

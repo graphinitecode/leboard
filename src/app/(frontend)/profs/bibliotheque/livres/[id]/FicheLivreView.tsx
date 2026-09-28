@@ -9,6 +9,7 @@ import { AlertCard, Table, Toast } from '@/components/molecules'
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
 import { DetailPage } from '@/components/templates'
 import type { DashboardStat } from '@/components/templates'
+import { ConfirmAction } from '@/components/organisms/o-confirm-action'
 import {
   estPretEnCours,
   joursDeRetard,
@@ -48,13 +49,18 @@ export interface FicheLivreProps {
 // sidebar Actions / Retard en cours / Informations (dont la note sur les
 // exemplaires physiques gérés côté admin).
 // Les actions ne sont affichées qu'aux rôles qui peuvent gérer la
-// bibliothèque (admin, bénévole) ; les profs voient la fiche en lecture seule.
+// bibliothèque (admin, bénévole) ; les profs voient la fiche en lecture
+// seule. « Marquer un retour » est une action patrimoniale : confirmation
+// par mot de passe (revérifié côté serveur) avant l'écriture.
 export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) {
   const catalogue = useListCatalogue()
   const prets = useListPretsParLivre(livreId)
   const marquerRetourne = useMarquerRetourne()
   const [erreur, setErreur] = useState<string | null>(null)
   const [retourMarque, setRetourMarque] = useState(false)
+  const [confirmRetour, setConfirmRetour] = useState<{ pretId: number; eleve: string } | null>(
+    null,
+  )
 
   const livre = (catalogue.data ?? []).find((l) => l.id === livreId)
 
@@ -111,13 +117,17 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
     ]
   })
 
-  async function retourner(pretId: number) {
+  async function retourner(pretId: number, motDePasse?: string) {
     setErreur(null)
+    if (!motDePasse) return
     try {
-      await marquerRetourne.mutateAsync(pretId)
+      await marquerRetourne.mutateAsync({ motDePasse, pretId })
       setRetourMarque(true)
-    } catch {
-      setErreur('Impossible de marquer le retour. Réessayez.')
+      setConfirmRetour(null)
+    } catch (err) {
+      setErreur(
+        err instanceof Error ? err.message : 'Impossible de marquer le retour. Réessayez.',
+      )
     }
   }
 
@@ -135,7 +145,11 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
                 disabled={marquerRetourne.isPending}
                 onClick={() => {
                   const pret = enCours[0]
-                  if (pret) retourner(pret.id)
+                  if (pret)
+                    setConfirmRetour({
+                      eleve: pret.eleveLabel ?? 'cet élève',
+                      pretId: pret.id,
+                    })
                 }}
                 type="button"
                 variant="secondary"
@@ -229,6 +243,24 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
       {retourMarque && (
         <Toast message="Retour marqué" type="success" onClose={() => setRetourMarque(false)} />
       )}
+
+      {confirmRetour ? (
+        <ConfirmAction
+          confirmLabel="Confirmer le retour"
+          description="Le prêt sera clôturé et l'exemplaire redeviendra disponible. Confirmez avec votre mot de passe."
+          onClose={() => {
+            setConfirmRetour(null)
+            setErreur(null)
+          }}
+          onConfirm={(motDePasse) => {
+            void retourner(confirmRetour.pretId, motDePasse)
+          }}
+          pending={marquerRetourne.isPending}
+          pendingLabel="Confirmation…"
+          requirePassword
+          title="Marquer le retour du prêt ?"
+        />
+      ) : null}
 
       <DetailPage
         backHref="/profs/bibliotheque"

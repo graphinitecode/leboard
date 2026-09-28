@@ -15,6 +15,9 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Page « Mes élèves » : la première colonne du tableau s'intitule « Noms & Prénoms » et les noms ne sont plus cliquables — l'accès à la fiche passe par le lien « Voir » de la colonne « Actions »
 - Fiche livre : la note « les exemplaires physiques se gèrent dans le panneau d'administration » est intégrée à l'encadré « Informations » au lieu de flotter sous la colonne latérale
 
+### Sécurisé
+- Bibliothèque : les actions patrimoniales — marquer un prêt comme retourné et enregistrer un nouveau prêt — demandent maintenant une confirmation avec le mot de passe du compte connecté (fenêtre dédiée, mot de passe revérifié par le serveur avant l'écriture), pour éviter qu'une personne de passage ne valide à la place du gestionnaire connecté
+
 ## [0.8.0] — 2026-09-28
 
 ### Ajouté

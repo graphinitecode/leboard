@@ -69,23 +69,36 @@ export const bibliothequeRepository = {
     }
   },
 
-  /** Marquer un prêt comme retourné (date du jour). */
-  async marquerRetourne(pretId: number): Promise<void> {
+  /**
+   * Marquer un prêt comme retourné (date du jour). Action sensible :
+   * passe par la route dédiée qui revérifie le mot de passe de la session
+   * côté serveur (le PATCH REST direct ne ferait que le contrôle de rôle).
+   */
+  async marquerRetourne(command: { motDePasse: string; pretId: number }): Promise<void> {
     try {
-      await httpClient.patch(`/prets/${pretId}`, {
-        dateRetourEffective: new Date().toISOString(),
+      await httpClient.post(`/bibliotheque/prets/${command.pretId}/retour`, {
+        motDePasse: command.motDePasse,
       })
     } catch (err) {
       throw new Error(getAxiosErrorMessage(err, 'Impossible de marquer le prêt comme retourné.'))
     }
   },
 
-  /** Enregistrer un prêt : la validation (dispo, plafond 3) est côté hooks Payload. */
-  async enregistrerPret(command: { eleveId: number; exemplaireId: number }): Promise<void> {
+  /**
+   * Enregistrer un prêt. Action sensible : passe par la route dédiée qui
+   * revérifie le mot de passe de la session côté serveur ; la validation
+   * métier (dispo, plafond 3) reste côté hooks Payload.
+   */
+  async enregistrerPret(command: {
+    eleveId: number
+    exemplaireId: number
+    motDePasse: string
+  }): Promise<void> {
     try {
-      await httpClient.post('/prets', {
-        eleve: command.eleveId,
-        exemplaire: command.exemplaireId,
+      await httpClient.post('/bibliotheque/prets', {
+        eleveId: command.eleveId,
+        exemplaireId: command.exemplaireId,
+        motDePasse: command.motDePasse,
       })
     } catch (err) {
       throw new Error(getAxiosErrorMessage(err, "Impossible d'enregistrer le prêt."))

@@ -8,6 +8,7 @@ import { InsetText, Tag } from '@/components/atoms'
 import { Button } from '@/components/atoms/a-button'
 import { ActionRow, AlertCard, Table, Toast } from '@/components/molecules'
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
+import { ConfirmAction } from '@/components/organisms/o-confirm-action'
 import {
   estPretEnCours,
   joursDeRetard,
@@ -54,6 +55,9 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
   const [niveauFiltre, setNiveauFiltre] = useState('')
   const [erreur, setErreur] = useState<string | null>(null)
   const [pretRetourne, setPretRetourne] = useState(false)
+  const [confirmRetour, setConfirmRetour] = useState<{ pretId: number; titre: string } | null>(
+    null,
+  )
 
   // Retour de l'assistant prêt (?pret=enregistre) : toast dérivé de l'URL.
   const pretEnregistre = params.get('pret') === 'enregistre'
@@ -79,13 +83,19 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
     )
   }, [catalogue.data, recherche, niveauFiltre])
 
-  async function retourner(pretId: number) {
+  async function retourner(pretId: number, motDePasse?: string) {
     setErreur(null)
+    if (!motDePasse) return
     try {
-      await marquerRetourne.mutateAsync(pretId)
+      await marquerRetourne.mutateAsync({ motDePasse, pretId })
       setPretRetourne(true)
-    } catch {
-      setErreur('Impossible de marquer le prêt comme retourné. Réessayez.')
+      setConfirmRetour(null)
+    } catch (err) {
+      setErreur(
+        err instanceof Error
+          ? err.message
+          : 'Impossible de marquer le prêt comme retourné. Réessayez.',
+      )
     }
   }
 
@@ -137,6 +147,24 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
           onClose={() => router.replace('/profs/bibliotheque')}
         />
       )}
+
+      {confirmRetour ? (
+        <ConfirmAction
+          confirmLabel="Confirmer le retour"
+          description="Le prêt sera clôturé et l'exemplaire redeviendra disponible. Confirmez avec votre mot de passe."
+          onClose={() => {
+            setConfirmRetour(null)
+            setErreur(null)
+          }}
+          onConfirm={(motDePasse) => {
+            void retourner(confirmRetour.pretId, motDePasse)
+          }}
+          pending={marquerRetourne.isPending}
+          pendingLabel="Confirmation…"
+          requirePassword
+          title="Marquer ce prêt comme retourné ?"
+        />
+      ) : null}
 
       <h1 className="lpv-h1">Bibliothèque</h1>
       <p className="lpv-muted">
@@ -211,7 +239,11 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
                       ? {
                           disabled: marquerRetourne.isPending,
                           label: 'Marquer comme retourné',
-                          onClick: () => retourner(pret.id),
+                          onClick: () =>
+                            setConfirmRetour({
+                              pretId: pret.id,
+                              titre: pret.livreLabel ?? pret.exemplaireCode ?? 'ce livre',
+                            }),
                           variant: 'secondary',
                         }
                       : undefined
