@@ -187,6 +187,7 @@ describe('BibliothequeView', () => {
     expect(container.querySelectorAll('.lpv-m-alert-card--blue').length).toBe(1)
 
     // Caption maquette
-    expect(container.textContent).toContain('ouvrages référencés')
+    // Texte de présentation (le nombre d'ouvrages vit dans les stats)
+    expect(container.textContent).toContain('Gérez le catalogue')
   })
 })

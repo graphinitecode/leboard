@@ -99,7 +99,7 @@ export default function FicheLivreView({ livreId }: { livreId: number }) {
         )}
       </Panel>
 
-      <Link className="lpv-link" href="/admin">
+      <Link className="lpv-link-inline" href="/admin">
         Gérer ce livre dans le panneau d&apos;administration
       </Link>
     </>

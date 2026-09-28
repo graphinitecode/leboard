@@ -52,7 +52,7 @@ export function MotDePasseOublieForm() {
         {pending ? 'Envoi…' : 'Recevoir le lien'}
       </Button>
       <p>
-        <Link className="lpv-link" href="/profs/login">
+        <Link className="lpv-link-inline" href="/profs/login">
           Retour à la connexion
         </Link>
       </p>
