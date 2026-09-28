@@ -22,10 +22,27 @@ function presenceStatus(statut: string): { color: 'green' | 'yellow' | 'red'; la
 const couleurProgression = (niveau: string): 'acquis' | 'en-cours' | 'a-revoir' =>
   niveau === 'acquis' ? 'acquis' : niveau === 'en-cours' ? 'en-cours' : 'a-revoir'
 
-export default async function EleveProfPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function EleveProfPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ retour?: string }>
+}) {
   const { id } = await params
   const user = await requireProf()
   const payload = await getPayload({ config: configPromise })
+
+  // Origine de navigation (?retour=/profs/bibliotheque/livres/12) : le lien
+  // « Retour » renvoie à la liste « Mes élèves » par défaut, ou à l'écran
+  // d'où l'utilisateur vient (fiche livre) — chemin interne uniquement
+  // (anti open-redirect : doit commencer par « / » mais pas « // »).
+  const { retour: retourParam } = await searchParams
+  const retour =
+    retourParam && retourParam.startsWith('/') && !retourParam.startsWith('//')
+      ? retourParam
+      : '/profs/eleves'
+  const retourLabel = retour === '/profs/eleves' ? 'Retour à mes élèves' : 'Retour'
 
   const eleve = await payload
     .findByID({
@@ -185,8 +202,8 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
 
   return (
     <DetailPage
-      backHref="/profs/eleves"
-      backLabel="Retour à mes élèves"
+      backHref={retour}
+      backLabel={retourLabel}
       title={`${eleve.prenom} ${eleve.nom}`}
       caption={`${eleve.niveau}${eleve.groupe ? ` · ${eleve.groupe}` : ''}${referentLabel ? ` — Prof référent : ${referentLabel}` : ''}`}
       stats={stats}

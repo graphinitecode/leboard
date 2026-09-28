@@ -43,8 +43,10 @@ export interface FicheLivreProps {
 }
 
 // Fiche livre alignée sur la maquette « Fiche livre GOV.UK » :
-// stats (niveau, dispos, retard), historique des emprunts en table,
-// sidebar Actions / Retard en cours / Informations.
+// stats (niveau, dispos, retard), historique des emprunts en table
+// (nom de l'élève cliquable vers sa fiche, retour au livre via ?retour=),
+// sidebar Actions / Retard en cours / Informations (dont la note sur les
+// exemplaires physiques gérés côté admin).
 // Les actions ne sont affichées qu'aux rôles qui peuvent gérer la
 // bibliothèque (admin, bénévole) ; les profs voient la fiche en lecture seule.
 export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) {
@@ -90,7 +92,19 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
         ? { color: 'blue' as const, label: 'En cours' }
         : { color: 'green' as const, label: 'Rendu' }
     return [
-      { text: pret.eleveLabel ?? '—' },
+      {
+        content:
+          pret.eleveId > 0 ? (
+            <Link
+              className="lpv-link-inline"
+              href={`/profs/eleves/${pret.eleveId}?retour=/profs/bibliotheque/livres/${livreId}`}
+            >
+              {pret.eleveLabel ?? '—'}
+            </Link>
+          ) : (
+            <span>{pret.eleveLabel ?? '—'}</span>
+          ),
+      },
       { text: formatDate(pret.dateEmprunt) },
       { text: pret.dateRetourEffective ? formatDate(pret.dateRetourEffective) : '—' },
       { content: <Tag color={statut.color}>{statut.label}</Tag> },
@@ -167,12 +181,24 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
             })}
           </dd>
         </dl>
+        {peutGerer ? (
+          <p
+            style={{
+              borderTop: '1px solid var(--lpv-grey-border)',
+              color: 'var(--lpv-text-muted)',
+              fontSize: '0.8rem',
+              marginTop: '0.625rem',
+              paddingTop: '0.625rem',
+            }}
+          >
+            Les exemplaires physiques se gèrent dans{' '}
+            <Link className="lpv-link-inline" href="/admin">
+              le panneau d&apos;administration
+            </Link>
+            .
+          </p>
+        ) : null}
       </div>
-      {peutGerer ? (
-        <p className="lpv-muted">
-          Les exemplaires physiques se gèrent dans <Link className="lpv-link-inline" href="/admin">le panneau d&apos;administration</Link>.
-        </p>
-      ) : null}
     </>
   )
 

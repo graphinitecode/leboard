@@ -129,6 +129,24 @@ describe('FicheLivreView (alignee maquette)', () => {
     expect(screen.getByText('Rendu')).toBeDefined()
   })
 
+  it('rend le nom de l eleve emprunteur cliquable vers sa fiche', () => {
+    pretsLivreRetour.data = PRETS
+    const { container } = rendre()
+
+    const lienEleve = container.querySelector<HTMLAnchorElement>(
+      'a[href="/profs/eleves/10?retour=/profs/bibliotheque/livres/100"]',
+    )
+    expect(lienEleve).not.toBeNull()
+    expect(lienEleve?.textContent).toContain('Lucas Martin')
+    expect(lienEleve?.className).toContain('lpv-link-inline')
+    // Historique complet : les deux élèves sont des liens
+    expect(
+      container.querySelector<HTMLAnchorElement>(
+        'a[href="/profs/eleves/11?retour=/profs/bibliotheque/livres/100"]',
+      ),
+    ).not.toBeNull()
+  })
+
   it('affiche la sidebar actions retard et informations pour un gerant', () => {
     pretsLivreRetour.data = PRETS
     const { container } = rendre()
@@ -140,6 +158,13 @@ describe('FicheLivreView (alignee maquette)', () => {
     expect(container.textContent).toContain('Exemplaires')
     expect(container.textContent).toContain('Ajouté au catalogue')
     expect(screen.getByText('Modifier la fiche')).toBeDefined()
+
+    // Note « exemplaires physiques » dans la card Informations
+    const cardInfo = Array.from(
+      container.querySelectorAll('.lpv-t-dashboard-page__aside-card'),
+    ).find((card) => card.querySelector('h3')?.textContent === 'Informations')
+    expect(cardInfo?.textContent).toContain('Les exemplaires physiques se gèrent dans')
+    expect(cardInfo?.querySelector('a[href="/admin"]')).not.toBeNull()
   })
 
   it('masque les actions pour un prof (lecture seule)', () => {
@@ -149,6 +174,13 @@ describe('FicheLivreView (alignee maquette)', () => {
     expect(container.textContent).not.toContain('Actions')
     expect(screen.queryByText('Modifier la fiche')).toBeNull()
     expect(container.textContent).toContain('Informations')
+  })
+
+  it('masque la note exemplaires physiques pour un non gerant', () => {
+    pretsLivreRetour.data = PRETS
+    const { container } = rendre(false)
+
+    expect(container.textContent).not.toContain('Les exemplaires physiques se gèrent dans')
   })
 
   it('affiche l etat livre introuvable', () => {
