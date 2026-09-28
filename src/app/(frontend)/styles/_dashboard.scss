@@ -41,6 +41,23 @@
       border-bottom: none;
     }
   }
+
+  /* Pile de boutons du design system (card Actions de la fiche livre) */
+  &__actions {
+    display: grid;
+    gap: 0.625rem;
+
+    .lpv-a-button {
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  /* Pile de cartes d'alerte (rappels bibliothèque) */
+  &__stack {
+    display: grid;
+    gap: 0.625rem;
+  }
 }
 
 /* --- Fiche détail (t-portal-page DetailPage) ------------------------------ */

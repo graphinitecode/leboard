@@ -112,7 +112,7 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
       {peutGerer ? (
         <div className="lpv-t-dashboard-page__aside-card">
           <h3 className="lpv-t-dashboard-page__aside-card__title">Actions</h3>
-          <div style={{ display: 'grid', gap: '0.625rem' }}>
+          <div className="lpv-t-dashboard-page__aside-card__actions">
             <Button href="/profs/bibliotheque/prets/nouveau" variant="success">
               Enregistrer un prêt
             </Button>

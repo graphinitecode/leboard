@@ -181,7 +181,7 @@ export default function ProfsDashboard({ prenom, alertes }: ProfsDashboardProps)
             {alertes.length > 0 && (
               <div className="lpv-t-dashboard-page__aside-card">
                 <h3 className="lpv-t-dashboard-page__aside-card__title">Alertes sur mes élèves</h3>
-                <div style={{ display: 'grid', gap: '0.75rem' }}>
+                <div className="lpv-t-dashboard-page__aside-card__stack">
                   {alertes.map((alerte) => (
                     <AlertCard
                       href={`/profs/eleves/${alerte.eleveId}`}
