@@ -199,6 +199,39 @@ describe('ElevesView (liste alignee maquette)', () => {
     // Page 2 via le lien href=?page=2 (pattern GOV.UK)
     const lienPage2 = container.querySelector('a[href$="page=2"]')
     expect(lienPage2).not.toBeNull()
+
+    // Première page : pas de « Précédent », « Suivant » présent
+    expect(container.textContent).not.toContain('Précédent')
+    expect(container.textContent).toContain('Suivant')
+
+    // Une action « Voir » par ligne, pointant vers la fiche de l élève
+    const liensVoir = screen.getAllByText('Voir')
+    expect(liensVoir.length).toBe(10)
+    expect(container.querySelector('a[href="/profs/eleves/10"]')).not.toBeNull()
+  })
+
+  it('affiche les liens precedent et suivant sur une page intermediaire', async () => {
+    hookRetour.data = [
+      ...Array.from({ length: 25 }, (_, i) => ({
+        id: i + 10,
+        prenom: `Eleve${i + 1}`,
+        nom: 'Test',
+        niveau: 'CM2' as const,
+        groupe: null,
+      })),
+    ]
+    searchParamsCourants.params = new URLSearchParams('page=2')
+    const { container } = rendre()
+
+    await screen.findByText('Tous mes élèves')
+    await waitFor(() => {
+      expect(container.querySelector('.lpv-m-table')).not.toBeNull()
+    })
+
+    expect(container.textContent).toContain('Précédent')
+    expect(container.textContent).toContain('Suivant')
+    expect(container.querySelector('a[href$="page=1"]')).not.toBeNull()
+    expect(container.querySelector('a[href$="page=3"]')).not.toBeNull()
   })
 
   it('affiche la page demandée via ?page=2', async () => {

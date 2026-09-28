@@ -196,7 +196,11 @@ export default function ElevesView({ profId, alertes, retour }: ElevesViewProps)
         ),
       },
       {
-        content: <Link href={`/profs/eleves/${eleve.id}`}>Voir</Link>,
+        content: (
+          <Link className="lpv-link-inline" href={`/profs/eleves/${eleve.id}`}>
+            Voir
+          </Link>
+        ),
       },
     ]
   })
@@ -294,6 +298,10 @@ export default function ElevesView({ profId, alertes, retour }: ElevesViewProps)
                   <Pagination
                     ariaLabel="Pagination des élèves"
                     items={itemsPagination(nbPages, pageCourante, hrefPage)}
+                    next={pageCourante < nbPages ? { href: hrefPage(pageCourante + 1) } : undefined}
+                    previous={
+                      pageCourante > 1 ? { href: hrefPage(pageCourante - 1) } : undefined
+                    }
                   />
                 ) : null}
               </>
