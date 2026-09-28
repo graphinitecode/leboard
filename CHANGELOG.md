@@ -4,6 +4,11 @@ Tous les changements notables de LPV Board sont documentés ici.
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le versionnage suit [SemVer](https://semver.org/lang/fr/) (0.x pendant le développement initial).
 
+## [Unreleased]
+
+### Modifié
+- Page Bibliothèque alignée sur le modèle : barre de recherche pleine largeur sous les compteurs (recherche, filtre de niveau et bouton « Enregistrer un prêt »), retards en lignes d'action à bordure rouge, encadrés latéraux à bordure haute (rappels bleus sans avertissement, « Ajouter un livre ») au lieu des panneaux bleus
+
 ## [0.7.0] — 2026-09-28
 
 ### Ajouté

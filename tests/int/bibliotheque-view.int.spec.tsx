@@ -159,4 +159,30 @@ describe('BibliothequeView', () => {
       expect(screen.getByText('Prêt enregistré')).toBeDefined()
     })
   })
+
+  it('conforme a la maquette : searchbar sous les stats, retards en action-row, sidebar en cards bordure haute', () => {
+    pretsRetour.data = PRETS
+    catalogueRetour.data = CATALOGUE
+    const { container } = rendre()
+
+    // Searchbar pleine largeur (hors section catalogue)
+    expect(container.querySelector('.lpv-o-bibliotheque__searchbar')).not.toBeNull()
+    expect(screen.getByText('Enregistrer un prêt')).toBeDefined()
+    expect(
+      container.querySelector('.lpv-o-bibliotheque__searchbar .lpv-a-button--success'),
+    ).not.toBeNull()
+
+    // Retards : ActionRow bordure gauche rouge + bouton secondaire
+    expect(container.querySelectorAll('.lpv-m-action-row--red').length).toBe(1)
+
+    // Sidebar : cards à bordure haute (aside-card), plus de Panel bleu
+    expect(container.querySelectorAll('.lpv-t-dashboard-page__aside-card').length).toBe(2)
+    expect(container.querySelectorAll('.lpv-a-panel').length).toBe(0)
+
+    // Rappels : carte bleue sans icône
+    expect(container.querySelectorAll('.lpv-m-alert-card--blue').length).toBe(1)
+
+    // Caption maquette
+    expect(container.textContent).toContain('ouvrages référencés')
+  })
 })
