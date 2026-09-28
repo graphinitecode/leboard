@@ -7,7 +7,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ## [Unreleased]
 
 ### Ajouté
-- Page « Mes élèves » repensée : compteurs (élèves suivis, présence moyenne, élèves à surveiller), barre de recherche avec filtres par groupe et par statut, tableau des élèves (présence en %, rouge sous 75 %, statut de suivi) avec pagination « Afficher les suivants » et encadré latéral « À surveiller » reprenant les alertes de décrochage avec accès direct aux fiches
+- Page « Mes élèves » repensée : compteurs (élèves suivis, présence moyenne, élèves à surveiller), barre de recherche avec filtres par groupe et par statut, tableau des élèves (présence en %, rouge sous 75 %, statut de suivi) avec pagination par pages de 10 et encadré latéral « À surveiller » reprenant les alertes de décrochage avec accès direct aux fiches
+- Page « Mes élèves » : colonne « Actions » avec un lien « Voir » pour ouvrir la fiche de chaque élève
+
+### Modifié
+- Page « Mes élèves » : la première colonne du tableau s'intitule « Noms & Prénoms » et les noms ne sont plus cliquables — l'accès à la fiche passe par le lien « Voir » de la colonne « Actions »
 
 ## [0.8.0] — 2026-09-28
 

@@ -1,11 +1,12 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useMemo, useState } from 'react'
 
 import { InsetText, Tag } from '@/components/atoms'
-import { Button } from '@/components/atoms/a-button'
-import { AlertCard, Table } from '@/components/molecules'
+import { BackLink } from '@/components/atoms/a-back-link'
+import { AlertCard, Pagination, Table } from '@/components/molecules'
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
 import { StatsGrid } from '@/components/templates'
 import type { DashboardStat } from '@/components/templates'
@@ -22,21 +23,42 @@ export interface AlerteEleve {
 export interface ElevesViewProps {
   profId: number
   alertes: AlerteEleve[]
+  retour: string
 }
 
 const SEUIL_SURVEILLANCE = 75
-const TAILLE_TRANCHE = 5
+const SEUIL_SUCCES = 85
+const ELEVES_PAR_PAGE = 10
 
 // Liste « Mes élèves » alignée sur la maquette : stats, searchbar à filtres,
-// table des élèves (présence, statut), pagination par tranches et sidebar
-// « À surveiller ». Données : module @/students + présences du module @/seances ;
-// les alertes arrivent en props (chargées côté serveur, collection adminOnly).
-export default function ElevesView({ profId, alertes }: ElevesViewProps) {
+// table des élèves (présence, statut), pagination 10/page (molécule GOV.UK,
+// page portée par l'URL ?page=N) et sidebar « À surveiller ». Données :
+// module @/students + présences du module @/seances ; les alertes arrivent
+// en props (chargées côté serveur, collection adminOnly).
+export default function ElevesView({ profId, alertes, retour }: ElevesViewProps) {
   const eleves = useListElevesDuProf(profId)
+  const router = useRouter()
+  const pathname = usePathname()
+  const params = useSearchParams()
   const [recherche, setRecherche] = useState('')
   const [groupeFiltre, setGroupeFiltre] = useState('')
   const [statutFiltre, setStatutFiltre] = useState('')
-  const [tailleTranche, setTailleTranche] = useState(TAILLE_TRANCHE)
+
+  // ?page=N (1-indexé) ; reset au changement de filtre.
+  const page = Math.max(1, Number(params.get('page')) || 1)
+
+  function hrefPage(nouvelle: number): string {
+    const next = new URLSearchParams(params.toString())
+    next.set('page', String(nouvelle))
+    return `${pathname}?${next.toString()}`
+  }
+
+  function changerFiltre(setter: (v: string) => void, valeur: string) {
+    const next = new URLSearchParams(params.toString())
+    next.delete('page')
+    setter(valeur)
+    router.push(`${pathname}?${next.toString()}`)
+  }
 
   const liste = useMemo(() => eleves.data ?? [], [eleves.data])
 
@@ -101,7 +123,12 @@ export default function ElevesView({ profId, alertes }: ElevesViewProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [liste, groupeFiltre, statutFiltre, recherche, elevesAlertes, tauxQuery.data])
 
-  const listeAffichee = listeFiltree.slice(0, tailleTranche)
+  const nbPages = Math.max(1, Math.ceil(listeFiltree.length / ELEVES_PAR_PAGE))
+  const pageCourante = Math.min(page, nbPages)
+  const listeAffichee = listeFiltree.slice(
+    (pageCourante - 1) * ELEVES_PAR_PAGE,
+    pageCourante * ELEVES_PAR_PAGE,
+  )
 
   const moyenne = useMemo(() => {
     const taux = [...(tauxQuery.data ?? []).values()].filter((t): t is number => t !== null)
@@ -121,21 +148,30 @@ export default function ElevesView({ profId, alertes }: ElevesViewProps) {
     { label: 'Élèves suivis', value: liste.length },
     {
       label: 'Présence moyenne',
-      type: moyenne !== null && moyenne >= SEUIL_SURVEILLANCE ? 'success' : undefined,
+      // Paliers : ≥ 85 % succès, ≥ 75 % avertissement, < 75 % alerte.
+      type:
+        moyenne === null
+          ? undefined
+          : moyenne >= SEUIL_SUCCES
+            ? 'success'
+            : moyenne >= SEUIL_SURVEILLANCE
+              ? 'warning'
+              : 'alert',
       value: moyenne !== null ? `${moyenne}%` : '—',
     },
     {
       label: 'Élèves à surveiller',
-      type: nbSurveillance > 0 ? 'alert' : undefined,
+      type: nbSurveillance > 0 ? 'alert' : 'success',
       value: nbSurveillance,
     },
   ]
 
   const head: TableHeadCell[] = [
-    { text: 'Élève' },
+    { text: 'Noms & Prénoms' },
     { text: 'Groupe' },
     { text: 'Présence' },
     { text: 'Statut' },
+    { text: 'Actions' },
   ]
 
   const rows: TableRowCell[][] = listeAffichee.map((eleve) => {
@@ -143,13 +179,7 @@ export default function ElevesView({ profId, alertes }: ElevesViewProps) {
     const statut = statutEleve(eleve.id, taux)
     const bas = taux !== null && taux < SEUIL_SURVEILLANCE
     return [
-      {
-        content: (
-          <Link href={`/profs/eleves/${eleve.id}`}>
-            <strong>{nomEleve(eleve)}</strong>
-          </Link>
-        ),
-      },
+      { content: <strong>{nomEleve(eleve)}</strong> },
       { text: eleve.groupe ?? '—' },
       {
         content: (
@@ -164,6 +194,9 @@ export default function ElevesView({ profId, alertes }: ElevesViewProps) {
             {statut === 'surveillance' ? 'À surveiller' : 'Régulier'}
           </Tag>
         ),
+      },
+      {
+        content: <Link href={`/profs/eleves/${eleve.id}`}>Voir</Link>,
       },
     ]
   })
@@ -185,6 +218,9 @@ export default function ElevesView({ profId, alertes }: ElevesViewProps) {
 
   return (
     <>
+      <BackLink href={retour}>
+        {retour === '/profs' ? 'Retour au tableau de bord' : 'Retour'}
+      </BackLink>
       <h1 className="lpv-h1">Mes élèves</h1>
       <p className="lpv-muted">
         Les élèves dont vous êtes référent : présence, statut de suivi et accès aux fiches.
@@ -210,7 +246,7 @@ export default function ElevesView({ profId, alertes }: ElevesViewProps) {
         <select
           className="lpv-a-select"
           id="filtre-groupe"
-          onChange={(e) => setGroupeFiltre(e.target.value)}
+          onChange={(e) => changerFiltre(setGroupeFiltre, e.target.value)}
           value={groupeFiltre}
         >
           <option value="">Tous les groupes</option>
@@ -226,7 +262,7 @@ export default function ElevesView({ profId, alertes }: ElevesViewProps) {
         <select
           className="lpv-a-select"
           id="filtre-statut"
-          onChange={(e) => setStatutFiltre(e.target.value)}
+          onChange={(e) => changerFiltre(setStatutFiltre, e.target.value)}
           value={statutFiltre}
         >
           <option value="">Tous les statuts</option>
@@ -254,22 +290,12 @@ export default function ElevesView({ profId, alertes }: ElevesViewProps) {
                 <div style={{ overflowX: 'auto' }}>
                   <Table caption="Élèves" head={head} rows={rows} />
                 </div>
-                {listeFiltree.length > listeAffichee.length ? (
-                  <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-                    <Button
-                      onClick={() => setTailleTranche((t) => t + TAILLE_TRANCHE)}
-                      type="button"
-                      variant="secondary"
-                    >
-                      Afficher les suivants
-                    </Button>
-                  </div>
+                {nbPages > 1 ? (
+                  <Pagination
+                    ariaLabel="Pagination des élèves"
+                    items={itemsPagination(nbPages, pageCourante, hrefPage)}
+                  />
                 ) : null}
-                <p className="lpv-muted" style={{ textAlign: 'center' }}>
-                  {listeAffichee.length} sur {listeFiltree.length} élève
-                  {listeFiltree.length > 1 ? 's' : ''} affiché
-                  {listeAffichee.length > 1 ? 's' : ''}
-                </p>
               </>
             )}
           </section>
@@ -307,4 +333,28 @@ export default function ElevesView({ profId, alertes }: ElevesViewProps) {
       </div>
     </>
   )
+}
+// URLs ?page=N (filtres préservés) pour la molécule Pagination GOV.UK.
+// Fenêtre ±2 autour de la page courante, bornes incluses, ellipsis.
+function itemsPagination(
+  nbPages: number,
+  pageCourante: number,
+  hrefPage: (n: number) => string,
+): ({ current?: boolean; href: string; number: number } | { ellipsis: true })[] {
+  const items: ({ current?: boolean; href: string; number: number } | { ellipsis: true })[] = []
+
+  const debut = Math.max(1, pageCourante - 2)
+  const fin = Math.min(nbPages, pageCourante + 2)
+
+  if (debut > 1) items.push({ href: hrefPage(1), number: 1 })
+  if (debut > 2) items.push({ ellipsis: true })
+
+  for (let n = debut; n <= fin; n += 1) {
+    items.push({ current: n === pageCourante, href: hrefPage(n), number: n })
+  }
+
+  if (fin < nbPages - 1) items.push({ ellipsis: true })
+  if (fin < nbPages) items.push({ href: hrefPage(nbPages), number: nbPages })
+
+  return items
 }

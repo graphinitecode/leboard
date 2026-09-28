@@ -14,6 +14,15 @@ const hookRetour: { data?: Eleve[]; isLoading: boolean; isError: boolean } = {
 // Taux de présence par élève (mock du repo @/seances)
 const presencesParEleve = new Map<number, { present: string }[]>()
 
+const searchParamsCourants = { params: new URLSearchParams() }
+const routerMocks = { push: vi.fn(), replace: vi.fn(), refresh: vi.fn() }
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => routerMocks,
+  usePathname: () => '/profs/eleves',
+  useSearchParams: () => searchParamsCourants.params,
+}))
+
 vi.mock('@/students', async (importOriginal) => {
   const original = await importOriginal<typeof import('@/students')>()
   return {
@@ -46,7 +55,7 @@ const rendre = () => {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   return render(
     <QueryClientProvider client={client}>
-      <ElevesView alertes={[]} profId={1} />
+      <ElevesView alertes={[]} profId={1} retour="/profs" />
     </QueryClientProvider>,
   )
 }
@@ -55,7 +64,7 @@ const rendreAvecAlertes = (alertes: { id: string; eleveId: number; message: stri
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   return render(
     <QueryClientProvider client={client}>
-      <ElevesView alertes={alertes} profId={1} />
+      <ElevesView alertes={alertes} profId={1} retour="/profs" />
     </QueryClientProvider>,
   )
 }
@@ -65,6 +74,9 @@ beforeEach(() => {
   hookRetour.isLoading = false
   hookRetour.isError = false
   presencesParEleve.clear()
+  searchParamsCourants.params = new URLSearchParams()
+  routerMocks.push.mockClear()
+  routerMocks.replace.mockClear()
 })
 
 describe('ElevesView (liste alignee maquette)', () => {
@@ -110,6 +122,29 @@ describe('ElevesView (liste alignee maquette)', () => {
     expect(container.textContent).toContain('Régulier')
   })
 
+  it('affiche les colonnes Noms & Prenoms et Actions avec lien Voir', async () => {
+    hookRetour.data = elevesMock
+    const { container } = rendre()
+
+    await screen.findByText('Tous mes élèves')
+    await waitFor(() => {
+      expect(container.querySelector('.lpv-m-table')).not.toBeNull()
+    })
+
+    // En-têtes de colonnes
+    expect(container.textContent).toContain('Noms & Prénoms')
+    expect(container.textContent).toContain('Actions')
+
+    // Une action « Voir » par ligne, pointant vers la fiche de l élève
+    const liensVoir = screen.getAllByText('Voir')
+    expect(liensVoir.length).toBe(elevesMock.length)
+    expect(container.querySelector('a[href="/profs/eleves/1"]')).not.toBeNull()
+
+    // Le nom n est plus un lien, seul « Voir » mène à la fiche
+    const cellulesNom = screen.getAllByText(/^(Lucas|Sarah|Emma) /)
+    expect(cellulesNom.every((c) => c.tagName !== 'A')).toBe(true)
+  })
+
   it('applique le seuil 75% et les alertes decrochage au statut', async () => {
     hookRetour.data = elevesMock
     presencesParEleve.set(1, [{ present: 'absent' }, { present: 'absent' }])
@@ -140,9 +175,9 @@ describe('ElevesView (liste alignee maquette)', () => {
     })
   })
 
-  it('pagine par tranches de 5', async () => {
+  it('pagine par 10 avec la molécule GOV.UK', async () => {
     hookRetour.data = [
-      ...Array.from({ length: 7 }, (_, i) => ({
+      ...Array.from({ length: 12 }, (_, i) => ({
         id: i + 10,
         prenom: `Eleve${i + 1}`,
         nom: 'Test',
@@ -150,7 +185,6 @@ describe('ElevesView (liste alignee maquette)', () => {
         groupe: null,
       })),
     ]
-    const user = userEvent.setup()
     const { container } = rendre()
 
     await screen.findByText('Tous mes élèves')
@@ -158,13 +192,47 @@ describe('ElevesView (liste alignee maquette)', () => {
       expect(container.querySelector('.lpv-m-table')).not.toBeNull()
     })
 
-    expect(container.textContent).toContain('5 sur 7 élèves')
+    // 10 sur la première page, pagination présente
+    expect(container.querySelector('.lpv-m-pagination')).not.toBeNull()
+    expect(container.textContent).toContain('2')
 
-    await user.click(screen.getByRole('button', { name: 'Afficher les suivants' }))
+    // Page 2 via le lien href=?page=2 (pattern GOV.UK)
+    const lienPage2 = container.querySelector('a[href$="page=2"]')
+    expect(lienPage2).not.toBeNull()
+  })
 
+  it('affiche la page demandée via ?page=2', async () => {
+    hookRetour.data = [
+      ...Array.from({ length: 12 }, (_, i) => ({
+        id: i + 10,
+        prenom: `Eleve${i + 1}`,
+        nom: 'Test',
+        niveau: 'CM2' as const,
+        groupe: null,
+      })),
+    ]
+    searchParamsCourants.params = new URLSearchParams('page=2')
+    const { container } = rendre()
+
+    await screen.findByText('Tous mes élèves')
     await waitFor(() => {
-      expect(container.textContent).toContain('7 sur 7 élèves')
+      expect(container.querySelector('.lpv-m-table')).not.toBeNull()
     })
+
+    expect(container.textContent).toContain('Eleve11')
+    expect(container.textContent).not.toContain('Eleve10 Test')
+  })
+
+  it('masque la pagination quand une seule page', async () => {
+    hookRetour.data = elevesMock
+    const { container } = rendre()
+
+    await screen.findByText('Tous mes élèves')
+    await waitFor(() => {
+      expect(container.querySelector('.lpv-m-table')).not.toBeNull()
+    })
+
+    expect(container.querySelector('.lpv-m-pagination')).toBeNull()
   })
 
   it('affiche le message d erreur en cas d echec de chargement', () => {
