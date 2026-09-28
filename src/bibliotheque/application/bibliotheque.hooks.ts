@@ -44,8 +44,13 @@ export const useEnregistrerPret = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (command: { eleveId: number; exemplaireId: number; motDePasse: string }) =>
-      bibliothequeRepository.enregistrerPret(command),
+    mutationFn: (command: {
+      eleveId: number
+      exemplaireId: number
+      motDePasse: string
+      /** Optionnel : fixée par l'assistant, sinon les hooks serveur la calculent. */
+      dateRetourPrevue?: string
+    }) => bibliothequeRepository.enregistrerPret(command),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: PRETS_QUERY_KEY })
       queryClient.invalidateQueries({ queryKey: ['bibliotheque', 'catalogue'] })

@@ -93,12 +93,15 @@ export const bibliothequeRepository = {
     eleveId: number
     exemplaireId: number
     motDePasse: string
+    /** Optionnel : fixée par l'assistant, sinon les hooks serveur la calculent. */
+    dateRetourPrevue?: string
   }): Promise<void> {
     try {
       await httpClient.post('/bibliotheque/prets', {
         eleveId: command.eleveId,
         exemplaireId: command.exemplaireId,
         motDePasse: command.motDePasse,
+        ...(command.dateRetourPrevue ? { dateRetourPrevue: command.dateRetourPrevue } : {}),
       })
     } catch (err) {
       throw new Error(getAxiosErrorMessage(err, "Impossible d'enregistrer le prêt."))
