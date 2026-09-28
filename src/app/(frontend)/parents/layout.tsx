@@ -31,7 +31,7 @@ export default async function ParentsLayout({ children }: { children: ReactNode 
             { description: 'Le suivi de votre enfant', href: '/parents', label: 'Espace parents' },
             { href: '/rgpd', label: 'Protection des données' },
           ]}
-          user={user ? { nom: user.name, email: user.email } : null}
+          user={user ? { nom: `${user.prenom} ${user.nom}`, email: user.email } : null}
         />
       }
       footerLinks={[{ href: '/parents/login', label: 'Connexion' }]}

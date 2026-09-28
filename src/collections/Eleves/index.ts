@@ -33,16 +33,19 @@ export const Eleves: CollectionConfig = {
   },
   fields: [
     {
+      label: 'Prénom',
       name: 'prenom',
       type: 'text',
       required: true,
     },
     {
+      label: 'Nom',
       name: 'nom',
       type: 'text',
       required: true,
     },
     {
+      label: 'Date de naissance',
       name: 'dateNaissance',
       type: 'date',
       admin: {
@@ -54,16 +57,19 @@ export const Eleves: CollectionConfig = {
       required: true,
     },
     {
+      label: 'Niveau',
       name: 'niveau',
       type: 'select',
       options: niveauOptions,
       required: true,
     },
     {
+      label: 'Groupe',
       name: 'groupe',
       type: 'text',
     },
     {
+      label: 'Prof référent',
       name: 'profReferent',
       relationTo: 'users',
       type: 'relationship',
@@ -78,8 +84,13 @@ export const Eleves: CollectionConfig = {
         read: elevesChampSensible,
         update: elevesChampSensible,
       },
-      name: 'parents',
+      admin: {
+        description:
+          'Créer d’abord le compte du parent (collection Users, rôle « Parent »), puis le relier ici. Obligatoire pour un élève mineur.',
+      },
       hasMany: true,
+      label: 'Parents',
+      name: 'parents',
       relationTo: 'users',
       type: 'relationship',
       filterOptions: {
@@ -93,20 +104,27 @@ export const Eleves: CollectionConfig = {
         read: elevesChampSensible,
         update: elevesChampSensible,
       },
-      name: 'consentementRGPD',
-      type: 'checkbox',
       defaultValue: false,
       label: 'Consentement RGPD',
+      name: 'consentementRGPD',
+      type: 'checkbox',
+      admin: {
+        description:
+          'Le consentement parental est obligatoire pour créer un élève mineur ; un majeur consent lui-même.',
+      },
     },
     {
       access: {
         read: elevesChampSensible,
         update: elevesChampSensible,
       },
-      name: 'consentementRetire',
-      type: 'checkbox',
       defaultValue: false,
       label: 'Consentement retiré',
+      name: 'consentementRetire',
+      type: 'checkbox',
+      admin: {
+        description: 'Cocher si la famille retire son consentement (déclenche l’anonymisation)',
+      },
     },
     {
       access: {

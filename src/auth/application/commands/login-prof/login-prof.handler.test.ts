@@ -8,6 +8,8 @@ import { loginProfHandler } from './login-prof.handler'
 const unProf = (): User => ({
   id: 1,
   email: 'prof@lpv.fr',
+  prenom: 'Prof',
+  nom: 'LPV',
   name: 'Prof LPV',
   role: 'prof',
   collection: 'users',

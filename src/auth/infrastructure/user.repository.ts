@@ -4,12 +4,16 @@ import type { User } from '@/auth/domain/user.entity'
 import { getAxiosErrorMessage, isAxiosUnauthorized } from '@/shared/infrastructure/axios-error'
 import { httpClient } from '@/shared/infrastructure/http.client'
 
-type UserResponse = { user: Pick<PayloadUser, 'id' | 'email' | 'name' | 'role' | 'telephone' | 'collection'> }
+type UserResponse = {
+  user: Pick<PayloadUser, 'id' | 'email' | 'prenom' | 'nom' | 'name' | 'role' | 'telephone' | 'collection'>
+}
 
 const mapDtoToUser = (dto: UserResponse['user']): User => ({
   id: dto.id,
   email: dto.email,
-  name: dto.name,
+  prenom: dto.prenom,
+  nom: dto.nom,
+  name: dto.name ?? `${dto.prenom} ${dto.nom}`,
   role: dto.role,
   telephone: dto.telephone ?? null,
   collection: 'users',
