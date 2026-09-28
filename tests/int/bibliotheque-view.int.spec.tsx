@@ -172,6 +172,10 @@ describe('BibliothequeView', () => {
       container.querySelector('.lpv-o-bibliotheque__searchbar .lpv-a-button--success'),
     ).not.toBeNull()
 
+    // Catalogue : molécule Table GOV.UK, pleine largeur
+    expect(container.querySelector('.lpv-m-table')).not.toBeNull()
+    expect(container.querySelector('.lpv-m-table')?.tagName.toLowerCase()).toBe('table')
+
     // Retards : ActionRow bordure gauche rouge + bouton secondaire
     expect(container.querySelectorAll('.lpv-m-action-row--red').length).toBe(1)
 

@@ -9,6 +9,9 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ### Modifié
 - Page Bibliothèque alignée sur le modèle : barre de recherche pleine largeur sous les compteurs (recherche, filtre de niveau et bouton « Enregistrer un prêt »), retards en lignes d'action à bordure rouge, encadrés latéraux à bordure haute (rappels bleus sans avertissement, « Ajouter un livre ») au lieu des panneaux bleus
 
+### Corrigé
+- Catalogue de la bibliothèque : le tableau s'étend maintenant sur toute la largeur de la colonne (espacement des colonnes lisible, comme le modèle) au lieu d'être compacté sur une portion d'écran
+
 ## [0.7.0] — 2026-09-28
 
 ### Ajouté

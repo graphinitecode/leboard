@@ -6,7 +6,8 @@ import { Suspense, useMemo, useState } from 'react'
 
 import { InsetText, Tag } from '@/components/atoms'
 import { Button } from '@/components/atoms/a-button'
-import { ActionRow, AlertCard, Toast } from '@/components/molecules'
+import { ActionRow, AlertCard, Table, Toast } from '@/components/molecules'
+import type { TableHeadCell, TableRowCell } from '@/components/molecules'
 import {
   estPretEnCours,
   joursDeRetard,
@@ -87,6 +88,37 @@ function VueBibliotheque() {
       setErreur('Impossible de marquer le prêt comme retourné. Réessayez.')
     }
   }
+
+  const catalogueHead: TableHeadCell[] = [
+    { text: 'Titre' },
+    { text: 'Auteur' },
+    { text: 'Niveau' },
+    { text: 'Statut' },
+    { text: '' },
+  ]
+
+  const catalogueRows: TableRowCell[][] = catalogueFiltre.map((livre) => {
+    const dispo = livre.exemplaires.some((ex) => ex.disponible)
+    return [
+      { text: livre.titre },
+      { text: livre.auteur ?? '—' },
+      { text: livre.niveau ? NIVEAU_LABELS[livre.niveau] ?? livre.niveau : '—' },
+      {
+        content: (
+          <Tag color={dispo ? 'green' : 'red'}>
+            {dispo ? 'Disponible' : 'Emprunté'}
+          </Tag>
+        ),
+      },
+      {
+        content: (
+          <Link className="lpv-link" href={`/profs/bibliotheque/livres/${livre.id}`}>
+            Voir
+          </Link>
+        ),
+      },
+    ]
+  })
 
   return (
     <>
@@ -192,41 +224,9 @@ function VueBibliotheque() {
             ) : catalogueFiltre.length === 0 ? (
               <InsetText>Aucun livre ne correspond à votre recherche.</InsetText>
             ) : (
-              <table className="lpv-a-table">
-                <thead>
-                  <tr>
-                    <th scope="col">Titre</th>
-                    <th scope="col">Auteur</th>
-                    <th scope="col">Niveau</th>
-                    <th scope="col">Statut</th>
-                    <th scope="col">
-                      <span className="lpv-visually-hidden">Actions</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {catalogueFiltre.map((livre) => {
-                    const dispo = livre.exemplaires.some((ex) => ex.disponible)
-                    return (
-                      <tr key={livre.id}>
-                        <td>{livre.titre}</td>
-                        <td>{livre.auteur ?? '—'}</td>
-                        <td>{livre.niveau ? NIVEAU_LABELS[livre.niveau] ?? livre.niveau : '—'}</td>
-                        <td>
-                          <Tag color={dispo ? 'green' : 'red'}>
-                            {dispo ? 'Disponible' : 'Emprunté'}
-                          </Tag>
-                        </td>
-                        <td>
-                          <Link className="lpv-link" href={`/profs/bibliotheque/livres/${livre.id}`}>
-                            Voir
-                          </Link>
-                        </td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
+              <div style={{ overflowX: 'auto' }}>
+                <Table caption="Catalogue" head={catalogueHead} rows={catalogueRows} />
+              </div>
             )}
           </section>
         </div>
