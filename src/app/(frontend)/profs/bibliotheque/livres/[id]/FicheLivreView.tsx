@@ -221,7 +221,7 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
     },
     {
       label: 'Exemplaires disponibles',
-      type: disponibles > 0 ? 'success' : undefined,
+      type: disponibles > 0 ? 'success' : 'alert',
       value: `${disponibles} / ${totalExemplaires}`,
     },
     {

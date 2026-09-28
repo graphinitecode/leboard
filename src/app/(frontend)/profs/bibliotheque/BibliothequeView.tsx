@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useMemo, useState } from 'react'
 
-import { InsetText, Tag } from '@/components/atoms'
+import { Icon, InsetText, Tag } from '@/components/atoms'
 import { Button } from '@/components/atoms/a-button'
 import { ActionRow, AlertCard, Table, Toast } from '@/components/molecules'
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
@@ -134,11 +134,16 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
     <>
       {(erreur || prets.isError || catalogue.isError) && (
         <InsetText>
-          {erreur ?? 'Impossible de charger la bibliothèque. Rechargez la page ou réessayez plus tard.'}
+          {erreur ??
+            'Impossible de charger la bibliothèque. Rechargez la page ou réessayez plus tard.'}
         </InsetText>
       )}
       {pretRetourne && (
-        <Toast message="Prêt marqué comme retourné" type="success" onClose={() => setPretRetourne(false)} />
+        <Toast
+          message="Prêt marqué comme retourné"
+          type="success"
+          onClose={() => setPretRetourne(false)}
+        />
       )}
       {pretEnregistre && (
         <Toast
@@ -167,9 +172,16 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
       ) : null}
 
       <h1 className="lpv-h1">Bibliothèque</h1>
-      <p className="lpv-muted">
-        Gérez le catalogue de livres de l&apos;association : suivez les prêts en cours,
-        repérez les retards et consultez les exemplaires disponibles.
+      <p
+        className="lpv-muted pb-7"
+        style={{
+          fontSize: '1.225rem',
+          paddingBottom: '1.75rem',
+          fontWeight: '500',
+        }}
+      >
+        Gérez le catalogue de livres de l&apos;association : suivez les prêts en cours, repérez les
+        retards et consultez les exemplaires disponibles.
       </p>
 
       <div className="lpv-cards-grid lpv-cards-grid--3">
@@ -244,13 +256,13 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
                               pretId: pret.id,
                               titre: pret.livreLabel ?? pret.exemplaireCode ?? 'ce livre',
                             }),
-                          variant: 'secondary',
+                          variant: 'primary',
                         }
                       : undefined
                   }
                   key={pret.id}
                   meta={`Retour prévu le ${formatDate(pret.dateRetourPrevue)} — ${joursDeRetard(pret.dateRetourPrevue)} jour(s) de retard`}
-                  title={`« ${pret.livreLabel ?? pret.exemplaireCode ?? 'Livre'} » — emprunté par ${pret.eleveLabel ?? 'un élève'}`}
+                  title={`« ${pret.livreLabel ?? pret.exemplaireCode ?? 'Livre'} » emprunté par ${pret.eleveLabel ?? 'un élève'}`}
                 />
               ))
             )}
@@ -266,7 +278,7 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
               <InsetText>Aucun livre ne correspond à votre recherche.</InsetText>
             ) : (
               <div style={{ overflowX: 'auto' }}>
-                <Table caption="Catalogue" head={catalogueHead} rows={catalogueRows} />
+                <Table caption="" head={catalogueHead} rows={catalogueRows} />
               </div>
             )}
           </section>
@@ -286,7 +298,7 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
                     key={pret.id}
                     titre={pret.eleveLabel ?? 'Élève'}
                   >
-                    &laquo; {pret.livreLabel ?? pret.exemplaireCode} &raquo; — retour prévu le{' '}
+                    &laquo; {pret.livreLabel ?? pret.exemplaireCode} &raquo; / retour prévu le{' '}
                     {formatDate(pret.dateRetourPrevue)}
                   </AlertCard>
                 ))}
@@ -299,8 +311,12 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
               <p className="lpv-muted" style={{ marginTop: 0 }}>
                 Nouvel ouvrage à référencer au catalogue.
               </p>
-              <Button href="/profs/bibliotheque/livres/nouveau" variant="secondary">
-                + Nouveau livre
+              <Button
+                href="/profs/bibliotheque/livres/nouveau"
+                variant="success"
+                className="w-full"
+              >
+                <Icon icon={'rivet-icons:plus-circle-solid'} size={19} />&nbsp;Nouveau livre
               </Button>
             </div>
           ) : null}

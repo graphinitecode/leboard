@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { useMemo } from 'react'
 
 import { Details, InsetText, Tag } from '@/components/atoms'
@@ -8,6 +7,7 @@ import { ActionRow, AlertCard, MonthCalendarCard } from '@/components/molecules'
 import { DashboardPage } from '@/components/templates'
 import { presentSeanceLigne, useListMySeances } from '@/seances'
 import type { MarqueurJourCalendrier } from '@/calendrier'
+import { ActionIconcard } from '@/components/molecules/m-action-iconcard'
 
 interface ProfsDashboardProps {
   nom?: string
@@ -194,22 +194,40 @@ export default function ProfsDashboard({ prenom, alertes }: ProfsDashboardProps)
                 </div>
               </div>
             )}
-            <div className="lpv-t-dashboard-page__aside-card">
-              <h3 className="lpv-t-dashboard-page__aside-card__title">Accès rapides</h3>
-              <nav className="lpv-t-dashboard-page__aside-card__links">
-                <Link href="/profs/calendrier" className="lpv-link-inline">
-                  Calendrier
-                </Link>
-                <Link href="/profs/disponibilites" className="lpv-link-inline">
-                  Mes disponibilités
-                </Link>
-                <Link href="/profs/eleves" className="lpv-link-inline">
-                  Tous mes élèves
-                </Link>
-                <Link href="/profs/bibliotheque" className="lpv-link-inline">
-                  Catalogue bibliothèque
-                </Link>
-              </nav>
+
+            <div className="gap-y-7 grid grid-cols-1">
+              <ActionIconcard
+                href="/profs/calendrier"
+                title={'Ma semaine de travail'}
+                icon={'rivet-icons:calendar-solid'}
+                color="green"
+                description="Voir la semaine et les eventuelles séances de cours"
+                key="cal"
+              />
+              <ActionIconcard
+                title={'Mes élèves'}
+                href="/profs/eleves"
+                icon={'rivet-icons:user-group-solid'}
+                color="orange"
+                description="Consulter la liste de tous les élèves."
+                key="students"
+              />
+              <ActionIconcard
+                href="/profs/disponibilites"
+                title={'Mes disponibilités'}
+                icon={'rivet-icons:check-all'}
+                color="magenta"
+                description="Consulter et gérer toutes vos disponiblités pour les cours."
+                key="dispo"
+              />
+              <ActionIconcard
+                href="/profs/bibliotheque"
+                title={'La Bibliotheque'}
+                icon={'rivet-icons:note-solid'}
+                color="yellow"
+                description="Tous les livres et support de cours disponibles."
+                key="biblio"
+              />
             </div>
           </>
         }

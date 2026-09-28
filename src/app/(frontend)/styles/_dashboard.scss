@@ -64,8 +64,11 @@
 
 .lpv-t-detail-page__caption {
   color: var(--lpv-text-muted);
-  font-size: 1.05rem;
-  margin: -0.5rem 0 1.25rem;
+  margin: -1.1rem 0 1.25rem;
+  font-size: 1.225rem;
+  padding-bottom: 1.75rem;
+  font-weight: 500;
+
 }
 
 /* Liste d'information dt/dd (sidebar fiche élève, pattern GOV.UK infolist) */

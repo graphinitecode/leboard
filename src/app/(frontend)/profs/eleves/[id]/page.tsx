@@ -114,16 +114,23 @@ export default async function EleveProfPage({
     ? `${referent.prenom} ${(referent.nom ?? '').charAt(0)}.`
     : null
 
+  const getType = (taux: number | null ) => {
+    if (taux === null) return undefined
+    if (taux > 75) return 'success'
+    if (taux > 25) return 'warning'
+    if (taux < 25) return 'danger'
+    return undefined
+  }
   const stats: DashboardStat[] = [
     {
       value: taux !== null ? `${taux}%` : '—',
       label: 'Taux de présence',
-      type: taux !== null && taux < 75 ? 'alert' : undefined,
+      type: getType(taux),
     },
     {
       value: alertes?.totalDocs ?? 0,
       label: 'Alerte active',
-      type: alertes && alertes.totalDocs > 0 ? 'alert' : undefined,
+      type: alertes && alertes.totalDocs > 0 ? 'danger' : 'success',
     },
     {
       value: derniereSeanceLabel(derniereSeance?.date ?? null),

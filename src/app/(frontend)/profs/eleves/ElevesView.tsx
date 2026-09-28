@@ -299,7 +299,7 @@ export default function ElevesView({ profId, alertes, retour }: ElevesViewProps)
             ) : (
               <>
                 <div style={{ overflowX: 'auto' }}>
-                  <Table caption="Élèves" head={head} rows={rows} />
+                  <Table caption="" head={head} rows={rows} />
                 </div>
                 {nbPages > 1 ? (
                   <Pagination
