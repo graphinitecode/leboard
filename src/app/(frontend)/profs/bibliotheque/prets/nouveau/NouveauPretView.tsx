@@ -511,8 +511,8 @@ export default function NouveauPretView({ profId }: { profId: number }) {
       {confirmOuvert && eleveChoisi && livresChoisis.length > 0 ? (
         <ConfirmAction
           confirmLabel="Enregistrer le prêt"
-          description={`${livresChoisis.length} livre${livresChoisis.length > 1 ? 's' : ''} sera${
-            livresChoisis.length > 1 ? 'nt' : ''
+          description={`${livresChoisis.length} livre${livresChoisis.length > 1 ? 's' : ''} ${
+            livresChoisis.length > 1 ? 'seront' : 'sera'
           } prêté${livresChoisis.length > 1 ? 's' : ''} à ${nomEleveChoisi} pour être rendu${
             livresChoisis.length > 1 ? 's' : ''
           } le ${formatDateLongue(dateRetourIso(duree))}. Confirmez avec votre mot de passe.`}
