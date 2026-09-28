@@ -191,6 +191,35 @@ describe('FicheLivreView (alignee maquette)', () => {
     expect(screen.getByText('Livre introuvable ou retiré du catalogue.')).toBeDefined()
   })
 
+  it('affiche un lien ajouter resume pour un gerant quand le resume manque', () => {
+    catalogueRetour.data = [{ ...LIVRE, resume: null }]
+    const { container } = rendre()
+
+    expect(container.textContent).toContain("Ce livre n'a pas encore de résumé.")
+    const lien = container.querySelector<HTMLAnchorElement>(
+      'a[href="/profs/bibliotheque/livres/100/modifier#livre-resume"]',
+    )
+    expect(lien).not.toBeNull()
+    expect(lien?.textContent).toBe('Ajouter un résumé')
+    expect(lien?.className).toContain('lpv-link-inline')
+  })
+
+  it('masque le lien ajouter resume pour un non gerant', () => {
+    catalogueRetour.data = [{ ...LIVRE, resume: null }]
+    const { container } = rendre(false)
+
+    expect(container.textContent).toContain("Ce livre n'a pas encore de résumé.")
+    expect(container.querySelector('a[href*="#livre-resume"]')).toBeNull()
+  })
+
+  it('masque le message et le lien quand le resume existe', () => {
+    rendre()
+
+    expect(screen.queryByText(/pas encore de résumé/)).toBeNull()
+    expect(screen.queryByText('Ajouter un résumé')).toBeNull()
+    expect(screen.getByText(/Un aviateur rencontre un petit garçon/)).toBeDefined()
+  })
+
   it('demande le mot de passe avant de marquer un retour', async () => {
     pretsLivreRetour.data = PRETS
     const user = userEvent.setup()

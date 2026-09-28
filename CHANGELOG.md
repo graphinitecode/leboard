@@ -14,6 +14,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ### Modifié
 - Page « Mes élèves » : la première colonne du tableau s'intitule « Noms & Prénoms » et les noms ne sont plus cliquables — l'accès à la fiche passe par le lien « Voir » de la colonne « Actions »
 - Fiche livre : la note « les exemplaires physiques se gèrent dans le panneau d'administration » est intégrée à l'encadré « Informations » au lieu de flotter sous la colonne latérale
+- Fiche livre sans résumé : le message indique clairement que le livre n'a pas encore de résumé, et les gérants de la bibliothèque peuvent cliquer sur « Ajouter un résumé » pour le renseigner directement
 - Portail : les écritures sensibles demandent une confirmation avant l'enregistrement — retour de séance (visible par les parents), création d'une séance, création et modification d'un livre, suppression d'une disponibilité (fenêtre de confirmation unifiée, bouton Annuler systématique)
 
 ### Sécurisé
