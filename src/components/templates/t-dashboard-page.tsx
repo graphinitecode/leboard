@@ -60,7 +60,7 @@ export interface DashboardSection {
   empty?: ReactNode
 }
 
-function StatsGrid({ stats }: { stats: DashboardStat[] }) {
+export function StatsGrid({ stats }: { stats: DashboardStat[] }) {
   return (
     <div className={`lpv-cards-grid${stats.length === 3 ? ' lpv-cards-grid--3' : ' lpv-cards-grid--4'}`}>
       {stats.map((stat) => (

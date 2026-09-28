@@ -1,4 +1,6 @@
-import { render, screen } from '@testing-library/react'
+import { Suspense } from 'react'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -15,8 +17,12 @@ const catalogueRetour: { data?: LivreCatalogue[]; isLoading: boolean; isError: b
   isError: false,
 }
 
+const searchParamsCourants = { params: new URLSearchParams() }
+
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ refresh: vi.fn(), push: vi.fn(), replace: vi.fn() }),
+  useSearchParams: () => searchParamsCourants.params,
+  usePathname: () => '/profs/bibliotheque',
 }))
 
 vi.mock('@/bibliotheque', async (importOriginal) => {
@@ -80,12 +86,15 @@ const rendre = () => {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   return render(
     <QueryClientProvider client={client}>
-      <BibliothequeView />
+      <Suspense fallback={null}>
+        <BibliothequeView />
+      </Suspense>
     </QueryClientProvider>,
   )
 }
 
 beforeEach(() => {
+  searchParamsCourants.params = new URLSearchParams()
   pretsRetour.data = []
   pretsRetour.isLoading = false
   pretsRetour.isError = false
@@ -126,5 +135,28 @@ describe('BibliothequeView', () => {
     rendre()
 
     expect(screen.getByText('Aucun retard. Tous les prêts sont dans les temps.')).toBeDefined()
+  })
+
+  it('filtre le catalogue par niveau', async () => {
+    catalogueRetour.data = CATALOGUE
+    const user = userEvent.setup()
+    rendre()
+
+    await user.selectOptions(screen.getByLabelText(/Filtrer par niveau/), 'college')
+
+    await waitFor(() => {
+      expect(screen.queryByText('Le Petit Prince')).toBeNull()
+      expect(screen.getByText('Le Seigneur des Anneaux')).toBeDefined()
+    })
+  })
+
+  it('affiche le toast pret enregistre via le parametre d url', async () => {
+    searchParamsCourants.params = new URLSearchParams('pret=enregistre')
+
+    rendre()
+
+    await waitFor(() => {
+      expect(screen.getByText('Prêt enregistré')).toBeDefined()
+    })
   })
 })

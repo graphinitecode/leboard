@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { usersAdmin, usersCreate, usersDelete, usersRead, usersUpdate } from '../../access/users'
 import { denormaliserNomComplet } from '../../hooks/denormaliserNomComplet'
+import { inviterNouveauParent } from '../../hooks/inviterNouveauParent'
 
 export const roleOptions = [
   { label: 'Admin', value: 'admin' },
@@ -23,7 +24,19 @@ export const Users: CollectionConfig = {
     defaultColumns: ['prenom', 'nom', 'email', 'role'],
     useAsTitle: 'name',
   },
-  auth: true,
+  auth: {
+    // Le mail de réinitialisation pointe vers la page publique du portail
+    // (et jamais vers l'admin) — les parents n'y ont pas accès (Spec 02).
+    forgotPassword: {
+      generateEmailHTML: (args?: { token?: string }) => {
+        const url = `${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}/reinitialiser-mot-de-passe?token=${args?.token ?? ''}`
+        return `<p>Bonjour,</p>
+<p>Vous avez demandé la réinitialisation de votre mot de passe sur LPV Board.</p>
+<p><a href="${url}">Choisir un nouveau mot de passe</a></p>
+<p>Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail.</p>`
+      },
+    },
+  },
   fields: [
     {
       name: 'prenom',
@@ -105,6 +118,7 @@ export const Users: CollectionConfig = {
     },
   ],
   hooks: {
+    afterChange: [inviterNouveauParent],
     beforeChange: [denormaliserNomComplet],
   },
   timestamps: true,
