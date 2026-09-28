@@ -7,6 +7,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ## [Unreleased]
 
 ### Ajouté
+- Page « Mes élèves » pour les profs : liste des élèves dont vous êtes référent, avec niveau et groupe, et accès direct à chaque fiche (le lien du tableau de bord fonctionnait mais la page n'existait pas)
 - Page « Mon profil » pour les profs et les parents : modification de vos nom, prénom et numéro de téléphone depuis le portail, avec confirmation visuelle après enregistrement ; le lien se trouve dans le menu du portail
 - Profils utilisateurs avec prénom et nom séparés : saisie claire à la création des comptes (profs, parents, bénévoles) dans le panneau d'administration, affichage « Prénom Nom » partout
 - Création des élèves facilitée dans le panneau d'administration : instructions intégrées expliquant de créer d'abord le compte parent (rôle « Parent ») avant de relier l'élève, et rappel de la règle de consentement RGPD
@@ -34,6 +35,9 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Tableau de bord des profs : le calendrier de la semaine remplace les listes « Aujourd'hui » et « Cette semaine »
 - Assistant de disponibilités : parcours « une question par écran » à pleine page avec récapitulatif « Vos réponses », dans la continuité du design system
 - Boutons pleine largeur en mobile et focus textuel harmonisé sur les liens (entête, navigation, listes) ; lien de retour et accordéons affinés (chevrons)
+
+### Corrigé
+- Présences pré-remplies à la création d'une séance : les feuilles de présence de chaque élève du groupe sont maintenant générées automatiquement (elles devaient être créées une à une)
 
 ## [0.5.0] — 2026-09-21
 
