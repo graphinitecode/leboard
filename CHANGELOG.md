@@ -4,7 +4,7 @@ Tous les changements notables de LPV Board sont documentés ici.
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le versionnage suit [SemVer](https://semver.org/lang/fr/) (0.x pendant le développement initial).
 
-## [Unreleased]
+## [0.7.0] — 2026-09-28
 
 ### Ajouté
 - Réinitialisation du mot de passe depuis le site : nouvelle page publique « Mot de passe oublié » (depuis le lien sous le formulaire de connexion) et page « Nouveau mot de passe » accessible depuis le lien reçu par e-mail, sans passer par le panneau d'administration
