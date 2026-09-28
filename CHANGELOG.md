@@ -4,6 +4,12 @@ Tous les changements notables de LPV Board sont documentés ici.
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le versionnage suit [SemVer](https://semver.org/lang/fr/) (0.x pendant le développement initial).
 
+## [Unreleased]
+
+### Ajouté
+- Fiche élève repensée : compteurs en tête (taux de présence, alerte active, dernière séance), encadré latéral « Informations » (niveau, groupe, prof référent, ancienneté) avec rappel de confidentialité RGPD, et progressions en cartes colorées (vert = acquis, jaune = en cours, rouge = à revoir) à la place du tableau
+- Bibliothèque : filtre du catalogue par niveau (Primaire, Collège, Lycée) à côté de la recherche, et confirmation visuelle après l'enregistrement d'un prêt
+
 ## [0.6.0] — 2026-09-28
 
 ### Ajouté
