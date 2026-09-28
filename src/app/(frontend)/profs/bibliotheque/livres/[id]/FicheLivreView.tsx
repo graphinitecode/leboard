@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 
-import { BackLink, InsetText, Tag } from '@/components/atoms'
+import { BackLink, Icon, InsetText, Tag } from '@/components/atoms'
 import { Button } from '@/components/atoms/a-button'
 import { AlertCard, Table, Toast } from '@/components/molecules'
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
@@ -138,7 +138,8 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
           <h3 className="lpv-t-dashboard-page__aside-card__title">Actions</h3>
           <div className="lpv-t-dashboard-page__aside-card__actions">
             <Button href="/profs/bibliotheque/prets/nouveau" variant="success">
-              Enregistrer un prêt
+              <Icon icon={'rivet-icons:plus-circle-solid'} size={19} />
+              &nbsp;Enregistrer un prêt
             </Button>
             {enCours.length > 0 ? (
               <Button
@@ -152,7 +153,7 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
                     })
                 }}
                 type="button"
-                variant="secondary"
+                variant="primary"
               >
                 Marquer un retour
               </Button>
@@ -161,10 +162,7 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
                 Marquer un retour
               </Button>
             )}
-            <Button
-              href={`/profs/bibliotheque/livres/${livre.id}/modifier`}
-              variant="secondary"
-            >
+            <Button href={`/profs/bibliotheque/livres/${livre.id}/modifier`} variant="secondary">
               Modifier la fiche
             </Button>
           </div>
@@ -182,7 +180,7 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
         <h3 className="lpv-t-dashboard-page__aside-card__title">Informations</h3>
         <dl className="lpv-m-infolist">
           <dt>Catégorie</dt>
-          <dd>{livre.categorie ? CATEGORIE_LABELS[livre.categorie] ?? livre.categorie : '—'}</dd>
+          <dd>{livre.categorie ? (CATEGORIE_LABELS[livre.categorie] ?? livre.categorie) : '—'}</dd>
           <dt>ISBN</dt>
           <dd>{livre.isbn ?? '—'}</dd>
           <dt>Exemplaires</dt>
@@ -278,8 +276,19 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
             title: 'Résumé',
             children: livre.resume ? (
               <p>{livre.resume}</p>
+            ) : peutGerer ? (
+              <p className="lpv-muted">
+                Ce livre n&apos;a pas encore de résumé.{' '}
+                <Link
+                  className="lpv-link-inline"
+                  href={`/profs/bibliotheque/livres/${livreId}/modifier#livre-resume`}
+                >
+                  Ajouter un résumé
+                </Link>
+                .
+              </p>
             ) : (
-              <p className="lpv-muted">Aucun résumé pour le moment.</p>
+              <p className="lpv-muted">Ce livre n&apos;a pas encore de résumé.</p>
             ),
           },
           {
