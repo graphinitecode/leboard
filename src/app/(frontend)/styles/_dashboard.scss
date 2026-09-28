@@ -153,3 +153,23 @@
     width: auto;
   }
 }
+
+/* --- Searchbar à filtres (mes élèves) — même motif, sans bouton ------------ */
+
+.lpv-o-eleves__searchbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-bottom: 1.75rem;
+
+  input {
+    flex: 1 1 200px;
+    min-width: 200px;
+    width: auto;
+  }
+
+  select {
+    max-width: none;
+    width: auto;
+  }
+}

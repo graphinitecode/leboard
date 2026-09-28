@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ajouter un élève</title>
+<style>
+  :root{--govuk-black:#0b0c0c;--govuk-blue:#1d70b8;--govuk-green:#00703c;--govuk-red:#d4351c;--govuk-yellow:#ffdd00;--govuk-border:#b1b4b6;--govuk-dgrey:#505a5f;--bg:#fff;--text:#0b0c0c;
+    padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  :root[data-theme="dark"]{--bg:#0b0c0c;--text:#f3f2f1}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0b0c0c;--text:#f3f2f1}}
+  *{box-sizing:border-box}
+  html{scroll-padding-top:env(safe-area-inset-top,0px)}
+  body{margin:0;font-family:arial,"Helvetica Neue",sans-serif;color:var(--text);background:var(--bg);line-height:1.4}
+  a{color:var(--govuk-blue)}
+  a:focus,button:focus,input:focus{outline:3px solid var(--govuk-yellow);box-shadow:0 4px var(--govuk-black)}
+  .topbar{background:var(--govuk-black);color:#fff;padding-top:calc(10px + env(safe-area-inset-top,0px))}
+  .topbar div{max-width:700px;margin:0 auto;padding:12px 20px;font-size:19px;font-weight:700}
+  .phase{border-bottom:1px solid var(--govuk-border);padding:8px 20px;font-size:15px;max-width:700px;margin:0 auto}
+  .phase b{background:var(--govuk-blue);color:#fff;font-size:11px;text-transform:uppercase;padding:2px 7px;letter-spacing:1px;margin-right:8px}
+  .container{max-width:560px;margin:0 auto;padding:24px 20px 60px}
+  .back-link{display:inline-block;margin-bottom:20px;font-size:16px;text-decoration:none}
+  .back-link::before{content:"← "}
+  fieldset{border:none;padding:0;margin:0}
+  legend{font-size:26px;font-weight:700;margin-bottom:16px;padding:0}
+  .hint{font-size:16px;color:var(--govuk-dgrey);margin:0 0 16px}
+  .field{margin-bottom:20px}
+  .field label{display:block;font-weight:700;margin-bottom:6px}
+  input.txt{width:100%;border:2px solid var(--text);padding:10px 12px;font-size:18px;font-family:inherit;background:var(--bg);color:var(--text)}
+  .date{display:flex;gap:14px}.date .field{margin:0}.date input{width:80px}.date .yr input{width:110px}
+  .opts label{display:flex;align-items:center;gap:12px;padding:12px 0;font-size:18px;border-bottom:1px solid var(--govuk-border);cursor:pointer}
+  .opts input{width:24px;height:24px;flex-shrink:0}
+  .inset{border-left:8px solid var(--govuk-border);padding:4px 0 4px 16px;margin:0 0 20px;font-size:17px}
+  .inset p{margin:8px 0}
+  .btn{display:inline-block;background:var(--govuk-green);color:#fff;font-weight:700;padding:11px 22px;border:none;border-bottom:2px solid #002d18;font-size:18px;cursor:pointer;margin-top:20px}
+  .step{display:none}.step.active{display:block}
+  .error-summary{border:5px solid var(--govuk-red);padding:16px;margin-bottom:24px}
+  .error-summary h2{font-size:22px;margin:0 0 8px}
+  .error-summary ul{margin:0;padding-left:20px}.error-summary a{color:var(--govuk-red);font-weight:700}
+  .group .msg{display:none;color:var(--govuk-red);font-weight:700;margin-bottom:10px}
+  .group.err{border-left:5px solid var(--govuk-red);padding-left:15px}
+  .group.err .msg{display:block}.group.err input.txt{border-color:var(--govuk-red)}
+  dl{margin:0}dt{font-size:15px;color:var(--govuk-dgrey);margin-top:16px}
+  dd{margin:2px 0 0;font-size:18px;display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--govuk-border);padding-bottom:10px}
+  dd a{font-size:15px;white-space:nowrap}
+  .panel{background:var(--govuk-green);color:#fff;padding:28px 20px;margin-bottom:24px}
+  .panel h1{margin:0 0 6px;font-size:28px}.panel p{margin:0;font-size:17px}
+</style>
+</head>
+<body>
+<div class="topbar"><div>🏛️ Association Soutien Scolaire</div></div>
+<div class="phase"><b>Bêta</b> Ceci est un modèle — vos retours sont les bienvenus.</div>
+<div class="container">
+
+<div id="s1" class="step active">
+  <a href="#" class="back-link">Retour à mes élèves</a>
+  <div class="error-summary" hidden><h2>Il y a un problème</h2><ul></ul></div>
+  <div class="group"><fieldset>
+    <legend>Quel est le nom de l'élève ?</legend><span class="msg"></span>
+    <div class="field"><label for="prenom">Prénom</label><input class="txt" id="prenom" data-req="Saisis le prénom de l'élève"></div>
+    <div class="field"><label for="nom">Nom</label><input class="txt" id="nom" data-req="Saisis le nom de l'élève"></div>
+  </fieldset></div>
+  <button class="btn" onclick="next(1,2)">Continuer</button>
+</div>
+
+<div id="s2" class="step">
+  <a href="#" class="back-link" onclick="goTo(1)">Retour</a>
+  <div class="error-summary" hidden><h2>Il y a un problème</h2><ul></ul></div>
+  <div class="group"><fieldset>
+    <legend>Quelle est sa date de naissance ?</legend><p class="hint">Par exemple : 14 3 2016</p><span class="msg"></span>
+    <div class="date">
+      <div class="field"><label for="jj">Jour</label><input class="txt" id="jj" inputmode="numeric" data-req="Saisis la date de naissance de l'élève"></div>
+      <div class="field"><label for="mm">Mois</label><input class="txt" id="mm" inputmode="numeric" data-req="Saisis la date de naissance de l'élève"></div>
+      <div class="field yr"><label for="aa">Année</label><input class="txt" id="aa" inputmode="numeric" data-req="Saisis la date de naissance de l'élève"></div>
+    </div>
+  </fieldset></div>
+  <button class="btn" onclick="next(2,3)">Continuer</button>
+</div>
+
+<div id="s3" class="step">
+  <a href="#" class="back-link" onclick="goTo(2)">Retour</a>
+  <div class="error-summary" hidden><h2>Il y a un problème</h2><ul></ul></div>
+  <div class="group"><fieldset>
+    <legend>Quel est son niveau scolaire ?</legend><span class="msg"></span>
+    <div class="opts">
+      <label><input type="radio" name="niveau" id="niv1" value="CP – CE2" data-req="Choisis un niveau scolaire"> CP – CE2</label>
+      <label><input type="radio" name="niveau" value="CM1 – CM2"> CM1 – CM2</label>
+      <label><input type="radio" name="niveau" value="6e – 5e"> 6e – 5e</label>
+      <label><input type="radio" name="niveau" value="4e – 3e"> 4e – 3e</label>
+    </div>
+  </fieldset></div>
+  <button class="btn" onclick="next(3,4)">Continuer</button>
+</div>
+
+<div id="s4" class="step">
+  <a href="#" class="back-link" onclick="goTo(3)">Retour</a>
+  <div class="error-summary" hidden><h2>Il y a un problème</h2><ul></ul></div>
+  <div class="group"><fieldset>
+    <legend>Qui est le responsable légal ?</legend><span class="msg"></span>
+    <div class="field"><label for="rnom">Nom complet</label><input class="txt" id="rnom" data-req="Saisis le nom du responsable légal"></div>
+    <div class="field"><label for="rmail">Adresse email</label><input class="txt" id="rmail" type="email" data-req="Saisis l'adresse email du responsable légal"></div>
+    <div class="field"><label for="rtel">Téléphone (facultatif)</label><input class="txt" id="rtel" type="tel"></div>
+  </fieldset></div>
+  <button class="btn" onclick="next(4,5)">Continuer</button>
+</div>
+
+<div id="s5" class="step">
+  <a href="#" class="back-link" onclick="goTo(4)">Retour</a>
+  <div class="error-summary" hidden><h2>Il y a un problème</h2><ul></ul></div>
+  <div class="group"><fieldset>
+    <legend>Consentement du responsable légal</legend>
+    <p class="hint">L'élève étant mineur, l'association doit recueillir le consentement écrit de son responsable légal avant d'enregistrer ses données.</p>
+    <div class="inset">
+      <p><strong>Données enregistrées :</strong> identité, niveau, présences et retours des professeurs.</p>
+      <p><strong>Finalité :</strong> suivi pédagogique de l'élève.</p>
+      <p><strong>Conservation :</strong> 2 ans après le dernier cours <em>(exemple, à adapter)</em>.</p>
+      <p><strong>Droits :</strong> accès, rectification et suppression sur demande à l'administration.</p>
+    </div>
+    <span class="msg"></span>
+    <div class="opts"><label><input type="checkbox" id="consent" data-req="Confirme que le responsable légal a donné son consentement"> Le responsable légal a signé le formulaire de consentement</label></div>
+  </fieldset></div>
+  <button class="btn" onclick="next(5,6)">Continuer</button>
+</div>
+
+<div id="s6" class="step">
+  <a href="#" class="back-link" onclick="goTo(5)">Retour</a>
+  <h1 style="font-size:26px">Vérifiez vos réponses</h1>
+  <dl>
+    <dt>Élève</dt><dd><span id="r-nom"></span><a href="#" onclick="goTo(1)">Modifier</a></dd>
+    <dt>Date de naissance</dt><dd><span id="r-date"></span><a href="#" onclick="goTo(2)">Modifier</a></dd>
+    <dt>Niveau</dt><dd><span id="r-niv"></span><a href="#" onclick="goTo(3)">Modifier</a></dd>
+    <dt>Responsable légal</dt><dd><span id="r-resp"></span><a href="#" onclick="goTo(4)">Modifier</a></dd>
+    <dt>Consentement</dt><dd><span>Confirmé</span><a href="#" onclick="goTo(5)">Modifier</a></dd>
+  </dl>
+  <button class="btn" onclick="goTo(7)">Envoyer pour validation</button>
+</div>
+
+<div id="s7" class="step">
+  <div class="panel"><h1>✓ Fiche envoyée pour validation</h1><p>Elle est en attente de l'administration.</p></div>
+  <h2 style="font-size:22px">Et maintenant ?</h2>
+  <p>L'administration vérifie le consentement et valide la fiche. Tu seras prévenu(e) par email.</p>
+  <a href="#">Retour à mes élèves</a>
+</div>
+
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const ok=el=>el.type==='checkbox'?el.checked:el.type==='radio'?!!document.querySelector(`input[name="${el.name}"]:checked`):el.value.trim();
+function goTo(n){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  $('s'+n).classList.add('active');
+  if(n===6)recap();
+  scrollTo(0,0);
+}
+function next(from,to){
+  const s=$('s'+from),err=[];
+  s.querySelectorAll('.group').forEach(g=>g.classList.remove('err'));
+  s.querySelectorAll('[data-req]').forEach(el=>{
+    if(ok(el))return;
+    const g=el.closest('.group');g.classList.add('err');g.querySelector('.msg').textContent=el.dataset.req;
+    if(!err.some(e=>e.msg===el.dataset.req))err.push({id:el.id,msg:el.dataset.req});
+  });
+  const box=s.querySelector('.error-summary');
+  box.hidden=!err.length;
+  box.querySelector('ul').innerHTML=err.map(e=>`<li><a href="#${e.id}">${e.msg}</a></li>`).join('');
+  if(!err.length)goTo(to);
+}
+function recap(){
+  $('r-nom').textContent=$('prenom').value+' '+$('nom').value;
+  $('r-date').textContent=[$('jj').value,$('mm').value,$('aa').value].join('/');
+  $('r-niv').textContent=document.querySelector('input[name="niveau"]:checked').value;
+  $('r-resp').textContent=[$('rnom').value,$('rmail').value,$('rtel').value].filter(Boolean).join(' · ');
+}
+</script>
+</body>
+</html>

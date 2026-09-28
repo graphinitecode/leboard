@@ -4,6 +4,11 @@ Tous les changements notables de LPV Board sont documentés ici.
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le versionnage suit [SemVer](https://semver.org/lang/fr/) (0.x pendant le développement initial).
 
+## [Unreleased]
+
+### Ajouté
+- Page « Mes élèves » repensée : compteurs (élèves suivis, présence moyenne, élèves à surveiller), barre de recherche avec filtres par groupe et par statut, tableau des élèves (présence en %, rouge sous 75 %, statut de suivi) avec pagination « Afficher les suivants » et encadré latéral « À surveiller » reprenant les alertes de décrochage avec accès direct aux fiches
+
 ## [0.8.0] — 2026-09-28
 
 ### Ajouté
