@@ -34,9 +34,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   }
 
   return (
-    <header className="lpv-entete-bleue" {...(theme ? { 'data-theme': theme } : {})}>
-      <div className="lpv-entete-bleue__inner">
-        <Link className="lpv-entete-bleue__logo" href="/">
+    <header className="lpv-o-header" {...(theme ? { 'data-theme': theme } : {})}>
+      <div className="lpv-o-header__inner">
+        <Link className="lpv-o-header__logo" href="/">
           <Logo loading="eager" priority="high" />
         </Link>
         <HeaderNav data={data} />

@@ -32,15 +32,35 @@ Règles :
 
 ## Format des commits (obligatoire)
 
-Chaque commit suit le format [Conventional Commits](https://www.conventionalcommits.org/) :
+Chaque commit suit le format [Conventional Commits](https://www.conventionalcommits.org/) préfixé d'un **gitmoji** :
 
 ```
-<type>(<portée>): <sujet>
+:<type>: <type>(<portée>): <sujet>
 
 <description>
 
 <footer>
 ```
+
+### Gitmoji (obligatoire, en tête du sujet)
+
+Un emoji GitHub (shortcode `:nom:` ou emoji unicode) reflétant la nature du commit, placé
+**avant** le type. Correspondances usuelles :
+
+| Gitmoji | Type(s) |
+|---|---|
+| `:sparkles:` | `feat` |
+| `:bug:` | `fix` |
+| `:zap:` | `perf` |
+| `:recycle:` | `refactor` |
+| `:art:` | `style` |
+| `:test_tube:` | `test` |
+| `:memo:` | `docs` |
+| `:construction_worker:` / `:package:` | `build` |
+| `:construction:` | `ci` |
+| `:wrench:` / `:toolbox:` | `chore` |
+
+Exemples : `:sparkles: feat(theme): ajouter le cycle device`, `:bug: fix(molecules): élargir le type du handler`.
 
 ### Type (obligatoire)
 
@@ -87,7 +107,7 @@ Partie de l'application/librairie affectée — `feat(reader): …`, `fix(strong
 ### Exemples
 
 ```
-feat(reader): ajouter le mode focus
+:sparkles: feat(reader): ajouter le mode focus
 
 le mode focus masque la topbar et le dock tant que la touche Escape
 n'est pas pressée, pour réduire les distractions pendant la lecture
@@ -96,14 +116,14 @@ Closes #14
 ```
 
 ```
-fix(strong): gérer l'absence de code strong sur la version lsg
+:bug: fix(strong): gérer l'absence de code strong sur la version lsg
 
 la concordance repliait vers un état vide quand le code strong etait
 invalide ; on affiche maintenant un message explicite
 ```
 
 ```
-docs(agent): formaliser le format des commits conventionnels
+:memo: docs(agent): formaliser le format des commits conventionnels
 
 ajoute la section 10 a AGENT.md decrivant le format type(portee): sujet
 plus description et footer, ainsi que les regles de typographie
@@ -178,6 +198,39 @@ Le bump doit refléter le contenu de la section (vérifié par `changelog:check`
 
 - Après toute modification de code : lancer lint et typecheck.
 - Ne jamais lire les fichiers `.env` — ils contiennent les secrets. Demander à l'utilisateur toute variable nécessaire.
+
+## Atomic design (obligatoire)
+
+Le design system suit l'[atomic design](https://atomicdesign.bradfrost.com/chapter-2/) — le nommage
+est inspiré de [BEM + Atomic Design](https://www.lullabot.com/articles/bem-atomic-design-a-css-architecture-worth-loving).
+
+### Nommage des fichiers et du code
+
+- **Fichiers, classes, variables, props et types : TOUJOURS en anglais.** Pas de français dans
+  l'identifiant (`a-button.tsx`, pas `Bouton.tsx` ; prop `label`, pas `libelle`).
+- Les textes affichés à l'utilisateur restent en français (contenu UI), seuls les identifiants
+  de code sont en anglais.
+
+### Arborescence des composants
+
+- `src/components/atoms/` — fichiers préfixés `a-` (ex. `a-button`, `a-label`, `a-tag`)
+- `src/components/molecules/` — fichiers préfixés `m-` (ex. `m-modal`, `m-summary-list`)
+- `src/components/organisms/` — fichiers préfixés `o-` (ex. `o-login-form`, `o-availability-list`)
+- `templates` (`t-`) : non utilisés à ce jour ; si besoin, fichiers préfixés `t-`.
+- Les organisms métier restent exportés par le barrel du module métier (`@/seances`, `@/planning`…)
+  mais vivent physiquement dans `src/components/organisms/`.
+
+### Classes CSS (convention BEM atomic)
+
+- Préfixe de namespace `lpv-` conservé + couche atomique :
+  `lpv-{a|m|o}-{block}__{element}--{modifier}` (ex. `lpv-a-button--danger`,
+  `lpv-m-summary-list__row--no-actions`, `lpv-o-header__hero-title`).
+- Les utilitaires (couleurs `lpv-blue`, typography `lpv-h1`, spacing `lpv-spacing-*`,
+  layout `lpv-container`…) ne sont pas des composants : anglais simple, sans préfixe de couche.
+
+### Tests
+
+- `tests/int/*.int.spec.tsx` — nommage anglais aligné sur le composant (ex. `checkboxes.int.spec.tsx`).
 
 ## Payload CMS
 

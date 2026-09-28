@@ -8,16 +8,16 @@
   margin-bottom: 1.5rem;
   padding: 1.25rem;
 
-  &__titre {
+  &__title {
     font-size: 1.125rem;
     font-weight: 700;
     margin: 0 0 0.75rem;
   }
 
-  &__lignes {
+  &__rows {
     margin: -0.35rem -0.5rem;
 
-    .lpv-ligne {
+    .lpv-m-list-row {
       padding-left: 0.5rem;
       padding-right: 0.5rem;
     }
@@ -40,6 +40,17 @@
     }
   }
 
+  &--3 {
+    @media (min-width: 480px) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (min-width: 720px) {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
   &--4 {
     @media (min-width: 720px) {
       grid-template-columns: repeat(4, 1fr);
@@ -49,20 +60,37 @@
 
 .lpv-stat {
   display: block;
+  background-color: var(--lpv-background-color);
+  border: 1px solid var(--lpv-grey-border);
+  border-top: 6px solid var(--lpv-a-tag--blue-text);
+  color: var(--lpv-a-tag--blue-text);
+  border-radius: 0;
 
-  &__valeur {
-    color: var(--lpv-portail);
+  &.success {
+    border-top-color: var(--lpv-a-tag--green-text);
+    color: var(--lpv-a-tag--green-text);
+  }
+  &.alert {
+    border-top-color: var(--lpv-a-tag--red-text);
+    color: var(--lpv-a-tag--red-text);
+  }
+  &.warning {
+    border-top-color: var(--lpv-a-tag--yellow-text);
+    color: var(--lpv-a-tag--yellow-text);
+  }
+
+  &__value {
     font-size: 2.25rem;
     font-weight: 700;
     letter-spacing: -0.02em;
     line-height: 1.1;
 
-    &--alerte {
+    &--alert {
       color: var(--lpv-orange);
     }
   }
 
-  &__libelle {
+  &__label {
     color: var(--lpv-text-muted);
     font-size: 0.95rem;
     margin-top: 0.25rem;
@@ -107,13 +135,13 @@
     background-color: var(--lpv-grey-border);
   }
 
-  &__haut {
+  &__top {
     align-items: center;
     display: flex;
     gap: 0.75rem;
   }
 
-  &__nom {
+  &__name {
     font-weight: 700;
   }
 
@@ -122,7 +150,7 @@
     font-size: 0.9rem;
   }
 
-  &__lien {
+  &__link {
     color: var(--lpv-portail-dark);
     font-size: 0.9rem;
     font-weight: 700;

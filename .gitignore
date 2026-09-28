@@ -23,9 +23,13 @@ tsconfig.tsbuildinfo
 # vitest env stubs (valeurs de test factices uniquement)
 tests/env/.env
 
+# Plan de travail local (non versionné)
+PLAN.md
+
 # Playwright
 node_modules/
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+.opencode/

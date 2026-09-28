@@ -1,0 +1,125 @@
+/* LPV Board Design System — Tableaux
+   Tableau « soft » (disponibilités) et tableau GOV.UK. */
+
+/* --- Tableau des disponibilités -------------------------------------------- */
+
+.lpv-table {
+  background-color: var(--lpv-grey-bg);
+  border-collapse: separate;
+  border-radius: var(--lpv-radius-lg);
+  border-spacing: 0;
+  width: 100%;
+
+  th {
+    color: var(--lpv-text-muted);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 0.75rem 1rem 0.5rem;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 0.85rem 1rem;
+    vertical-align: middle;
+  }
+
+  tbody tr:not(:last-child) td {
+    border-bottom: 1px solid var(--lpv-grey-border);
+  }
+
+  &__jour {
+    font-weight: 700;
+    text-transform: capitalize;
+  }
+
+  tr#{&}__nouvelle,
+  .lpv-m-summary-list .lpv-m-summary-list__row--new {
+    animation: lpv-row-new 1.5s ease-out;
+  }
+}
+
+@keyframes lpv-row-new {
+  0% {
+    background-color: var(--lpv-portail-soft);
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  70% {
+    background-color: var(--lpv-portail-soft);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* --- Tableau (Table, pattern GOV.UK) -------------------------------------- */
+
+.lpv-m-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+
+  &__caption {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-align: left;
+
+    &--s {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    &--l {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    &--xl {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+  }
+
+  &__head {
+    border-bottom: 2px solid var(--lpv-text);
+  }
+
+  &__head-cell {
+    color: var(--lpv-text-muted);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 0.75rem 1rem 0.5rem;
+    text-align: left;
+    text-transform: uppercase;
+
+    &--numeric {
+      text-align: right;
+    }
+  }
+
+  &__body {
+    vertical-align: top;
+  }
+
+  &__row:nth-child(even) {
+    background-color: var(--lpv-grey-bg);
+  }
+
+  &__cell {
+    border-bottom: 1px solid var(--lpv-grey-border);
+    padding: 0.75rem 1rem;
+    vertical-align: top;
+
+    &--numeric {
+      text-align: right;
+    }
+  }
+}

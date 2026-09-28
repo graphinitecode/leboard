@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { seancesCreate, seancesDelete, seancesRead, seancesWrite } from '../../access/seances'
+import { preCreerPresencesSeance } from '../../hooks/preCreerPresencesSeance'
 
 export const matiereOptions = [
   { label: 'Maths', value: 'maths' },
@@ -71,5 +72,8 @@ export const Seances: CollectionConfig = {
       label: 'Retour du prof',
     },
   ],
+  hooks: {
+    afterChange: [preCreerPresencesSeance],
+  },
   timestamps: true,
 }

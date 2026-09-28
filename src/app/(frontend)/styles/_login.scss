@@ -7,24 +7,35 @@
   max-width: 28rem;
   padding: 2rem 0 4rem;
 
-  &__titre {
+  &__title {
     font-size: 2rem;
     font-weight: 700;
     margin: 0 0 0.5rem;
   }
 
-  &__sous-titre {
+  &__subtitle {
     font-size: 1.125rem;
     line-height: 1.4;
     margin: 0 0 2rem;
   }
 
-  &__oublie {
+  &__forgot {
     margin: 0.5rem 0 1.5rem;
 
     a {
       color: var(--lpv-portail-dark);
-      font-weight: 700;
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: var(--lpv-text-underline-offset);
+      text-decoration-thickness: var(--lpv-decoration-thickness);
+    }
+
+    a:hover {
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: var(--lpv-text-underline-offset-hover);
+      text-decoration-thickness: var(--lpv-decoration-thickness-hover);
     }
   }
+
 }

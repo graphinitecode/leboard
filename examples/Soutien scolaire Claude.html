@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Séance — CM2 Groupe B</title>
+<style>
+  :root{
+    --govuk-black:#0b0c0c; --govuk-blue:#1d70b8; --govuk-green:#00703c;
+    --govuk-red:#d4351c; --govuk-yellow:#ffdd00; --govuk-grey-border:#b1b4b6;
+    --govuk-grey-bg:#f3f2f1; --govuk-dark-grey:#505a5f;
+    --bg:#fff; --card-bg:#fff; --text:#0b0c0c;
+    padding-top: env(safe-area-inset-top,0px); padding-bottom: env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-padding-top: env(safe-area-inset-top,0px);}
+  body{margin:0; font-family: arial, "Helvetica Neue", sans-serif; color:var(--text); background:var(--bg); line-height:1.4;}
+  a{color:var(--govuk-blue);}
+  a:focus, button:focus{outline:3px solid var(--govuk-yellow); outline-offset:0; box-shadow:0 -2px var(--govuk-yellow), 0 4px var(--govuk-black); background:var(--govuk-yellow); color:var(--govuk-black);}
+
+  .topbar{background:var(--govuk-black); color:#fff; padding-top: calc(10px + env(safe-area-inset-top,0px));
+    position:sticky; top:0; z-index:10;}
+  .topbar-inner{max-width:700px; margin:0 auto; padding:10px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px;}
+  .topbar strong{font-size:17px;}
+  .save-status{font-size:13px; color:#8fd6a8; display:flex; align-items:center; gap:5px;}
+
+  .container{max-width:700px; margin:0 auto; padding:20px 16px 80px;}
+  .breadcrumb{font-size:15px; margin-bottom:10px;}
+  .breadcrumb a{text-decoration:none;}
+  h1{font-size:26px; margin:0 0 2px; font-weight:700;}
+  .caption{color:var(--govuk-dark-grey); font-size:16px; margin-bottom:24px;}
+
+  h2{font-size:20px; font-weight:700; margin:0 0 12px; padding-bottom:6px; border-bottom:2px solid var(--govuk-black);}
+  .section{margin-bottom:32px;}
+
+  .eleve-row{border:1px solid var(--govuk-grey-border); padding:12px 14px; margin-bottom:10px; background:var(--card-bg);}
+  .eleve-row-top{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;}
+  .eleve-nom{font-size:17px; font-weight:700;}
+  .toggle{display:flex; border:2px solid var(--govuk-black); overflow:hidden;}
+  .toggle button{border:none; background:#fff; padding:10px 16px; font-size:15px; font-weight:700; cursor:pointer; font-family:inherit;}
+  .toggle button.present{background:var(--govuk-green); color:#fff;}
+  .toggle button.absent{background:var(--govuk-red); color:#fff;}
+  .toggle button + button{border-left:2px solid var(--govuk-black);}
+  .add-progression{margin-top:10px; font-size:15px;}
+
+  textarea{width:100%; border:2px solid var(--govuk-black); padding:10px; font-size:16px; font-family:inherit; min-height:110px; resize:vertical;}
+  label{display:block; font-weight:700; margin-bottom:6px; font-size:16px;}
+
+  .btn{display:inline-block; background:var(--govuk-green); color:#fff; text-decoration:none; font-weight:700;
+    padding:12px 20px; border:none; border-bottom:2px solid #002d18; font-size:17px; cursor:pointer; width:100%; text-align:center;}
+
+  .info-banner{background:#d2e2f1; border-left:8px solid var(--govuk-blue); padding:10px 14px; margin-bottom:20px; font-size:14px;}
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){--bg:#0b0c0c; --card-bg:#1a1a1a; --text:#f3f2f1;}
+    :root:not([data-theme="light"]) .eleve-row{border-color:#505a5f;}
+    :root:not([data-theme="light"]) .toggle button{background:#1a1a1a; color:#f3f2f1;}
+    :root:not([data-theme="light"]) textarea{background:#1a1a1a; color:#f3f2f1; border-color:#f3f2f1;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <strong>🏛️ Séance</strong>
+    <span class="save-status">● Enregistré automatiquement</span>
+  </div>
+</div>
+
+<div class="container">
+  <p class="breadcrumb"><a href="#">← Mes séances</a></p>
+  <h1>CM2 · Groupe B — Maths</h1>
+  <p class="caption">Vendredi 26 septembre, 17h00</p>
+
+  <div class="info-banner">Cochez la présence, ajoutez vos notes — tout est sauvegardé automatiquement, pas besoin de tout valider d'un coup.</div>
+
+  <div class="section">
+    <h2>Présences</h2>
+
+    <div class="eleve-row">
+      <div class="eleve-row-top">
+        <span class="eleve-nom">Lucas M.</span>
+        <div class="toggle">
+          <button class="absent">Absent</button>
+          <button>Présent</button>
+        </div>
+      </div>
+      <div class="add-progression"><a href="#">+ Ajouter une note de progression</a></div>
+    </div>
+
+    <div class="eleve-row">
+      <div class="eleve-row-top">
+        <span class="eleve-nom">Emma R.</span>
+        <div class="toggle">
+          <button>Absent</button>
+          <button class="present">Présent</button>
+        </div>
+      </div>
+      <div class="add-progression"><a href="#">+ Ajouter une note de progression</a></div>
+    </div>
+
+    <div class="eleve-row">
+      <div class="eleve-row-top">
+        <span class="eleve-nom">Nathan B.</span>
+        <div class="toggle">
+          <button>Absent</button>
+          <button class="present">Présent</button>
+        </div>
+      </div>
+      <div class="add-progression"><a href="#">+ Ajouter une note de progression</a></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Retour de séance</h2>
+    <label for="retour">Compte-rendu global</label>
+    <textarea id="retour" placeholder="Ce qui a été vu, les difficultés générales, l'ambiance du groupe...">Séance sur les fractions. Le groupe a bien avancé sur la comparaison, mais Lucas reste en difficulté sur les bases — à reprendre en individuel si possible.</textarea>
+  </div>
+
+  <button class="btn">Terminer la séance</button>
+</div>
+
+</body>
+</html>

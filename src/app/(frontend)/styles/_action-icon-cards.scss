@@ -1,0 +1,30 @@
+
+.action-card {
+  display: flex;
+  align-items: start;
+  cursor: pointer;
+  gap: 24px;
+
+  &__content {
+    row-gap: calc(var(--spacing) * 4);
+
+    .title {
+      text-decoration: underline;
+      font-weight: 600;
+      color: var(--lpv-a-tag--blue-text);
+      text-underline-offset: var(--lpv-text-underline-offset);
+      text-decoration-thickness: var(--lpv-decoration-thickness);
+      &:hover {
+        color: var(--lpv-text);
+        text-underline-offset: var(--lpv-text-underline-offset-hover);
+        text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+      }
+    }
+    .description {
+      margin-top: calc(var(--spacing) * 2.5);
+      --tw-leading: calc(var(--spacing) * 5.25);
+      line-height: calc(var(--spacing) * 5.25);
+      text-wrap: pretty;
+    }
+  }
+}

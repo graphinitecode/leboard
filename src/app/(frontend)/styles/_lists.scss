@@ -1,0 +1,366 @@
+/* LPV Board Design System — Listes structurées
+   Lignes cliquables, summary list (pattern GOV.UK), liste de tâches. */
+
+@use 'mixins';
+
+/* --- Listes structurées --------------------------------------------------- */
+
+.lpv-m-list-row {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--lpv-grey-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: space-between;
+  padding: 0.9rem 0.25rem;
+  text-align: left;
+  width: 100%;
+
+  &__title {
+    color: var(--lpv-portail-dark);
+    font-weight: 700;
+  }
+
+  &:focus {
+    @include mixins.lpv-focus;
+  }
+}
+
+a.lpv-m-list-row {
+  border-radius: var(--lpv-radius);
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    background-color: var(--lpv-portail-soft);
+  }
+}
+
+/* --- Ligne d'action du tableau de bord (m-action-row) --------------------- */
+
+.lpv-m-action-row {
+  align-items: center;
+  background-color: var(--lpv-background-color);
+  border: 1px solid var(--lpv-grey-border);
+  border-left: 6px solid var(--lpv-grey-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  padding: 0.9rem 1rem;
+
+  &--red {
+    border-left-color: var(--lpv-a-tag--red-text);
+  }
+
+  &--green {
+    border-left-color: var(--lpv-a-tag--green-text);
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  &__title {
+    font-weight: 700;
+  }
+
+  &__meta {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  &:focus-within {
+    @include mixins.lpv-focus;
+  }
+}
+
+/* --- Carte d'alerte (m-alert-card) ----------------------------------------- */
+
+.lpv-m-alert-card {
+  background-color: var(--lpv-grey-bg);
+  border-left: 6px solid var(--lpv-a-tag--red-text);
+  padding: 0.9rem 1rem;
+
+  &__title {
+    align-items: center;
+    display: flex;
+    font-weight: 700;
+    gap: 0.5rem;
+    margin: 0 0 0.4rem;
+  }
+
+  &__body {
+    margin: 0 0 0.4rem;
+  }
+}
+
+/* --- Summary list (pattern GOV.UK) ----------------------------------------- */
+
+.lpv-m-summary-list {
+  margin: 0;
+  width: 100%;
+
+  &__row {
+    align-items: center;
+    border-bottom: 1px solid var(--lpv-grey-border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    justify-content: space-between;
+    padding: 0.6rem 0;
+
+    /* Rows sans action : bordure pleine largeur (convention GOV.UK) */
+    &--no-actions {
+      padding-right: 0;
+    }
+  }
+
+  &__key {
+    color: var(--lpv-text-muted);
+    font-weight: 700;
+    min-width: 9rem;
+  }
+
+  &__value {
+    flex: 1;
+  }
+
+  /* Colonne d'actions d'une row (pattern GOV.UK) :
+     centrée verticalement pour rester alignée avec key/value */
+  &__actions {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    margin-left: auto;
+
+    /* Actions de row : liens stylés, sans gras. Rouge réservé au destructif. */
+    a,
+    button {
+      background: none;
+      border: 0;
+      color: var(--lpv-portail-dark);
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 400;
+      min-height: 44px;
+      padding: 0 0.25rem;
+      text-decoration: underline;
+
+      &:visited {
+        color: var(--lpv-visited);
+      }
+
+      &:hover {
+        color: var(--lpv-text);
+      }
+    }
+
+    .lpv-m-summary-list__action--danger {
+      color: var(--lpv-red);
+      text-decoration-thickness: var(--lpv-decoration-thickness);
+      text-underline-offset: var(--lpv-text-underline-offset);
+
+      /* Variante sémantique : conserve sa couleur même sur lien visité
+         (sinon a:visited gagne par spécificité) */
+      &:visited {
+        color: var(--lpv-red);
+      }
+
+      &:hover {
+        color: var(--lpv-red);
+        text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+        text-underline-offset: var(--lpv-text-underline-offset-hover);
+      }
+    }
+
+    .lpv-m-summary-list__action--warning {
+      color: var(--lpv-a-tag--orange-text);
+      text-decoration-thickness: var(--lpv-decoration-thickness);
+      text-underline-offset: var(--lpv-text-underline-offset);
+
+      &:visited {
+        color: var(--lpv-a-tag--orange-text);
+      }
+
+      &:hover {
+        color: var(--lpv-a-tag--orange-text);
+        text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+        text-underline-offset: var(--lpv-text-underline-offset-hover);
+      }
+    }
+  }
+
+  /* Liste d'actions multiples, séparées par un trait vertical */
+  &__actions-list {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    a,
+    button {
+      background: none;
+      border: 0;
+      color: var(--lpv-portail-dark);
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 400;
+      min-height: 44px;
+      padding: 0 0.25rem;
+      text-decoration: underline;
+
+      &:visited {
+        color: var(--lpv-visited);
+      }
+
+      &:hover {
+        color: var(--lpv-text);
+      }
+    }
+
+    .lpv-m-summary-list__action--danger {
+      color: var(--lpv-red);
+      text-decoration-thickness: var(--lpv-decoration-thickness);
+      text-underline-offset: var(--lpv-text-underline-offset);
+
+      &:visited {
+        color: var(--lpv-red);
+      }
+
+      &:hover {
+        color: var(--lpv-red);
+        text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+        text-underline-offset: var(--lpv-text-underline-offset-hover);
+      }
+    }
+
+    .lpv-m-summary-list__action--normal,
+    .lpv-m-summary-list__action--warning {
+      text-decoration-thickness: var(--lpv-decoration-thickness);
+      text-underline-offset: var(--lpv-text-underline-offset);
+    }
+
+    .lpv-m-summary-list__action--normal {
+      color: var(--lpv-a-tag--blue-text);
+
+      &:hover {
+        color: var(--lpv-text);
+        text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+        text-underline-offset: var(--lpv-text-underline-offset-hover);
+      }
+    }
+
+    .lpv-m-summary-list__action--warning {
+      color: var(--lpv-a-tag--orange-text);
+
+      &:visited {
+        color: var(--lpv-a-tag--orange-text);
+      }
+
+      &:hover {
+        color: var(--lpv-a-tag--orange-text);
+        text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+        text-underline-offset: var(--lpv-text-underline-offset-hover);
+      }
+    }
+  }
+
+  &__actions-list-item {
+    padding: 0 0.6rem;
+
+    /* Trait vertical entre les actions (motif GOV.UK actions-list) */
+    & + & {
+      border-left: 1px solid var(--lpv-grey-border);
+    }
+  }
+
+  /* Variante sans séparateurs : ni bordure de row ni trait entre actions */
+  &--no-dividers {
+    .lpv-m-summary-list__row {
+      border-bottom: 0;
+    }
+
+    .lpv-m-summary-list__actions-list-item + .lpv-m-summary-list__actions-list-item {
+      border-left: 0;
+    }
+  }
+
+  /* Variante espacée (disponibilités) */
+  &--spaced {
+    margin-bottom: 1.5rem;
+
+    .lpv-m-summary-list__row {
+      gap: 0.5rem 1.5rem;
+      padding: 0.85rem 0;
+
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
+
+    .lpv-m-summary-list__key {
+      color: var(--lpv-text);
+      text-transform: capitalize;
+    }
+  }
+}
+
+/* --- Liste de tâches (Task list) ------------------------------------------ */
+
+.lpv-m-task-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  &__item {
+    align-items: baseline;
+    border-bottom: 1px solid var(--lpv-grey-border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+
+    &--with-link .lpv-m-task-list__link:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__name-and-hint {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__link {
+    color: var(--lpv-text-link);
+    font-weight: 700;
+    text-decoration: none;
+
+    &:focus {
+      @include mixins.lpv-focused-text;
+    }
+  }
+
+  &__hint {
+    color: var(--lpv-text-muted);
+    font-size: 1rem;
+    line-height: 1.4;
+    margin-top: 0.25rem;
+  }
+
+  &__status {
+    flex-shrink: 0;
+  }
+}

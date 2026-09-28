@@ -1,0 +1,656 @@
+/* LPV Board Design System — Entête, nav vitrine, menu, pied de page */
+
+@use 'mixins';
+
+/* --- Entête bleue + hero fusionnés (visuels LPV) ---------------------------- */
+/* Bande bleue pleine largeur : logo blanc + Menu dépliant en haut,
+   gros titre blanc du portail en dessous (comme la home GOV.UK). */
+
+.lpv-o-header {
+  background-color: var(--lpv-portail);
+  color: var(--lpv-on-portal);
+  margin-bottom: var(--lpv-spacing-2xl);
+  /* Le hero du template remonte avec une marge négative et un positionnement
+     relatif : sans stacking context, il recouvre la nav et intercepte les clics. */
+  position: relative;
+  z-index: 20;
+
+  &__inner {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    justify-content: space-between;
+    margin-inline: auto;
+    max-width: var(--lpv-container);
+    padding: 0.7rem;
+    /* Référence de positionnement du panneau de menu : il démarre sous la barre
+       logo/menu et recouvre le hero (visuel 2), sans le pousser. */
+    position: relative;
+  }
+
+  &__logo {
+    align-items: center;
+    color: var(--lpv-on-portal);
+    display: flex;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+
+  /* Slim (symbole seul) en mobile, large (inscription incluse) ≥ 48rem.
+     Les deux assets sont blancs : lisibles sur le fond portail en light
+     comme en dark (l'entête reste colorée en dark). */
+  &__logo-slim {
+    display: block;
+    height: 2.5rem;
+    width: auto;
+
+    @media (width >= 48rem) {
+      display: none;
+    }
+  }
+
+  &__logo-large {
+    display: none;
+    height: 2.7em;
+    width: auto;
+
+    @media (width >= 48rem) {
+      display: block;
+    }
+  }
+
+  &__actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  &__hero {
+    margin-inline: auto;
+    max-width: var(--lpv-container);
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  &__hero-title {
+    color: var(--lpv-surface);
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin: 0 0 0.5rem;
+    max-width: 22ch;
+  }
+
+  &__hero-text {
+    color: var(--lpv-surface);
+    font-size: 1.125rem;
+    line-height: 1.4;
+    margin: 0;
+    max-width: 46ch;
+  }
+}
+
+/* --- Séparateur vertical (zone actions, connecté) --------------------------- */
+
+.lpv-o-header__separator {
+  align-self: center;
+  background-color: var(--lpv-on-portal);
+  height: 1.5rem;
+  opacity: 0.4;
+  width: 1px;
+}
+
+/* --- Navigation du site vitrine (liens pilotés par le global header du panel) */
+
+.lpv-o-header-nav {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+
+  &__link {
+    align-items: center;
+    border-radius: var(--lpv-radius);
+    color: var(--lpv-on-portal);
+    display: inline-flex;
+    font-size: 1.05rem;
+    font-weight: 600;
+    min-height: 44px;
+    padding: 0.4rem 0.75rem;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: var(--lpv-text-underline-offset-hover);
+      text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+    }
+
+    &--active {
+      font-weight: 600;
+    }
+  }
+
+  /* Focus : double anneau jaune, motif commun des contrôles sur fond coloré */
+  &__link:focus-visible,
+  &__search:focus-visible {
+    @include mixins.lpv-focus-on-portal;
+  }
+
+  /* Bouton recherche (loupe) de la nav vitrine */
+  &__search {
+    align-items: center;
+    border-radius: var(--lpv-radius);
+    color: var(--lpv-on-portal);
+    display: inline-flex;
+    justify-content: center;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.4rem;
+
+    &:hover {
+      text-decoration: none;
+      opacity: 0.85;
+    }
+  }
+}
+
+/* --- Menu déroulant de la nav vitrine : bouton + chevron, panneau vertical */
+
+.lpv-o-header-dropdown {
+  position: relative;
+
+  &__button {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+
+  &__chevron {
+    display: inline-flex;
+    margin-right: 0.3rem;
+    width: 1rem;
+  }
+
+  &__panel {
+    background-color: var(--lpv-surface);
+    border-bottom: 4px solid var(--lpv-portail);
+    box-shadow: var(--lpv-shadow-hover);
+    left: 50%;
+    min-width: 16rem;
+    position: absolute;
+    top: 100%;
+    transform: translateX(-50%);
+    z-index: 50;
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0.75rem 0;
+
+    li a,
+    li a:visited {
+      color: var(--lpv-portail-dark);
+      display: block;
+      font-weight: 700;
+      min-height: 44px;
+      padding: 0.65rem 1.25rem;
+      text-decoration: underline;
+      text-underline-offset: var(--lpv-text-underline-offset);
+    }
+
+    li a:hover {
+      background-color: var(--lpv-portail-soft);
+    }
+  }
+}
+
+/* --- Menu dépliant de l'entête --------------------------------------------- */
+/* Mobile (< 48rem) : bouton icône (menu/close), panneau en accordéon vertical.
+   Tablette/desktop (≥ 48rem) : bouton texte + chevron, panneau 2 colonnes. */
+
+.lpv-m-collapsible-menu__button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  /* sur-portail (blanc constant) et non surface (presque noir en dark) :
+     l'icône menu/close et le texte restent blancs sur la bande colorée */
+  color: var(--lpv-on-portal);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1.125rem;
+  font-weight: 700;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    @include mixins.lpv-focus-on-portal;
+  }
+}
+
+.lpv-m-collapsible-menu__button-icon {
+  display: inline-flex;
+}
+
+/* Chevron desktop, masqué en mobile (l'icône menu/close le remplace) */
+.lpv-m-collapsible-menu__button-chevron {
+  display: none;
+  margin-right: 0.4rem;
+}
+
+.lpv-m-collapsible-menu__button-label {
+  display: none;
+}
+
+@media (width >= 48rem) {
+  .lpv-m-collapsible-menu__button-icon {
+    display: none;
+  }
+
+  .lpv-m-collapsible-menu__button-chevron {
+    display: inline-flex;
+  }
+
+  .lpv-m-collapsible-menu__button-label {
+    display: inline;
+  }
+}
+
+.lpv-m-collapsible-menu {
+  background-color: var(--lpv-surface);
+  border-bottom: 4px solid var(--lpv-portail);
+  box-shadow: 0 12px 24px rgb(15 20 25 / 20%);
+  left: 50%;
+  position: absolute;
+  top: 100%;
+  transform: translateX(-50%);
+  width: 100vw;
+  z-index: 50;
+
+  /* Mobile : une seule colonne, sections en accordéon */
+  &__inner {
+    display: block;
+    padding: 0.5rem 1rem 1rem;
+  }
+
+  &__column {
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      /* Masqué tant que la section est fermée (accordéon mobile) */
+      display: none;
+    }
+
+    li {
+      margin-bottom: 0;
+    }
+
+    li a,
+    li a:visited {
+      border-top: 1px solid var(--lpv-grey-border);
+      color: var(--lpv-portail-dark);
+      display: block;
+      font-weight: 700;
+      min-height: 44px;
+      padding: 0.6rem 0 0.6rem 1rem;
+      text-decoration: underline;
+    }
+
+    li p {
+      color: var(--lpv-text-muted);
+      font-size: 0.9rem;
+      margin: -0.25rem 0 0.5rem;
+      padding-left: 1rem;
+    }
+  }
+
+  /* Section accordéon ouverte : titre souligné, liens visibles */
+  &__column--open {
+    ul {
+      display: block;
+    }
+  }
+
+  &__column-title {
+    align-items: center;
+    background: none;
+    border: 0;
+    color: var(--lpv-text);
+    cursor: pointer;
+    display: flex;
+    font-size: 1.125rem;
+    font-weight: 700;
+    justify-content: space-between;
+    min-height: 44px;
+    padding: 0.5rem 0;
+    text-align: left;
+    width: 100%;
+
+    &:hover {
+      text-decoration: underline;
+      text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+      text-underline-offset: var(--lpv-text-underline-offset-hover);
+    }
+
+    &:focus {
+      @include mixins.lpv-focused-text;
+    }
+  }
+
+  &__column-chevron {
+    display: inline-flex;
+  }
+
+  /* Le panneau recouvre le hero (overlay), il ne le pousse pas.
+     Il déborde volontairement du header : pas de clipping. */
+
+  /* Tablette/desktop : sections toujours dépliées en 2 colonnes,
+     les boutons de titre redeviennent des titres simples */
+  &__column-title {
+    @media (width >= 48rem) {
+      border-bottom: 1px solid var(--lpv-grey-border);
+      cursor: default;
+      font-size: 1.5rem;
+      margin: 0 0 0.75rem;
+      padding-bottom: 0.5rem;
+      pointer-events: none;
+    }
+  }
+
+  &__column-chevron {
+    @media (width >= 48rem) {
+      display: none;
+    }
+  }
+
+  &__inner {
+    @media (width >= 48rem) {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: 1fr 1fr;
+      margin-inline: auto;
+      max-width: var(--lpv-container);
+      padding: 1.5rem 1rem 2rem;
+    }
+  }
+
+  &__column {
+    @media (width >= 48rem) {
+      ul {
+        display: block;
+      }
+
+      li {
+        margin-bottom: 0.75rem;
+      }
+
+      li a,
+      li a:visited {
+        border-top: 0;
+        display: inline;
+        min-height: 0;
+        padding: 0;
+      }
+
+      li p {
+        margin: 0.15rem 0 0;
+        padding-left: 0;
+      }
+    }
+  }
+
+  /* Pied du panneau : bascule de thème, largeur du container */
+  &__footer {
+    border-top: 1px solid var(--lpv-grey-border);
+    margin-inline: auto;
+    max-width: var(--lpv-container);
+    padding: 0.5rem 1rem 1.25rem;
+
+    @media (width >= 48rem) {
+      padding: 0.5rem 1rem 2rem;
+    }
+  }
+}
+
+/* --- Avatar utilisateur (entête portail, connecté) -------------------------- */
+/* Trigger : prénom + cercle d'initiales + chevron. Panneau : identité (nom,
+   email) et déconnexion. Aligné à droite, motif mini du menu-panneau.
+   Mobile : prénom masqué (l'avatar seul porte l'identité, aria-label complet). */
+
+.lpv-m-avatar-header {
+  position: relative;
+
+  &__button {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    color: var(--lpv-on-portal);
+    cursor: pointer;
+    display: inline-flex;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.25rem;
+
+    /* L'avatar portail-soft/texte reste lisible sur le fond portail :
+       on inverse avec les couleurs de surface pour le contraste */
+    .lpv-avatar {
+      background-color: var(--lpv-on-portal);
+      color: var(--lpv-portail);
+      height: 2.25rem;
+      width: 2.25rem;
+    }
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: var(--lpv-text-underline-offset-hover);
+      text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+    }
+
+    &:focus-visible {
+      @include mixins.lpv-focus-on-portal;
+    }
+  }
+
+  &__name {
+    font-weight: 400;
+
+    @media (width < 48rem) {
+      display: none;
+    }
+  }
+
+  &__chevron {
+    display: inline-flex;
+  }
+}
+
+.lpv-m-avatar-panel {
+  background-color: var(--lpv-surface);
+  border-bottom: 4px solid var(--lpv-portail);
+  box-shadow: var(--lpv-shadow-hover);
+  min-width: 16rem;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 50;
+
+  &__identity {
+    border-bottom: 1px solid var(--lpv-grey-border);
+    padding: 0.75rem 1rem;
+  }
+
+  &__name {
+    font-weight: 700;
+    margin: 0;
+  }
+
+  &__email {
+    color: var(--lpv-text-muted);
+    font-size: 0.9rem;
+    margin: 0.15rem 0 0;
+    overflow-wrap: anywhere;
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
+  }
+
+  &__list form {
+    display: block;
+  }
+
+  &__list button {
+    align-items: center;
+    background: none;
+    border: 0;
+    color: var(--lpv-portail-dark);
+    cursor: pointer;
+    display: flex;
+    font-size: 1rem;
+    font-weight: 400;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0 1rem;
+    text-align: left;
+    width: 100%;
+
+    &:hover {
+      background-color: var(--lpv-portail-soft);
+    }
+
+    &:focus {
+      @include mixins.lpv-focus;
+    }
+  }
+}
+
+/* --- Pied de page --------------------------------------------------------- */
+
+.lpv-m-footer {
+  background-color: var(--lpv-surface);
+  border-top: 1px solid var(--lpv-grey-border);
+  margin-top: 4rem;
+
+  &__inner {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2rem;
+    justify-content: space-between;
+    margin-inline: auto;
+    max-width: var(--lpv-container);
+    padding: 2.25rem 1rem;
+  }
+
+  &__logo {
+    opacity: 0.9;
+  }
+
+  &__tagline {
+    color: var(--lpv-text-muted);
+    font-size: 0.9rem;
+    margin: 0.35rem 0 0;
+  }
+
+  &__nav {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    a {
+      border-radius: 999px;
+      color: var(--lpv-text-muted);
+      font-size: 0.95rem;
+      padding: 0.4rem 0.85rem;
+      text-decoration: none;
+      transition: background-color 0.15s ease, color 0.15s ease;
+
+      &:hover {
+        background-color: var(--lpv-portail-soft);
+        color: var(--lpv-portail-dark);
+      }
+    }
+  }
+
+  &__nav-zone {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  &__link {
+    color: var(--lpv-text-muted);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--lpv-portail-dark);
+      text-decoration: underline;
+      text-underline-offset: var(--lpv-text-underline-offset-hover);
+    }
+  }
+}
+
+/* --- Bascule de thème ------------------------------------------------------ */
+
+.lpv-m-theme-toggle {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.25rem;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:focus {
+    @include mixins.lpv-focused-text;
+  }
+
+  &__icon {
+    display: block;
+    margin: auto;
+  }
+}
+
+/* Variante panneau : ligne libellé + icône dans le pied du menu dépliant */
+.lpv-m-theme-toggle--panel {
+  align-items: center;
+  background: none;
+  border: 0;
+  color: var(--lpv-portail-dark);
+  cursor: pointer;
+  display: flex;
+  font-size: 1rem;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 0.5rem 0.25rem;
+  width: 100%;
+
+  &:hover {
+    text-decoration: underline;
+    text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+    text-underline-offset: var(--lpv-text-underline-offset-hover);
+  }
+
+  &:focus {
+    @include mixins.lpv-focused-text;
+  }
+}

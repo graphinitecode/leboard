@@ -2,97 +2,171 @@
 
 import { useState } from 'react'
 
-import { Bouton } from '@/components/atoms/Bouton'
-import { BoutonsRadio, type OptionRadio } from '@/components/molecules/BoutonsRadio'
-import { ChampFormulaire } from '@/components/molecules/ChampFormulaire'
-import { Modale } from '@/components/molecules/Modale'
-import { Toast } from '@/components/molecules/Toast'
-import { ToggleSegmentes } from '@/components/molecules/ToggleSegmentes'
+import { Button } from '@/components/atoms/a-button'
+import { Radios, type RadioOption } from '@/components/molecules/m-radios'
+import { Input } from '@/components/molecules/m-input'
+import { Modal } from '@/components/molecules/m-modal'
+import { Toast } from '@/components/molecules/m-toast'
+import { SegmentedToggle } from '@/components/molecules/m-segmented-toggle'
+import { MonthCalendarCard } from '@/calendrier'
+import type { CategorieMarqueurCalendrier, MarqueurJourCalendrier } from '@/calendrier'
 
-const RADIO_OPTIONS: OptionRadio[] = [
+const RADIO_OPTIONS: RadioOption[] = [
   {
-    conditionnel: <ChampFormulaire hint="Précisez les modalités." id="demo-radio-modalites" label="Modalités" optionnel />,
-    texte: 'Oui',
-    valeur: 'oui',
+    conditional: <Input hint="Précisez les modalités." id="demo-radio-modalites" label="Modalités" optional />,
+    label: 'Oui',
+    value: 'oui',
   },
-  { texte: 'Non', valeur: 'non' },
+  { label: 'Non', value: 'non' },
 ]
 
 export function DemoRadio() {
-  const [valeur, setValeur] = useState('non')
+  const [value, setValue] = useState('non')
 
   return (
-    <BoutonsRadio
+    <Radios
       idPrefix="demo-radio"
-      nom="accord"
-      onChange={(e) => setValeur(e.target.value)}
+      name="accord"
+      onChange={(e) => setValue(e.target.value)}
       options={RADIO_OPTIONS}
-      valeur={valeur}
+      value={value}
     />
   )
 }
 
 export function DemoToggle() {
-  const [valeur, setValeur] = useState('profs')
+  const [value, setValue] = useState('profs')
 
-  async function onChanger(nouvelleValeur: string) {
-    setValeur(nouvelleValeur)
+  async function onChange(newValue: string) {
+    setValue(newValue)
     return { ok: true }
   }
 
   return (
-    <ToggleSegmentes
+    <SegmentedToggle
       ariaLabel="Portail"
-      onChanger={onChanger}
+      onChange={onChange}
       options={[
-        { label: 'Profs', libelle: 'Espace profs', value: 'profs' },
-        { label: 'Parents', libelle: 'Espace parents', value: 'parents' },
-        { label: 'Élèves', libelle: 'Espace élèves', value: 'eleves' },
+        { label: 'Profs', ariaLabel: 'Professeurs', value: 'profs' },
+        { label: 'Parents', ariaLabel: 'Parents', value: 'parents' },
+        { label: 'Élèves', ariaLabel: 'Élèves', value: 'eleves' },
       ]}
-      valeurInitiale={valeur}
+      initialValue={value}
     />
   )
 }
 
 export function DemoModale() {
-  const [ouverte, setOuverte] = useState(false)
+  const [open, setOpen] = useState(false)
 
   return (
     <>
-      <Bouton onClick={() => setOuverte(true)} type="button">Ouvrir la modale</Bouton>
-      {ouverte && (
-        <Modale onFerme={() => setOuverte(false)} titre="Confirmer l'action">
-          <p className="lpv-modale__texte">
+      <Button onClick={() => setOpen(true)} type="button">Ouvrir la modale</Button>
+      {open && (
+        <Modal onClose={() => setOpen(false)} title="Confirmer l'action">
+          <p className="lpv-m-modal__text">
             Êtes-vous sûr de vouloir continuer ? Cette action est irréversible.
           </p>
-          <div className="lpv-modale__actions">
-            <Bouton onClick={() => setOuverte(false)} type="button" variante="secondaire">
+          <div className="lpv-m-modal__actions">
+            <Button onClick={() => setOpen(false)} type="button" variant="secondary">
               Annuler
-            </Bouton>
-            <Bouton onClick={() => setOuverte(false)} type="button" variante="danger">
+            </Button>
+            <Button onClick={() => setOpen(false)} type="button" variant="danger">
               Confirmer
-            </Bouton>
+            </Button>
           </div>
-        </Modale>
+        </Modal>
       )}
     </>
   )
 }
 
 export function DemoToast() {
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'erreur' } | null>(null)
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
 
   return (
     <>
       <div style={{ display: 'flex', gap: '0.75rem' }}>
-        <Bouton onClick={() => setToast({ message: 'Action enregistrée', type: 'success' })} type="button">
+        <Button onClick={() => setToast({ message: 'Action enregistrée', type: 'success' })} type="button" variant="success">
           Toast succès
-        </Bouton>
-        <Bouton onClick={() => setToast({ message: 'Une erreur est survenue', type: 'erreur' })} type="button" variante="danger">
+        </Button>
+        <Button onClick={() => setToast({ message: 'Une erreur est survenue', type: 'error' })} type="button" variant="danger">
           Toast erreur
-        </Bouton>
+        </Button>
       </div>
-      {toast && <Toast message={toast.message} type={toast.type} onFerme={() => setToast(null)} />}
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
     </>
+  )
+}
+
+const DEMO_CATEGORIES: CategorieMarqueurCalendrier[] = [
+  { couleur: 'blue', forme: 'point', id: 'seance', label: 'Séance programmée' },
+  { couleur: 'magenta', forme: 'carre', id: 'evenement', label: 'Événement association' },
+]
+
+const DEMO_CUSTOM: CategorieMarqueurCalendrier[] = [
+  { couleur: 'green', forme: 'point', id: 'presence', label: 'Présence validée' },
+  { couleur: 'orange', forme: 'point', id: 'retard', label: 'Retour en attente' },
+  { couleur: 'yellow', forme: 'carre', id: 'sortie', label: 'Sortie pédagogique' },
+]
+
+const DEMO_MARQUEURS: MarqueurJourCalendrier[] = [
+  { type: 'seance', date: new Date(2026, 8, 2) },
+  { type: 'seance', date: new Date(2026, 8, 4) },
+  { type: 'seance', date: new Date(2026, 8, 9) },
+  { type: 'seance', date: new Date(2026, 8, 11) },
+  { type: 'seance', date: new Date(2026, 8, 16) },
+  { type: 'seance', date: new Date(2026, 8, 18) },
+  { type: 'evenement', date: new Date(2026, 8, 14) },
+]
+
+const DEMO_MARQUEURS_CUSTOM: MarqueurJourCalendrier[] = [
+  { type: 'presence', date: new Date(2026, 9, 2) },
+  { type: 'retard', date: new Date(2026, 9, 4) },
+  { type: 'presence', date: new Date(2026, 9, 9) },
+  { type: 'sortie', date: new Date(2026, 9, 12) },
+  { type: 'presence', date: new Date(2026, 9, 16) },
+  { type: 'retard', date: new Date(2026, 9, 18) },
+  { type: 'presence', date: new Date(2026, 10, 18) },
+]
+
+function DemoDetailJour({ jour }: { jour: Date }) {
+  const seances: Record<number, { heure: string; label: string }[]> = {
+    2: [{ heure: '14:00', label: 'Maths — Alice, Bob' }],
+    4: [{ heure: '10:00', label: 'Français — Clara' }],
+    9: [{ heure: '16:00', label: 'Anglais — Dylan' }],
+    12: [{ heure: '09:00', label: 'Sortie musée (tous groupes)' }],
+    14: [{ heure: '18:00', label: 'Assemblée générale' }],
+    16: [{ heure: '14:00', label: 'Maths — Alice, Bob' }],
+    18: [{ heure: '10:00', label: 'Français — Clara' }, { heure: '15:00', label: 'Maths — Dylan' }],
+  }
+  const duJour = seances[jour.getDate()]
+  if (!duJour) return <p className="lpv-muted" style={{ margin: 0 }}>Aucune séance ce jour.</p>
+  return (
+    <ul style={{ margin: 0, paddingLeft: '1.25rem' }}>
+      {duJour.map((s) => (
+        <li key={`${s.heure}-${s.label}`}>{s.heure} — {s.label}</li>
+      ))}
+    </ul>
+  )
+}
+
+export function DemoMonthCalendars() {
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem' }}>
+      <MonthCalendarCard
+        categories={DEMO_CATEGORIES}
+        marqueurs={DEMO_MARQUEURS}
+        mois={new Date(2026, 8, 1)}
+        renduDetailJour={(jour) => <DemoDetailJour jour={jour} />}
+        voirToutHref="/profs"
+      />
+      <MonthCalendarCard
+        categories={DEMO_CUSTOM}
+        marqueurs={DEMO_MARQUEURS_CUSTOM}
+        mois={new Date(2026, 9, 1)}
+        renduDetailJour={(jour) => <DemoDetailJour jour={jour} />}
+      />
+    </div>
   )
 }

@@ -207,8 +207,17 @@ export interface Eleve {
   niveau: 'CP' | 'CE1' | 'CE2' | 'CM1' | 'CM2' | '6e' | '5e' | '4e' | '3e' | '2nde' | '1ere' | 'Terminale';
   groupe?: string | null;
   profReferent?: (number | null) | User;
+  /**
+   * Créer d’abord le compte du parent (collection Users, rôle « Parent »), puis le relier ici. Obligatoire pour un élève mineur.
+   */
   parents?: (number | User)[] | null;
+  /**
+   * Le consentement parental est obligatoire pour créer un élève mineur ; un majeur consent lui-même.
+   */
   consentementRGPD?: boolean | null;
+  /**
+   * Cocher si la famille retire son consentement (déclenche l’anonymisation)
+   */
   consentementRetire?: boolean | null;
   dateConsentement?: string | null;
   /**
@@ -228,7 +237,12 @@ export interface Eleve {
  */
 export interface User {
   id: number;
-  name: string;
+  prenom: string;
+  nom: string;
+  /**
+   * Construit automatiquement : prénom + nom (lecture seule)
+   */
+  name?: string | null;
   role: 'admin' | 'prof' | 'benevole-bibliotheque' | 'parent';
   telephone?: string | null;
   /**
@@ -1780,6 +1794,8 @@ export interface CategoriesSelect<T extends boolean = true> {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  prenom?: T;
+  nom?: T;
   name?: T;
   role?: T;
   telephone?: T;

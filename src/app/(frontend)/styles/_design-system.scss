@@ -1,0 +1,111 @@
+/* LPV Board Design System — Pages vitrines (couleurs, typographie)
+   Swatches façon GOV.UK : rangée alternée, bloc couleur + nom + hex.
+   Le bloc utilise la variable CSS : il reflète le thème actif (light/dark),
+   le hex affiché documente la valeur du thème clair. */
+
+@use 'mixins';
+
+.lpv-ds-swatch-grid {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0 0 1.5rem;
+}
+
+.lpv-ds-swatch {
+  align-items: center;
+  border-radius: var(--lpv-radius);
+  display: flex;
+  gap: 1rem;
+  overflow: hidden;
+  padding: 0.5rem;
+
+  &:nth-child(odd) {
+    background-color: var(--lpv-grey-bg);
+  }
+
+  &__color {
+    border: 1px solid var(--lpv-grey-border);
+    border-radius: var(--lpv-radius);
+    flex-shrink: 0;
+    height: 3.5rem;
+    width: 6rem;
+  }
+
+  &__name {
+    font-family: GeistMono, monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+  }
+
+  &__hex {
+    color: var(--lpv-text-muted);
+    font-family: GeistMono, monospace;
+    font-size: 0.9rem;
+    margin-left: auto;
+    text-align: right;
+  }
+
+  &:focus {
+    @include mixins.lpv-focus;
+  }
+}
+
+@media (max-width: 639px) {
+  .lpv-ds-swatch {
+    flex-wrap: wrap;
+
+    &__hex {
+      margin-left: 0;
+    }
+  }
+}
+
+/* --- Page typographie ------------------------------------------------------- */
+/* Specimens du type scale : rangée alternée façon swatches — nom du niveau,
+   rendu réel (classes lpv-h1/h2/h3/muted), méta (point + valeurs px/palier). */
+
+.lpv-ds-type-list {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0 0 1.5rem;
+}
+
+.lpv-ds-type-row {
+  align-items: center;
+  border-radius: var(--lpv-radius);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding: 0.75rem 0.5rem;
+
+  &:nth-child(odd) {
+    background-color: var(--lpv-grey-bg);
+  }
+
+  &__name {
+    font-family: GeistMono, monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    min-width: 3.5rem;
+  }
+
+  &__sample {
+    flex: 1;
+    margin: 0;
+    min-width: 14rem;
+  }
+
+  &__meta {
+    color: var(--lpv-text-muted);
+    font-family: GeistMono, monospace;
+    font-size: 0.9rem;
+    margin-left: auto;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  &:focus {
+    @include mixins.lpv-focus;
+  }
+}

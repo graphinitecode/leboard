@@ -8,6 +8,8 @@ import { loginParentHandler } from './login-parent.handler'
 const unParent = (): User => ({
   id: 2,
   email: 'parent@lpv.fr',
+  prenom: 'Parent',
+  nom: 'LPV',
   name: 'Parent LPV',
   role: 'parent',
   collection: 'users',

@@ -1,27 +1,136 @@
 /* LPV Board Design System — Mixins partagés */
 
-/* Motif focus commun des contrôles : double anneau (blanc + jaune GOV.UK) */
+@use 'sass:list';
+@use 'sass:map';
+
+/* Focus states — conformes au motif GOV.UK
+   (https://design-system.service.gov.uk/get-started/focus-states/) :
+   la combinaison jaune + noir garantit WCAG 2.2 1.4.11 (Non-text contrast)
+   sur tout fond — le jaune contraste sur fond sombre, le noir sur fond clair. */
+
+/* --- Type scale responsive -------------------------------------------------- */
+/* Échelle typographique inspirée du type scale GOV.UK
+   (https://design-system.service.gov.uk/styles/type-scale/), avec les
+   principes du blog GDS : les grandes tailles rétrécissent en mobile mais
+   jamais sous 19px (accessibilité), line-height toujours multiple de 5px
+   pour un rythme vertical régulier. Unités rem : le texte suit le zoom
+   navigateur (WCAG 2.1 1.4.4 Resize text). Breakpoints alignés sur Tailwind
+   : 48rem (md, tablet) et 64rem (lg, desktop). */
+
+/* Map du type scale : point → paliers. `null` = mobile (< 48rem), les autres
+   clés sont des min-width en rem. Chaque valeur : font-size + line-height. */
+$lpv-type-scale: (
+  48: (null: 1.97rem 2.1875rem, 48rem: 2.5rem 2.8125rem, 64rem: 2.77rem 3.125rem),
+  37: (null: 1.77rem 2.1875rem, 48rem: 2rem 2.8125rem, 64rem: 2rem 3.125rem),
+  32: (null: 1.47rem 1.75rem, 48rem: 1.67rem 2.125rem, 64rem: 1.77rem 2.185rem),
+  24: (null: 1.3125rem 1.5625rem, 48rem: 1.5rem 1.875rem),
+  19: (null: 1.1rem 1.575rem, 48rem: 1.1875rem 1.625rem, 64rem: 1.25rem 1.725rem),
+  14: (null: 0.9rem 1.27rem, 48rem: 1rem 1.425rem, 64rem: 1.1rem 1.525rem),
+);
+
+/* Équivalent govuk-font-size : émet font-size + line-height pour le point
+   demandé, du mobile vers les paliers larges (mobile-first). */
+@mixin lpv-font-size($point) {
+  $scale: map.get($lpv-type-scale, $point);
+
+  @each $breakpoint, $values in $scale {
+    $font-size: list.nth($values, 1);
+    $line-height: list.nth($values, 2);
+
+    @if $breakpoint == null {
+      font-size: $font-size;
+      line-height: $line-height;
+    } @else {
+      @media (min-width: $breakpoint) {
+        font-size: $font-size;
+        line-height: $line-height;
+      }
+    }
+  }
+}
+
+/* Équivalent govuk-focus-width (token CSS --lpv-focus-width) */
+$lpv-focus-width: 3px !default;
+
+/* Focus d'un texte focusable (liens, summary, contrôles texte) :
+   équivalent du mixin `govuk-focused-text` — fond jaune, bordure noire épaisse
+   en bas, outline jaune autour (contraste du jaune sur fond jaune), sans
+   soulignement (le fond portant l'indication). */
+@mixin lpv-focused-text {
+  background-color: var(--lpv-focus);
+  border-bottom: $lpv-focus-width solid var(--lpv-text);
+  color: var(--lpv-text-black);
+  outline: $lpv-focus-width solid transparent;
+  text-decoration: none;
+}
+
+/* Focus d'un élément avec fond ou bordure (inputs, checkboxes, cards
+   interactives) : contour jaune épais + bordure noire épaisse. */
 @mixin lpv-focus {
-  box-shadow:
-    0 0 0 2px var(--lpv-surface),
-    0 0 0 5px var(--lpv-focus);
-  outline: none;
+  outline: $lpv-focus-width solid var(--lpv-focus);
+  outline-offset: 0;
+  //box-shadow: inset 0 0 0 1px var(--lpv-text);
 }
 
-/* Focus sur fond coloré (portail) : anneau blanc du portail + jaune */
-@mixin lpv-focus-sur-portail {
-  box-shadow: 0 0 0 2px var(--lpv-sur-portail), 0 0 0 5px var(--lpv-focus);
-  outline: none;
+/* Focus sur fond coloré (portail) : anneau blanc du portail entre l'élément
+   et le contour jaune, pour rester lisible sur la bande colorée. */
+@mixin lpv-focus-on-portal {
+  outline: $lpv-focus-width solid var(--lpv-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--lpv-on-portal);
 }
 
-/* Lien piloté par le portail : couleur portail-dark, soulignement
-   renforcé au hover (motif répété des liens du design system) */
-@mixin lpv-lien-portail {
+/* Lien piloté par le portail : couleur portail-dark, violet sur lien
+   déjà visité, soulignement renforcé au hover (motif répété des liens
+   du design system). Le hover passe après :visited pour rester réactif. */
+@mixin lpv-link-portal {
   color: var(--lpv-portail-dark);
+
+  &:visited {
+    color: var(--lpv-visited);
+  }
 
   &:hover {
     color: var(--lpv-text);
     text-underline-offset: var(--lpv-text-underline-offset-hover);
     text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+  }
+}
+
+/* Bouton pleine largeur en mobile (< 48rem), taille naturelle au-delà —
+   motif GOV.UK mobile-first : les cibles d'action primaires occupent tout
+   l'écran pour être faciles à taper au pouce. S'applique aussi à <a>.
+   Usage : @include lpv-button-full-width-mobile; (dans .lpv-a-button). */
+@mixin lpv-button-full-width-mobile {
+  @media (max-width: 47.99rem) {
+    display: block;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+/* --- Familles de couleurs sémantiques --------------------------------------- */
+/* Chaque famille de la charte (blue, gray, orange, red…) expose une palette
+   complète : base, --hover, -dark, -shadow, -shadow--hover. Le mapping
+   déclare les rôles sémantiques (portal, secondary, warning, danger) qui
+   pointent vers une famille — réaffecter un rôle = changer une ligne de map,
+   et l'interpolation garantit la cohérence des 5 tokens (pas de nom qui
+   dérive d'une famille à l'autre). Le rôle `portal` pointe vers la famille
+   `portail` (définie dans tokens.scss), qui suit la couleur du portail
+   courant (data-lpv-portail) : bleu profs, violet parents. */
+$lpv-color-families: (
+  portal: portail,
+  secondary: gray,
+  warning: orange,
+  danger: red,
+);
+
+@mixin lpv-color-families {
+  @each $semantic, $family in $lpv-color-families {
+    --lpv-#{$semantic}: var(--lpv-#{$family});
+    --lpv-#{$semantic}--hover: var(--lpv-#{$family}--hover);
+    --lpv-#{$semantic}-dark: var(--lpv-#{$family}-dark);
+    --lpv-#{$semantic}-shadow: var(--lpv-#{$family}-shadow);
+    --lpv-#{$semantic}-shadow--hover: var(--lpv-#{$family}-shadow--hover);
   }
 }

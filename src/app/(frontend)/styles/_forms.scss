@@ -1,0 +1,757 @@
+/* LPV Board Design System — Formulaires
+   Champs, labels, fieldsets, cases à cocher, radios, date, compteur,
+   password, téléversement, champs en ligne, stepper, récapitulatif. */
+
+@use 'mixins';
+
+/* --- Champs de formulaire ---------------------------------------------- */
+
+.lpv-a-label {
+  display: block;
+  @include mixins.lpv-font-size(32);
+  font-weight: 700;
+  color: var(--lpv-text);
+  margin-bottom: var(--lpv-spacing-xl);
+
+
+  &__optional {
+    color: var(--lpv-text-muted);
+    font-size: 1rem;
+    font-weight: 400;
+  }
+}
+
+/* --- Labels & légendes (guide GOV.UK labels-legends-headings) ------------- */
+
+.lpv-a-label-wrapper {
+  margin: 0 0 0.25rem;
+}
+
+.lpv-a-label.lpv-a-label--l {
+  @include mixins.lpv-font-size(48);
+  font-weight: 700;
+}
+
+.lpv-a-label.lpv-a-label--s {
+  @include mixins.lpv-font-size(24);
+  font-weight: 700;
+}
+
+.lpv-a-hint {
+  color: var(--lpv-text);
+  opacity: 77%;
+  @include mixins.lpv-font-size(19);
+  line-height: 1.4;
+  margin-bottom: var(--lpv-spacing-lg);
+}
+
+.lpv-a-error-message {
+  color: var(--lpv-red);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0 0 0.25rem;
+}
+
+.lpv-form-group {
+  margin-bottom: 1.25rem;
+
+  &--error {
+    border-left: 5px solid var(--lpv-red);
+    padding-left: 1rem;
+  }
+
+  .lpv-hint {
+    color: var(--lpv-text-muted);
+    margin-block: var(--lpv-spacing-md);
+  }
+  .lpv-label {
+    margin-block: var(--lpv-spacing-md);
+  }
+}
+
+/* Template t-question-page (pattern GOV.UK « question pages ») : conteneur
+   fluide comme lpv-o-header__inner — pleine largeur jusqu'à la mesure de
+   lecture (--lpv-container-xs), puis plafonnée ; toujours aligné à gauche et
+   de largeur stable quelle que soit la longueur de la question.
+   (Le padding horizontal vient du lpv-container parent.) */
+.lpv-t-question-page {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  text-size-adjust: 100%;
+
+  /* Caption « Étape N sur M » collée à la question (rythme GOV.UK). */
+  .lpv-stepper__step {
+    margin: 0;
+  }
+
+  /* La question (h1 = label page heading) respire avant le contrôle. */
+  .lpv-a-label-wrapper {
+    margin: 0 0 var(--lpv-spacing-xl);
+  }
+
+  &__content {
+    width: auto;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: flex-start;
+    margin-top: var(--lpv-spacing-xl);
+  }
+
+  &__choice {
+    display: block;
+    border-bottom: 1px solid var(--lpv-grey-border);
+    margin-bottom: 0;
+    min-height: 44px;
+    padding: var(--lpv-spacing-md) 0;
+  }
+
+  /* Bloc « Vos réponses » (pattern GOV.UK). */
+  &__answers {
+    margin-top: var(--lpv-spacing-2xl);
+  }
+
+  &__answers-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+  }
+
+  &__answers-list {
+    margin: 0;
+  }
+
+  &__answers-row {
+    border-bottom: 1px solid var(--lpv-grey-border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+  }
+
+  &__answers-key {
+    font-weight: 700;
+    margin: 0;
+    min-width: 10rem;
+  }
+
+  &__answers-value {
+    flex: 1;
+    margin: 0;
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
+  &__answers-action {
+    margin: 0;
+
+    a {
+      color: var(--lpv-a-tag--blue-text);
+      font-weight: 400;
+      text-decoration: underline;
+      text-underline-offset: var(--lpv-text-underline-offset);
+      text-decoration-thickness: var(--lpv-decoration-thickness);
+
+      &:hover {
+        color: var(--lpv-text);
+        text-underline-offset: var(--lpv-text-underline-offset-hover);
+        text-decoration-thickness: var(--lpv-decoration-thickness-hover);
+      }
+    }
+  }
+}
+
+.lpv-a-input,
+.lpv-a-select,
+.lpv-a-textarea {
+  appearance: none;
+  //background-color: var(--lpv-surface);
+  border: 2px solid var(--lpv-text);
+  border-radius: var(--lpv-radius-lg);
+  box-sizing: border-box;
+  display: block;
+  font-size: 1.125rem;
+  line-height: 1.4;
+  padding: 0.6rem 0.75rem;
+  transition: box-shadow 0.15s ease;
+  width: 100%;
+
+  &:hover {
+    border-color: var(--lpv-text);
+  }
+
+  &:focus {
+    @include mixins.lpv-focus;
+  }
+}
+
+.lpv-a-textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.lpv-a-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 24'%3E%3Cpath fill='%235a6369' d='m15.146 6.263-1.292-1.526L8 9.69 2.146 4.737.854 6.263 8 12.31z'/%3E%3C/svg%3E");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 0.8rem;
+  max-width: 30rem;
+  padding-right: 2.5rem;
+}
+
+/* Champ en erreur : bordure épaissie (le dark surcharge la couleur dans _dark.scss) */
+.lpv-a-input--error {
+  border-color: var(--lpv-red);
+  border-width: 3px;
+
+  &:focus,  {
+    outline-color:var(--lpv-red);
+    outline-width: 1px;
+  }
+}
+
+/* --- Fieldset & légendes -------------------------------------------------- */
+
+.lpv-fieldset {
+  border: 0;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+
+  &__legend {
+    box-sizing: border-box;
+    color: var(--lpv-text);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+    padding: 0;
+
+    &--m {
+      font-size: 1.125rem;
+    }
+
+    &--s {
+      font-size: 1rem;
+      font-weight: 400;
+    }
+  }
+
+  &__title {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+  }
+}
+
+/* --- Cases à cocher (Checkboxes) ----------------------------------------- */
+
+.lpv-m-checkbox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  &__item {
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+    margin-block: var(--lpv-spacing-md);
+  }
+
+  &__input {
+    flex-shrink: 0;
+    height: 2.5ex;
+    width: 2.5ex;
+    min-height: 44px;
+    min-width: 44px;
+    border-radius: 3px;
+
+  }
+
+  &__label {
+    cursor: pointer;
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.4;
+    margin-block: auto;
+    padding-left: var(--lpv-spacing-md);
+  }
+
+  &__hint {
+    color: var(--lpv-danger);
+    font-size: 1rem;
+    line-height: 1.4;
+    margin: 0 0 0 2.5ex;
+  }
+
+  &__divider {
+    color: var(--lpv-text-muted);
+    font-size: 1rem;
+    margin: 0.25rem 0;
+    text-align: center;
+  }
+
+  &__conditional {
+    margin-left: 2.5ex;
+    padding: 0.5rem 0;
+
+    &--hidden {
+      display: none;
+    }
+  }
+}
+
+/* --- Boutons radio -------------------------------------------------------- */
+
+.lpv-m-radios {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  &--inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  &--small &__input {
+    height: 2ex;
+    min-height: 36px;
+    min-width: 36px;
+    width: 2ex;
+  }
+
+  &--small &__label {
+    font-size: 1rem;
+  }
+
+  &__item {
+    margin-block: var(--lpv-spacing-md);
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  &__input {
+    flex-shrink: 0;
+    height: 2.5ex;
+    min-height: 44px;
+    min-width: 44px;
+    width: 2.5ex;
+  }
+
+  &__label {
+    cursor: pointer;
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.4;
+    margin-block: auto;
+    padding-left: var(--lpv-spacing-md);
+  }
+
+  &__hint {
+    color: var(--lpv-text-muted);
+    font-size: 1rem;
+    line-height: 1.4;
+    margin: 0 0 0 2.5ex;
+  }
+
+  &__divider {
+    color: var(--lpv-text-muted);
+    font-size: 1rem;
+    margin: 0.25rem 0;
+    text-align: center;
+  }
+
+  &__conditional {
+    margin-left: 2.5ex;
+    padding: 0.5rem 0;
+
+    &--hidden {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 639px) {
+  .lpv-m-radios--inline {
+    flex-direction: column;
+  }
+}
+
+/* --- Champ de date -------------------------------------------------------- */
+
+.lpv-m-date-input {
+  display: flex;
+  gap: 1rem;
+
+  &__item {
+    min-width: 0;
+  }
+
+  &__label {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  &__input {
+    appearance: none;
+    background-color: var(--lpv-surface);
+    border: 2px solid var(--lpv-text);
+    border-radius: var(--lpv-radius-lg);
+    box-sizing: border-box;
+    display: block;
+    font-size: 1.125rem;
+    line-height: 1.4;
+    min-height: 44px;
+    padding: 0.6rem 0.75rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    width: 4.5em;
+
+    &:hover {
+      border-color: var(--lpv-text-muted);
+    }
+
+    &:focus {
+      @include mixins.lpv-focus;
+    }
+  }
+}
+
+/* Largeurs proportionnelles au contenu attendu (convention GOV.UK) :
+   1ex ≈ un caractère. Un champ time « HH:mm » reçoit 5 caractères. */
+.lpv-a-input--width-2 {
+  width: 3em;
+}
+
+.lpv-a-input--width-4 {
+  width: 5.5em;
+}
+
+.lpv-a-input--width-5 {
+  width: 6.5em; /* ex. heure « HH:mm » (5 caractères) */
+}
+
+.lpv-a-input--width-10 {
+  width: 12em; /* ex. libellé court */
+}
+
+.lpv-a-input--width-20 {
+  width: 22em; /* ex. une phrase */
+}
+
+.lpv-a-input--width-30 {
+  width: 32em; /* ex. une adresse */
+}
+
+/* --- Compteur de caractères ----------------------------------------------- */
+
+.lpv-m-character-count {
+  position: relative;
+
+  &__message {
+    color: var(--lpv-text-muted);
+    font-size: 1rem;
+    line-height: 1.4;
+    margin-top: 0.25rem;
+
+    &--error {
+      color: var(--lpv-red);
+      font-weight: 700;
+    }
+    &--equal_limit {
+      color: #00a14c;
+      font-weight: 700;
+    }
+    &--less_than_half_limit {
+      color: #e25809;
+    }
+    &--more_than_half_limit {
+      color: #00a14c;
+    }
+  }
+}
+
+/* --- Champ mot de passe (œil afficher/masquer) ------------------------------ */
+
+.lpv-a-input--password-group {
+  max-width: 30rem;
+  position: relative;
+}
+
+.lpv-a-input--password-input {
+  padding-right: 3rem;
+}
+
+.lpv-a-input--password-toggle {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--lpv-text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  inset-block: 0;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 0.6rem;
+  position: absolute;
+  right: 0;
+
+  &:hover {
+    color: var(--lpv-text);
+  }
+
+  &:focus {
+    @include mixins.lpv-focus;
+  }
+}
+
+/* --- Téléversement (File upload) ------------------------------------------ */
+
+.lpv-a-file-upload {
+  appearance: none;
+  background-color: var(--lpv-surface);
+  border: 2px dashed var(--lpv-text);
+  border-radius: var(--lpv-radius-2xl);
+  box-sizing: border-box;
+  line-height: 1.4;
+  max-width: 40rem;
+  min-height: 44px;
+  padding: 0.6rem 1.1rem;
+  width: 100%;
+
+  &:hover {
+    border-color: var(--lpv-a-tag--blue-text);
+    color: var(--lpv-a-tag--blue-text);
+    background-color: var(--lpv-a-tag--blue-bg);
+  }
+  &__icon {
+    display: inline-flex;
+    position: absolute;
+    transform: translateX(-36px) translateY(11px);
+  }
+
+  .lpv-form-group:hover &__icon {
+    color: var(--lpv-a-tag--blue-text);
+  }
+
+  &:focus {
+    @include mixins.lpv-focus;
+  }
+
+  &--error {
+    border-color: var(--lpv-red);
+    border-width: 3px;
+  }
+}
+
+/* --- Champs en ligne (formulaire sur une ligne) ----------------------------- */
+/* Mobile-first : jour pleine largeur, De/À côte à côte, bouton pleine largeur.
+   ≥ 640px : les quatre éléments tiennent sur une ligne alignée. */
+
+.lpv-fields-inline {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 0 1rem;
+
+  &__full {
+    flex: 1 1 100%;
+
+    .lpv-a-button {
+      width: 100%;
+    }
+  }
+
+  &__half {
+    flex: 1 1 50%;
+  }
+
+  &__field,
+  &__full,
+  &__half {
+    min-width: 0;
+  }
+
+  &__full .lpv-form-group,
+  &__half .lpv-form-group,
+  &__field .lpv-form-group {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-bottom: 1.25rem;
+  }
+
+  &__full .lpv-a-select,
+  &__full .lpv-a-input,
+  &__half .lpv-a-select,
+  &__half .lpv-a-input,
+  &__field .lpv-a-select,
+  &__field .lpv-a-input {
+    margin-top: auto;
+  }
+}
+
+@media (min-width: 640px) {
+  .lpv-fields-inline {
+    flex-direction: row;
+    align-items: stretch;
+
+    &__full {
+      flex: 1 1 0;
+
+      .lpv-a-button {
+        width: auto;
+        align-self: end;
+        margin-bottom: 1.25rem;
+      }
+    }
+
+    &__half {
+      flex: 1 1 0;
+    }
+  }
+}
+
+/* --- Assistant d'ajout (stepper) --------------------------------------------- */
+
+.lpv-stepper {
+  &__step {
+    color: var(--lpv-text-muted);
+    display: block;
+    @include mixins.lpv-font-size(24);
+    font-weight: 400;
+    margin: 0 0 0.25rem;
+  }
+
+  &__question {
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+
+  &__hint {
+    color: var(--lpv-text-muted);
+    @include mixins.lpv-font-size(19);
+    margin: -0.5rem 0 1rem;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: flex-start;
+    margin-top: 1.5rem;
+  }
+}
+
+.lpv-o-availability-wizard__days {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+}
+
+.lpv-o-availability-wizard__day-option {
+  background-color: var(--lpv-surface);
+  border: 2px solid var(--lpv-grey-border);
+  border-radius: var(--lpv-radius-lg);
+  cursor: pointer;
+  font-size: 1.125rem;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  text-align: center;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    border-color: var(--lpv-text-muted);
+  }
+
+  &--active {
+    background-color: var(--lpv-portail-soft);
+    border-color: var(--lpv-portail);
+    color: var(--lpv-portail-dark);
+    font-weight: 700;
+  }
+}
+
+@media (min-width: 640px) {
+  .lpv-o-availability-wizard__days {
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  }
+}
+
+/* --- Toggle segmenté ------------------------------------------------------ */
+
+.lpv-toggle {
+  display: flex;
+  gap: 0.25rem;
+
+  &-option {
+    background: var(--lpv-surface);
+    border: 2px solid var(--lpv-grey-border);
+    border-radius: var(--lpv-radius);
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 400;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.25rem 0.75rem;
+    white-space: nowrap;
+
+    &:hover {
+      border-color: var(--lpv-text-muted);
+    }
+
+    &:focus {
+      @include mixins.lpv-focus;
+    }
+
+    &--active {
+      border-color: var(--lpv-text);
+      border-width: 3px;
+      font-weight: 800;
+
+      &[data-status='present'] {
+        background-color: var(--lpv-green-soft);
+        border-color: var(--lpv-green);
+      }
+
+      &[data-status='absent-justifie'] {
+        background-color: var(--lpv-yellow-soft);
+        border-color: var(--lpv-yellow);
+      }
+
+      &[data-status='absent'] {
+        background-color: var(--lpv-red-soft);
+        border-color: var(--lpv-red);
+      }
+    }
+  }
+}
+
+/* --- Récapitulatif ---------------------------------------------------------- */
+
+.lpv-recap {
+  background-color: var(--lpv-surface);
+  border-radius: var(--lpv-radius);
+  padding: 0.85rem 1rem;
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+  }
+
+  &__key {
+    color: var(--lpv-text-muted);
+    font-weight: 700;
+  }
+}

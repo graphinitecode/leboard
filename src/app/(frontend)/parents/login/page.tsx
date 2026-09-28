@@ -15,8 +15,8 @@ export default async function LoginPage() {
   return (
     <LoginForm
       cible="/parents"
-      portail="parent"
-      sousTitre="Connectez pour accéder à l'espace parents."
+      portail="parents"
+      subtitle="Connectez pour accéder à l'espace parents."
     />
   )
 }

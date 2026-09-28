@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { usersAdmin, usersCreate, usersDelete, usersRead, usersUpdate } from '../../access/users'
+import { denormaliserNomComplet } from '../../hooks/denormaliserNomComplet'
 
 export const roleOptions = [
   { label: 'Admin', value: 'admin' },
@@ -19,15 +20,32 @@ export const Users: CollectionConfig = {
     update: usersUpdate,
   },
   admin: {
-    defaultColumns: ['name', 'email', 'role'],
+    defaultColumns: ['prenom', 'nom', 'email', 'role'],
     useAsTitle: 'name',
   },
   auth: true,
   fields: [
     {
+      name: 'prenom',
+      type: 'text',
+      label: 'Prénom',
+      required: true,
+    },
+    {
+      name: 'nom',
+      type: 'text',
+      label: 'Nom',
+      required: true,
+    },
+    {
       name: 'name',
       type: 'text',
-      required: true,
+      admin: {
+        description: 'Construit automatiquement : prénom + nom (lecture seule)',
+        readOnly: true,
+      },
+      hidden: true,
+      label: 'Nom complet',
     },
     {
       name: 'role',
@@ -35,6 +53,7 @@ export const Users: CollectionConfig = {
         update: ({ req: { user } }) => user?.role === 'admin',
       },
       defaultValue: 'prof',
+      label: 'Rôle',
       options: roleOptions,
       required: true,
       saveToJWT: true,
@@ -43,10 +62,12 @@ export const Users: CollectionConfig = {
     {
       name: 'telephone',
       type: 'text',
+      label: 'Téléphone',
     },
     {
       name: 'disponibilites',
       type: 'array',
+      label: 'Disponibilités',
       admin: {
         condition: (data) => data?.role === undefined || data?.role === 'prof',
         description: 'Créneaux hebdomadaires de disponibilité (pour le planning)',
@@ -54,6 +75,7 @@ export const Users: CollectionConfig = {
       fields: [
         {
           name: 'jour',
+          label: 'Jour',
           options: [
             { label: 'Lundi', value: 'lundi' },
             { label: 'Mardi', value: 'mardi' },
@@ -67,12 +89,14 @@ export const Users: CollectionConfig = {
         },
         {
           name: 'heureDebut',
+          label: 'Heure de début',
           required: true,
           type: 'text',
           admin: { description: 'Format HH:mm (ex. 17:30)' },
         },
         {
           name: 'heureFin',
+          label: 'Heure de fin',
           required: true,
           type: 'text',
           admin: { description: 'Format HH:mm (ex. 19:00)' },
@@ -80,5 +104,8 @@ export const Users: CollectionConfig = {
       ],
     },
   ],
+  hooks: {
+    beforeChange: [denormaliserNomComplet],
+  },
   timestamps: true,
 }

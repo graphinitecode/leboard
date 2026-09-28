@@ -57,18 +57,21 @@ Structure par row : `dt.__key` / `dd.__value` / `dd.__actions` (optionnel).
 
 ### 1.5 Pages de questions (pattern GOV.UK « Question pages »)
 
-Toute page (ou étape d'assistant) qui pose une question suit le pattern
-[Question pages](https://design-system.service.gov.uk/patterns/question-pages/) :
+**Implémenté par le template `QuestionPage`** (`src/components/templates/t-question-page.tsx`,
+classe `lpv-t-question-page`) — toute page (ou étape d'assistant) qui pose une question suit le
+pattern [Question pages](https://design-system.service.gov.uk/patterns/question-pages/) :
 
 1. **Back link** en haut — toujours (« ← Retour ») ; rassure les utilisateurs méfiants
    envers le bouton retour du navigateur, sans le remplacer
-2. **Heading = la question** : le h1/h2 de l'écran est la question elle-même
+2. **Heading = la question** : le h1 de l'écran est la question elle-même
    (« Quel jour vous convient ? »), jamais un titre de section générique
 3. **Bouton « Continuer »** — libellé « Continuer », jamais « Suivant » ; aligné à gauche
 4. Une question par écran
 5. **Progress indicator** discret si besoin : caption « Étape 2 sur 3 » au-dessus du
    heading (jamais un stepper qui montre tout + navigue)
 6. Hint court, une phrase, sans point final ; jamais de lien dans un hint
+7. **« Vos réponses »** : les réponses déjà données s'affichent sous les questions suivantes,
+   avec un lien « Modifier » par ligne (`QuestionPageAnswers`)
 
 ### 1.6 Parcours de confirmation
 
@@ -99,9 +102,37 @@ Pour toute action à conséquence :
 
 ### 1.9 Accessibilité non négociable
 
-- Focus jaune `#fd0` sur tous les éléments interactifs (motif GOV.UK, conservé tel quel).
+- **Focus states conformes GOV.UK** ([focus-states](https://design-system.service.gov.uk/get-started/focus-states/)) :
+  - **Texte focusable** (liens, summary, contrôles texte) : mixin `lpv-focused-text` — fond jaune `#fd0` + bordure noire 3px en bas + outline transparent (équivalent `govuk-focused-text`).
+  - **Éléments avec fond/bordure** (inputs, checkboxes, cards interactives) : mixin `lpv-focus` — contour jaune 3px + bordure noire 1px interne (équivalent jaune + `focus-text` + `focus-width`).
+  - **Sur fond coloré du portail** : `lpv-focus-on-portal` — anneau blanc du portail entre l'élément et le contour jaune.
+  - La combinaison jaune + noir garantit WCAG 2.2 1.4.11 sur tout fond : le jaune contraste sur fond sombre, le noir sur fond clair.
 - Cibles ≥ 44 px, contrastes AA, `sr-only` pour les libellés d'action implicites,
   skip link, libellé texte toujours accompagnant une couleur (tags, statuts).
+
+### 1.10 Type scale responsive
+
+Échelle typographique inspirée du [type scale GOV.UK](https://design-system.service.gov.uk/styles/type-scale/)
+(spec 14) : les titres s'adaptent à l'écran selon trois paliers. Breakpoints alignés sur
+Tailwind : mobile < 48rem, tablet ≥ 48rem (`md`), desktop ≥ 64rem (`lg`).
+
+| Point | Classe | Mobile < 48rem | Tablet ≥ 48rem | Desktop ≥ 64rem |
+|---|---|---|---|---|
+| 48 | `.lpv-h1` | 32px / lh 35px | 40px / lh 45px | 48px / lh 50px |
+| 24 | `.lpv-h2` | 21px / lh 25px | 24px / lh 30px | 24px / lh 30px |
+| 19 | `.lpv-h3` | 19px / lh 25px | 19px / lh 25px | 19px / lh 25px |
+| — | `.lpv-muted` (corps) | 16px | 16px | 16px |
+
+Règles (cf. [GDS 2022](https://designnotes.blog.gov.uk/2022/12/12/making-the-gov-uk-frontend-typography-scale-more-accessible/)) :
+
+- **Jamais de texte sous 19px** : les petites tailles ne rétrécissent pas en mobile.
+- Les **line-heights sont des multiples de 5px** (rythme vertical régulier).
+- Tailles en **`rem`** : le texte suit le zoom navigateur (WCAG 2.1 1.4.4).
+- Seules les grandes tailles rétrécissent en mobile ; le corps de texte reste fixe.
+
+Implémentation : map Sass `$lpv-type-scale` + mixin `lpv-font-size($point)` dans
+`src/app/(frontend)/styles/_mixins.scss`, consommés par `.lpv-h1/2/3` dans `_base.scss`.
+Vitrine : `/design-system/typography`.
 
 ## 2. Adaptations LPV assumées
 
@@ -121,7 +152,8 @@ Préfixe `lpv-*` (BEM léger). Les composants consomment uniquement les variable
 - **Atomes** : `lpv-bouton`, `lpv-tag`, `lpv-chip`, `lpv-avatar`, `lpv-input`, `lpv-label`, `lpv-hint`, `lpv-error-message`, `lpv-back-link`, `lpv-avertissement`, `lpv-fil-ariane`, `lpv-details`, `lpv-file-upload`
 - **Molécules** : `lpv-form-group`, `lpv-error-summary`, `lpv-modale`, `lpv-toast`, `lpv-recap`, `lpv-fieldset`, `lpv-cases`, `lpv-radios`, `lpv-champ-date`, `lpv-compteur`, `lpv-accordeon`, `lpv-onglets`, `lpv-liste-taches`, `lpv-tableau`, `lpv-pagination`
 - **Structures** : `lpv-shell`, `lpv-entete-bleue`, `lpv-pied`, `lpv-container`
-- Composants React correspondants : `src/components/atoms`, `molecules`, `organisms`.
+- **Templates** : `lpv-t-portal-page`, `lpv-t-detail-page`, `lpv-t-dashboard-page`, `lpv-t-form-page`, `lpv-t-question-page` — squelettes de pages assemblant les couches inférieures en slots, sans micro-copy ni fetch (cf. spec 11)
+- Composants React correspondants : `src/components/atoms`, `molecules`, `organisms`, `templates`.
 - **Utilitaires** : `lpv-visually-hidden` (sr-only accessibilité)
 
 ## 4. Checklist avant nouvelle page / écran

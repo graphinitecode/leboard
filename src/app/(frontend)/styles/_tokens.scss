@@ -1,3 +1,4 @@
+@use "mixins";
 /* LPV Board Design System — Tokens
    Structure et principes d'accessibilité inspirés de GOV.UK Design System (MIT),
    adaptés à la charte LPV Board (logo coeur bleu #3d9eff, palette accentuelle).
@@ -7,88 +8,139 @@
 
 :root {
   /* Charte LPV Board (visuel officiel) */
-  --lpv-blue: #3d9eff;         /* Dodger Blue — portail profs */
-  --lpv-blue-dark: #1877d2;    /* hover boutons / liens (contraste AA sur blanc) */
+  --lpv-blue: #1875d4;         /* Dodger Blue — portail profs */
+  --lpv-blue--hover: #044993;         /* Dodger Blue — portail profs */
+  --lpv-blue-dark: #1b70c2;    /* hover boutons / liens (contraste AA sur blanc) */
+  --lpv-blue-shadow: #0d61b1;    /* hover boutons / liens (contraste AA sur blanc) */
+  --lpv-blue-shadow--hover: #084077;    /* hover boutons / liens (contraste AA sur blanc) */
+
+  --lpv-text-link: var(--lpv-blue-shadow) ;
+
   --lpv-blue-soft: #eaf5ff;    /* fond clair dérivé du bleu de marque */
   --lpv-violet: #9000b3;       /* portail parents */
+  --lpv-violet--hover: #5c0061;  /* hover violet (contraste AA sur blanc) */
   --lpv-violet-dark: #6b0087;  /* hover violet (contraste AA sur blanc) */
+  --lpv-violet-shadow: #5a0072;
+  --lpv-violet-shadow--hover: #3f004e;
   --lpv-violet-soft: #f6e8fb;  /* fond clair dérivé du violet */
-  --lpv-orange-portail: #e4572e; /* portail élèves (à venir) */
-  --lpv-green: #00af54;        /* Medium Jungle — succès / présent */
-  --lpv-green-soft: #e2f7ec;
-  --lpv-orange: #f96900;       /* Pumpkin Spice — « retour à faire », avertissements */
+  --lpv-visited: #551a8b;      /* violet classique navigateur — lien visité (AA sur blanc) */
+  --lpv-green: #059e4c;        /* Medium Jungle — succès / présent */
+  --lpv-green--hover: #047237;        /* Medium Jungle — succès / présent */
+  --lpv-green--dark: #012310;        /* Medium Jungle — succès / présent */
+  --lpv-green-shadow: #12522e;
+  --lpv-green-shadow--hover: #0c341d;
+  --lpv-green-soft: #aee7c7;
+
+  --lpv-orange-smart: #f96900;       /* Pumpkin Spice — « retour à faire », avertissements */
+  --lpv-orange: #c45303;       /* Pumpkin Spice — « retour à faire », avertissements */
+  --lpv-orange--hover: #a04507;       /* Pumpkin Spice — « retour à faire », avertissements */
+  --lpv-orange-dark: #7d3206;
   --lpv-orange-soft: #d35701;
+  --lpv-orange-shadow: #a53215;
+  --lpv-orange-shadow--hover: #a53215;
+  --lpv-orange-portail: #e4572e; /* portail élèves (à venir) */
+
+  /* Famille gray — boutons secondaires / rôles `secondary` (light) */
+  --lpv-gray: #ececec;
+  --lpv-gray--hover: #d8dadc;
+  --lpv-gray-dark: #c9cbcf;
+  --lpv-gray-shadow: #b9bbbf;
+  --lpv-gray-shadow--hover: #a8aaae;
+  --lpv-gray-soft: #f4f5f6;
+
+
   --lpv-yellow: #f4d35e;       /* Royal Gold — absent justifié (texte foncé sur fond) */
   --lpv-yellow-soft: #fdf6e0;
-  --lpv-red: #ff5154;          /* Vibrant Coral — absent / erreur */
+  --lpv-red: #cd0408;         /* Vibrant Coral — absent / erreur */
+  --lpv-red--hover: #a80205;         /* Vibrant Coral — absent / erreur */
+  --lpv-red-dark: #900306;
+  --lpv-red-shadow: #8b090b;         /* Vibrant Coral — absent / erreur */
+  --lpv-red-shadow--hover: #5e0003;         /* Vibrant Coral — absent / erreur */
+  --lpv-red-smart: #e03a3d;          /* Vibrant Coral — absent / erreur */
   --lpv-red-soft: #ffeaeb;
 
   /* Neutres */
   --lpv-text: #241623;         /* noir du projet */
   --lpv-text-muted: #565656;
   --lpv-grey-bg: #f4f5f6;
+  --lpv-darkgrey-bg: #ececec;
   --lpv-grey-border: #d8dadc;
   --lpv-surface: #f8f8f8;
   --lpv-bg-feedback: #fff8f8;
-
-  /* Couleur du portail courant (surchargée par data-lpv-portail) */
+  //
+  ///* Couleur du portail courant (surchargée par data-lpv-portail) */
   --lpv-portail: var(--lpv-blue);
+  --lpv-portail--hover: var(--lpv-blue--hover);
   --lpv-portail-dark: var(--lpv-blue-dark);
+  --lpv-portail-shadow: var(--lpv-blue-shadow);
+  --lpv-portail-shadow--hover: var(--lpv-blue-shadow--hover);
   --lpv-portail-soft: var(--lpv-blue-soft);
 
   /* Texte posé sur la couleur du portail (entêtes) : toujours blanc,
      quel que soit le thème (le portail reste coloré en mode sombre) */
-  --lpv-sur-portail: #ffffff;
+  --lpv-on-portal: #ffffff;
+
+  /* la couleur sombre */
+  --lpv-text-black: #180f18;
+
+  /* Afin d'avoir le même background quelque soit le theme */
+  --lpv-background: var(--lpv-on-portal);
 
   /* Focus : jaune, conservé du GOV.UK pour la visibilité maximale */
   --lpv-focus: #fd0;
+  --lpv-focus-width: 3px;
 
   /* Couleurs des tags (marque, identiques light/dark) */
-  --lpv-tag-vert: #00a14c;
-  --lpv-tag-jaune: #f4d35e;
-  --lpv-tag-orange: #ff6b00;
-  --lpv-tag-rouge: #ff0004;
-  --lpv-tag-bleu: #0080ff;
-  --lpv-tag-violet: #9000b3;
-  --lpv-tag-magenta: #c62991;
-  --lpv-tag-sarcelle: #007c8c;
+  --lpv-a-tag--green: #087d3e;
+  --lpv-a-tag--yellow: #f4d35e;
+  --lpv-a-tag--orange: #ff6b00;
+  --lpv-a-tag--red: #ff0004;
+  --lpv-a-tag--blue: #0080ff;
+  --lpv-a-tag--violet: #9000b3;
+  --lpv-a-tag--magenta: #c62991;
+  --lpv-a-tag--teal: #007c8c;
 
   /* Tags doux : fond subtil + texte coloré (light : fond éclairci, texte assombri) */
-  --lpv-tag-vert-bg: #e2f7ec;
-  --lpv-tag-vert-texte: #00703c;
-  --lpv-tag-jaune-bg: #fdf6e0;
-  --lpv-tag-jaune-texte: #8a6d00;
-  --lpv-tag-orange-bg: #feefe4;
-  --lpv-tag-orange-texte: #d94e00;
-  --lpv-tag-rouge-bg: #ffeaeb;
-  --lpv-tag-rouge-texte: #cc3a3d;
-  --lpv-tag-bleu-bg: #eaf5ff;
-  --lpv-tag-bleu-texte: #1877d2;
-  --lpv-tag-violet-bg: #f6e8fb;
-  --lpv-tag-violet-texte: #6b0087;
-  --lpv-tag-magenta-bg: #fbe4f2;
-  --lpv-tag-magenta-texte: #a82278;
-  --lpv-tag-sarcelle-bg: #e0f2f4;
-  --lpv-tag-sarcelle-texte: #006470;
+  --lpv-a-tag--green-bg: #e2f7ec;
+  --lpv-a-tag--green-text: #04552e;
+  --lpv-a-tag--yellow-bg: #fdf6e0;
+  --lpv-a-tag--yellow-text: #524002;
+  --lpv-a-tag--orange-bg: #feefe4;
+  --lpv-a-tag--orange-text: #a83b04;
+  --lpv-a-tag--red-bg: #ffeaeb;
+  --lpv-a-tag--red-text: #cc3a3d;
+  --lpv-a-tag--blue-bg: #eaf5ff;
+  --lpv-a-tag--blue-text: #0e5292;
+  --lpv-a-tag--violet-bg: #f6e8fb;
+  --lpv-a-tag--violet-text: #8c249a;
+  --lpv-a-tag--magenta-bg: #fbe4f2;
+  --lpv-a-tag--magenta-text: #93186a;
+  --lpv-a-tag--teal-bg: #e0f2f4;
+  --lpv-a-tag--teal-text: #034b55;
 
   /* Panel info : fond bleu nuit, texte bleu clair */
-  --lpv-panel-bg: #002549;
-  --lpv-panel-texte: #3d9eff;
-  --lpv-panel-success-bg: #01582a;
-  --lpv-panel-success-texte: #ffffff;
+  --lpv-a-panel-bg: #002549;
+  --lpv-a-panel-text: #3d9eff;
+  --lpv-a-panel-success-bg: #01582a;
+  --lpv-a-panel-success-text: #ffffff;
 
   /* Bannière succès : fond vert foncé, texte blanc */
-  --lpv-banner-success-bg: #01582a;
+  --lpv-m-banner-success-bg: #01582a;
 
-  --lpv-orange-hover: #d94e00;
-  --lpv-red-shadow: #cc3a3d;
-  --lpv-red-hover: #e04245;
+  --lpv-orange-hover: #e25809;
+  //--lpv-red-shadow: #a32222;
+  --lpv-red-hover: #c63636;
   --lpv-overlay: rgb(15 20 25 / 50%);
   --lpv-overlay-heavy: rgb(15 20 25 / 30%);
 
-  --lpv-radius: 6px;
+  --lpv-radius: 4px;
   --lpv-radius-lg: 4px;
-  --lpv-container: 960px;
+  --lpv-radius-xl: 7px;
+  --lpv-radius-2xl: 10px;
+  --lpv-radius-3xl: 14px;
+  --lpv-container: 1020px;
+  --lpv-container-sm: 960px;
+  --lpv-container-xs: 570px;
   --lpv-shadow: 0 1px 2px rgb(15 20 25 / 6%), 0 4px 16px rgb(15 20 25 / 7%);
   --lpv-shadow-hover: 0 2px 4px rgb(15 20 25 / 8%), 0 8px 24px rgb(15 20 25 / 10%);
 
@@ -97,26 +149,50 @@
   --lpv-spacing-md: 7px;
   --lpv-spacing-lg: 12px;
   --lpv-spacing-xl: 24px;
-  --lpv-spacing-xxl: 32px;
-  --lpv-spacing-xxx: 48px;
+  --lpv-spacing-2xl: 32px;
+  --lpv-spacing-3xl: 48px;
 
   --lpv-decoration-thickness: 1px;
   --lpv-decoration-thickness-hover: 4px;
 
-  --lpv-text-underline-offset: 1px;
-  --lpv-text-underline-offset-hover: 4px;
+  --lpv-text-underline-offset: 2px;
+  --lpv-text-underline-offset-hover: 5px;
+
+  --lpv-font-size-md: 1.2rem;
+  --lpv-font-size-xl: 1.75rem;
+
+  /* Rôles sémantiques → familles de couleurs (map $lpv-color-families) :
+     portal→blue, secondary→gray, warning→orange, danger→red. La mixin émet
+     base, --hover, -dark, -shadow, -shadow--hover pour chaque rôle. */
+  @include mixins.lpv-color-families;
 }
 
-/* Portail profs : bleu (défaut) */
-.lpv-shell[data-lpv-portail='profs'] {
-  --lpv-portail: var(--lpv-blue);
-  --lpv-portail-dark: var(--lpv-blue-dark);
-  --lpv-portail-soft: var(--lpv-blue-soft);
-}
+
+//
+///* Portail profs : bleu (défaut) */
+//.lpv-shell[data-lpv-portail='profs'] {
+//  --lpv-portail: var(--lpv-blue);
+//  --lpv-portail--hover: var(--lpv-blue--hover);
+//  --lpv-portail-shadow: var(--lpv-blue-shadow);
+//  --lpv-portail-shadow--hover: var(--lpv-blue-shadow--hover);
+//  --lpv-portail-dark: var(--lpv-blue-dark);
+//  --lpv-portail-soft: var(--lpv-blue-soft);
+//}
+/* Rôles sémantiques → familles de couleurs (map $lpv-color-families) :
+     portal→blue, secondary→gray, warning→orange, danger→red. La mixin émet
+     base, --hover, -dark, -shadow, -shadow--hover pour chaque rôle. */
 
 /* Portail parents : violet */
 .lpv-shell[data-lpv-portail='parents'] {
   --lpv-portail: var(--lpv-violet);
+  --lpv-portail--hover: var(--lpv-violet--hover);
   --lpv-portail-dark: var(--lpv-violet-dark);
+  --lpv-portail-shadow: var(--lpv-violet-shadow);
+  --lpv-portail-shadow--hover: var(--lpv-violet-shadow--hover);
   --lpv-portail-soft: var(--lpv-violet-soft);
+
+  /* Le rôle `portal` est ré-émis ici : figé dans :root, il résoudrait
+     --lpv-portail au niveau racine (bleu) même sous ce sélecteur. */
+  @include mixins.lpv-color-families;
 }
+

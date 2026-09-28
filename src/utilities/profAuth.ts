@@ -21,7 +21,7 @@ export async function getMeUserServer(): Promise<User | null> {
 
 export async function requireProf(): Promise<User> {
   const user = await getMeUserServer()
-  if (!user || (user.role !== 'prof' && user.role !== 'admin')) {
+  if (!user || !['prof', 'admin', 'benevole-bibliotheque'].includes(user.role)) {
     redirect('/profs/login')
   }
   return user as User

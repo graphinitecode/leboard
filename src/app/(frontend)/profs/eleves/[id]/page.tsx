@@ -2,19 +2,20 @@ import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
-import { BackLink, Tag, TexteAvertissement } from '@/components/atoms'
-import { Tableau } from '@/components/molecules'
-import type { TableauHeadCell, TableauRowCell } from '@/components/molecules'
-import { SummaryList } from '@/components/molecules/Listes'
+import { Tag, WarningText } from '@/components/atoms'
+import { Table } from '@/components/molecules'
+import type { TableHeadCell, TableRowCell } from '@/components/molecules'
+import { SummaryList } from '@/components/molecules/m-lists'
+import { DetailPage } from '@/components/templates'
 import { requireProf } from '@/utilities/profAuth'
 import { niveauLabel, texteLexical } from '@/utilities/rapports'
 
 export const dynamic = 'force-dynamic'
 
-function statutPresence(statut: string): { couleur: 'vert' | 'jaune' | 'rouge'; libelle: string } {
-  if (statut === 'present') return { couleur: 'vert', libelle: 'Présent' }
-  if (statut === 'absent-justifie') return { couleur: 'jaune', libelle: 'Absent (justifié)' }
-  return { couleur: 'rouge', libelle: 'Absent' }
+function presenceStatus(statut: string): { color: 'green' | 'yellow' | 'red'; label: string } {
+  if (statut === 'present') return { color: 'green', label: 'Présent' }
+  if (statut === 'absent-justifie') return { color: 'yellow', label: 'Absent (justifié)' }
+  return { color: 'red', label: 'Absent' }
 }
 
 export default async function EleveProfPage({ params }: { params: Promise<{ id: string }> }) {
@@ -86,105 +87,112 @@ export default async function EleveProfPage({ params }: { params: Promise<{ id: 
   const presentes = presences.docs.filter((p) => p.present === 'present').length
   const taux = presences.totalDocs > 0 ? Math.round((presentes / presences.totalDocs) * 100) : null
 
-  const presencesHead: TableauHeadCell[] = [
-    { texte: 'Date' },
-    { texte: 'Matière' },
-    { texte: 'Statut' },
+  const presencesHead: TableHeadCell[] = [
+    { text: 'Date' },
+    { text: 'Matière' },
+    { text: 'Statut' },
   ]
 
-  const presencesRows: TableauRowCell[][] = presences.docs.map((presence) => {
+  const presencesRows: TableRowCell[][] = presences.docs.map((presence) => {
     const seance = presence.seance as unknown as { date?: string; matiere?: string }
-    const statut = statutPresence(presence.present)
+    const statut = presenceStatus(presence.present)
     return [
-      { texte: seance?.date ? new Date(String(seance.date)).toLocaleDateString('fr-FR') : '—' },
-      { texte: seance?.matiere ?? '—' },
-      { contenu: <Tag couleur={statut.couleur}>{statut.libelle}</Tag> },
+      { text: seance?.date ? new Date(String(seance.date)).toLocaleDateString('fr-FR') : '—' },
+      { text: seance?.matiere ?? '—' },
+      { content: <Tag color={statut.color}>{statut.label}</Tag> },
     ]
   })
 
-  const progressionsHead: TableauHeadCell[] = [
-    { texte: 'Date' },
-    { texte: 'Compétence' },
-    { texte: 'Niveau' },
-    { texte: 'Commentaire' },
+  const progressionsHead: TableHeadCell[] = [
+    { text: 'Date' },
+    { text: 'Compétence' },
+    { text: 'Niveau' },
+    { text: 'Commentaire' },
   ]
 
-  const progressionsRows: TableauRowCell[][] = progressions.docs.map((progression) => {
+  const progressionsRows: TableRowCell[][] = progressions.docs.map((progression) => {
     const competence = progression.competence as unknown as { label?: string; matiere?: string }
     const niveau = progression.niveau
-    const couleur: 'vert' | 'jaune' | 'rouge' =
-      niveau === 'acquis' ? 'vert' : niveau === 'en-cours' ? 'jaune' : 'rouge'
+    const couleur: 'green' | 'yellow' | 'red' =
+      niveau === 'acquis' ? 'green' : niveau === 'en-cours' ? 'yellow' : 'red'
     return [
-      { texte: new Date(String(progression.date)).toLocaleDateString('fr-FR') },
-      { texte: String(competence?.label ?? '—') },
-      { contenu: <Tag couleur={couleur}>{niveauLabel(niveau)}</Tag> },
-      { texte: progression.commentaire ?? '' },
+      { text: new Date(String(progression.date)).toLocaleDateString('fr-FR') },
+      { text: String(competence?.label ?? '—') },
+      { content: <Tag color={couleur}>{niveauLabel(niveau)}</Tag> },
+      { text: progression.commentaire ?? '' },
     ]
   })
 
   return (
-    <>
-      <BackLink href="/profs">Tableau de bord</BackLink>
-      <h1 className="lpv-h1">
-        {eleve.prenom} {eleve.nom} <Tag couleur="bleu">{eleve.niveau}</Tag>
-      </h1>
-
-      <SummaryList
-        items={[
-          ...(eleve.groupe ? [{ cle: 'Groupe', valeur: eleve.groupe }] : []),
-          { cle: 'Présence', valeur: taux !== null ? `${taux}%` : '—' },
-        ]}
-      />
-
-      {alertes && alertes.totalDocs > 0 && (
-        <section>
-          <h2 className="lpv-h2">Alertes actives</h2>
-          {alertes.docs.map((alerte) => (
-            <TexteAvertissement key={String(alerte.id)}>
-              {alerte.message}{' '}
-              <span style={{ color: 'var(--lpv-text-muted)' }}>
-                ({new Date(String(alerte.dateCreation)).toLocaleDateString('fr-FR')})
-              </span>
-            </TexteAvertissement>
-          ))}
-        </section>
-      )}
-
-      <section>
-        <h2 className="lpv-h2">Présences</h2>
-        {presences.docs.length === 0 ? (
-          <p className="lpv-muted">Aucune présence enregistrée.</p>
-        ) : (
-          <Tableau caption="Présences" head={presencesHead} rows={presencesRows} />
-        )}
-      </section>
-
-      <section>
-        <h2 className="lpv-h2">Progressions</h2>
-        {progressions.docs.length === 0 ? (
-          <p className="lpv-muted">Aucune progression.</p>
-        ) : (
-          <Tableau caption="Progressions" head={progressionsHead} rows={progressionsRows} />
-        )}
-      </section>
-
-      <section>
-        <h2 className="lpv-h2">Retours de séance</h2>
-        {seances.docs.filter((s) => s.retour).length === 0 ? (
-          <p className="lpv-muted">Aucun retour.</p>
-        ) : (
-          seances.docs
-            .filter((s) => s.retour)
-            .map((s) => (
-              <article key={String(s.id)} style={{ borderBottom: '1px solid var(--lpv-grey-border)', padding: '0.5rem 0' }}>
-                <strong>
-                  {new Date(String(s.date)).toLocaleDateString('fr-FR')} · {s.matiere}
-                </strong>
-                <p style={{ whiteSpace: 'pre-line' }}>{texteLexical(s.retour)}</p>
-              </article>
-            ))
-        )}
-      </section>
-    </>
+    <DetailPage
+      backHref="/profs"
+      backLabel="Tableau de bord"
+      title={`${eleve.prenom} ${eleve.nom}`}
+      tag={<Tag color="blue">{eleve.niveau}</Tag>}
+      meta={
+        <SummaryList
+          items={[
+            ...(eleve.groupe ? [{ key: 'Groupe', value: eleve.groupe }] : []),
+            { key: 'Présence', value: taux !== null ? `${taux}%` : '—' },
+          ]}
+        />
+      }
+      sections={[
+        ...(alertes && alertes.totalDocs > 0
+          ? [
+              {
+                title: 'Alertes actives',
+                children: alertes.docs.map((alerte) => (
+                  <WarningText key={String(alerte.id)}>
+                    {alerte.message}{' '}
+                    <span style={{ color: 'var(--lpv-text-muted)' }}>
+                      ({new Date(String(alerte.dateCreation)).toLocaleDateString('fr-FR')})
+                    </span>
+                  </WarningText>
+                )),
+              },
+            ]
+          : []),
+        {
+          title: 'Présences',
+          children:
+            presences.docs.length === 0 ? (
+              <p className="lpv-muted">Aucune présence enregistrée.</p>
+            ) : (
+              <Table caption="Présences" head={presencesHead} rows={presencesRows} />
+            ),
+        },
+        {
+          title: 'Progressions',
+          children:
+            progressions.docs.length === 0 ? (
+              <p className="lpv-muted">Aucune progression.</p>
+            ) : (
+              <Table caption="Progressions" head={progressionsHead} rows={progressionsRows} />
+            ),
+        },
+        {
+          title: 'Retours de séance',
+          children:
+            seances.docs.filter((s) => s.retour).length === 0 ? (
+              <p className="lpv-muted">Aucun retour.</p>
+            ) : (
+              seances.docs
+                .filter((s) => s.retour)
+                .map((s) => (
+                  <article
+                    key={String(s.id)}
+                    style={{ borderBottom: '1px solid var(--lpv-grey-border)', padding: '0.5rem 0' }}
+                  >
+                    <strong>
+                      {new Date(String(s.date)).toLocaleDateString('fr-FR')} · {s.matiere}
+                    </strong>
+                    <p style={{ whiteSpace: 'pre-line' }}>{texteLexical(s.retour)}</p>
+                  </article>
+                ))
+            ),
+        },
+      ]}
+    />
   )
 }

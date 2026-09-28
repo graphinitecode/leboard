@@ -1,0 +1,44 @@
+/* LPV Board Design System — Template tableau de bord (t-dashboard-page)
+   Variante à deux colonnes : sections principales + sidebar. */
+
+.lpv-t-dashboard-page__columns {
+  align-items: start;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: minmax(0, 1fr);
+
+  @media (min-width: 760px) {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.lpv-t-dashboard-page__aside {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.lpv-t-dashboard-page__aside-card {
+  background-color: var(--lpv-background-color);
+  border: 1px solid var(--lpv-grey-border);
+  border-top: 6px solid var(--lpv-text);
+  padding: 1rem 1.1rem;
+
+  &__title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+  }
+
+  &__links {
+    display: grid;
+
+    a {
+      border-bottom: 1px solid var(--lpv-grey-border);
+      padding: 0.5rem 0;
+    }
+
+    a:last-child {
+      border-bottom: none;
+    }
+  }
+}

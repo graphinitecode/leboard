@@ -1,0 +1,22 @@
+/* LPV Board Design System — Point d'entrée
+   L'ordre des @use ci-dessous reflète l'ordre de cascade historique
+   de lpvboard.css — ne pas réordonner sans vérification visuelle. */
+
+@use 'tokens';
+@use 'base';
+@use 'header';
+@use 'buttons';
+@use 'forms';
+@use 'tags-chips';
+@use 'feedback';
+@use 'cards-stats';
+@use 'dashboard';
+@use 'lists';
+@use 'tables';
+@use 'navigation';
+@use 'login';
+@use 'design-system';
+@use 'dark';
+@use 'icon-cards';
+@use 'action-icon-cards';
+@use 'calendar';

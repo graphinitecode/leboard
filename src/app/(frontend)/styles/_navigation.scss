@@ -6,11 +6,11 @@
 
 /* --- Fil d'Ariane (Breadcrumbs) ------------------------------------------- */
 
-.lpv-fil-ariane {
+.lpv-a-breadcrumbs {
   font-size: 0.875rem;
   margin-bottom: 1rem;
 
-  &__liste {
+  &__list {
     display: flex;
     flex-wrap: wrap;
     list-style: none;
@@ -37,8 +37,12 @@
     padding-left: 0;
   }
 
-  &__lien {
+  &__link {
     color: var(--lpv-portail-dark);
+
+    &:visited {
+      color: var(--lpv-visited);
+    }
 
     &:hover {
       color: var(--lpv-text);
@@ -48,16 +52,16 @@
     }
 
     &:focus {
-      @include mixins.lpv-focus;
+      @include mixins.lpv-focused-text;
     }
   }
 
-  &__actuel {
+  &__current {
     color: var(--lpv-text);
   }
 
   /* Variante repliée sur mobile : premier et dernier items seulement */
-  &--replier &__item:not(:first-child):not(:last-child) {
+  &--collapse &__item:not(:first-child):not(:last-child) {
     display: none;
 
     @media (min-width: 640px) {
@@ -66,7 +70,7 @@
   }
 
   /* Variante inverse : posée sur un fond coloré (portail) */
-  &--inverse &__lien {
+  &--inverse &__link {
     color: var(--lpv-surface);
   }
 
@@ -75,20 +79,27 @@
     opacity: 0.7;
   }
 
-  &--inverse &__actuel {
+  &--inverse &__current {
     color: var(--lpv-surface);
   }
 }
 
 /* --- Back link -------------------------------------------------------------- */
 
-.lpv-back-link {
+.lpv-a-back-link {
   align-items: center;
-  color: var(--lpv-portail-dark);
+  color: var(--lpv-a-tag--blue-text);
   display: inline-flex;
-  gap: 0.375rem;
-  margin-bottom: 0.75rem;
-  text-decoration: none;
+  gap: 0.175rem;
+  transform: translateX(-0.97rem);
+  margin-bottom: var(--lpv-spacing-xl);
+  text-decoration: underline;
+  text-decoration-thickness: var(--lpv-decoration-thickness);
+  text-underline-offset: var(--lpv-text-underline-offset);
+
+  &:visited {
+    color: var(--lpv-visited);
+  }
 
   &:hover {
     text-decoration: underline;
@@ -97,10 +108,11 @@
   }
 
   &:focus {
-    @include mixins.lpv-focus;
+    @include mixins.lpv-focused-text;
+    color: black;
   }
 
-  &__icone {
+  &__icon {
     display: inline-flex;
     flex-shrink: 0;
   }
@@ -108,30 +120,34 @@
 
 /* --- Details (disclosure) -------------------------------------------------- */
 
-.lpv-details {
-  border-left: 5px solid var(--lpv-portail);
+.lpv-a-details {
+  //border-left: 5px solid var(--lpv-portail);
   margin: 1rem 0;
-  padding: 0.5rem 1rem 0.5rem 1.25rem;
+  padding: 0.5rem 1rem 0.5rem 0;
 
   &[open] {
     padding-bottom: 1rem;
 
-    > .lpv-details__resume .lpv-details__chevron--ferme {
+    > .lpv-a-details__summary .lpv-a-details__chevron--closed {
       display: none;
     }
 
-    > .lpv-details__resume .lpv-details__chevron--ouvert {
+    > .lpv-a-details__summary .lpv-a-details__chevron--open {
       display: inline-flex;
     }
   }
 
-  &__resume {
+  &__summary {
     align-items: center;
-    color: var(--lpv-portail-dark);
+    color: var(--lpv-text-link);
     cursor: pointer;
     display: flex;
+    width: fit-content;
     font-size: 1.125rem;
-    font-weight: 700;
+    font-weight: 400;
+    text-decoration: underline;
+    text-underline-offset: var(--lpv-text-underline-offset);
+    text-decoration-thickness: var(--lpv-decoration-thickness);
     gap: 0.5rem;
     list-style: none;
 
@@ -145,35 +161,39 @@
     }
 
     &:focus {
-      @include mixins.lpv-focus;
+      @include mixins.lpv-focused-text;
     }
   }
 
   &__chevron {
-    color: var(--lpv-portail-dark);
+    color: var(--lpv-text-link);
     display: inline-flex;
     flex-shrink: 0;
 
     /* Chevron fermé visible par défaut, ouvert quand le details est ouvert */
-    &--ouvert {
+    &--open {
       display: none;
     }
   }
 
-  &__texte {
-    margin-top: 0.75rem;
+  &__text {
+    padding-block: 0.75rem;
+    margin-top: .4rem;
+    padding-left: .9rem;
+    margin-left: 0.35rem;
+    border-left: 5px solid var(--lpv-portail);
   }
 }
 
 /* --- Accordéon ------------------------------------------------------------ */
 
-.lpv-accordeon {
+.lpv-m-accordion {
   margin-bottom: 1.5rem;
 
-  &__bouton-tout {
+  &__toggle-all {
     background: transparent;
     border: 0;
-    color: var(--lpv-portail-dark);
+    color: var(--lpv-text-link);
     cursor: pointer;
     font-size: 1rem;
     font-weight: 700;
@@ -183,13 +203,13 @@
     text-underline-offset: var(--lpv-text-underline-offset);
 
     &:hover {
-      color: var(--lpv-text);
+      color: var(--lpv-text-link);
       text-underline-offset: var(--lpv-text-underline-offset-hover);
       text-decoration-thickness: var(--lpv-decoration-thickness-hover);
     }
 
     &:focus {
-      @include mixins.lpv-focus;
+      @include mixins.lpv-focused-text;
     }
   }
 
@@ -197,28 +217,28 @@
     border-bottom: 1px solid var(--lpv-grey-border);
     margin: 0;
 
-    &--ouvert .lpv-accordeon__contenu {
+    &--open .lpv-m-accordion__content {
       display: block;
     }
   }
 
-  &__section-en-tete {
+  &__section-header {
     margin: 0;
     padding: 0;
   }
 
-  &__titre {
+  &__title {
     font-size: 1.25rem;
     font-weight: 700;
     line-height: 1.3;
     margin: 0;
   }
 
-  &__bouton {
+  &__button {
     align-items: center;
     background: transparent;
     border: 0;
-    color: var(--lpv-portail-dark);
+    color: var(--lpv-text-link);
     cursor: pointer;
     display: flex;
     font-size: 1.125rem;
@@ -235,34 +255,34 @@
     }
 
     &:focus {
-      @include mixins.lpv-focus;
+      @include mixins.lpv-focused-text;
     }
   }
 
-  &__icone {
-    color: var(--lpv-portail-dark);
+  &__icon {
+    color: var(--lpv-text-link);
     display: inline-flex;
-    border: 1px var(--lpv-portail-dark) solid;
+    border: 1px var(--lpv-text-link) solid;
     border-radius: 7rem;
     padding: 3px;
     flex-shrink: 0;
   }
 
-  &__texte-bouton {
+  &__button-text {
     flex: 1;
   }
 
-  &__resume {
+  &__summary {
     color: var(--lpv-text-muted);
     font-size: 1rem;
     font-weight: 400;
     margin: 0.25rem 0 0 1.25rem;
   }
 
-  &__contenu {
+  &__content {
     padding: 0.5rem 0 1rem;
 
-    &--cache {
+    &--hidden {
       display: none;
     }
   }
@@ -270,10 +290,10 @@
 
 /* --- Onglets (Tabs) ------------------------------------------------------- */
 
-.lpv-onglets {
+.lpv-m-tabs {
   margin-bottom: var(--lpv-spacing-xl);
 
-  &__titre {
+  &__title {
     display: none;
 
     @media (max-width: 639px) {
@@ -284,12 +304,12 @@
     }
   }
 
-  &__liste {
+  &__list {
     display: flex;
     flex-wrap: wrap;
     gap: var(--lpv-spacing-md);
     list-style: none;
-    padding: 0;
+    padding-inline: 1.2rem;
     border-bottom: 1px solid var(--lpv-grey-border);
 
     @media (max-width: 639px) {
@@ -301,13 +321,13 @@
     padding-top: var(--lpv-spacing-lg);
     padding-bottom: var(--lpv-spacing-lg);
 
-    &--selectionne {
+    &--selected {
       border-bottom: 3px solid transparent;
       padding: 0.7rem 0;
     }
   }
 
-  &__onglet {
+  &__tab {
     font-size: 1.1rem;
     font-weight: 400;
     padding: 0.7rem 1.2rem;
@@ -324,23 +344,23 @@
     }
 
     &:focus {
-      @include mixins.lpv-focus;
+      @include mixins.lpv-focused-text;
     }
 
-    &--actif {
+    &--active {
       color: var(--lpv-text);
       text-decoration: none;
-      background-color: var(--lpv-surface);
+      background-color: var(--lpv-background);
       padding-bottom: 1.1rem;
       border-top: 1px solid var(--lpv-grey-border);
       border-inline: 1px solid var(--lpv-grey-border);
     }
   }
 
-  &__panneau {
-    padding-block: var(--lpv-spacing-xxl);
+  &__panel {
+    padding-block: var(--lpv-spacing-2xl);
 
-    &--cache {
+    &--hidden {
       display: none;
     }
 
@@ -352,7 +372,7 @@
     }
   }
 
-  &__panneau-titre {
+  &__panel-title {
     display: none;
 
     @media (max-width: 639px) {
@@ -366,7 +386,7 @@
 
 /* --- Pagination ----------------------------------------------------------- */
 
-.lpv-pagination {
+.lpv-m-pagination {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -374,7 +394,7 @@
   justify-content: center;
   margin: 2rem 0;
 
-  &__liste {
+  &__list {
     display: flex;
     gap: 0.25rem;
     list-style: none;
@@ -388,15 +408,15 @@
     &--ellipsis {
       align-items: center;
       display: inline-flex;
-      color: var(--lpv-text);
+      color: var(--lpv-text-link);
       min-height: 44px;
       padding: 0 0.5rem;
     }
   }
 
-  &__lien {
+  &__link {
     align-items: center;
-    color: var(--lpv-portail-dark);
+    color: var(--lpv-text-link);
     display: inline-flex;
     font-weight: 700;
     gap: 0.375rem;
@@ -412,43 +432,43 @@
     }
 
     &:focus {
-      @include mixins.lpv-focus;
+      @include mixins.lpv-focused-text;
     }
 
     /* Page courante : bloc plein inversé (motif GOV.UK), pas un lien */
-    &--courant {
-      background-color: var(--lpv-portail);
+    &--current {
+      background-color: var(--lpv-text-link);
       color: var(--lpv-surface);
       text-decoration: none;
     }
   }
 
-  &__precedent,
-  &__suivant {
+  &__previous,
+  &__next {
     display: inline-flex;
   }
 
-  &__icone {
+  &__icon {
     display: inline-flex;
     flex-shrink: 0;
   }
 
-  &__lien-titre {
+  &__link-title {
     text-decoration: underline;
   }
 
-  &__lien-libelle {
+  &__link-label {
     display: block;
     font-size: 0.875rem;
     font-weight: 400;
   }
 
   /* Variante bloc : Précédent et Suivant empilés descriptifs */
-  &--bloc {
+  &--block {
     justify-content: flex-start;
 
-    .lpv-pagination__precedent,
-    .lpv-pagination__suivant {
+    .lpv-m-pagination__previous,
+    .lpv-m-pagination__next {
       margin-bottom: 0.5rem;
     }
   }
@@ -456,7 +476,7 @@
 
 /* --- Page de démo ----------------------------------------------------------- */
 
-.lpv-demo-exemples {
+.lpv-demo-examples {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
