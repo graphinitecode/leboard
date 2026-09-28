@@ -24,15 +24,18 @@ export const Livres: CollectionConfig = {
   },
   fields: [
     {
+      label: 'Titre',
       name: 'titre',
       required: true,
       type: 'text',
     },
     {
+      label: 'Auteur',
       name: 'auteur',
       type: 'text',
     },
     {
+      label: 'ISBN',
       name: 'isbn',
       type: 'text',
       admin: {
@@ -46,6 +49,7 @@ export const Livres: CollectionConfig = {
       },
     },
     {
+      label: 'Niveau',
       name: 'niveau',
       options: [
         { label: 'Primaire', value: 'primaire' },
@@ -55,18 +59,28 @@ export const Livres: CollectionConfig = {
       type: 'select',
     },
     {
+      label: 'Catégorie',
       name: 'categorie',
       options: categorieLivreOptions,
       type: 'select',
     },
     {
+      label: 'Éditeur',
       name: 'editeur',
       type: 'text',
     },
     {
-      name: 'archived',
+      label: 'Résumé',
+      name: 'resume',
+      type: 'textarea',
+      admin: {
+        description: 'Présentation de l’ouvrage, affichée sur la fiche du portail',
+      },
+    },
+    {
       defaultValue: false,
       label: 'Retiré du catalogue',
+      name: 'archived',
       type: 'checkbox',
       admin: {
         description:

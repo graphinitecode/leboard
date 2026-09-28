@@ -7,7 +7,11 @@ export const dynamic = 'force-dynamic'
 export const metadata = { title: 'Bibliothèque — LPV Board' }
 
 export default async function BibliothequePage() {
-  await requireProf()
+  const user = await requireProf()
 
-  return <BibliothequeView />
+  // Gestion (prêt, retour, catalogue) : admin et bénévole uniquement —
+  // les profs consultent (Spec 04 : profs lecture seule).
+  const peutGerer = user.role === 'admin' || user.role === 'benevole-bibliotheque'
+
+  return <BibliothequeView peutGerer={peutGerer} />
 }

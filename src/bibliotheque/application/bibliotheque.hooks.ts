@@ -56,8 +56,38 @@ export const useCreerLivre = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (command: { titre: string; auteur?: string; niveau?: string; categorie?: string }) =>
-      bibliothequeRepository.creerLivre(command),
+    mutationFn: (command: {
+      titre: string
+      auteur?: string
+      niveau?: string
+      categorie?: string
+      resume?: string
+    }) => bibliothequeRepository.creerLivre(command),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['bibliotheque', 'catalogue'] }),
   })
 }
+
+export const useModifierLivre = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (command: {
+      id: number
+      titre: string
+      auteur?: string
+      isbn?: string
+      niveau?: string
+      categorie?: string
+      editeur?: string
+      resume?: string
+    }) => bibliothequeRepository.modifierLivre(command),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['bibliotheque', 'catalogue'] }),
+  })
+}
+
+export const useListPretsParLivre = (livreId: number) =>
+  useQuery({
+    queryKey: [...PRETS_QUERY_KEY, 'livre', livreId],
+    queryFn: () => bibliothequeRepository.listPretsParLivre(livreId),
+    enabled: Number.isFinite(livreId) && livreId > 0,
+  })

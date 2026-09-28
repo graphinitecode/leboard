@@ -36,15 +36,15 @@ const formatDate = (iso: string | null): string => {
   return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })
 }
 
-export default function BibliothequeView() {
+export default function BibliothequeView({ peutGerer }: { peutGerer: boolean }) {
   return (
     <Suspense fallback={<p className="lpv-muted">Chargement…</p>}>
-      <VueBibliotheque />
+      <VueBibliotheque peutGerer={peutGerer} />
     </Suspense>
   )
 }
 
-function VueBibliotheque() {
+function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
   const router = useRouter()
   const params = useSearchParams()
   const prets = useListTousPretsEnCours()
@@ -185,9 +185,11 @@ function VueBibliotheque() {
           <option value="college">Collège</option>
           <option value="lycee">Lycée</option>
         </select>
-        <Button href="/profs/bibliotheque/prets/nouveau" variant="success">
-          Enregistrer un prêt
-        </Button>
+        {peutGerer ? (
+          <Button href="/profs/bibliotheque/prets/nouveau" variant="success">
+            Enregistrer un prêt
+          </Button>
+        ) : null}
       </div>
 
       <div className="lpv-t-dashboard-page__columns">
@@ -204,12 +206,16 @@ function VueBibliotheque() {
               retards.map((pret) => (
                 <ActionRow
                   accent="red"
-                  action={{
-                    disabled: marquerRetourne.isPending,
-                    label: 'Marquer comme retourné',
-                    onClick: () => retourner(pret.id),
-                    variant: 'secondary',
-                  }}
+                  action={
+                    peutGerer
+                      ? {
+                          disabled: marquerRetourne.isPending,
+                          label: 'Marquer comme retourné',
+                          onClick: () => retourner(pret.id),
+                          variant: 'secondary',
+                        }
+                      : undefined
+                  }
                   key={pret.id}
                   meta={`Retour prévu le ${formatDate(pret.dateRetourPrevue)} — ${joursDeRetard(pret.dateRetourPrevue)} jour(s) de retard`}
                   title={`« ${pret.livreLabel ?? pret.exemplaireCode ?? 'Livre'} » — emprunté par ${pret.eleveLabel ?? 'un élève'}`}
@@ -255,15 +261,17 @@ function VueBibliotheque() {
               </div>
             )}
           </div>
-          <div className="lpv-t-dashboard-page__aside-card">
-            <h3 className="lpv-t-dashboard-page__aside-card__title">Ajouter un livre</h3>
-            <p className="lpv-muted" style={{ marginTop: 0 }}>
-              Nouvel ouvrage à référencer au catalogue.
-            </p>
-            <Button href="/profs/bibliotheque/livres/nouveau" variant="secondary">
-              + Nouveau livre
-            </Button>
-          </div>
+          {peutGerer ? (
+            <div className="lpv-t-dashboard-page__aside-card">
+              <h3 className="lpv-t-dashboard-page__aside-card__title">Ajouter un livre</h3>
+              <p className="lpv-muted" style={{ marginTop: 0 }}>
+                Nouvel ouvrage à référencer au catalogue.
+              </p>
+              <Button href="/profs/bibliotheque/livres/nouveau" variant="secondary">
+                + Nouveau livre
+              </Button>
+            </div>
+          ) : null}
         </aside>
       </div>
     </>
