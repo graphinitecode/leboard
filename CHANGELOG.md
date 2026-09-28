@@ -20,6 +20,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Page « Couleurs » dans le design system : palette complète (couleurs fonctionnelles, groupes de marque, tags, neutres) avec swatches qui suivent le thème actif et note de contraste WCAG
 
 ### Modifié
+- Créneaux de disponibilité : l'ajout et la modification se font maintenant sur une page dédiée « une question par écran », à la place du formulaire incrusté dans la liste ; retour à la liste avec confirmation après enregistrement
 - Parcours d'ajout (nouvelle séance et disponibilités) : espacement harmonisé entre le lien de retour, la question et les boutons, aligné sur le modèle des pages-question ; avertissement de conflit d'horaire plus visible à l'étape de vérification
 - Titres : taille adaptée à l'écran (plus lisibles en mobile), alignés sur l'échelle typographique GOV.UK — nouvelle page Typographie dans le design system
 - Bascule de thème : nouveau mode « suivre la machine » (icône d'écran) qui applique automatiquement le thème du système et suit ses changements en temps réel ; le cycle machine → clair → sombre remplace l'ancienne bascule à deux états
