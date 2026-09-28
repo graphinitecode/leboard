@@ -42,3 +42,70 @@
     }
   }
 }
+
+/* --- Fiche détail (t-portal-page DetailPage) ------------------------------ */
+
+.lpv-t-detail-page__caption {
+  color: var(--lpv-text-muted);
+  font-size: 1.05rem;
+  margin: -0.5rem 0 1.25rem;
+}
+
+/* Liste d'information dt/dd (sidebar fiche élève, pattern GOV.UK infolist) */
+.lpv-m-infolist {
+  margin: 0;
+
+  dt {
+    color: var(--lpv-text-muted);
+    font-size: 0.85rem;
+    margin-top: 0.625rem;
+  }
+
+  dd {
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
+/* --- Cards progression (fiche élève) — bordure gauche par niveau ---------- */
+
+.lpv-m-progression-card {
+  background-color: var(--lpv-background-color);
+  border: 1px solid var(--lpv-grey-border);
+  border-left: 5px solid var(--lpv-yellow);
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.875rem 1rem;
+
+  &--acquis {
+    border-left-color: var(--lpv-a-tag--green-text);
+  }
+
+  &--en-cours {
+    border-left-color: var(--lpv-a-tag--yellow-text);
+  }
+
+  &--a-revoir {
+    border-left-color: var(--lpv-a-tag--red-text);
+  }
+
+  &__title {
+    font-weight: 700;
+    margin: 0;
+  }
+
+  &__meta {
+    color: var(--lpv-text-muted);
+    font-size: 0.875rem;
+  }
+
+  &__comment {
+    font-size: 0.95rem;
+    margin: 0;
+  }
+}
+
+.lpv-m-progression-list {
+  display: grid;
+  gap: 0.625rem;
+}

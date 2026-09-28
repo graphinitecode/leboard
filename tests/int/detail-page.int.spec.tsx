@@ -49,4 +49,38 @@ describe('DetailPage', () => {
     expect(screen.getByText('Retours de séance')).toBeDefined()
     expect(screen.getByText('Aucun retour.')).toBeDefined()
   })
+
+  it('rend la caption sous le titre quand fournie', () => {
+    render(
+      <DetailPage
+        backHref="/profs"
+        backLabel="Retour"
+        caption="CM2 · Groupe B — Prof référent : Claire D."
+        sections={[]}
+        title="Lucas M."
+      />,
+    )
+    expect(screen.getByText(/Prof référent : Claire D./)).toBeDefined()
+  })
+
+  it('rend la grille de stats et la sidebar en deux colonnes', () => {
+    const { container } = render(
+      <DetailPage
+        backHref="/profs"
+        backLabel="Retour"
+        sections={[{ title: 'Historique', children: <p>Contenu</p> }]}
+        sidebar={<aside>Informations élève</aside>}
+        stats={[
+          { label: 'Taux de présence', value: '62%', type: 'alert' },
+          { label: 'Alerte active', value: 1 },
+        ]}
+        title="Lucas M."
+      />,
+    )
+    expect(container.querySelector('.lpv-cards-grid')).not.toBeNull()
+    expect(container.querySelector('.lpv-t-dashboard-page__columns')).not.toBeNull()
+    expect(screen.getByText('62%')).toBeDefined()
+    expect(screen.getByText('Taux de présence')).toBeDefined()
+    expect(screen.getByText('Informations élève')).toBeDefined()
+  })
 })

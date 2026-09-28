@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { useMemo, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense, useMemo, useState } from 'react'
 
 import { InsetText, Panel, Tag } from '@/components/atoms'
 import { Button } from '@/components/atoms/a-button'
@@ -35,12 +36,26 @@ const formatDate = (iso: string | null): string => {
 }
 
 export default function BibliothequeView() {
+  return (
+    <Suspense fallback={<p className="lpv-muted">Chargement…</p>}>
+      <VueBibliotheque />
+    </Suspense>
+  )
+}
+
+function VueBibliotheque() {
+  const router = useRouter()
+  const params = useSearchParams()
   const prets = useListTousPretsEnCours()
   const catalogue = useListCatalogue()
   const marquerRetourne = useMarquerRetourne()
   const [recherche, setRecherche] = useState('')
+  const [niveauFiltre, setNiveauFiltre] = useState('')
   const [erreur, setErreur] = useState<string | null>(null)
   const [pretRetourne, setPretRetourne] = useState(false)
+
+  // Retour de l'assistant prêt (?pret=enregistre) : toast dérivé de l'URL.
+  const pretEnregistre = params.get('pret') === 'enregistre'
 
   const enCours = (prets.data ?? []).filter(estPretEnCours)
   const retards = enCours.filter((pret) => joursDeRetard(pret.dateRetourPrevue) > 0)
@@ -50,7 +65,10 @@ export default function BibliothequeView() {
   })
 
   const catalogueFiltre = useMemo(() => {
-    const liste = catalogue.data ?? []
+    let liste = catalogue.data ?? []
+    if (niveauFiltre) {
+      liste = liste.filter((livre) => livre.niveau === niveauFiltre)
+    }
     const q = recherche.trim().toLowerCase()
     if (!q) return liste
     return liste.filter(
@@ -58,7 +76,7 @@ export default function BibliothequeView() {
         livre.titre.toLowerCase().includes(q) ||
         (livre.auteur ?? '').toLowerCase().includes(q),
     )
-  }, [catalogue.data, recherche])
+  }, [catalogue.data, recherche, niveauFiltre])
 
   async function retourner(pretId: number) {
     setErreur(null)
@@ -79,6 +97,13 @@ export default function BibliothequeView() {
       )}
       {pretRetourne && (
         <Toast message="Prêt marqué comme retourné" type="success" onClose={() => setPretRetourne(false)} />
+      )}
+      {pretEnregistre && (
+        <Toast
+          message="Prêt enregistré"
+          type="success"
+          onClose={() => router.replace('/profs/bibliotheque')}
+        />
       )}
 
       <h1 className="lpv-h1">Bibliothèque</h1>
@@ -142,7 +167,7 @@ export default function BibliothequeView() {
             <h2 className="lpv-h2" id="catalogue">
               Catalogue
             </h2>
-            <p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.625rem' }}>
               <label className="lpv-visually-hidden" htmlFor="recherche-catalogue">
                 Rechercher un titre ou un auteur
               </label>
@@ -151,10 +176,28 @@ export default function BibliothequeView() {
                 id="recherche-catalogue"
                 onChange={(e) => setRecherche(e.target.value)}
                 placeholder="Rechercher un titre, un auteur…"
+                style={{ flex: '1 1 200px' }}
                 type="search"
                 value={recherche}
               />
-            </p>
+              <label className="lpv-visually-hidden" htmlFor="filtre-niveau">
+                Filtrer par niveau
+              </label>
+              <select
+                className="lpv-a-select"
+                id="filtre-niveau"
+                onChange={(e) => setNiveauFiltre(e.target.value)}
+                value={niveauFiltre}
+              >
+                <option value="">Tous les niveaux</option>
+                <option value="primaire">Primaire</option>
+                <option value="college">Collège</option>
+                <option value="lycee">Lycée</option>
+              </select>
+              <Link className="lpv-a-button" href="/profs/bibliotheque/prets/nouveau">
+                Enregistrer un prêt
+              </Link>
+            </div>
             {catalogue.isLoading ? (
               <p className="lpv-muted">Chargement du catalogue…</p>
             ) : catalogueFiltre.length === 0 ? (
