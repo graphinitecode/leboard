@@ -290,6 +290,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
             </div>
           ) : (
             <Combobox
+              ariaLabel="Élève"
               hint="Tape un prénom ou un nom."
               id="pret-eleve"
               label=""
@@ -349,6 +350,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
           ) : (
             <>
               <Combobox
+                ariaLabel="Livres"
                 hint="Cherche par titre, auteur ou ISBN. Tu peux en ajouter plusieurs."
                 id="pret-livre"
                 label=""
