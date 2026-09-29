@@ -8,6 +8,8 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ### Modifié
 - Nouvelle mise en page du parcours « mot de passe oublié » : écran de confirmation après l'envoi du lien, résumé des erreurs en tête de formulaire et liens de retour adaptés au portail (profs ou parents).
+- Assistant « nouvelle séance » : les élèves se choisissent via une boîte de recherche (prénom ou nom, sélection multiple, retrait facile) au lieu des cases à cocher, les questions sont plus naturelles et la durée choisie s'affiche en toutes lettres (par exemple « une demi-heure »).
+- L'encadré de confirmation s'affiche à nouveau sur fond bleu, avec une bordure basse en dessous.
 
 ### Corrigé
 - Les assistants en questions (nouveau prêt, nouvelle séance…) affichent une colonne de largeur constante, quel que soit le libellé de la question.

@@ -47,21 +47,23 @@ export function MotDePasseOublieForm({ portail = 'profs' }: { portail?: 'profs' 
     return (
       <div className="lpv-login">
         <h1 className="lpv-login__title">Consultez vos e-mails</h1>
-        <p>
-          Si un compte existe pour <strong>{email.trim()}</strong>, un lien de réinitialisation vient
-          d&apos;être envoyé.
+        <p className="lpv-muted pt-7 pb-2">
+          Si l&#39;adresse e-mail <span className="font-semibold">{email.trim()}</span> est associée a un compte, un lien de réinitialisation
+          vient d&apos;être envoyé.
         </p>
         <InsetText>
-          <p className="lpv-muted">
-            Le lien est valable 2 heures. Pensez à regarder dans vos courriers indésirables.
-          </p>
+          Le lien est <span className="font-semibold">valable 2 heures.</span> Pensez à regarder
+          dans vos courriers indésirables.
         </InsetText>
-        <p>Toujours rien ? Contactez l&apos;administration de l&apos;association.</p>
-        <p>
-          <Link className="lpv-link-inline" href={lienConnexion}>
-            Retour à la connexion
-          </Link>
+        <p className="lpv-muted mt-7 pb-7">
+          Toujours rien ? {' '}
+          <Link href="mailto:support@lespierresvivantes.org" className="lpv-link-inline">
+            Contacter le support
+          </Link>.
         </p>
+        <Link href={lienConnexion}>
+          <Button variant="primary">Revenir à la connexion</Button>
+        </Link>
       </div>
     )
   }

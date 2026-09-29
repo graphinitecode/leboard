@@ -70,10 +70,10 @@ describe('MotDePasseOublieForm', () => {
       expect(screen.getByRole('heading', { name: 'Consultez vos e-mails' })).toBeDefined()
     })
     // Pas d'énumération : « si un compte existe » quel que soit le résultat serveur.
-    expect(screen.getByText(/Si un compte existe pour/)).toBeDefined()
+    expect(screen.getByText(/Si l'adresse e-mail/)).toBeDefined()
     expect(screen.getByText('parent@lpv.fr')).toBeDefined()
     expect(screen.getByText(/valable 2 heures/)).toBeDefined()
-    const lienSucces = screen.getByRole('link', { name: 'Retour à la connexion' })
+    const lienSucces = screen.getByRole('link', { name: 'Revenir à la connexion' })
     expect(lienSucces).toHaveAttribute('href', '/profs/login')
   })
 
@@ -94,7 +94,7 @@ describe('MotDePasseOublieForm', () => {
     await waitFor(() => {
       expect(screen.getByRole('heading', { name: 'Consultez vos e-mails' })).toBeDefined()
     })
-    expect(screen.getByRole('link', { name: 'Retour à la connexion' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'Revenir à la connexion' })).toHaveAttribute(
       'href',
       '/parents/login',
     )
