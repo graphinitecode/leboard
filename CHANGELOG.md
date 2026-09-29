@@ -6,6 +6,9 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+### Modifié
+- Nouvelle mise en page du parcours « mot de passe oublié » : écran de confirmation après l'envoi du lien, résumé des erreurs en tête de formulaire et liens de retour adaptés au portail (profs ou parents).
+
 ### Corrigé
 - Les assistants en questions (nouveau prêt, nouvelle séance…) affichent une colonne de largeur constante, quel que soit le libellé de la question.
 
