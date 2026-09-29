@@ -3,6 +3,7 @@ import { bibliothequeRepository } from '@/bibliotheque/infrastructure/bibliotheq
 export const enregistrerPretHandler = async (command: {
   eleveId: number
   exemplaireId: number
+  motDePasse: string
 }): Promise<void> => {
   return bibliothequeRepository.enregistrerPret(command)
 }

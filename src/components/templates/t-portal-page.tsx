@@ -67,10 +67,9 @@ export function DetailPage({
   return (
     <div className="lpv-t-detail-page">
       <BackLinkRow backHref={backHref} backLabel={backLabel} />
-      <h1 className="lpv-t-detail-page__title">
-        {title} {tag}
-      </h1>
+      <h1 className="lpv-h2">{title}{tag && <span className='pl-4'>{tag}</span>}</h1>
       {caption ? <p className="lpv-t-detail-page__caption">{caption}</p> : null}
+
       {meta}
       {stats && stats.length > 0 && <StatsGrid stats={stats} />}
       {sidebar ? (

@@ -41,14 +41,34 @@
       border-bottom: none;
     }
   }
+
+  /* Pile de boutons du design system (card Actions de la fiche livre) */
+  &__actions {
+    display: grid;
+    gap: 0.625rem;
+
+    .lpv-a-button {
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  /* Pile de cartes d'alerte (rappels bibliothèque) */
+  &__stack {
+    display: grid;
+    gap: 0.625rem;
+  }
 }
 
 /* --- Fiche détail (t-portal-page DetailPage) ------------------------------ */
 
 .lpv-t-detail-page__caption {
   color: var(--lpv-text-muted);
-  font-size: 1.05rem;
-  margin: -0.5rem 0 1.25rem;
+  margin: -1.1rem 0 1.25rem;
+  font-size: 1.225rem;
+  padding-bottom: 1.75rem;
+  font-weight: 500;
+
 }
 
 /* Liste d'information dt/dd (sidebar fiche élève, pattern GOV.UK infolist) */
@@ -133,6 +153,26 @@
   }
 
   .lpv-a-button {
+    width: auto;
+  }
+}
+
+/* --- Searchbar à filtres (mes élèves) — même motif, sans bouton ------------ */
+
+.lpv-o-eleves__searchbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-bottom: 1.75rem;
+
+  input {
+    flex: 1 1 200px;
+    min-width: 200px;
+    width: auto;
+  }
+
+  select {
+    max-width: none;
     width: auto;
   }
 }

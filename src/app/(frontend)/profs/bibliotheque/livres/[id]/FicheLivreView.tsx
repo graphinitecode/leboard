@@ -3,12 +3,13 @@
 import Link from 'next/link'
 import { useState } from 'react'
 
-import { BackLink, InsetText, Tag } from '@/components/atoms'
+import { BackLink, Icon, InsetText, Tag } from '@/components/atoms'
 import { Button } from '@/components/atoms/a-button'
 import { AlertCard, Table, Toast } from '@/components/molecules'
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
 import { DetailPage } from '@/components/templates'
 import type { DashboardStat } from '@/components/templates'
+import { ConfirmAction } from '@/components/organisms/o-confirm-action'
 import {
   estPretEnCours,
   joursDeRetard,
@@ -43,16 +44,23 @@ export interface FicheLivreProps {
 }
 
 // Fiche livre alignée sur la maquette « Fiche livre GOV.UK » :
-// stats (niveau, dispos, retard), historique des emprunts en table,
-// sidebar Actions / Retard en cours / Informations.
+// stats (niveau, dispos, retard), historique des emprunts en table
+// (nom de l'élève cliquable vers sa fiche, retour au livre via ?retour=),
+// sidebar Actions / Retard en cours / Informations (dont la note sur les
+// exemplaires physiques gérés côté admin).
 // Les actions ne sont affichées qu'aux rôles qui peuvent gérer la
-// bibliothèque (admin, bénévole) ; les profs voient la fiche en lecture seule.
+// bibliothèque (admin, bénévole) ; les profs voient la fiche en lecture
+// seule. « Marquer un retour » est une action patrimoniale : confirmation
+// par mot de passe (revérifié côté serveur) avant l'écriture.
 export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) {
   const catalogue = useListCatalogue()
   const prets = useListPretsParLivre(livreId)
   const marquerRetourne = useMarquerRetourne()
   const [erreur, setErreur] = useState<string | null>(null)
   const [retourMarque, setRetourMarque] = useState(false)
+  const [confirmRetour, setConfirmRetour] = useState<{ pretId: number; eleve: string } | null>(
+    null,
+  )
 
   const livre = (catalogue.data ?? []).find((l) => l.id === livreId)
 
@@ -90,20 +98,36 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
         ? { color: 'blue' as const, label: 'En cours' }
         : { color: 'green' as const, label: 'Rendu' }
     return [
-      { text: pret.eleveLabel ?? '—' },
+      {
+        content:
+          pret.eleveId > 0 ? (
+            <Link
+              className="lpv-link-inline"
+              href={`/profs/eleves/${pret.eleveId}?retour=/profs/bibliotheque/livres/${livreId}`}
+            >
+              {pret.eleveLabel ?? '—'}
+            </Link>
+          ) : (
+            <span>{pret.eleveLabel ?? '—'}</span>
+          ),
+      },
       { text: formatDate(pret.dateEmprunt) },
       { text: pret.dateRetourEffective ? formatDate(pret.dateRetourEffective) : '—' },
       { content: <Tag color={statut.color}>{statut.label}</Tag> },
     ]
   })
 
-  async function retourner(pretId: number) {
+  async function retourner(pretId: number, motDePasse?: string) {
     setErreur(null)
+    if (!motDePasse) return
     try {
-      await marquerRetourne.mutateAsync(pretId)
+      await marquerRetourne.mutateAsync({ motDePasse, pretId })
       setRetourMarque(true)
-    } catch {
-      setErreur('Impossible de marquer le retour. Réessayez.')
+      setConfirmRetour(null)
+    } catch (err) {
+      setErreur(
+        err instanceof Error ? err.message : 'Impossible de marquer le retour. Réessayez.',
+      )
     }
   }
 
@@ -112,19 +136,24 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
       {peutGerer ? (
         <div className="lpv-t-dashboard-page__aside-card">
           <h3 className="lpv-t-dashboard-page__aside-card__title">Actions</h3>
-          <div style={{ display: 'grid', gap: '0.625rem' }}>
+          <div className="lpv-t-dashboard-page__aside-card__actions">
             <Button href="/profs/bibliotheque/prets/nouveau" variant="success">
-              Enregistrer un prêt
+              <Icon icon={'rivet-icons:plus-circle-solid'} size={19} />
+              &nbsp;Enregistrer un prêt
             </Button>
             {enCours.length > 0 ? (
               <Button
                 disabled={marquerRetourne.isPending}
                 onClick={() => {
                   const pret = enCours[0]
-                  if (pret) retourner(pret.id)
+                  if (pret)
+                    setConfirmRetour({
+                      eleve: pret.eleveLabel ?? 'cet élève',
+                      pretId: pret.id,
+                    })
                 }}
                 type="button"
-                variant="secondary"
+                variant="primary"
               >
                 Marquer un retour
               </Button>
@@ -133,10 +162,7 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
                 Marquer un retour
               </Button>
             )}
-            <Button
-              href={`/profs/bibliotheque/livres/${livre.id}/modifier`}
-              variant="secondary"
-            >
+            <Button href={`/profs/bibliotheque/livres/${livre.id}/modifier`} variant="secondary">
               Modifier la fiche
             </Button>
           </div>
@@ -154,7 +180,7 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
         <h3 className="lpv-t-dashboard-page__aside-card__title">Informations</h3>
         <dl className="lpv-m-infolist">
           <dt>Catégorie</dt>
-          <dd>{livre.categorie ? CATEGORIE_LABELS[livre.categorie] ?? livre.categorie : '—'}</dd>
+          <dd>{livre.categorie ? (CATEGORIE_LABELS[livre.categorie] ?? livre.categorie) : '—'}</dd>
           <dt>ISBN</dt>
           <dd>{livre.isbn ?? '—'}</dd>
           <dt>Exemplaires</dt>
@@ -167,12 +193,24 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
             })}
           </dd>
         </dl>
+        {peutGerer ? (
+          <p
+            style={{
+              borderTop: '1px solid var(--lpv-grey-border)',
+              color: 'var(--lpv-text-muted)',
+              fontSize: '0.8rem',
+              marginTop: '0.625rem',
+              paddingTop: '0.625rem',
+            }}
+          >
+            Les exemplaires physiques se gèrent dans{' '}
+            <Link className="lpv-link-inline" href="/admin">
+              le panneau d&apos;administration
+            </Link>
+            .
+          </p>
+        ) : null}
       </div>
-      {peutGerer ? (
-        <p className="lpv-muted">
-          Les exemplaires physiques se gèrent dans <Link className="lpv-link-inline" href="/admin">le panneau d&apos;administration</Link>.
-        </p>
-      ) : null}
     </>
   )
 
@@ -183,7 +221,7 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
     },
     {
       label: 'Exemplaires disponibles',
-      type: disponibles > 0 ? 'success' : undefined,
+      type: disponibles > 0 ? 'success' : 'alert',
       value: `${disponibles} / ${totalExemplaires}`,
     },
     {
@@ -204,6 +242,24 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
         <Toast message="Retour marqué" type="success" onClose={() => setRetourMarque(false)} />
       )}
 
+      {confirmRetour ? (
+        <ConfirmAction
+          confirmLabel="Confirmer le retour"
+          description="Le prêt sera clôturé et l'exemplaire redeviendra disponible. Confirmez avec votre mot de passe."
+          onClose={() => {
+            setConfirmRetour(null)
+            setErreur(null)
+          }}
+          onConfirm={(motDePasse) => {
+            void retourner(confirmRetour.pretId, motDePasse)
+          }}
+          pending={marquerRetourne.isPending}
+          pendingLabel="Confirmation…"
+          requirePassword
+          title="Marquer le retour du prêt ?"
+        />
+      ) : null}
+
       <DetailPage
         backHref="/profs/bibliotheque"
         backLabel="Retour au catalogue"
@@ -220,8 +276,19 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
             title: 'Résumé',
             children: livre.resume ? (
               <p>{livre.resume}</p>
+            ) : peutGerer ? (
+              <p className="lpv-muted">
+                Ce livre n&apos;a pas encore de résumé.{' '}
+                <Link
+                  className="lpv-link-inline"
+                  href={`/profs/bibliotheque/livres/${livreId}/modifier#livre-resume`}
+                >
+                  Ajouter un résumé
+                </Link>
+                .
+              </p>
             ) : (
-              <p className="lpv-muted">Aucun résumé pour le moment.</p>
+              <p className="lpv-muted">Ce livre n&apos;a pas encore de résumé.</p>
             ),
           },
           {

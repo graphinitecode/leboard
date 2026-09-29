@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -129,6 +130,24 @@ describe('FicheLivreView (alignee maquette)', () => {
     expect(screen.getByText('Rendu')).toBeDefined()
   })
 
+  it('rend le nom de l eleve emprunteur cliquable vers sa fiche', () => {
+    pretsLivreRetour.data = PRETS
+    const { container } = rendre()
+
+    const lienEleve = container.querySelector<HTMLAnchorElement>(
+      'a[href="/profs/eleves/10?retour=/profs/bibliotheque/livres/100"]',
+    )
+    expect(lienEleve).not.toBeNull()
+    expect(lienEleve?.textContent).toContain('Lucas Martin')
+    expect(lienEleve?.className).toContain('lpv-link-inline')
+    // Historique complet : les deux élèves sont des liens
+    expect(
+      container.querySelector<HTMLAnchorElement>(
+        'a[href="/profs/eleves/11?retour=/profs/bibliotheque/livres/100"]',
+      ),
+    ).not.toBeNull()
+  })
+
   it('affiche la sidebar actions retard et informations pour un gerant', () => {
     pretsLivreRetour.data = PRETS
     const { container } = rendre()
@@ -140,6 +159,13 @@ describe('FicheLivreView (alignee maquette)', () => {
     expect(container.textContent).toContain('Exemplaires')
     expect(container.textContent).toContain('Ajouté au catalogue')
     expect(screen.getByText('Modifier la fiche')).toBeDefined()
+
+    // Note « exemplaires physiques » dans la card Informations
+    const cardInfo = Array.from(
+      container.querySelectorAll('.lpv-t-dashboard-page__aside-card'),
+    ).find((card) => card.querySelector('h3')?.textContent === 'Informations')
+    expect(cardInfo?.textContent).toContain('Les exemplaires physiques se gèrent dans')
+    expect(cardInfo?.querySelector('a[href="/admin"]')).not.toBeNull()
   })
 
   it('masque les actions pour un prof (lecture seule)', () => {
@@ -151,10 +177,66 @@ describe('FicheLivreView (alignee maquette)', () => {
     expect(container.textContent).toContain('Informations')
   })
 
+  it('masque la note exemplaires physiques pour un non gerant', () => {
+    pretsLivreRetour.data = PRETS
+    const { container } = rendre(false)
+
+    expect(container.textContent).not.toContain('Les exemplaires physiques se gèrent dans')
+  })
+
   it('affiche l etat livre introuvable', () => {
     catalogueRetour.data = []
     rendre()
 
     expect(screen.getByText('Livre introuvable ou retiré du catalogue.')).toBeDefined()
+  })
+
+  it('affiche un lien ajouter resume pour un gerant quand le resume manque', () => {
+    catalogueRetour.data = [{ ...LIVRE, resume: null }]
+    const { container } = rendre()
+
+    expect(container.textContent).toContain("Ce livre n'a pas encore de résumé.")
+    const lien = container.querySelector<HTMLAnchorElement>(
+      'a[href="/profs/bibliotheque/livres/100/modifier#livre-resume"]',
+    )
+    expect(lien).not.toBeNull()
+    expect(lien?.textContent).toBe('Ajouter un résumé')
+    expect(lien?.className).toContain('lpv-link-inline')
+  })
+
+  it('masque le lien ajouter resume pour un non gerant', () => {
+    catalogueRetour.data = [{ ...LIVRE, resume: null }]
+    const { container } = rendre(false)
+
+    expect(container.textContent).toContain("Ce livre n'a pas encore de résumé.")
+    expect(container.querySelector('a[href*="#livre-resume"]')).toBeNull()
+  })
+
+  it('masque le message et le lien quand le resume existe', () => {
+    rendre()
+
+    expect(screen.queryByText(/pas encore de résumé/)).toBeNull()
+    expect(screen.queryByText('Ajouter un résumé')).toBeNull()
+    expect(screen.getByText(/Un aviateur rencontre un petit garçon/)).toBeDefined()
+  })
+
+  it('demande le mot de passe avant de marquer un retour', async () => {
+    pretsLivreRetour.data = PRETS
+    const user = userEvent.setup()
+    rendre()
+
+    await user.click(screen.getByRole('button', { name: 'Marquer un retour' }))
+
+    expect(screen.getByText('Marquer le retour du prêt ?')).toBeDefined()
+    const champ = screen.getByLabelText('Mot de passe du compte connecté')
+    const confirmer = screen.getByRole('button', { name: 'Confirmer le retour' })
+    expect((confirmer as HTMLButtonElement).disabled).toBe(true)
+
+    await user.type(champ, 'secret')
+    await user.click(confirmer)
+
+    await waitFor(() => {
+      expect(mockMarquerRetourne).toHaveBeenCalledWith({ motDePasse: 'secret', pretId: 1 })
+    })
   })
 })

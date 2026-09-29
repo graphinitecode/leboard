@@ -8,6 +8,7 @@ import {
   NotificationBanner,
   ErrorSummary,
 } from '@/components/molecules'
+import { ConfirmAction } from '@/components/organisms/o-confirm-action'
 
 import { useEnregistrerRetour } from '@/seances/application/seances.hooks'
 
@@ -21,19 +22,30 @@ export function ReturnForm({
   const [text, setText] = useState(initial)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [confirmOuvert, setConfirmOuvert] = useState(false)
 
   const enregistrerRetour = useEnregistrerRetour(seanceId)
+
+  function enregistrer() {
+    setSuccess(false)
+    setError(null)
+    enregistrerRetour.mutate(text, {
+      onSuccess: () => {
+        setConfirmOuvert(false)
+        setSuccess(true)
+      },
+      onError: (err) => {
+        setError(err.message)
+        setConfirmOuvert(false)
+      },
+    })
+  }
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault()
-        setSuccess(false)
-        setError(null)
-        enregistrerRetour.mutate(text, {
-          onSuccess: () => setSuccess(true),
-          onError: (err) => setError(err.message),
-        })
+        setConfirmOuvert(true)
       }}
     >
       {success && <NotificationBanner title="Retour enregistré" type="success" />}
@@ -52,6 +64,18 @@ export function ReturnForm({
           {enregistrerRetour.isPending ? 'Enregistrement…' : 'Enregistrer le retour'}
         </Button>
       </div>
+
+      {confirmOuvert ? (
+        <ConfirmAction
+          confirmLabel="Enregistrer"
+          description="Ce retour de séance sera visible par les parents de l'élève."
+          onClose={() => setConfirmOuvert(false)}
+          onConfirm={() => enregistrer()}
+          pending={enregistrerRetour.isPending}
+          pendingLabel="Enregistrement…"
+          title="Enregistrer ce retour de séance ?"
+        />
+      ) : null}
     </form>
   )
 }

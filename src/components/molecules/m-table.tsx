@@ -33,9 +33,11 @@ export function Table({
 }) {
   return (
     <table className="lpv-m-table">
-      <caption className={`lpv-m-table__caption lpv-m-table__caption--${captionSize}`}>
-        {caption}
-      </caption>
+      {caption &&
+        <caption className={`lpv-m-table__caption lpv-m-table__caption--${captionSize}`}>
+          {caption}
+        </caption>
+      }
       {head && head.length > 0 && (
         <thead className="lpv-m-table__head">
           <tr className="lpv-m-table__row">

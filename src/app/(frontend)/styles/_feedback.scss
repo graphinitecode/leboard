@@ -72,15 +72,36 @@
 }
 
 .lpv-a-panel {
-  background-color: var(--lpv-portail-soft);
   border-radius: var(--lpv-radius);
   color: var(--lpv-text);
   margin-bottom: 1.5rem;
-  padding: 1.25rem;
+  padding: 1.7rem 2rem;
+
+  &__title {
+    font-weight: bold;
+    font-size: var(--lpv-font-size-xl);
+    display: inline-flex;
+    gap: var(--lpv-spacing-md);
+    align-items: center;
+    margin-bottom: var(--lpv-spacing-md);
+  }
+  &__children {
+    font-size: var(--lpv-font-size-lg);
+  }
 
   &--success {
-    background-color: var(--lpv-green-soft);
-    color: var(--lpv-text);
+    background-color: var(--lpv-green);
+    color: white;
+  }
+
+  &--warning {
+    background-color: var(--lpv-orange);
+    color: white;
+  }
+
+  &--danger, &--alert, &--error {
+    background-color: var(--lpv-red);
+    color: white;
   }
 
   h2 {

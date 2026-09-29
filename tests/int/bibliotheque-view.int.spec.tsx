@@ -18,6 +18,7 @@ const catalogueRetour: { data?: LivreCatalogue[]; isLoading: boolean; isError: b
 }
 
 const searchParamsCourants = { params: new URLSearchParams() }
+const mockMarquerRetourne = vi.fn().mockResolvedValue(undefined)
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ refresh: vi.fn(), push: vi.fn(), replace: vi.fn() }),
@@ -33,7 +34,7 @@ vi.mock('@/bibliotheque', async (importOriginal) => {
     useListCatalogue: () => catalogueRetour,
     useMarquerRetourne: () => ({
       isPending: false,
-      mutateAsync: vi.fn().mockResolvedValue(undefined),
+      mutateAsync: mockMarquerRetourne,
     }),
   }
 })
@@ -111,6 +112,7 @@ beforeEach(() => {
   catalogueRetour.data = []
   catalogueRetour.isLoading = false
   catalogueRetour.isError = false
+  mockMarquerRetourne.mockReset().mockResolvedValue(undefined)
 })
 
 describe('BibliothequeView', () => {
@@ -131,6 +133,45 @@ describe('BibliothequeView', () => {
 
     expect(container.textContent).toContain('Lucas Martin')
     expect(screen.getAllByRole('button', { name: 'Marquer comme retourné' }).length).toBe(1)
+  })
+
+  it('demande le mot de passe avant de marquer un retard retourné', async () => {
+    pretsRetour.data = PRETS
+    const user = userEvent.setup()
+    rendre()
+
+    await user.click(screen.getByRole('button', { name: 'Marquer comme retourné' }))
+
+    // Modale mot de passe visible, bouton confirmé désactivé sans saisie
+    expect(screen.getByText('Marquer ce prêt comme retourné ?')).toBeDefined()
+    const champ = screen.getByLabelText('Mot de passe du compte connecté')
+    expect(champ).toBeDefined()
+
+    const confirmer = screen.getByRole('button', { name: 'Confirmer le retour' })
+    expect((confirmer as HTMLButtonElement).disabled).toBe(true)
+
+    // Saisie puis confirmation : la mutation reçoit { motDePasse, pretId }
+    await user.type(champ, 'secret')
+    expect((confirmer as HTMLButtonElement).disabled).toBe(false)
+    await user.click(confirmer)
+
+    await waitFor(() => {
+      expect(mockMarquerRetourne).toHaveBeenCalledWith({ motDePasse: 'secret', pretId: 1 })
+    })
+  })
+
+  it('ferme la modale sans mutation via Annuler', async () => {
+    pretsRetour.data = PRETS
+    const user = userEvent.setup()
+    rendre()
+
+    await user.click(screen.getByRole('button', { name: 'Marquer comme retourné' }))
+    await user.click(screen.getByRole('button', { name: 'Annuler' }))
+
+    await waitFor(() => {
+      expect(screen.queryByText('Marquer ce prêt comme retourné ?')).toBeNull()
+    })
+    expect(mockMarquerRetourne).not.toHaveBeenCalled()
   })
 
   it('affiche le catalogue avec statut dispo et liens voir', () => {

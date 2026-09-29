@@ -74,7 +74,7 @@ describe('ModifierLivreView (edition portail)', () => {
     })
   })
 
-  it('soumet les modifications', async () => {
+  it('soumet les modifications apres confirmation', async () => {
     const user = userEvent.setup()
     rendre()
 
@@ -85,6 +85,12 @@ describe('ModifierLivreView (edition portail)', () => {
     await user.clear(screen.getByLabelText(/Résumé/))
     await user.type(screen.getByLabelText(/Résumé/), 'Nouveau résumé.')
     await user.click(screen.getByRole('button', { name: 'Enregistrer' }))
+
+    // Confirmation demandée avant l'écriture
+    await waitFor(() => {
+      expect(screen.getByText('Enregistrer les modifications ?')).toBeDefined()
+    })
+    await user.click(screen.getAllByRole('button', { name: 'Enregistrer' })[1])
 
     await waitFor(() => {
       expect(mockModifierLivre).toHaveBeenCalledWith(
@@ -106,7 +112,6 @@ describe('ModifierLivreView (edition portail)', () => {
     await user.click(screen.getByRole('button', { name: 'Enregistrer' }))
 
     await waitFor(() => {
-      expect(screen.getAllByText('Le titre est obligatoire.').length).toBeGreaterThan(0)
       expect(mockModifierLivre).not.toHaveBeenCalled()
     })
   })

@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { BackLink, InsetText } from '@/components/atoms'
 import { Button } from '@/components/atoms/a-button'
 import { ErrorSummary, Input, Toast } from '@/components/molecules'
+import { ConfirmAction } from '@/components/organisms/o-confirm-action'
 import { useListCatalogue, useModifierLivre } from '@/bibliotheque'
 
 export interface ModifierLivreProps {
@@ -45,6 +46,7 @@ export default function ModifierLivreView({ livreId }: ModifierLivreProps) {
   const [erreur, setErreur] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
   const [succes, setSucces] = useState(false)
+  const [confirmOuvert, setConfirmOuvert] = useState(false)
 
   // Préremplissage après chargement du catalogue (une seule fois).
   const [prerempli, setPrerempli] = useState(false)
@@ -72,8 +74,8 @@ export default function ModifierLivreView({ livreId }: ModifierLivreProps) {
     )
   }
 
-  async function enregistrer(e: React.FormEvent) {
-    e.preventDefault()
+  async function enregistrer(e?: React.FormEvent) {
+    e?.preventDefault()
     if (!titre.trim()) {
       setErreur('Le titre est obligatoire.')
       return
@@ -91,10 +93,12 @@ export default function ModifierLivreView({ livreId }: ModifierLivreProps) {
         resume: resume.trim() || undefined,
         titre: titre.trim(),
       })
+      setConfirmOuvert(false)
       setSucces(true)
       router.refresh()
     } catch (err) {
       setErreur(err instanceof Error ? err.message : 'Le livre n’a pas pu être modifié.')
+      setConfirmOuvert(false)
     } finally {
       setPending(false)
     }
@@ -113,7 +117,7 @@ export default function ModifierLivreView({ livreId }: ModifierLivreProps) {
       {succes && (
         <Toast message="Fiche modifiée" type="success" onClose={() => setSucces(false)} />
       )}
-      <form className="lpv-login" noValidate onSubmit={enregistrer}>
+      <form className="lpv-login" noValidate onSubmit={(e) => { e.preventDefault(); setConfirmOuvert(true) }}>
         <ErrorSummary errors={erreur ? [{ fieldId: 'livre-titre', text: erreur }] : []} />
         <Input
           error={erreur && !titre.trim() ? erreur : undefined}
@@ -175,6 +179,23 @@ export default function ModifierLivreView({ livreId }: ModifierLivreProps) {
           {pending ? 'Enregistrement…' : 'Enregistrer'}
         </Button>
       </form>
+
+      {confirmOuvert ? (
+        <ConfirmAction
+          confirmLabel="Enregistrer"
+          description={`Les modifications de « ${titre || 'la fiche'} » seront enregistrées.`}
+          onClose={() => {
+            setConfirmOuvert(false)
+            setErreur(null)
+          }}
+          onConfirm={() => {
+            void enregistrer()
+          }}
+          pending={pending}
+          pendingLabel="Enregistrement…"
+          title="Enregistrer les modifications ?"
+        />
+      ) : null}
     </>
   )
 }
