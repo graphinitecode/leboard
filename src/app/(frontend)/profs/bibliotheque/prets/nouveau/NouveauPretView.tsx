@@ -255,6 +255,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
                 setEtape(2)
               }}
               type="button"
+              variant="success"
             >
               Continuer
             </Button>
@@ -271,26 +272,27 @@ export default function NouveauPretView({ profId }: { profId: number }) {
             <p className="lpv-muted">Aucun élève relié à votre compte.</p>
           ) : eleveChoisi ? (
             <div className="lpv-m-combobox__selection">
-              <div className="lpv-m-combobox__selection-label">{nomEleveChoisi}</div>
-              {sousTitreEleve ? (
-                <div className="lpv-m-combobox__selection-sub">{sousTitreEleve}</div>
-              ) : null}
-              <Button
+              <div className="lpv-m-combobox__selection__content">
+                <div className="lpv-m-combobox__selection__content-label">{nomEleveChoisi}</div>
+                {sousTitreEleve ? (
+                  <div className="lpv-m-combobox__selection__content-sub">{sousTitreEleve}</div>
+                ) : null}
+              </div>
+              <div
+                className="lpv-link-inline cursor-pointer"
                 onClick={() => {
                   setEleveId(null)
                   setErreur([])
                 }}
-                type="button"
-                variant="secondary"
               >
                 Changer
-              </Button>
+              </div>
             </div>
           ) : (
             <Combobox
               hint="Tape un prénom ou un nom."
               id="pret-eleve"
-              label="Élève"
+              label=""
               onChange={(option) => {
                 setErreur([])
                 setEleveId(option.value)
@@ -300,6 +302,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
             />
           )}
           {phraseRetards && <WarningText>{phraseRetards}.</WarningText>}
+          {/*<WarningText>Benjamin B. a déjà 1 livre en retard (« Le Petit Prince »).</WarningText>*/}
         </QuestionPage>
       )}
 
@@ -316,18 +319,17 @@ export default function NouveauPretView({ profId }: { profId: number }) {
                 setEtape(3)
               }}
               type="button"
+              variant="success"
             >
               Continuer
             </Button>
           }
           question={
-            nomEleveChoisi ? `Quels livres emprunte ${nomEleveChoisi} ?` : 'Quels livres emprunter ?'
-          }
-          reponses={
             nomEleveChoisi
-              ? [{ question: 'Élève', valeur: nomEleveChoisi, onClick: () => setEtape(1) }]
-              : []
+              ? `Quels livres emprunte ${nomEleveChoisi} ?`
+              : 'Quels livres emprunter ?'
           }
+
           retour={{
             href: '#',
             onClick: (e) => {
@@ -349,7 +351,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
               <Combobox
                 hint="Cherche par titre, auteur ou ISBN. Tu peux en ajouter plusieurs."
                 id="pret-livre"
-                label="Livres"
+                label=""
                 noResultsLabel="Aucun livre trouvé"
                 onChange={ajouterLivre}
                 options={optionsLivres}
@@ -359,15 +361,22 @@ export default function NouveauPretView({ profId }: { profId: number }) {
                 <div className="lpv-m-combobox__selection-list">
                   {livresChoisis.map((livre) => (
                     <div className="lpv-m-combobox__selection" key={livre.livreId}>
-                      <div className="lpv-m-combobox__selection-label">{livre.titre}</div>
-                      {[livre.auteur, `exemplaire ${livre.code}`].filter(Boolean).length > 0 && (
-                        <div className="lpv-m-combobox__selection-sub">
-                          {[livre.auteur, `exemplaire ${livre.code}`].filter(Boolean).join(' · ')}
+                      <div className="lpv-m-combobox__selection__content">
+                        <div className="lpv-m-combobox__selection__content-label">
+                          {livre.titre}
                         </div>
-                      )}
-                      <Button onClick={() => retirerLivre(livre.livreId)} type="button" variant="secondary">
+                        {[livre.auteur, `exemplaire ${livre.code}`].filter(Boolean).length > 0 && (
+                          <div className="lpv-m-combobox__selection__content-sub">
+                            {[livre.auteur, `exemplaire ${livre.code}`].filter(Boolean).join(' · ')}
+                          </div>
+                        )}
+                      </div>
+                      <div
+                        className="lpv-link-inline cursor-pointer"
+                        onClick={() => retirerLivre(livre.livreId)}
+                      >
                         Retirer
-                      </Button>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -386,19 +395,12 @@ export default function NouveauPretView({ profId }: { profId: number }) {
                 setEtape(4)
               }}
               type="button"
+              variant="success"
             >
               Continuer
             </Button>
           }
           question="Quand le livre doit-il être rendu ?"
-          reponses={[
-            { question: 'Élève', valeur: nomEleveChoisi ?? '—', onClick: () => setEtape(1) },
-            {
-              question: 'Livres',
-              valeur: livresChoisis.length > 0 ? titresEnLigne : '—',
-              onClick: () => setEtape(2),
-            },
-          ]}
           retour={{
             href: '#',
             onClick: (e) => {
@@ -414,7 +416,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
           <Radios
             hint="La durée habituelle est de 2 semaines."
             idPrefix="duree-retour"
-            name="Durée du prêt"
+            name=""
             onChange={(e) => setDuree(e.target.value as Duree)}
             options={DUREES.map((d) => ({
               value: d.value,
@@ -429,11 +431,16 @@ export default function NouveauPretView({ profId }: { profId: number }) {
       {etape === 4 && (
         <QuestionPage
           actions={
-            <Button disabled={pending} onClick={() => setConfirmOuvert(true)} type="button">
+            <Button
+              disabled={pending}
+              onClick={() => setConfirmOuvert(true)}
+              type="button"
+              variant="success"
+            >
               Enregistrer le prêt
             </Button>
           }
-          question="Vérifiez et validez"
+          question="Vérifiez vos réponses"
           retour={{
             href: '#',
             onClick: (e) => {
@@ -460,7 +467,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
                 onClick: () => setEtape(3),
               },
             ]}
-            titre="Récapitulatif"
+            titre=""
           />
           {resultats.enregistres > 0 && resultats.echecs.length > 0 && (
             <InsetText>
@@ -476,8 +483,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
       )}
 
       {etape === 5 && (
-        <Panel variante="success">
-          <h1 style={{ marginTop: 0 }}>Prêt enregistré</h1>
+        <Panel variante="success" title="Prêt enregistré">
           <p>
             {resultats.enregistres} livre{resultats.enregistres > 1 ? 's' : ''} pour{' '}
             {nomEleveChoisi ?? "l'élève"}, à rendre le{' '}
@@ -487,8 +493,8 @@ export default function NouveauPretView({ profId }: { profId: number }) {
       )}
       {etape === 5 && (
         <>
-          <p>Un rappel sera créé 2 jours avant la date de retour.</p>
-          <p>
+          <p className="pb-7">Un rappel sera créé 2 jours avant la date de retour.</p>
+          <p className="pb-3">
             <a
               className="lpv-link-inline"
               href="#"
