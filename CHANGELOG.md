@@ -6,6 +6,8 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+## [0.9.0] — 2026-09-29
+
 ### Ajouté
 - L'enregistrement d'un prêt se fait en 4 questions : recherche de l'élève, choix de plusieurs livres, date de retour puis récapitulatif avant validation.
 - La recherche accepte prénom, nom, titre, auteur ou ISBN, sans se soucier des accents ni de la casse.
