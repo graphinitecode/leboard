@@ -485,16 +485,14 @@ export default function NouveauPretView({ profId }: { profId: number }) {
       )}
 
       {etape === 5 && (
-        <Panel variante="success" title="Prêt enregistré">
-          <p>
-            {resultats.enregistres} livre{resultats.enregistres > 1 ? 's' : ''} pour{' '}
-            {nomEleveChoisi ?? "l'élève"}, à rendre le{' '}
-            {dateRetourPrevue ? formatDateLongue(dateRetourPrevue) : '—'}.
-          </p>
-        </Panel>
-      )}
-      {etape === 5 && (
-        <>
+        <div className="lpv-t-question-page">
+          <Panel variante="success" title="Prêt enregistré">
+            <p>
+              {resultats.enregistres} livre{resultats.enregistres > 1 ? 's' : ''} pour{' '}
+              {nomEleveChoisi ?? "l'élève"}, à rendre le{' '}
+              {dateRetourPrevue ? formatDateLongue(dateRetourPrevue) : '—'}.
+            </p>
+          </Panel>
           <p className="pb-7">Un rappel sera créé 2 jours avant la date de retour.</p>
           <p className="pb-3">
             <a
@@ -513,7 +511,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
               Retour à la bibliothèque
             </Link>
           </p>
-        </>
+        </div>
       )}
 
       {confirmOuvert && eleveChoisi && livresChoisis.length > 0 ? (

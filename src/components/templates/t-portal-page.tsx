@@ -30,7 +30,7 @@ export function PortalPage({
         Aller au contenu principal
       </a>
       {header}
-      <main className="lpv-container" id="contenu-principal" style={{ flex: 1 }}>
+      <main className="lpv-container" id="contenu-principal" style={{ flex: 1, width: '100%' }}>
         {children}
       </main>
       <Footer links={footerLinks} />

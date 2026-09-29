@@ -77,6 +77,8 @@
    (Le padding horizontal vient du lpv-container parent.) */
 .lpv-t-question-page {
   display: block;
+  width: 100%;
+  max-width: var(--lpv-container-xs);
   margin-right: auto;
   margin-left: auto;
   text-size-adjust: 100%;
