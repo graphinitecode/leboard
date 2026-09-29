@@ -114,14 +114,14 @@ const rendreVue = () =>
   )
 
 const choisirEleve = async (user: Utilisateur) => {
-  // getByRole plutôt que getByLabelText : la liste ouverte porte aussi le
-  // label (aria-label sur la listbox) — getByLabelText trouverait 2 éléments.
-  await user.type(screen.getByRole('combobox', { name: 'Élève' }), 'lucas')
+  // label="" : aucun <label> n'est rendu, le nom accessible de l'input est
+  // son placeholder — getByPlaceholderText cible le champ sans ambiguïté.
+  await user.type(screen.getByPlaceholderText('Prénom ou nom…'), 'lucas')
   await user.click(screen.getByText('Lucas Martin'))
 }
 
 const ajouterLivre = async (user: Utilisateur, requete: string, titre: string) => {
-  await user.type(screen.getByRole('combobox', { name: 'Livres' }), requete)
+  await user.type(screen.getByPlaceholderText('Titre, auteur ou ISBN…'), requete)
   await user.click(within(screen.getByRole('listbox')).getByText(titre))
 }
 
@@ -193,7 +193,7 @@ describe('NouveauPretView', () => {
     expect(screen.getByText('Quels livres emprunte Lucas Martin ?')).toBeDefined()
     await ajouterLivre(user, 'vend', 'Vendredi')
     await ajouterLivre(user, 'renard', 'Fantastique Maître Renard')
-    expect(screen.getAllByRole('button', { name: 'Retirer' })).toHaveLength(2)
+    expect(screen.getAllByText('Retirer')).toHaveLength(2)
 
     await user.click(screen.getByRole('button', { name: 'Continuer' }))
     expect(screen.getByText('Quand le livre doit-il être rendu ?')).toBeDefined()
@@ -201,7 +201,7 @@ describe('NouveauPretView', () => {
     trouverTexte(libellesCourts())
 
     await user.click(screen.getByRole('button', { name: 'Continuer' }))
-    expect(screen.getByText('Vérifiez et validez')).toBeDefined()
+    expect(screen.getByText('Vérifiez vos réponses')).toBeDefined()
     expect(screen.getAllByText('Modifier')).toHaveLength(3)
     trouverTexte(libellesLongs())
 
@@ -241,7 +241,7 @@ describe('NouveauPretView', () => {
 
     await user.click(screen.getByText('Enregistrer un autre prêt'))
     expect(screen.getByText('Quel élève emprunte ?')).toBeDefined()
-    expect(screen.getByRole('combobox', { name: 'Élève' })).toHaveValue('')
+    expect(screen.getByPlaceholderText('Prénom ou nom…')).toHaveValue('')
   })
 
   it('avertit sans bloquer quand l élève a déjà un livre en retard', async () => {
@@ -249,7 +249,7 @@ describe('NouveauPretView', () => {
     pretsParEleve[10] = [pretEnRetard()]
     rendreVue()
 
-    await user.type(screen.getByRole('combobox', { name: 'Élève' }), 'lucas')
+    await user.type(screen.getByPlaceholderText('Prénom ou nom…'), 'lucas')
     await user.click(screen.getByText('Lucas Martin'))
     expect(
       screen.getByText(/a déjà 1 livre en retard : « Charlie et la chocolaterie »\./),
@@ -280,7 +280,7 @@ describe('NouveauPretView', () => {
     expect(screen.getByText('Étape 2 sur 4')).toBeDefined()
     expect(screen.getByRole('alert')).toHaveTextContent('Ajoute au moins un livre')
 
-    await user.type(screen.getByRole('combobox', { name: 'Livres' }), 'inconnu')
+    await user.type(screen.getByPlaceholderText('Titre, auteur ou ISBN…'), 'inconnu')
     expect(screen.getByText('Aucun livre trouvé')).toBeDefined()
   })
 
@@ -291,7 +291,7 @@ describe('NouveauPretView', () => {
     await choisirEleve(user)
     await user.click(screen.getByRole('button', { name: 'Continuer' }))
 
-    await user.type(screen.getByRole('combobox', { name: 'Livres' }), 'prince')
+    await user.type(screen.getByPlaceholderText('Titre, auteur ou ISBN…'), 'prince')
     const option = within(screen.getByRole('listbox')).getByText('Le Petit Prince').closest('li')
     expect(option).toHaveAttribute('aria-disabled', 'true')
     await user.click(within(screen.getByRole('listbox')).getByText('Le Petit Prince'))
@@ -299,11 +299,11 @@ describe('NouveauPretView', () => {
 
     // Le clic sur une option désactivée garde la saisie ('prince') : on vide
     // le champ avant de chercher le livre suivant.
-    await user.clear(screen.getByRole('combobox', { name: 'Livres' }))
+    await user.clear(screen.getByPlaceholderText('Titre, auteur ou ISBN…'))
     await ajouterLivre(user, 'vend', 'Vendredi')
     expect(screen.getByText(/exemplaire LPV-0002/)).toBeDefined()
 
-    await user.click(screen.getByRole('button', { name: 'Retirer' }))
+    await user.click(screen.getByText('Retirer'))
     expect(screen.queryByText(/exemplaire LPV-0002/)).toBeNull()
   })
 
@@ -320,7 +320,7 @@ describe('NouveauPretView', () => {
     await confirmerMotDePasse(user, 'secret')
     await waitFor(() => expect(mockEnregistrerPret).toHaveBeenCalledTimes(2))
 
-    expect(screen.getByText('Vérifiez et validez')).toBeDefined()
+    expect(screen.getByText('Vérifiez vos réponses')).toBeDefined()
     expect(screen.getByRole('alert')).toHaveTextContent(
       '« Fantastique Maître Renard » : Limite de prêts simultanés atteinte pour cet élève.',
     )
@@ -345,7 +345,7 @@ describe('NouveauPretView', () => {
     await confirmerMotDePasse(user, 'secret')
     await waitFor(() => expect(mockEnregistrerPret).toHaveBeenCalledTimes(1))
 
-    expect(screen.getByText('Vérifiez et validez')).toBeDefined()
+    expect(screen.getByText('Vérifiez vos réponses')).toBeDefined()
     expect(screen.queryByRole('dialog')).toBeNull()
     expect(screen.getByRole('alert')).toHaveTextContent('Mot de passe incorrect.')
     expect(screen.queryByText(/sur \d+ enregistré/)).toBeNull()
@@ -361,7 +361,7 @@ describe('NouveauPretView', () => {
     await user.click(screen.getAllByText('Modifier')[2])
     expect(screen.getByText('Quand le livre doit-il être rendu ?')).toBeDefined()
     await user.click(screen.getByRole('button', { name: 'Continuer' }))
-    expect(screen.getByText('Vérifiez et validez')).toBeDefined()
+    expect(screen.getByText('Vérifiez vos réponses')).toBeDefined()
 
     await user.click(screen.getAllByText('Modifier')[0])
     expect(screen.getByText('Quel élève emprunte ?')).toBeDefined()
