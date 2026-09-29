@@ -20,6 +20,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Fiche livre : la note « les exemplaires physiques se gèrent dans le panneau d'administration » est intégrée à l'encadré « Informations » au lieu de flotter sous la colonne latérale
 - Fiche livre sans résumé : le message indique clairement que le livre n'a pas encore de résumé, et les gérants de la bibliothèque peuvent cliquer sur « Ajouter un résumé » pour le renseigner directement
 - Portail : les écritures sensibles demandent une confirmation avant l'enregistrement — retour de séance (visible par les parents), création d'une séance, création et modification d'un livre, suppression d'une disponibilité (fenêtre de confirmation unifiée, bouton Annuler systématique)
+- Le panneau d'information s'affiche sans fond coloré en thème clair et avec un texte plus ample ; il garde son fond bleu nuit en thème sombre
 
 ### Sécurisé
 - Bibliothèque : les actions patrimoniales — marquer un prêt comme retourné et enregistrer un nouveau prêt — demandent maintenant une confirmation avec le mot de passe du compte connecté (fenêtre dédiée, mot de passe revérifié par le serveur avant l'écriture), pour éviter qu'une personne de passage ne valide à la place du gestionnaire connecté
