@@ -154,7 +154,7 @@ export function Combobox<T = unknown>({
 
   return (
     <div className={groupeClass} ref={conteneurRef}>
-      <Label htmlFor={id}>{label}</Label>
+      {label && <Label htmlFor={id}>{label}</Label>}
       {hint ? <Hint id={`${id}-hint`}>{hint}</Hint> : null}
       {error ? <ErrorMessage id={`${id}-error`}>{error}</ErrorMessage> : null}
       <input

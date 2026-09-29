@@ -664,8 +664,8 @@
 
   &__list {
     background-color: var(--lpv-surface);
-    border: 2px solid var(--lpv-grey-border);
-    border-radius: var(--lpv-radius);
+    border: 2px solid var(--lpv-text);
+    border-radius: 0;
     left: 0;
     list-style: none;
     margin: 0.25rem 0 0;
@@ -682,6 +682,10 @@
     cursor: pointer;
     display: block;
     padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid var(--lpv-text);
+    &:last-child {
+      border-bottom: none;
+    }
 
     &:hover {
       background-color: var(--lpv-blue-soft);
@@ -722,10 +726,28 @@
   }
 
   &__selection {
+    display: flex;
+    justify-content: space-between;
+    border-block: 1px solid var(--lpv-grey-border);
+    border-right: 1px solid var(--lpv-grey-border);
+    align-items: center;
     background-color: var(--lpv-surface);
     border-left: 5px solid var(--lpv-green);
     margin-top: 0.75rem;
     padding: 0.75rem 1rem;
+
+    &__content {
+      display: inline-block;
+
+      &-label {
+        font-weight: 700;
+      }
+
+      &-sub {
+        color: var(--lpv-text-muted);
+        font-size: 0.875rem;
+      }
+    }
   }
 
   &__selection-list {
@@ -733,15 +755,6 @@
     gap: 0.75rem;
     margin: 0;
     padding: 0;
-  }
-
-  &__selection-label {
-    font-weight: 700;
-  }
-
-  &__selection-sub {
-    color: var(--lpv-text-muted);
-    font-size: 0.875rem;
   }
 }
 

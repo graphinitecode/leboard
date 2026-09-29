@@ -179,6 +179,16 @@ html[data-theme='dark'] {
     color: var(--lpv-a-panel-success-text);
   }
 
+  .lpv-a-panel--warning {
+    background-color: var(--lpv-a-button-warning-shadow);
+    color: var(--lpv-text);
+  }
+
+  .lpv-a-panel--alert, .lpv-a-panel--error, .lpv-a-panel--danger  {
+    background-color: var(--lpv-red);
+    color: var(--lpv-text);
+  }
+
   /* --- Listes ----------------------------------------------------------------- */
 
   .lpv-m-summary-list__actions .lpv-m-summary-list__action--danger,
