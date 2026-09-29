@@ -31,6 +31,7 @@ export type ComboboxOption<T = unknown> = {
 }
 
 export function Combobox<T = unknown>({
+  ariaLabel,
   id,
   label,
   hint,
@@ -42,6 +43,8 @@ export function Combobox<T = unknown>({
   onChange,
   noResultsLabel = 'Aucun résultat',
 }: {
+  /** Nom accessible de l'input quand aucun label visible n'est rendu (label=""). */
+  ariaLabel?: string
   id: string
   label: string
   hint?: string
@@ -149,6 +152,7 @@ export function Combobox<T = unknown>({
   const describedBy = [hint ? `${id}-hint` : null, error ? `${id}-error` : null]
     .filter(Boolean)
     .join(' ')
+  const nomListe = label || ariaLabel
   const groupeClass = `lpv-m-combobox lpv-form-group${error ? ' lpv-form-group--error' : ''}`
   const inputClass = `lpv-a-input lpv-m-combobox__input${error ? ' lpv-a-input--error' : ''}`
 
@@ -164,6 +168,7 @@ export function Combobox<T = unknown>({
         aria-describedby={describedBy || undefined}
         aria-expanded={ouvert}
         aria-invalid={error ? true : undefined}
+        aria-label={ariaLabel}
         autoComplete="off"
         className={inputClass}
         id={id}
@@ -182,7 +187,7 @@ export function Combobox<T = unknown>({
           : ''}
       </span>
       {ouvert ? (
-        <ul aria-label={label} className="lpv-m-combobox__list" id={listeId} role="listbox">
+        <ul aria-label={nomListe} className="lpv-m-combobox__list" id={listeId} role="listbox">
           {resultats.length === 0 ? (
             <li
               aria-disabled="true"

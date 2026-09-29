@@ -37,6 +37,28 @@ describe('Combobox', () => {
     expect(screen.queryByRole('listbox')).toBeNull()
   })
 
+  it("utilise aria-label comme nom accessible en l absence de label visible", async () => {
+    const user = userEvent.setup()
+    render(
+      <Combobox
+        ariaLabel="Élève"
+        hint="Tape un prénom ou un nom."
+        id="sans-label"
+        label=""
+        onChange={vi.fn()}
+        options={ELEVES}
+        placeholder="Prénom ou nom…"
+      />,
+    )
+
+    const input = screen.getByRole('combobox', { name: 'Élève' })
+    await user.type(input, 'lea')
+    expect(input).toHaveAttribute('aria-controls', 'sans-label-liste')
+
+    const liste = screen.getByRole('listbox', { name: 'Élève' })
+    expect(within(liste).getByText('Léa Martin')).toBeDefined()
+  })
+
   it('filtre les options sans se soucier des accents ni de la casse', async () => {
     const user = userEvent.setup()
     const { input } = rendreCombobox(ELEVES)
