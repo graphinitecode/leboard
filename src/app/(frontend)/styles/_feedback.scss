@@ -73,7 +73,9 @@
 
 .lpv-a-panel {
   border-radius: var(--lpv-radius);
-  color: var(--lpv-text);
+  background-color: var(--lpv-blue);
+  border-bottom: 2px solid var(--lpv-blue-shadow--hover);
+  color: white;
   margin-bottom: 1.5rem;
   padding: 1.7rem 2rem;
 
@@ -91,16 +93,19 @@
 
   &--success {
     background-color: var(--lpv-green);
+    border-bottom: 2px solid var(--lpv-green--dark);
     color: white;
   }
 
   &--warning {
     background-color: var(--lpv-orange);
+    border-bottom: 2px solid var(--lpv-orange-dark);
     color: white;
   }
 
   &--danger, &--alert, &--error {
     background-color: var(--lpv-red);
+    border-bottom: 2px solid var(--lpv-red-dark);
     color: white;
   }
 

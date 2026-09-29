@@ -415,8 +415,11 @@ export default function NouveauPretView({ profId }: { profId: number }) {
           stepSize={4}
         >
           {erreur.length > 0 && <ErrorSummary errors={erreur} />}
+          <InsetText>
+            La durée habituelle est de <span className="font-semibold">2 semaines.</span>
+          </InsetText>
+          {/*<WarningText>La durée habituelle est de 2 semaines.</WarningText>*/}
           <Radios
-            hint="La durée habituelle est de 2 semaines."
             idPrefix="duree-retour"
             name=""
             onChange={(e) => setDuree(e.target.value as Duree)}
