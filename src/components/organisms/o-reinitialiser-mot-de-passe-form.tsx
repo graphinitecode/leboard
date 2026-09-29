@@ -1,20 +1,26 @@
 'use client'
 
-import Link from 'next/link'
 import { useState } from 'react'
 
-import { Button } from '@/components/atoms/a-button'
-import { Input } from '@/components/molecules'
+import { Button } from '@/components/atoms'
+import { ErrorSummary, Input, NotificationBanner } from '@/components/molecules'
 
 import { reinitialiserMotDePasse } from '@/app/(frontend)/actions/mot-de-passe'
 
 // Étape 2 : lien reçu par e-mail (?token=...) → nouveau mot de passe.
-export function ReinitialiserMotDePasseForm({ tokenInitial }: { tokenInitial: string }) {
+export function ReinitialiserMotDePasseForm({
+  portail = 'profs',
+  tokenInitial,
+}: {
+  portail?: 'profs' | 'parents'
+  tokenInitial: string
+}) {
+  const lienConnexion = `/${portail}/login`
   const [password, setPassword] = useState('')
   const [confirmation, setConfirmation] = useState('')
   const [erreur, setErreur] = useState<string | null>(null)
-  const [message, setMessage] = useState<string | null>(null)
   const [succes, setSucces] = useState(false)
+  const [message, setMessage] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
 
   const submit = async (e: React.FormEvent) => {
@@ -41,7 +47,12 @@ export function ReinitialiserMotDePasseForm({ tokenInitial }: { tokenInitial: st
 
   return (
     <form className="lpv-login" noValidate onSubmit={submit}>
+      <ErrorSummary
+        errors={erreur ? [{ fieldId: 'nouveau-mdp', text: erreur }] : []}
+        title="Il y a un problème"
+      />
       <Input
+        error={erreur ?? undefined}
         hint="Minimum 8 caractères."
         id="nouveau-mdp"
         label="Nouveau mot de passe"
@@ -56,22 +67,15 @@ export function ReinitialiserMotDePasseForm({ tokenInitial }: { tokenInitial: st
         type="password"
         value={confirmation}
       />
-      {erreur ? (
-        <p role="alert" style={{ color: 'var(--lpv-red, #b42318)' }}>
-          {erreur}
-        </p>
-      ) : null}
-      {message ? (
-        <p className="lpv-muted" role="status">
-          {message}
-        </p>
+      {succes ? (
+        <NotificationBanner title={message ?? ''} type="success" />
       ) : null}
       {succes ? (
-        <Link className="lpv-a-button" href="/profs/login">
+        <Button className="w-full" href={lienConnexion}>
           Se connecter
-        </Link>
+        </Button>
       ) : (
-        <Button disabled={pending} type="submit" className="w-full md:w-auto">
+        <Button className="w-full" disabled={pending} type="submit">
           {pending ? 'Enregistrement…' : 'Modifier le mot de passe'}
         </Button>
       )}
