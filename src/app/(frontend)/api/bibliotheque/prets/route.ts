@@ -25,6 +25,7 @@ export async function traiterNouveauPret(
   eleveIdRaw: unknown,
   exemplaireIdRaw: unknown,
   motDePasse: string,
+  dateRetourPrevueRaw: unknown = null,
 ): Promise<ResultatPret> {
   let user = null
   if (token) {
@@ -62,10 +63,25 @@ export async function traiterNouveauPret(
     return { status: 400, body: { error: 'Élève et exemplaire requis.' } }
   }
 
+  // Date de retour optionnelle : l'assistant la fixe (14 / 21 j ou 1 mois) ;
+  // les hooks Payload ne la recalculent que si elle est absente. Repli :
+  // DUREE_PRET_JOURS côté serveur.
+  let dateRetourPrevue: string | undefined
+  if (dateRetourPrevueRaw != null && dateRetourPrevueRaw !== '') {
+    if (typeof dateRetourPrevueRaw !== 'string' || Number.isNaN(Date.parse(dateRetourPrevueRaw))) {
+      return { status: 400, body: { error: 'Date de retour invalide.' } }
+    }
+    dateRetourPrevue = dateRetourPrevueRaw
+  }
+
   try {
     await payload.create({
       collection: 'prets',
-      data: { eleve: eleveId, exemplaire: exemplaireId },
+      data: {
+        eleve: eleveId,
+        exemplaire: exemplaireId,
+        ...(dateRetourPrevue ? { dateRetourPrevue } : {}),
+      },
       overrideAccess: false,
       user,
     })
@@ -93,19 +109,29 @@ export async function POST(req: Request) {
   let motDePasse = ''
   let eleveId: unknown = null
   let exemplaireId: unknown = null
+  let dateRetourPrevue: unknown = null
   try {
     const body = (await req.json()) as {
       motDePasse?: unknown
       eleveId?: unknown
       exemplaireId?: unknown
+      dateRetourPrevue?: unknown
     }
     if (typeof body.motDePasse === 'string') motDePasse = body.motDePasse
     eleveId = body.eleveId
     exemplaireId = body.exemplaireId
+    dateRetourPrevue = body.dateRetourPrevue ?? null
   } catch {
     // body manquant : tout vide → 400 via traiterNouveauPret
   }
 
-  const resultat = await traiterNouveauPret(payload, token, eleveId, exemplaireId, motDePasse)
+  const resultat = await traiterNouveauPret(
+    payload,
+    token,
+    eleveId,
+    exemplaireId,
+    motDePasse,
+    dateRetourPrevue,
+  )
   return Response.json(resultat.body, { status: resultat.status })
 }

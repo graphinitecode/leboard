@@ -7,6 +7,10 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ## [Unreleased]
 
 ### Ajouté
+- L'enregistrement d'un prêt se fait en 4 questions : recherche de l'élève, choix de plusieurs livres, date de retour puis récapitulatif avant validation.
+- La recherche accepte prénom, nom, titre, auteur ou ISBN, sans se soucier des accents ni de la casse.
+- Un avertissement signale les livres en retard d'un élève dès qu'il est choisi, sans bloquer le prêt.
+- Un écran de confirmation récapitule le prêt enregistré et propose d'en enregistrer un autre.
 - Page « Mes élèves » repensée : compteurs (élèves suivis, présence moyenne, élèves à surveiller), barre de recherche avec filtres par groupe et par statut, tableau des élèves (présence en %, rouge sous 75 %, statut de suivi) avec pagination par pages de 10 (liens Précédent et Suivant) et encadré latéral « À surveiller » reprenant les alertes de décrochage avec accès direct aux fiches
 - Page « Mes élèves » : colonne « Actions » avec un lien « Voir » pour ouvrir la fiche de chaque élève
 - Fiche livre : le nom de l'élève emprunteur est cliquable dans l'historique des emprunts et mène à sa fiche (le lien « Retour » de la fiche élève ramène ensuite au livre)
@@ -16,6 +20,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Fiche livre : la note « les exemplaires physiques se gèrent dans le panneau d'administration » est intégrée à l'encadré « Informations » au lieu de flotter sous la colonne latérale
 - Fiche livre sans résumé : le message indique clairement que le livre n'a pas encore de résumé, et les gérants de la bibliothèque peuvent cliquer sur « Ajouter un résumé » pour le renseigner directement
 - Portail : les écritures sensibles demandent une confirmation avant l'enregistrement — retour de séance (visible par les parents), création d'une séance, création et modification d'un livre, suppression d'une disponibilité (fenêtre de confirmation unifiée, bouton Annuler systématique)
+- Le panneau d'information s'affiche sans fond coloré en thème clair et avec un texte plus ample ; il garde son fond bleu nuit en thème sombre
 
 ### Sécurisé
 - Bibliothèque : les actions patrimoniales — marquer un prêt comme retourné et enregistrer un nouveau prêt — demandent maintenant une confirmation avec le mot de passe du compte connecté (fenêtre dédiée, mot de passe revérifié par le serveur avant l'écriture), pour éviter qu'une personne de passage ne valide à la place du gestionnaire connecté

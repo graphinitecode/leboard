@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import { Button } from '@/components/atoms/a-button'
 import { Label } from '@/components/atoms/a-label'
-import { Modal } from '@/components/molecules'
+import { Input, Modal } from '@/components/molecules'
 
 // Organisme : fenêtre de confirmation proportionnée. Variante simple
 // (Annuler/Confirmer) pour les actions modérément sensibles, variante
@@ -42,14 +42,13 @@ export function ConfirmAction({
       {requirePassword ? (
         <div style={{ marginBottom: '1.25rem' }}>
           <Label htmlFor="confirm-action-password">Mot de passe du compte connecté</Label>
-          <input
+          <Input
             autoComplete="current-password"
-            className="lpv-a-input"
             id="confirm-action-password"
             onChange={(e) => setMotDePasse(e.target.value)}
-            required
             type="password"
             value={motDePasse}
+            label={''}
           />
         </div>
       ) : null}
@@ -59,14 +58,14 @@ export function ConfirmAction({
         </p>
       ) : null}
       <div className="lpv-m-modal__actions">
-        <Button disabled={pending} onClick={onClose} type="button" variant="secondary">
+        <Button disabled={pending} onClick={onClose} type="button" variant="primary">
           Annuler
         </Button>
         <Button
           disabled={pending || (requirePassword && motDePasse.length === 0)}
           onClick={() => onConfirm(requirePassword ? motDePasse : undefined)}
           type="button"
-          variant={requirePassword ? 'primary' : 'danger'}
+          variant={requirePassword ? 'success' : 'danger'}
         >
           {pending ? pendingLabel : confirmLabel}
         </Button>

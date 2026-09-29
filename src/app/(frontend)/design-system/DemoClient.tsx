@@ -3,6 +3,7 @@
 import { useState } from 'react'
 
 import { Button } from '@/components/atoms/a-button'
+import { Combobox, type ComboboxOption } from '@/components/molecules/m-combobox'
 import { Radios, type RadioOption } from '@/components/molecules/m-radios'
 import { Input } from '@/components/molecules/m-input'
 import { Modal } from '@/components/molecules/m-modal'
@@ -96,6 +97,37 @@ export function DemoToast() {
       </div>
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
     </>
+  )
+}
+
+const DEMO_ELEVES: ComboboxOption<number>[] = [
+  { id: 'eleve-1', label: 'Léa Martin', sublabel: 'CM2 · Groupe A', value: 1 },
+  { id: 'eleve-2', label: 'Lucas Mériadec', sublabel: 'CM1 · Groupe B', value: 2 },
+  { id: 'eleve-3', label: 'Chloé Nguyen', sublabel: '6e · Groupe A', value: 3 },
+  { id: 'eleve-4', label: 'Ethan Bernard', sublabel: '5e · Groupe B', value: 4 },
+  { id: 'eleve-5', disabled: true, label: 'Jules Petit', sublabel: 'CM2 · Groupe A (inactif)', value: 5 },
+  { id: 'eleve-6', label: 'Léa Dupont', sublabel: 'CE2 · Groupe C', value: 6 },
+]
+
+export function DemoCombobox() {
+  const [selection, setSelection] = useState<ComboboxOption<number> | null>(null)
+
+  return (
+    <div>
+      <Combobox
+        hint="Tape un prénom ou un nom — accents et casse ignorés."
+        id="demo-combobox-eleve"
+        label="Élève"
+        onChange={setSelection}
+        options={DEMO_ELEVES}
+        placeholder="Ex. Léa"
+      />
+      <p className="lpv-muted" style={{ marginTop: '0.75rem' }}>
+        {selection
+          ? `Sélectionné : ${selection.label} — ${selection.sublabel}`
+          : 'Aucun élève sélectionné.'}
+      </p>
+    </div>
   )
 }
 
