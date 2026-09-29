@@ -113,15 +113,15 @@ const rendreVue = () =>
     </QueryClientProvider>,
   )
 
+// aria-label sur l'input : chaque champ porte son nom accessible explicite,
+// le ciblage passe par getByRole (name) et non par le placeholder.
 const choisirEleve = async (user: Utilisateur) => {
-  // label="" : aucun <label> n'est rendu, le nom accessible de l'input est
-  // son placeholder — getByPlaceholderText cible le champ sans ambiguïté.
-  await user.type(screen.getByPlaceholderText('Prénom ou nom…'), 'lucas')
+  await user.type(screen.getByRole('combobox', { name: 'Élève' }), 'lucas')
   await user.click(screen.getByText('Lucas Martin'))
 }
 
 const ajouterLivre = async (user: Utilisateur, requete: string, titre: string) => {
-  await user.type(screen.getByPlaceholderText('Titre, auteur ou ISBN…'), requete)
+  await user.type(screen.getByRole('combobox', { name: 'Livres' }), requete)
   await user.click(within(screen.getByRole('listbox')).getByText(titre))
 }
 
@@ -241,7 +241,7 @@ describe('NouveauPretView', () => {
 
     await user.click(screen.getByText('Enregistrer un autre prêt'))
     expect(screen.getByText('Quel élève emprunte ?')).toBeDefined()
-    expect(screen.getByPlaceholderText('Prénom ou nom…')).toHaveValue('')
+    expect(screen.getByRole('combobox', { name: 'Élève' })).toHaveValue('')
   })
 
   it('avertit sans bloquer quand l élève a déjà un livre en retard', async () => {
@@ -249,7 +249,7 @@ describe('NouveauPretView', () => {
     pretsParEleve[10] = [pretEnRetard()]
     rendreVue()
 
-    await user.type(screen.getByPlaceholderText('Prénom ou nom…'), 'lucas')
+    await user.type(screen.getByRole('combobox', { name: 'Élève' }), 'lucas')
     await user.click(screen.getByText('Lucas Martin'))
     expect(
       screen.getByText(/a déjà 1 livre en retard : « Charlie et la chocolaterie »\./),
@@ -280,7 +280,7 @@ describe('NouveauPretView', () => {
     expect(screen.getByText('Étape 2 sur 4')).toBeDefined()
     expect(screen.getByRole('alert')).toHaveTextContent('Ajoute au moins un livre')
 
-    await user.type(screen.getByPlaceholderText('Titre, auteur ou ISBN…'), 'inconnu')
+    await user.type(screen.getByRole('combobox', { name: 'Livres' }), 'inconnu')
     expect(screen.getByText('Aucun livre trouvé')).toBeDefined()
   })
 
@@ -291,7 +291,7 @@ describe('NouveauPretView', () => {
     await choisirEleve(user)
     await user.click(screen.getByRole('button', { name: 'Continuer' }))
 
-    await user.type(screen.getByPlaceholderText('Titre, auteur ou ISBN…'), 'prince')
+    await user.type(screen.getByRole('combobox', { name: 'Livres' }), 'prince')
     const option = within(screen.getByRole('listbox')).getByText('Le Petit Prince').closest('li')
     expect(option).toHaveAttribute('aria-disabled', 'true')
     await user.click(within(screen.getByRole('listbox')).getByText('Le Petit Prince'))
@@ -299,7 +299,7 @@ describe('NouveauPretView', () => {
 
     // Le clic sur une option désactivée garde la saisie ('prince') : on vide
     // le champ avant de chercher le livre suivant.
-    await user.clear(screen.getByPlaceholderText('Titre, auteur ou ISBN…'))
+    await user.clear(screen.getByRole('combobox', { name: 'Livres' }))
     await ajouterLivre(user, 'vend', 'Vendredi')
     expect(screen.getByText(/exemplaire LPV-0002/)).toBeDefined()
 
