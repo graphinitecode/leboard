@@ -47,6 +47,7 @@ a.lpv-m-list-row {
   border-left: 6px solid var(--lpv-grey-border);
   display: flex;
   flex-wrap: wrap;
+  border-radius: 0 var(--lpv-border-radius) var(--lpv-border-radius) 0;
   gap: 0.75rem 1.5rem;
   justify-content: space-between;
   margin-bottom: 0.75rem;
@@ -89,6 +90,7 @@ a.lpv-m-list-row {
   background-color: var(--lpv-grey-bg);
   border-left: 6px solid var(--lpv-a-tag--red-text);
   padding: 0.9rem 1rem;
+  border-radius: var(--lpv-border-radius);
 
   /* Rappel neutre (bibliothèque) : bordure bleue, sans icône d'avertissement */
   &--blue {

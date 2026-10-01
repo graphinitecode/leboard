@@ -7,12 +7,13 @@
 
 html[data-theme='dark'] {
   /* --- Tokens ------------------------------------------------------------- */
-
+  --lpv-mix-color: black;
+  --lpv-mix-color-invert: white;
   --lpv-text: #f2eef2;
   --lpv-text-muted: #cbd2d7;
   --lpv-grey-bg: #1e1a1e;
   --lpv-darkgrey-bg: #312a31;
-  --lpv-grey-border: #3a343a;
+  --lpv-grey-border: #464046;
   --lpv-surface: #161216;
   --lpv-bg-feedback: #251011;
 

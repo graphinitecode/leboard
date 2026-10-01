@@ -8,6 +8,8 @@
 
 :root {
   /* Charte LPV Board (visuel officiel) */
+  --lpv-mix-color: white;
+  --lpv-mix-color-invert: black;
   --lpv-blue: #1875d4;         /* Dodger Blue — portail profs */
   --lpv-blue--hover: #044993;         /* Dodger Blue — portail profs */
   --lpv-blue-dark: #1b70c2;    /* hover boutons / liens (contraste AA sur blanc) */
@@ -27,7 +29,7 @@
   --lpv-green: #059e4c;        /* Medium Jungle — succès / présent */
   --lpv-green--hover: #047237;        /* Medium Jungle — succès / présent */
   --lpv-green--dark: #012310;        /* Medium Jungle — succès / présent */
-  --lpv-green-shadow: #12522e;
+  --lpv-green-shadow: #187240;
   --lpv-green-shadow--hover: #0c341d;
   --lpv-green-soft: #aee7c7;
 
@@ -158,9 +160,19 @@
   --lpv-text-underline-offset: 2px;
   --lpv-text-underline-offset-hover: 5px;
 
-  --lpv-font-size-md: 1.2rem;
+  --lpv-font-size-xxs: 0.87rem;
+  --lpv-font-size-xs: 1.027rem;
+  --lpv-font-size-sm: 1.125rem;
+  --lpv-font-size-md: 1.275rem;
   --lpv-font-size-lg: 1.37rem;
   --lpv-font-size-xl: 1.75rem;
+
+  --lpv-border-radius: 7px;
+  --lpv-border-radius-xs: 2px;
+  --lpv-border-radius-sm: 4px;
+  --lpv-border-radius-md: 7px;
+  --lpv-border-radius-lg: 12px;
+  --lpv-border-radius-xl: 14px;
 
   /* Rôles sémantiques → familles de couleurs (map $lpv-color-families) :
      portal→blue, secondary→gray, warning→orange, danger→red. La mixin émet
