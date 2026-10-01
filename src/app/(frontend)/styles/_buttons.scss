@@ -8,9 +8,9 @@
   background-color: var(--lpv-portal);
   border: 2px solid transparent;
   outline: none;
-  border-radius: var(--lpv-radius);
+  border-radius: var(--lpv-border-radius-md);
   box-shadow: 0 2px 0 var(--lpv-portal-shadow);
-  color: var(--lpv-surface);
+  color: white;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -23,8 +23,10 @@
   text-decoration: none;
 
   &:hover {
+    $clr: color-mix(in srgb, var(--lpv-portal) 17%, white);
     background-color: var(--lpv-portal--hover);
     box-shadow: 0 2px 0 var(--lpv-portal-shadow--hover);
+    color: $clr;
   }
 
   &:active {
@@ -48,45 +50,50 @@
 
   /* Variante « Modifier » (secondaire) */
   &--secondary {
-    background-color: var(--lpv-secondary);
-    box-shadow: 0 2px 0 var(--lpv-secondary-shadow);
+    background-color: var(--lpv-background);
+    border: 1px solid var(--lpv-text);
+    box-shadow: 0 2px 0 var(--lpv-text);
     color: var(--lpv-text);
 
     &:hover {
-      background-color: var(--lpv-secondary--hover);
-      box-shadow: 0 2px 0 var(--lpv-secondary-shadow--hover);
+      border-color: var(--lpv-text);
+      background-color: var(--lpv-grey-border);
+      box-shadow: 0 2px 0 var(--lpv-text);
+      color: var(--lpv-text);
+    }
+  }
+  /* Variante « Modifier » (tertiaire) */
+  &--tertiary {
+    $bg-color: color-mix(in srgb, var(--lpv-grey-border) 80%, var(--lpv-mix-color-invert));
+    background-color: white;
+    border: 2px solid $bg-color;
+    box-shadow: 0 3px 0 $bg-color;
+    color: var(--lpv-portail);
+
+    &:hover {
+      background-color: var(--lpv-surface);
+      color: var(--lpv-text);
+      border: 2px solid $bg-color;
+      box-shadow: 0 3px 0 $bg-color;
+    }
+    &:active {
+      border: 2px solid $bg-color;
+      transform: translateY(3px);
     }
   }
 
-  &--warning {
-    background-color: var(--lpv-warning);
-    box-shadow: 0 2px 0 var(--lpv-warning-shadow);
-    color: var(--lpv-surface);
+  @each $type in warning, danger, success {
+    $clr_hover: color-mix(in srgb, white 90%, var(--lpv-#{$type}));
+    &--#{$type} {
+      background-color: var(--lpv-#{$type});
+      box-shadow: 0 2px 0 var(--lpv-#{$type}-shadow);
+      color: white;
 
-    &:hover {
-      background-color: var(--lpv-warning--hover);
-      box-shadow: 0 2px 0 var(--lpv-warning-shadow--hover);
-    }
-  }
-
-  &--danger {
-    background-color: var(--lpv-danger);
-    box-shadow: 0 2px 0 var(--lpv-danger-shadow);
-    color: var(--lpv-surface);
-
-    &:hover {
-      background-color: var(--lpv-danger--hover);
-      box-shadow: 0 2px 0 var(--lpv-danger-shadow--hover);
-    }
-  }
-
-  &--success {
-    background-color: var(--lpv-green);
-    box-shadow: 0 2px 0 var(--lpv-a-tag--green-text);
-    color: var(--lpv-surface);
-
-    &:hover {
-      background-color: var(--lpv-a-tag--green);
+      &:hover {
+        background-color: var(--lpv-#{$type}--hover);
+        box-shadow: 0 2px 0 var(--lpv-#{$type}-shadow--hover);
+        color: $clr_hover;
+      }
     }
   }
 
@@ -177,66 +184,4 @@
    Les variables portail (bleu/violet) sont réinjectées en clair
    pour que liens et hover restent lisibles sur fond sombre. */
 
-html[data-theme='dark'] {
-  /* --- Boutons ------------------------------------------------------------
-   Ils reprennent les couleurs des tags.
-   Le hover assombrit le fond (plus sombre que le repos). */
 
-  .lpv-a-button {
-    background-color: var(--lpv-portal);
-    box-shadow: 0 2px 0 var(--lpv-portal-shadow);
-    color: #ffffff;
-
-    &:hover {
-      background-color: var(--lpv-portal--hover);
-      box-shadow: 0 2px 0 var(--lpv-portal-shadow--hover);
-    }
-  }
-
-  .lpv-a-button--success {
-    background-color: var(--lpv-green);
-    box-shadow: 0 2px 0 var(--lpv-green-shadow);
-    color: #fff5f5;
-
-    &:hover {
-      background-color: var(--lpv-green--hover);
-      box-shadow: 0 2px 0 var(--lpv-green-shadow--hover);
-    }
-  }
-
-  .lpv-a-button--warning {
-    background-color: var(--lpv-warning);
-    box-shadow: 0 2px 0 var(--lpv-warning-shadow);
-    color: #ffffff;
-
-    &:hover {
-      background-color: var(--lpv-warning--hover);
-      box-shadow: 0 2px 0 var(--lpv-warning-shadow--hover);
-    }
-  }
-
-  .lpv-a-button--danger {
-    background-color: var(--lpv-red);
-    box-shadow: 0 2px 0 var(--lpv-red-shadow);
-    color: #fffafa;
-
-    &:hover {
-      background-color: var(--lpv-red--hover);
-      box-shadow: 0 2px 0 var(--lpv-red-shadow--hover);
-    }
-  }
-
-  /* Secondaire : fond relevé et texte clair (le grey-bg clair devient un bloc
-     noir illisible sur les fonds sombres, ex. hero image) */
-  .lpv-a-button--secondary {
-    background-color: var(--lpv-secondary);
-    box-shadow: 0 2px 0 var(--lpv-secondary-shadow);
-    color: #f2eef2;
-
-    &:hover {
-      background-color: var(--lpv-secondary--hover);
-      box-shadow: 0 2px 0 var(--lpv-secondary-shadow--hover);
-    }
-  }
-
-}

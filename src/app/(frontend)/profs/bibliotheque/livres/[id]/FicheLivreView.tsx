@@ -11,26 +11,19 @@ import { DetailPage } from '@/components/templates'
 import type { DashboardStat } from '@/components/templates'
 import { ConfirmAction } from '@/components/organisms/o-confirm-action'
 import {
+  CATEGORIES_LIVRE,
   estPretEnCours,
   joursDeRetard,
+  labelNiveauLivre,
   useListCatalogue,
   useListPretsParLivre,
   useMarquerRetourne,
 } from '@/bibliotheque'
 
-const NIVEAU_LABELS: Record<string, string> = {
-  primaire: 'Primaire',
-  college: 'Collège',
-  lycee: 'Lycée',
-}
-
-const CATEGORIE_LABELS: Record<string, string> = {
-  lecture: 'Lecture',
-  methodologie: 'Méthodologie',
-  anglais: 'Anglais',
-  manuel: 'Manuel',
-  autre: 'Autre',
-}
+// Libellés de catégorie, enrichis : dérivés de la source unique domain.
+const CATEGORIE_LABELS: Record<string, string> = Object.fromEntries(
+  CATEGORIES_LIVRE.map((option) => [option.value, option.label]),
+)
 
 const formatDate = (iso: string | null): string => {
   if (!iso) return '—'
@@ -176,8 +169,9 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
           </AlertCard>
         </div>
       ) : null}
-      <div className="lpv-t-dashboard-page__aside-card">
-        <h3 className="lpv-t-dashboard-page__aside-card__title">Informations</h3>
+      <div className="lpv-t-dashboard-page__aside-color-card">
+        <h3 className="lpv-t-dashboard-page__aside-color-card__title">Informations</h3>
+
         <dl className="lpv-m-infolist">
           <dt>Catégorie</dt>
           <dd>{livre.categorie ? (CATEGORIE_LABELS[livre.categorie] ?? livre.categorie) : '—'}</dd>
@@ -194,30 +188,60 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
           </dd>
         </dl>
         {peutGerer ? (
-          <p
-            style={{
-              borderTop: '1px solid var(--lpv-grey-border)',
-              color: 'var(--lpv-text-muted)',
-              fontSize: '0.8rem',
-              marginTop: '0.625rem',
-              paddingTop: '0.625rem',
-            }}
-          >
-            Les exemplaires physiques se gèrent dans{' '}
-            <Link className="lpv-link-inline" href="/admin">
-              le panneau d&apos;administration
-            </Link>
-            .
-          </p>
+          <div className={'lpv-t-dashboard-page__aside-color-card__actions'}>
+            <Icon icon={`rivet-icons:lock-closed-solid`} size={22} className="lpv-t-dashboard-page__aside-color-card__actions--icon" />
+            <p className={`lpv-t-dashboard-page__aside-color-card__actions--content`}>
+              Les exemplaires physiques se gèrent dans{' '}
+              <Link className="lpv-link-inline" href="/admin">
+                le panneau d&apos;administration
+              </Link>
+              .
+            </p>
+          </div>
         ) : null}
       </div>
+      {/*<div className="lpv-t-dashboard-page__aside-card">*/}
+      {/*  <h3 className="lpv-t-dashboard-page__aside-card__title">Informations</h3>*/}
+      {/*  <dl className="lpv-m-infolist">*/}
+      {/*    <dt>Catégorie</dt>*/}
+      {/*    <dd>{livre.categorie ? (CATEGORIE_LABELS[livre.categorie] ?? livre.categorie) : '—'}</dd>*/}
+      {/*    <dt>ISBN</dt>*/}
+      {/*    <dd>{livre.isbn ?? '—'}</dd>*/}
+      {/*    <dt>Exemplaires</dt>*/}
+      {/*    <dd>{totalExemplaires}</dd>*/}
+      {/*    <dt>Ajouté au catalogue</dt>*/}
+      {/*    <dd>*/}
+      {/*      {new Date(String(livre.createdAt)).toLocaleDateString('fr-FR', {*/}
+      {/*        month: 'long',*/}
+      {/*        year: 'numeric',*/}
+      {/*      })}*/}
+      {/*    </dd>*/}
+      {/*  </dl>*/}
+      {/*  {peutGerer ? (*/}
+      {/*    <p*/}
+      {/*      style={{*/}
+      {/*        borderTop: '1px solid var(--lpv-grey-border)',*/}
+      {/*        color: 'var(--lpv-text-muted)',*/}
+      {/*        fontSize: '0.8rem',*/}
+      {/*        marginTop: '0.625rem',*/}
+      {/*        paddingTop: '0.625rem',*/}
+      {/*      }}*/}
+      {/*    >*/}
+      {/*      Les exemplaires physiques se gèrent dans{' '}*/}
+      {/*      <Link className="lpv-link-inline" href="/admin">*/}
+      {/*        le panneau d&apos;administration*/}
+      {/*      </Link>*/}
+      {/*      .*/}
+      {/*    </p>*/}
+      {/*  ) : null}*/}
+      {/*</div>*/}
     </>
   )
 
   const stats: DashboardStat[] = [
     {
       label: 'Niveau conseillé',
-      value: livre.niveau ? NIVEAU_LABELS[livre.niveau] ?? livre.niveau : '—',
+      value: livre.niveau ? (labelNiveauLivre(livre.niveau) ?? livre.niveau) : '—',
     },
     {
       label: 'Exemplaires disponibles',

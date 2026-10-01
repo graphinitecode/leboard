@@ -3,21 +3,32 @@
 /* --- Tags de statut ------------------------------------------------------ */
 
 .lpv-a-tag {
-  border-left: 3px solid currentColor;
-  display: inline-block;
-  font-size: 0.875rem;
-  letter-spacing: 0.02em;
+  $border : color-mix(in srgb,currentColor 25%, var(--lpv-mix-color));
+  border: 1px solid $border;
+  border-bottom: 2px solid $border;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.675rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   padding: 0.15rem 0.6rem;
+  max-height: 23px;
   white-space: nowrap;
+  border-radius: var(--lpv-border-radius);
 
-  &--green { background-color: var(--lpv-a-tag--green-bg); color: var(--lpv-a-tag--green-text); }
-  &--yellow { background-color: var(--lpv-a-tag--yellow-bg); color: var(--lpv-a-tag--yellow-text); }
-  &--orange { background-color: var(--lpv-a-tag--orange-bg); color: var(--lpv-a-tag--orange-text); }
-  &--red { background-color: var(--lpv-a-tag--red-bg); color: var(--lpv-a-tag--red-text); }
-  &--blue { background-color: var(--lpv-a-tag--blue-bg); color: var(--lpv-a-tag--blue-text); }
-  &--violet { background-color: var(--lpv-a-tag--violet-bg); color: var(--lpv-a-tag--violet-text); }
-  &--magenta { background-color: var(--lpv-a-tag--magenta-bg); color: var(--lpv-a-tag--magenta-text); }
-  &--teal { background-color: var(--lpv-a-tag--teal-bg); color: var(--lpv-a-tag--teal-text); }
+  @each $color in green, yellow, orange, blue, violet, red, magenta, teal {
+    &--#{$color} {
+      background-color: var(--lpv-a-tag--#{$color}-bg);
+      color: var(--lpv-a-tag--#{$color}-text);
+    }
+
+    &--#{$color}:hover {
+      user-select: none;
+      scale: 110%;
+    }
+  }
 }
 
 /* Les couleurs dark sont gérées par la surcharge des variables dans _dark.scss :

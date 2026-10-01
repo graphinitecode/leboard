@@ -2,14 +2,20 @@
 
 import { useState } from 'react'
 
+import { Icon } from '@/components/atoms/a-icon'
+
 export interface SegmentedOption {
-  label: string
   ariaLabel: string
+  /** Icône (nom Iconify) affichée à la place du libellé, ou à ses côtés. */
+  icon?: string
+  /** Facultatif : une option peut être icon-only (ariaLabel la nomme). */
+  label?: string
   value: string
 }
 
 // Molécule : toggle segmenté (un tap), générique.
-// L'état actif est communiqué par la couleur + le graisse + aria-pressed (jamais la couleur seule).
+// Une option affiche son libellé, son icône, ou les deux.
+// L'état actif est communiqué par la couleur + la graisse + aria-pressed (jamais la couleur seule).
 export function SegmentedToggle({
   options,
   initialValue,
@@ -31,12 +37,18 @@ export function SegmentedToggle({
         const active = initialValue === option.value
         const dataProps = dataAttribute?.(option) ?? {}
 
+        const iconModifier = option.icon
+          ? option.label
+            ? ' lpv-toggle-option--icon'
+            : ' lpv-toggle-option--icon-only'
+          : ''
+
         return (
           <button
             key={option.value}
             aria-label={option.ariaLabel}
             aria-pressed={active}
-            className={`lpv-toggle-option${active ? ' lpv-toggle-option--active' : ''}`}
+            className={`lpv-toggle-option${active ? ' lpv-toggle-option--active' : ''}${iconModifier}`}
             disabled={pendingLocal !== null}
             onClick={() => {
               if (active || pendingLocal !== null) return
@@ -51,6 +63,13 @@ export function SegmentedToggle({
             type="button"
             {...dataProps}
           >
+            {option.icon && (
+              <Icon
+                aria-hidden
+                icon={option.icon}
+                size={option.label ? 16 : 20}
+              />
+            )}
             {option.label}
           </button>
         )

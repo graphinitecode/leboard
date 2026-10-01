@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-export type Variant = 'primary' | 'secondary' | 'warning' | 'danger' | 'success'
+export type Variant = 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger' | 'success'
 
 const CLASSES: Record<Variant, string> = {
   warning: 'lpv-a-button lpv-a-button--warning',
@@ -8,6 +8,7 @@ const CLASSES: Record<Variant, string> = {
   success: 'lpv-a-button lpv-a-button--success',
   primary: 'lpv-a-button',
   secondary: 'lpv-a-button lpv-a-button--secondary',
+  tertiary: 'lpv-a-button lpv-a-button--tertiary',
 }
 
 // Atome : bouton du design system LPV Board

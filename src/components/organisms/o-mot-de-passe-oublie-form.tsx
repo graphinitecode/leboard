@@ -76,7 +76,7 @@ export function MotDePasseOublieForm({ portail = 'profs' }: { portail?: 'profs' 
         errors={erreur ? [{ fieldId: 'email', text: erreur }] : []}
         title="Il y a un problème"
       />
-      <p className="lpv-login__subtitle">
+      <p className="lpv-login__help">
         Saisissez l&apos;adresse e-mail de votre compte. Nous vous enverrons un lien pour choisir un
         nouveau mot de passe.
       </p>

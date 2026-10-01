@@ -173,7 +173,7 @@ function DemoDetailJour({ jour }: { jour: Date }) {
     18: [{ heure: '10:00', label: 'Français — Clara' }, { heure: '15:00', label: 'Maths — Dylan' }],
   }
   const duJour = seances[jour.getDate()]
-  if (!duJour) return <p className="lpv-muted" style={{ margin: 0 }}>Aucune séance ce jour.</p>
+  if (!duJour) return <p className="text-white opacity-60" style={{ margin: 0 }}>Aucune séance ce jour.</p>
   return (
     <ul style={{ margin: 0, paddingLeft: '1.25rem' }}>
       {duJour.map((s) => (

@@ -26,7 +26,10 @@ describe('MonthCalendarCard', () => {
     const { container } = render(<MonthCalendarCard mois={JUIN_2026} />)
     expect(screen.getByText('juin 2026')).toBeDefined()
     expect(container.querySelectorAll('.lpv-m-month-calendar__weekday')).toHaveLength(7)
-    expect(container.querySelectorAll('.lpv-m-month-calendar__num')).toHaveLength(30)
+    // 42 cases (6 semaines) : 30 jours de juin + le 1er au 12 juillet ;
+    // sans marqueurs passé, chaque case rend un numéro
+    expect(container.querySelectorAll('.lpv-m-month-calendar__num')).toHaveLength(42)
+    expect(container.querySelectorAll('.lpv-m-month-calendar__num--hors-mois')).toHaveLength(12)
     expect(screen.getByText('14')).toBeDefined()
   })
 
@@ -91,14 +94,30 @@ describe('MonthCalendarCard', () => {
     expect(container.querySelectorAll('.lpv-m-month-calendar__dot')).toHaveLength(1)
   })
 
-  it('rend la legende complete meme sans marqueur dans le mois', () => {
+  it('omet la legende quand la fenetre affichee ne porte aucun marqueur', () => {
     const { container } = render(
       <MonthCalendarCard categories={CATEGORIES} marqueurs={[]} mois={JUIN_2026} />,
     )
-    expect(screen.getByText('Séance programmée')).toBeDefined()
-    expect(screen.getByText('Événement association')).toBeDefined()
+    expect(screen.queryByText('Séance programmée')).toBeNull()
+    expect(screen.queryByText('Événement association')).toBeNull()
+    expect(container.querySelector('.lpv-m-month-calendar__legend')).toBeNull()
+  })
+
+  it('compte les marqueurs hors mois dans la legende (fenetre des 42 cases)', () => {
+    const categories: CategorieMarqueurCalendrier[] = [
+      { couleur: 'teal', forme: 'point', id: 'presence', label: 'Présence validée' },
+    ]
+    // le 3 juillet 2026 est un jour hors mois de la grille de juin (cases
+    // complétées par les mois adjacents) ; il fait partie de la fenêtre
+    const { container } = render(
+      <MonthCalendarCard
+        categories={categories}
+        marqueurs={[{ type: 'presence', date: new Date(2026, 6, 3) }]}
+        mois={JUIN_2026}
+      />,
+    )
+    expect(screen.getByText('Présence validée')).toBeDefined()
     expect(container.querySelector('.lpv-m-month-calendar__legend-dot')).not.toBeNull()
-    expect(container.querySelector('.lpv-m-month-calendar__legend-square')).not.toBeNull()
   })
 
   it('rend la legende depuis les categories personnalisees', () => {
@@ -106,7 +125,14 @@ describe('MonthCalendarCard', () => {
       { couleur: 'teal', forme: 'point', id: 'presence', label: 'Présence validée' },
       { couleur: 'yellow', forme: 'carre', id: 'sortie', label: 'Sortie pédagogique' },
     ]
-    const { container } = render(<MonthCalendarCard categories={categories} mois={JUIN_2026} />)
+    // chaque catégorie doit être portée par au moins un marqueur de la fenêtre
+    const marqueurs: MarqueurJourCalendrier[] = [
+      { type: 'presence', date: new Date(2026, 5, 5) },
+      { type: 'sortie', date: new Date(2026, 5, 20) },
+    ]
+    const { container } = render(
+      <MonthCalendarCard categories={categories} marqueurs={marqueurs} mois={JUIN_2026} />,
+    )
     expect(screen.getByText('Présence validée')).toBeDefined()
     expect(screen.getByText('Sortie pédagogique')).toBeDefined()
     expect(screen.queryByText('Séance programmée')).toBeNull()
@@ -115,7 +141,8 @@ describe('MonthCalendarCard', () => {
   })
 
   it('utilise les categories par defaut quand categories est absent', () => {
-    render(<MonthCalendarCard mois={JUIN_2026} />)
+    // MARQUEURS porte les deux catégories par défaut (2, 4 juin + 14 juin)
+    render(<MonthCalendarCard marqueurs={MARQUEURS} mois={JUIN_2026} />)
     expect(screen.getByText('Séance programmée')).toBeDefined()
     expect(screen.getByText('Événement association')).toBeDefined()
   })
@@ -194,9 +221,10 @@ describe('MonthCalendarCard', () => {
         renduDetailJour={renduDetail}
       />,
     )
-    // 30 jours de juin, tous en bouton (29 nums + 1 event pour le 14)
-    expect(container.querySelectorAll('.lpv-m-month-calendar__toggle')).toHaveLength(30)
-    expect(container.querySelectorAll('.lpv-m-month-calendar__num')).toHaveLength(29)
+    // 42 cases = 6 semaines, toutes cliquables (29 nums de juin + 12 nums de
+    // juillet + 1 event pour le 14)
+    expect(container.querySelectorAll('.lpv-m-month-calendar__toggle')).toHaveLength(42)
+    expect(container.querySelectorAll('.lpv-m-month-calendar__num')).toHaveLength(41)
     expect(container.querySelectorAll('.lpv-m-month-calendar__event')).toHaveLength(1)
   })
 
@@ -219,9 +247,11 @@ describe('MonthCalendarCard', () => {
     const { container } = render(
       <MonthCalendarCard categories={CATEGORIES} marqueurs={MARQUEURS} mois={JUIN_2026} />,
     )
-    // juin 2026 est entièrement passé : 29 numéros sur 30 portent --passe
-    // (le 14 rend un event, pas un num)
-    expect(container.querySelectorAll('.lpv-m-month-calendar__num--passe')).toHaveLength(29)
+    // juin 2026 est entièrement passé : 29 numéros de juin portent --passe
+    // (le 14 rend un event, pas un num), comme les 12 jours de juillet
+    // (hors-mois), également antérieurs à aujourd'hui
+    expect(container.querySelectorAll('.lpv-m-month-calendar__num--passe')).toHaveLength(41)
+    expect(container.querySelectorAll('.lpv-m-month-calendar__num--hors-mois')).toHaveLength(12)
     // aucun jour du mois affiché n'est aujourd'hui
     expect(container.querySelectorAll('.lpv-m-month-calendar__num--today')).toHaveLength(0)
   })
@@ -232,10 +262,31 @@ describe('MonthCalendarCard', () => {
     const { container } = render(<MonthCalendarCard mois={premierDuMois} />)
     const totalNum = container.querySelectorAll('.lpv-m-month-calendar__num').length
     expect(container.querySelectorAll('.lpv-m-month-calendar__num--today')).toHaveLength(1)
-    // le jour courant n'a pas la classe passe, les jours suivants non plus
+    // le jour courant n'a pas la classe passe, les jours suivants non plus ;
+    // les cases hors mois du début (fin du mois précédent) sont passées
+    // elles aussi
+    const decalage = (premierDuMois.getDay() + 6) % 7
     const passes = container.querySelectorAll('.lpv-m-month-calendar__num--passe').length
-    expect(passes).toBe(aujourdhui.getDate() - 1)
+    expect(passes).toBe(decalage + aujourdhui.getDate() - 1)
     expect(passes).toBeLessThan(totalNum)
+  })
+
+  it('accorde les couleurs du panneau de detail a la pastille du jour', () => {
+    const { container } = render(
+      <MonthCalendarCard
+        categories={CATEGORIES}
+        marqueurs={MARQUEURS}
+        mois={JUIN_2026}
+        renduDetailJour={renduDetail}
+      />,
+    )
+    fireEvent.click(screen.getByTitle('mardi 2 juin 2026'))
+    // le 2 juin porte une pastille seance (bleue) : couleurs du tag inversées
+    const recap = container.querySelector(
+      '.lpv-m-month-calendar__detail__lpv-recap',
+    ) as HTMLElement | null
+    expect(recap?.style.getPropertyValue('--marqueur-texte')).toBe('var(--lpv-a-tag--blue-text)')
+    expect(recap?.style.getPropertyValue('--marqueur-bg')).toBe('var(--lpv-a-tag--blue-bg)')
   })
 
   it('expose aria-expanded sur les jours cliquables', () => {

@@ -35,10 +35,24 @@ export function LoginForm({ portail, cible, title = 'Connexion', subtitle }: Log
     }
   }
 
+  const connexionHref = `/mot-de-passe-oublie?portail=${portail}`
+
   return (
     <form className="lpv-login" onSubmit={submit}>
       <h1 className="lpv-login__title">{title}</h1>
       {subtitle ? <p className="lpv-login__subtitle">{subtitle}</p> : null}
+      <ul className="list-disc list-inside">
+        <li className="lpv-login__forgot">
+          <p>
+            Mot de passe oublié ? <Link href={connexionHref}>Ré-initialiser le</Link>
+          </p>
+        </li>
+        <li className="lpv-login__help">
+          <p>
+            Problèmes de connexion ? <Link href={connexionHref}> Consulter l&apos;aide</Link>
+          </p>
+        </li>
+      </ul>
       <ErrorSummary errors={error ? [{ fieldId: 'email', text: error }] : []} />
       <Input
         autoComplete="email"
@@ -56,15 +70,11 @@ export function LoginForm({ portail, cible, title = 'Connexion', subtitle }: Log
         type="password"
         value={password}
       />
-      <p className="lpv-login__forgot">
-        Mot de passe oublié ?{' '}
-        <Link href={`/mot-de-passe-oublie?portail=${portail}`} className="lpv-link-inline">
-          Réinitialiser ici
-        </Link>
-      </p>
-      <Button disabled={isPending} type="submit" className="w-full md:w-auto">
+      <Button className="lpv-login__submit" disabled={isPending} type="submit">
         {isPending ? 'Connexion…' : 'Se connecter'}
       </Button>
+
+      <div className="lpv-login__mention">Cette plateforme est privé et est destiné aux personnes habilité à la consulter. Tout contrevenant pourra faire l&#39;objet de poursuite.</div>
     </form>
   )
 }

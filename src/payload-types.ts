@@ -338,8 +338,21 @@ export interface Livre {
    * ISBN-10 ou ISBN-13 (optionnel)
    */
   isbn?: string | null;
-  niveau?: ('primaire' | 'college' | 'lycee') | null;
-  categorie?: ('lecture' | 'methodologie' | 'anglais' | 'manuel' | 'autre') | null;
+  niveau?: ('maternelle' | 'cp-ce2' | 'cm1-cm2' | 'primaire' | 'college' | 'lycee') | null;
+  categorie?:
+    | (
+        | 'roman-jeunesse'
+        | 'conte-fable'
+        | 'bande-dessinee'
+        | 'documentaire'
+        | 'lecture'
+        | 'methodologie'
+        | 'anglais'
+        | 'manuel'
+        | 'dictionnaire'
+        | 'autre'
+      )
+    | null;
   editeur?: string | null;
   /**
    * Présentation de l’ouvrage, affichée sur la fiche du portail

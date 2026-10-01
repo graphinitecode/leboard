@@ -22,6 +22,12 @@ function variablesCouleur(couleur: CategorieMarqueurCalendrier['couleur']): Reac
   } as React.CSSProperties
 }
 
+// Pastilles des jours hors mois : toutes en grisé (au lieu de leur catégorie).
+const VARIABLES_HORS_MOIS = {
+  '--marqueur-bg': 'var(--lpv-text-muted)',
+  '--marqueur-texte': 'var(--lpv-surface)',
+} as React.CSSProperties
+
 // Molécule : carte calendrier mensuel avec légende (pattern GOV.UK).
 // Les jours portent des marqueurs définis par des catégories dynamiques :
 // couleur (palette tags) et forme (point ou carré) pilotées par `categories`.
@@ -45,7 +51,21 @@ export function MonthCalendarCard({
   voirToutLabel?: string
   renduDetailJour?: (jour: Date) => React.ReactNode
 }) {
-  const semaines = grilleMensuelle(mois)
+  // La grille est construite depuis le 1er du mois : normalisation (les
+  // appelants peuvent passer « new Date() », qui n'est pas forcément un 1er).
+  const premierDuMois = new Date(mois.getFullYear(), mois.getMonth(), 1)
+  const semaines = grilleMensuelle(premierDuMois)
+
+  // Les cases « hors mois » (null dans la grille) deviennent les jours réels
+  // du mois précédent / à venir (ils complètent la grille) : leur numéro
+  // s'affiche, grisé, avec la classe --hors-mois.
+  const caseVide = semaines.flat().findIndex((jour) => jour !== null)
+  const nombreJours = new Date(mois.getFullYear(), mois.getMonth() + 1, 0).getDate()
+  const cases = semaines.flat().map((jour, i) => {
+    if (jour) return jour
+    if (i < caseVide) return new Date(mois.getFullYear(), mois.getMonth(), i - caseVide + 1)
+    return new Date(mois.getFullYear(), mois.getMonth() + 1, i - caseVide - nombreJours + 1)
+  })
   const categorieParId = new Map(categories.map((c) => [c.id, c]))
   const [jourSelectionne, setJourSelectionne] = useState<string | null>(null)
 
@@ -63,11 +83,30 @@ export function MonthCalendarCard({
     }
   }
 
+  // Légende : seulement les catégories effectivement portées par au moins un
+  // marqueur daté dans la fenêtre affichée (les 42 cases de la grille, jours
+  // hors mois compris). Une catégorie sans marqueur dans cette fenêtre n'y
+  // figure pas, et la légende est omise si elle serait vide.
+  const datesGrille = new Set(cases.map((jour) => jour.toDateString()))
+  const categoriesLegende = categories.filter((categorie) =>
+    marqueurs.some(
+      (marqueur) =>
+        marqueur.type === categorie.id && datesGrille.has(marqueur.date.toDateString()),
+    ),
+  )
+
   const aujourdhuiStr = new Date().toDateString()
   const debutDuJour = new Date()
   debutDuJour.setHours(0, 0, 0, 0)
   const detailOuvert = jourSelectionne ? new Date(jourSelectionne) : null
   const detailId = 'month-calendar-detail'
+
+  // Couleurs du panneau de détail : celles, inversées, de la première
+  // catégorie du jour sélectionné (fond carré prioritaire, sinon première
+  // pastille) pour relier visuellement le panneau à sa pastille ; repli :
+  // le magenta de l'association (défauts SCSS).
+  const categoriesJour = detailOuvert ? parJour.get(detailOuvert.toDateString()) : undefined
+  const categorieJour = categoriesJour?.find((c) => c.forme === 'carre') ?? categoriesJour?.[0]
 
   function basculerJour(jour: Date) {
     const cle = jour.toDateString()
@@ -85,7 +124,7 @@ export function MonthCalendarCard({
         )}
       </div>
 
-      <div aria-hidden="true" className="lpv-m-month-calendar__rule" />
+      {/*<div aria-hidden="true" className="lpv-m-month-calendar__rule" />*/}
 
       <div className="lpv-m-month-calendar__grid" role="grid">
         {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((jour, i) => (
@@ -93,14 +132,14 @@ export function MonthCalendarCard({
             {jour}
           </div>
         ))}
-        {semaines.flat().map((jour, i) => {
-          if (!jour) return <span key={i} />
+        {cases.map((jour, i) => {
           const categoriesDuJour = parJour.get(jour.toDateString())
           const fondCarre = categoriesDuJour?.find((c) => c.forme === 'carre')
           const cle = jour.toDateString()
           const selectionne = jourSelectionne === cle
           const cliquable = Boolean(renduDetailJour)
           const estPasse = jour < debutDuJour
+          const horsMois = jour.getMonth() !== premierDuMois.getMonth()
           const libelleJour = jour.toLocaleDateString('fr-FR', {
             weekday: 'long',
             day: 'numeric',
@@ -113,10 +152,12 @@ export function MonthCalendarCard({
             return (
               <>
                 {fondCarre ? (
-                  <span className="lpv-m-month-calendar__event">{jourDuMois}</span>
+                  <span className={`lpv-m-month-calendar__event${horsMois ? ' lpv-m-month-calendar__event--hors-mois' : ''}`}>
+                    {jourDuMois}
+                  </span>
                 ) : (
                   <span
-                    className={`lpv-m-month-calendar__num${cle === aujourdhuiStr ? ' lpv-m-month-calendar__num--today' : ''}${estPasse ? ' lpv-m-month-calendar__num--passe' : ''}`}
+                    className={`lpv-m-month-calendar__num${cle === aujourdhuiStr ? ' lpv-m-month-calendar__num--today' : ''}${estPasse ? ' lpv-m-month-calendar__num--passe' : ''}${horsMois ? ' lpv-m-month-calendar__num--hors-mois' : ''}`}
                   >
                     {jourDuMois}
                   </span>
@@ -127,7 +168,7 @@ export function MonthCalendarCard({
                       <span
                         className="lpv-m-month-calendar__dot"
                         key={categorie.id}
-                        style={variablesCouleur(categorie.couleur)}
+                        style={horsMois ? VARIABLES_HORS_MOIS : variablesCouleur(categorie.couleur)}
                       />
                     ))}
                   </span>
@@ -144,7 +185,13 @@ export function MonthCalendarCard({
                   aria-expanded={selectionne}
                   className={`lpv-m-month-calendar__toggle${selectionne ? ' lpv-m-month-calendar__toggle--selected' : ''}`}
                   onClick={() => basculerJour(jour)}
-                  style={fondCarre ? variablesCouleur(fondCarre.couleur) : undefined}
+                  style={
+                    fondCarre
+                      ? horsMois
+                        ? VARIABLES_HORS_MOIS
+                        : variablesCouleur(fondCarre.couleur)
+                      : undefined
+                  }
                   title={libelleJour}
                   type="button"
                 >
@@ -158,14 +205,14 @@ export function MonthCalendarCard({
             <div className="lpv-m-month-calendar__day" key={i}>
               {fondCarre ? (
                 <span
-                  className="lpv-m-month-calendar__event"
-                  style={variablesCouleur(fondCarre.couleur)}
+                  className={`lpv-m-month-calendar__event${horsMois ? ' lpv-m-month-calendar__event--hors-mois' : ''}`}
+                  style={horsMois ? VARIABLES_HORS_MOIS : variablesCouleur(fondCarre.couleur)}
                 >
                   {jourDuMois}
                 </span>
               ) : (
                 <span
-                  className={`lpv-m-month-calendar__num${cle === aujourdhuiStr ? ' lpv-m-month-calendar__num--today' : ''}${estPasse ? ' lpv-m-month-calendar__num--passe' : ''}`}
+                  className={`lpv-m-month-calendar__num${cle === aujourdhuiStr ? ' lpv-m-month-calendar__num--today' : ''}${estPasse ? ' lpv-m-month-calendar__num--passe' : ''}${horsMois ? ' lpv-m-month-calendar__num--hors-mois' : ''}`}
                 >
                   {jourDuMois}
                 </span>
@@ -176,7 +223,7 @@ export function MonthCalendarCard({
                     <span
                       className="lpv-m-month-calendar__dot"
                       key={categorie.id}
-                      style={variablesCouleur(categorie.couleur)}
+                      style={horsMois ? VARIABLES_HORS_MOIS : variablesCouleur(categorie.couleur)}
                     />
                   ))}
                 </span>
@@ -187,21 +234,28 @@ export function MonthCalendarCard({
       </div>
 
       {detailOuvert && renduDetailJour && (
-        <div className="lpv-m-month-calendar__detail lpv-recap" id={detailId}>
-          <p className="lpv-m-month-calendar__detail-title">
-            {detailOuvert.toLocaleDateString('fr-FR', {
-              weekday: 'long',
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            })}
-          </p>
-          {renduDetailJour(detailOuvert)}
+        <div className="lpv-m-month-calendar__detail">
+          <div
+            className="lpv-m-month-calendar__detail__lpv-recap"
+            id={detailId}
+            style={categorieJour ? variablesCouleur(categorieJour.couleur) : undefined}
+          >
+            <p className="lpv-m-month-calendar__detail-title">
+              {detailOuvert.toLocaleDateString('fr-FR', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+              })}
+            </p>
+            {renduDetailJour(detailOuvert)}
+          </div>
         </div>
       )}
 
-      <dl className="lpv-m-month-calendar__legend">
-        {categories.map((categorie) => (
+      {categoriesLegende.length > 0 && (
+        <dl className="lpv-m-month-calendar__legend">
+          {categoriesLegende.map((categorie) => (
           <div className="lpv-m-month-calendar__legend-item" key={categorie.id}>
             <dt>
               <span
@@ -215,8 +269,9 @@ export function MonthCalendarCard({
             </dt>
             <dd>{categorie.label}</dd>
           </div>
-        ))}
-      </dl>
+          ))}
+        </dl>
+      )}
     </div>
   )
 }
