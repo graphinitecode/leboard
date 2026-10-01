@@ -6,6 +6,8 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+## [0.10.0] — 2026-09-30
+
 ### Ajouté
 - Page « Ajouter un livre » repensée en un seul écran : pré-remplissage à l'aide de l'ISBN, choix du nombre d'exemplaires (codes attribués automatiquement) et récapitulatif de succès.
 - Import en masse de livres depuis un fichier CSV : une ligne par livre, aperçu des lignes détectées avec leurs erreurs éventuelles, puis compte des livres ajoutés.
@@ -18,8 +20,6 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Récapitulatif de l'assistant de prêt : chaque livre choisi est précédé d'une puce carrée et le nombre de livres est affiché.
 - Assistant « nouvelle séance » : le récapitulatif devient une sixième étape et chaque question retrouve son lien de retour.
 - Fiche livre : la carte « Informations » adopte la nouvelle carte à bandeau coloré.
-
-### Corrigé
 - Nouvelle mise en page du parcours « mot de passe oublié » : écran de confirmation après l'envoi du lien, résumé des erreurs en tête de formulaire et liens de retour adaptés au portail (profs ou parents).
 - Assistant « nouvelle séance » : les élèves se choisissent via une boîte de recherche (prénom ou nom, sélection multiple, retrait facile) au lieu des cases à cocher, les questions sont plus naturelles et la durée choisie s'affiche en toutes lettres (par exemple « une demi-heure »).
 - L'encadré de confirmation s'affiche à nouveau sur fond bleu, avec une bordure basse en dessous.
