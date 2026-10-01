@@ -377,12 +377,10 @@
 /* Carte calendrier mensuel avec légende (m-month-calendar) */
 .lpv-m-month-calendar {
   background-color: var(--lpv-background-color);
-  border: 1px solid var(--lpv-grey-border);
-  border-top: 6px solid var(--lpv-text);
-  border-radius: 0;
   max-width: min(26rem, 100%);
   min-width: 0;
-  padding: 1.25rem;
+  overflow: hidden;
+
 
   &__head {
     align-items: baseline;
@@ -390,6 +388,11 @@
     flex-wrap: wrap;
     gap: 0.5rem 1.5rem;
     justify-content: space-between;
+    padding: 1.17rem 1.27rem;
+    border-radius: var(--lpv-border-radius) var(--lpv-border-radius) 0 0;
+    border-bottom-width: 0;
+    background-color: var(--lpv-a-tag--magenta-bg);
+    color: var(--lpv-a-tag--magenta-text);
   }
 
   &__title {
@@ -421,17 +424,16 @@
   }
 
   &__rule {
-    background-color: var(--lpv-grey-border);
     height: 1px;
-    margin: 0.75rem 0 0.5rem;
   }
 
   &__grid {
     display: grid;
     /* Colonnes égales et stables : le contenu ne peut pas pousser la grille */
     grid-template-columns: repeat(7, minmax(2.75rem, 1fr));
-    margin-bottom: 1rem;
     row-gap: 0.35rem;
+    padding-inline: 1rem;
+    border-inline:1px solid var(--lpv-grey-border);
 
     /* Mobile : sous 480px, 7 × 2.75rem + padding ne tiennent pas (min-content
        350px > 328px disponibles à 360px) → min à 0 pour rester fluide. */
@@ -444,7 +446,8 @@
     color: var(--lpv-text-muted);
     font-size: 0.8125rem;
     font-weight: 700;
-    padding: 0.5rem 0;
+    padding-bottom: 1.47rem;
+    padding-top: 1rem;
     text-align: center;
   }
 
@@ -453,7 +456,7 @@
     align-items: flex-start;
     display: flex;
     flex-direction: column;
-    height: 3rem;
+    height: 2.47rem;
     margin-inline: auto;
     justify-content: flex-start;
   }
@@ -475,6 +478,11 @@
 
     &--selected .lpv-m-month-calendar__num,
     &--selected .lpv-m-month-calendar__event {
+      width:29px;
+      height:29px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       outline: 2px solid var(--marqueur-texte, var(--lpv-text));
       outline-offset: 1px;
     }
@@ -485,29 +493,38 @@
     display: inline-flex;
     align-items: center;
     font-size: 1rem;
-    min-height: 2.25rem;
+    min-height: 2rem;
     padding: 0.15rem 0.3rem;
     text-align: center;
+    border-radius: var(--lpv-border-radius-sm);
 
     /* Jour courant : bloc plein en couleur du portail courant */
     &--today {
-      background-color: var(--lpv-portail);
-      color: white;
+      color: var(--lpv-a-tag--magenta-text);
+      border-radius: var(--lpv-border-radius-sm);
       font-weight: 700;
     }
 
     /* Jours antérieurs à aujourd'hui : numéro grisé (fond et pastilles inchangés) */
     &--passe {
       color: var(--lpv-text-muted);
+      opacity: .77;
+    }
+
+    /* Jours du mois précédent / à venir (complètent la grille) : grisés */
+    &--hors-mois {
+      color: var(--lpv-text-muted);
+      opacity: .17;
     }
   }
+
 
   &__event {
     box-sizing: border-box;
     display: inline-flex;
     align-items: center;
     background-color: var(--marqueur-bg, var(--lpv-a-tag--magenta-bg));
-    border-bottom: 1px solid var(--marqueur-texte, var(--lpv-a-tag--magenta-text));
+    border-top: 1px solid var(--marqueur-texte, var(--lpv-a-tag--magenta-text));
     font-size: 1rem;
     font-weight: 700;
     justify-content: center;
@@ -525,6 +542,11 @@
       transform: translateY(1px);
       border-bottom: none;
     }
+
+    /* Version grisée si le jour appartient au mois adjacent */
+    &--hors-mois {
+      opacity: 0.55;
+    }
   }
 
   /* Rangée de pastilles sous le numéro : une par marqueur du jour */
@@ -532,7 +554,7 @@
     display: flex;
     gap: 3px;
     justify-content: center;
-    margin-top: 1px;
+    margin-top: -8px;
     min-height: 6px;
   }
 
@@ -545,9 +567,16 @@
 
   /* Panneau de détail du jour sélectionné (entre grille et légende) */
   &__detail {
-    border-radius: var(--lpv-radius);
-    margin: 0 0 1rem;
     padding: 0.75rem 0.9rem;
+    border-inline: 1px solid var(--lpv-grey-border);
+    &__lpv-recap {
+      /* Inversion des couleurs du tag de la catégorie : fond = text du tag,
+         texte = bg du tag (les tokens sont redéfinis en dark mode) */
+      padding: 0.75rem 0.9rem;
+      background-color: var(--marqueur-texte, var(--lpv-a-tag--magenta-text));
+      border-radius: var(--lpv-border-radius);
+      color: var(--marqueur-bg, var(--lpv-a-tag--magenta-bg));
+    }
   }
 
   &__detail-title {
@@ -559,7 +588,13 @@
   &__legend {
     display: grid;
     gap: 0.4rem;
-    margin: 1rem 0 0;
+    padding-inline: 1.25rem;
+    border-inline: 1px solid var(--lpv-grey-border);
+    padding-bottom: 1.27rem;
+    padding-top: 1.27rem;
+    min-height: fit-content;
+    border-bottom: 4px solid var(--lpv-grey-border);
+    border-radius: 0 0 var(--lpv-border-radius) var(--lpv-border-radius);
 
     dt {
       display: inline-flex;
@@ -578,6 +613,7 @@
     align-items: center;
     display: flex;
     gap: 0.7rem;
+    font-size: var(--lpv-font-size-xxs);
   }
 
   &__legend-dot {
@@ -593,8 +629,9 @@
   &__legend-square {
     background-color: var(--marqueur-bg, var(--lpv-a-tag--magenta-bg));
     display: inline-block;
+    margin-inline: auto;
     flex-shrink: 0;
-    height: 14px;
-    width: 14px;
+    height: 10px;
+    width: 10px;
   }
 }
