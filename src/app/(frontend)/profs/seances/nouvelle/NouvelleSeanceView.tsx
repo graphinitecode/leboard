@@ -1,7 +1,7 @@
 'use client'
 
 import { Suspense, useMemo, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 
 import { Button } from '@/components/atoms/a-button'
 import { Panel, WarningText } from '@/components/atoms'
@@ -21,6 +21,7 @@ import {
 import type { MatiereCalendrier } from '@/calendrier/domain/calendrier.entity'
 import { useCreerSeance, useElevesDuProf, useSeancesPeriode } from '@/calendrier'
 import { nomEleve } from '@/students'
+import { EnterText } from '@/components/atoms/a-enter-text'
 
 const MATIERES: { label: string; value: MatiereCalendrier }[] = [
   { label: 'Maths', value: 'maths' },
@@ -44,7 +45,6 @@ export default function NouvelleSeanceView() {
 }
 
 function ParcoursNouvelleSeance() {
-  const router = useRouter()
   const params = useSearchParams()
   const [step, setStep] = useState<Etape>('jour')
   const [erreur, setErreur] = useState<string[]>([])
@@ -138,7 +138,7 @@ function ParcoursNouvelleSeance() {
           retour={{ href: '/profs', label: 'Retour au Tableau de bord' }}
           htmlFor="seance-jour"
           step={1}
-          stepSize={5}
+          stepSize={6}
         >
           <div className="lpv-o-availability-wizard__days" id="seance-jour">
             {JOURS_GRILLE.map((label, index) => (
@@ -171,7 +171,7 @@ function ParcoursNouvelleSeance() {
           retour={{ href: '#', onClick: () => setStep('jour') }}
           htmlFor="seance-debut"
           step={2}
-          stepSize={5}
+          stepSize={6}
         >
           <Input
             hint={`Choisir une heure entre ${HEURE_DEBUT_GRILLE}h et ${HEURE_FIN_GRILLE}h.`}
@@ -202,7 +202,7 @@ function ParcoursNouvelleSeance() {
           retour={{ href: '#', onClick: () => setStep('debut') }}
           step={3}
           htmlFor="seance-fin"
-          stepSize={5}
+          stepSize={6}
         >
           <Input
             hint={duree ? `Durée : ${formaterDuree(duree)}` : 'Par exemple 14:30'}
@@ -232,7 +232,7 @@ function ParcoursNouvelleSeance() {
           question="Sur quelle matière portera t-elle ?"
           retour={{ href: '#', onClick: () => setStep('fin') }}
           step={4}
-          stepSize={5}
+          stepSize={6}
         >
           <div className="lpv-o-availability-wizard__days">
             {MATIERES.map((option) => (
@@ -270,7 +270,7 @@ function ParcoursNouvelleSeance() {
           question="Quels sont les élèves conviés ?"
           retour={{ href: '#', onClick: () => setStep('matiere') }}
           step={5}
-          stepSize={5}
+          stepSize={6}
         >
           {erreur.length > 0 && <ErrorSummary errors={erreur} />}
           {eleves.isLoading ? (
@@ -324,16 +324,28 @@ function ParcoursNouvelleSeance() {
       {step === 'recap' && (
         <QuestionPage
           actions={
-            <>
-              {erreur.length > 0 && <ErrorSummary errors={erreur} />}
-              <Button disabled={pending} onClick={() => setConfirmOuvert(true)} type="button" variant="success">
-                Créer la séance
-              </Button>
-            </>
+            <Button
+              disabled={pending}
+              onClick={() => setConfirmOuvert(true)}
+              type="button"
+              variant="success"
+            >
+              Créer la séance
+            </Button>
           }
           question="Vérifiez vos réponses"
-          retour={{ href: '/profs', label: 'Tableau de bord' }}
+          retour={{
+            href: '#',
+            onClick: (e) => {
+              e.preventDefault()
+              setErreur([])
+              setStep('eleves')
+            },
+          }}
+          step={6}
+          stepSize={6}
         >
+          {erreur.length > 0 && <ErrorSummary errors={erreur} />}
           <QuestionPageAnswers
             reponses={[
               {
@@ -368,6 +380,7 @@ function ParcoursNouvelleSeance() {
                 onClick: () => setStep('eleves'),
               },
             ]}
+            titre=""
           />
           {conflit && (
             <WarningText>
@@ -381,14 +394,13 @@ function ParcoursNouvelleSeance() {
 
       {step === 'confirme' && (
         <QuestionPage question="Séance créée">
-          <Panel>
+          <Panel variante="success" title="Votre séance est enregristrée">
             {JOURS_GRILLE[jourIndex]} {joursGrille(lundi)[jourIndex].getDate()} · {heureDebut} →{' '}
             {heureFin} · {labelMatiere(matiere)} · {nomsEleves.join(', ') || '—'}
           </Panel>
+
           <div className="lpv-t-question-page__actions">
-            <Button onClick={() => router.push('/profs')} type="button">
-              Retour au tableau de bord
-            </Button>
+            <EnterText hrf="/profs">Retour au tableau de bord</EnterText>
             <Button onClick={recommencer} type="button" variant="secondary">
               Créer une autre séance
             </Button>
