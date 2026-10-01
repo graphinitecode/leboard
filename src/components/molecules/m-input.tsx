@@ -16,8 +16,11 @@ export function Input({
   id,
   type = 'text',
   autoComplete,
+  icon,
   optional = false,
+  placeholder,
   name,
+  className,
   defaultValue,
   value,
   onChange,
@@ -36,8 +39,11 @@ export function Input({
   id: string
   type?: string
   autoComplete?: string
+  icon?: string
   optional?: boolean
+  placeholder?: string
   name?: string
+  className?: string
   defaultValue?: string
   value?: string
   onChange?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void
@@ -98,16 +104,20 @@ export function Input({
         </select>
       ) : type === 'password' ? (
         <div className="lpv-a-input--password-group">
+          {icon ? <Icon className="lpv-a-input--icon" icon={icon} size={20} /> : null}
           <input
             aria-describedby={describedBy || undefined}
             aria-invalid={error ? true : undefined}
             autoComplete={autoComplete}
-            className={`lpv-a-input lpv-a-input--password-input${errorClass}`}
+            className={`lpv-a-input lpv-a-input--password-input${
+              icon ? ' lpv-a-input--icon-input' : ''
+            }${errorClass} ${className}`}
             defaultValue={defaultValue}
             id={id}
             name={name ?? id}
             onChange={onChange as never}
             pattern={pattern}
+            placeholder={placeholder}
             required={required}
             type={visible ? 'text' : 'password'}
             value={value}
@@ -122,12 +132,33 @@ export function Input({
             <Icon icon={visible ? 'rivet-icons:eye-off' : 'rivet-icons:eye'} size={26} />
           </button>
         </div>
+      ) : icon ? (
+        <div className="lpv-a-input--icon-group">
+          <Icon className="lpv-a-input--icon" icon={icon} size={20} />
+          <input
+            aria-describedby={describedBy || undefined}
+            aria-invalid={error ? true : undefined}
+            autoComplete={autoComplete}
+            className={`lpv-a-input lpv-a-input--icon-input${errorClass} ${className}`}
+            defaultValue={defaultValue}
+            id={id}
+            max={max}
+            min={min}
+            name={name ?? id}
+            onChange={onChange as never}
+            pattern={pattern}
+            placeholder={placeholder}
+            required={required}
+            type={type}
+            value={value}
+          />
+        </div>
       ) : (
         <input
           aria-describedby={describedBy || undefined}
           aria-invalid={error ? true : undefined}
           autoComplete={autoComplete}
-          className={`lpv-a-input${errorClass}`}
+          className={`lpv-a-input${errorClass} ${className}`}
           defaultValue={defaultValue}
           id={id}
           max={max}
@@ -135,6 +166,7 @@ export function Input({
           name={name ?? id}
           onChange={onChange as never}
           pattern={pattern}
+          placeholder={placeholder}
           required={required}
           type={type}
           value={value}

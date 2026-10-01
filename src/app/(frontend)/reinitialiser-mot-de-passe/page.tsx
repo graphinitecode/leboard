@@ -5,19 +5,21 @@ export const metadata = { title: 'Nouveau mot de passe — LPV Board' }
 export const dynamic = 'force-dynamic'
 
 // Page publique : pose du nouveau mot de passe avec le token du lien reçu.
+// ?portail=parents oriente le retour connexion vers le portail parents.
 export default async function ReinitialiserMotDePassePage({
   searchParams,
 }: {
-  searchParams: Promise<{ token?: string }>
+  searchParams: Promise<{ token?: string; portail?: string }>
 }) {
-  const { token } = await searchParams
+  const { token, portail: portailParam } = await searchParams
+  const portail = portailParam === 'parents' ? 'parents' : 'profs'
 
   return (
     <FormPage
       subtitle="Choisissez votre nouveau mot de passe."
       title="Nouveau mot de passe"
     >
-      <ReinitialiserMotDePasseForm tokenInitial={token ?? ''} />
+      <ReinitialiserMotDePasseForm portail={portail} tokenInitial={token ?? ''} />
     </FormPage>
   )
 }

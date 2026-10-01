@@ -11,7 +11,7 @@
   @include mixins.lpv-font-size(32);
   font-weight: 700;
   color: var(--lpv-text);
-  margin-bottom: var(--lpv-spacing-xl);
+  margin-bottom: var(--lpv-spacing-lg);
 
 
   &__optional {
@@ -29,11 +29,13 @@
 
 .lpv-a-label.lpv-a-label--l {
   @include mixins.lpv-font-size(48);
+  margin-bottom: var(--lpv-spacing-xl);
   font-weight: 700;
 }
 
 .lpv-a-label.lpv-a-label--s {
   @include mixins.lpv-font-size(24);
+  margin-bottom: var(--lpv-spacing-md);
   font-weight: 700;
 }
 
@@ -77,6 +79,8 @@
    (Le padding horizontal vient du lpv-container parent.) */
 .lpv-t-question-page {
   display: block;
+  width: 100%;
+  max-width: var(--lpv-container-xs);
   margin-right: auto;
   margin-left: auto;
   text-size-adjust: 100%;
@@ -113,7 +117,7 @@
 
   /* Bloc « Vos réponses » (pattern GOV.UK). */
   &__answers {
-    margin-top: var(--lpv-spacing-2xl);
+    //margin-top: var(--lpv-spacing-2xl);
   }
 
   &__answers-title {
@@ -124,6 +128,9 @@
 
   &__answers-list {
     margin: 0;
+    border-radius: var(--lpv-border-radius);
+    border: 1px solid var(--lpv-grey-border);
+    padding: .47rem 1.47rem;
   }
 
   &__answers-row {
@@ -132,19 +139,45 @@
     flex-wrap: wrap;
     gap: 0.5rem;
     padding: 0.5rem 0;
+    &:last-child {
+      border-bottom-width: 0;
+    }
   }
 
   &__answers-key {
     font-weight: 700;
     margin: 0;
-    min-width: 10rem;
+    min-width: 7.77rem;
   }
 
   &__answers-value {
     flex: 1;
     margin: 0;
     min-width: 0;
+    line-height: var(--lpv-font-size-md);
+    gap: 5rem;
     overflow-wrap: break-word;
+  }
+
+  /* Récap « Livres » : liste à puces carrées bleues (une par livre choisi) */
+  &__answers-books {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    &__item {
+      padding: 0.1rem 0;
+
+      &::before {
+        background-color: var(--lpv-a-tag--blue-text);
+        content: '';
+        display: inline-block;
+        height: 0.3rem;
+        margin-inline-end: 0.45rem;
+        vertical-align: center;
+        width: 0.3rem;
+      }
+    }
   }
 
   &__answers-action {
@@ -170,9 +203,9 @@
 .lpv-a-select,
 .lpv-a-textarea {
   appearance: none;
-  //background-color: var(--lpv-surface);
-  border: 2px solid var(--lpv-text);
-  border-radius: var(--lpv-radius-lg);
+  background-color: var(--lpv-surface);
+  border: 3px solid var(--lpv-grey-border);
+  border-radius: var(--lpv-border-radius);
   box-sizing: border-box;
   display: block;
   font-size: 1.125rem;
@@ -187,6 +220,7 @@
 
   &:focus {
     @include mixins.lpv-focus;
+    border-color: var(--lpv-text);
   }
 }
 
@@ -196,10 +230,10 @@
 }
 
 .lpv-a-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 24'%3E%3Cpath fill='%235a6369' d='m15.146 6.263-1.292-1.526L8 9.69 2.146 4.737.854 6.263 8 12.31z'/%3E%3C/svg%3E");
-  background-position: right 0.5rem center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1em' height='1em' viewBox='0 0 16 16'%3E%3C!-- Icon from Rivet Icons by Indiana University - https://github.com/indiana-university/rivet-icons/blob/develop/LICENSE --%3E%3Cpath fill='%237d7d7d' d='m15.146 6.263l-1.292-1.526L8 9.69L2.146 4.737L.854 6.263L8 12.31z'/%3E%3C/svg%3E");
+  background-position: right 0.6rem center;
   background-repeat: no-repeat;
-  background-size: 0.8rem;
+  background-size: 1rem;
   max-width: 30rem;
   padding-right: 2.5rem;
 }
@@ -270,7 +304,7 @@
     width: 2.5ex;
     min-height: 44px;
     min-width: 44px;
-    border-radius: 3px;
+    border-radius: var(--lpv-border-radius-sm);
 
   }
 
@@ -332,10 +366,10 @@
   }
 
   &__item {
-    margin-block: var(--lpv-spacing-md);
+    margin-block: var(--lpv-spacing-sm);
     align-items: center;
     display: flex;
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
 
   &__input {
@@ -391,6 +425,7 @@
   display: flex;
   gap: 1rem;
 
+
   &__item {
     min-width: 0;
   }
@@ -405,8 +440,8 @@
   &__input {
     appearance: none;
     background-color: var(--lpv-surface);
-    border: 2px solid var(--lpv-text);
-    border-radius: var(--lpv-radius-lg);
+    border: 3px solid var(--lpv-grey-border);
+    border-radius: var(--lpv-border-radius);
     box-sizing: border-box;
     display: block;
     font-size: 1.125rem;
@@ -417,7 +452,7 @@
     width: 4.5em;
 
     &:hover {
-      border-color: var(--lpv-text-muted);
+      border-color: var(--lpv-text);
     }
 
     &:focus {
@@ -514,12 +549,31 @@
   }
 }
 
+/* --- Champ avec icône décorative (connecteur à gauche du contrôle) --------- */
+
+.lpv-a-input--icon-group {
+  position: relative;
+}
+
+.lpv-a-input--icon {
+  color: var(--lpv-text-muted);
+  left: 0.75rem;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lpv-a-input--icon-input {
+  padding-left: 2.5rem;
+}
+
 /* --- Téléversement (File upload) ------------------------------------------ */
 
 .lpv-a-file-upload {
   appearance: none;
   background-color: var(--lpv-surface);
-  border: 2px dashed var(--lpv-text);
+  border: 2px dashed var(--lpv-grey-border);
   border-radius: var(--lpv-radius-2xl);
   box-sizing: border-box;
   line-height: 1.4;
@@ -627,7 +681,7 @@
   &__step {
     color: var(--lpv-text-muted);
     display: block;
-    @include mixins.lpv-font-size(24);
+    @include mixins.lpv-font-size(19);
     font-weight: 400;
     margin: 0 0 0.25rem;
   }
@@ -765,25 +819,31 @@
 }
 
 .lpv-o-availability-wizard__day-option {
-  background-color: var(--lpv-surface);
+  min-height: 4.7rem;
   border: 2px solid var(--lpv-grey-border);
   border-radius: var(--lpv-radius-lg);
   cursor: pointer;
   font-size: 1.125rem;
-  min-height: 44px;
+  //min-height: 44px;
   padding: 0.5rem 0.75rem;
   text-align: center;
   transition: background-color 0.15s ease, border-color 0.15s ease;
 
   &:hover {
     border-color: var(--lpv-text-muted);
+    background-color: var(--lpv-grey-bg);
+    font-weight: 700;
   }
 
   &--active {
     background-color: var(--lpv-portail-soft);
-    border-color: var(--lpv-portail);
-    color: var(--lpv-portail-dark);
+    border-color: var(--lpv-a-tag--blue-text);
+    color: var(--lpv-a-tag--blue-text);
     font-weight: 700;
+
+    &:hover {
+      border-color: var(--lpv-a-tag--blue-text);
+    }
   }
 }
 
@@ -797,22 +857,33 @@
 
 .lpv-toggle {
   display: flex;
-  gap: 0.25rem;
+  gap:-2px;
 
   &-option {
-    background: var(--lpv-surface);
+    background: var(--lpv-background);
     border: 2px solid var(--lpv-grey-border);
-    border-radius: var(--lpv-radius);
+    border-inline-width: 1px;
+    box-shadow: 0 2px 0 var(--lpv-grey-border);
     cursor: pointer;
     font-size: 0.95rem;
-    font-weight: 400;
+    font-weight: 500;
     min-height: 44px;
     min-width: 44px;
     padding: 0.25rem 0.75rem;
     white-space: nowrap;
+    color: color-mix(in srgb, currentColor 57%, var(--lpv-mix-color));
+
+    &:first-child {
+      border-radius: var(--lpv-border-radius) 0 0 var(--lpv-border-radius);
+      border-left: 2px solid var(--lpv-grey-border);
+    }
+    &:last-child {
+      border-radius: 0 var(--lpv-border-radius) var(--lpv-border-radius) 0;
+      border-right: 2px solid var(--lpv-grey-border);
+    }
 
     &:hover {
-      border-color: var(--lpv-text-muted);
+      color: color-mix(in srgb, var(--lpv-text) 85%, var(--lpv-mix-color-invert));
     }
 
     &:focus {
@@ -820,9 +891,13 @@
     }
 
     &--active {
-      border-color: var(--lpv-text);
-      border-width: 3px;
-      font-weight: 800;
+      border-width: 2px;
+      transform: translateY(2px);
+      cursor: default;
+      background-color: color-mix(in srgb, var(--lpv-surface) 95%, var(--lpv-mix-color-invert));
+      box-shadow: 0 0 ;
+      outline: none !important;
+      color: var(--lpv-text);
 
       &[data-status='present'] {
         background-color: var(--lpv-green-soft);
@@ -838,6 +913,21 @@
         background-color: var(--lpv-red-soft);
         border-color: var(--lpv-red);
       }
+    }
+
+    /* Option avec icône + libellé : ligne centrée */
+    &--icon {
+      align-items: center;
+      display: inline-flex;
+      gap: 0.4rem;
+      justify-content: center;
+    }
+
+    /* Option icon-only : carrée (cible ≥ 44 px), contenu centré */
+    &--icon-only {
+      display: grid;
+      place-items: center;
+      padding-inline: 0.6rem;
     }
   }
 }

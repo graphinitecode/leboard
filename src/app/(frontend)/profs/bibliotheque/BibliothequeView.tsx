@@ -9,27 +9,23 @@ import { Button } from '@/components/atoms/a-button'
 import { ActionRow, AlertCard, Table, Toast } from '@/components/molecules'
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
 import { ConfirmAction } from '@/components/organisms/o-confirm-action'
+import { StatsGrid } from '@/components/templates'
+import type { DashboardStat } from '@/components/templates'
 import {
+  CATEGORIES_LIVRE,
   estPretEnCours,
   joursDeRetard,
+  labelNiveauLivre,
+  NIVEAUX_LIVRE,
   useListCatalogue,
   useListTousPretsEnCours,
   useMarquerRetourne,
 } from '@/bibliotheque'
 
-const NIVEAU_LABELS: Record<string, string> = {
-  primaire: 'Primaire',
-  college: 'Collège',
-  lycee: 'Lycée',
-}
-
-const CATEGORIE_LABELS: Record<string, string> = {
-  lecture: 'Lecture',
-  methodologie: 'Méthodologie',
-  anglais: 'Anglais',
-  manuel: 'Manuel',
-  autre: 'Autre',
-}
+// Libellés de catégorie, enrichis : dérivés de la source unique domain.
+const CATEGORIE_LABELS: Record<string, string> = Object.fromEntries(
+  CATEGORIES_LIVRE.map((option) => [option.value, option.label]),
+)
 
 const formatDate = (iso: string | null): string => {
   if (!iso) return '—'
@@ -99,6 +95,12 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
     }
   }
 
+  const stats: DashboardStat[] = [
+    { value: catalogue.data?.length ?? '—', label: 'Livres au catalogue' },
+    { value: prets.isLoading ? '—' : enCours.length, label: 'Prêts en cours' },
+    { value: prets.isLoading ? '—' : retards.length, label: 'Retards', type: 'alert' },
+  ]
+
   const catalogueHead: TableHeadCell[] = [
     { text: 'Titre' },
     { text: 'Auteur' },
@@ -112,7 +114,7 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
     return [
       { content: <strong>{livre.titre}</strong> },
       { text: livre.auteur ?? '—' },
-      { text: livre.niveau ? NIVEAU_LABELS[livre.niveau] ?? livre.niveau : '—' },
+      { text: livre.niveau ? (labelNiveauLivre(livre.niveau) ?? livre.niveau) : '—' },
       {
         content: (
           <Tag color={dispo ? 'green' : 'red'}>
@@ -184,20 +186,7 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
         retards et consultez les exemplaires disponibles.
       </p>
 
-      <div className="lpv-cards-grid lpv-cards-grid--3">
-        <div className="lpv-card lpv-stat">
-          <span className="lpv-stat__value">{catalogue.data?.length ?? '—'}</span>
-          <div className="lpv-stat__label">Livres au catalogue</div>
-        </div>
-        <div className="lpv-card lpv-stat">
-          <span className="lpv-stat__value">{prets.isLoading ? '—' : enCours.length}</span>
-          <div className="lpv-stat__label">Prêts en cours</div>
-        </div>
-        <div className="lpv-card lpv-stat alert">
-          <span className="lpv-stat__value">{prets.isLoading ? '—' : retards.length}</span>
-          <div className="lpv-stat__label">Retards</div>
-        </div>
-      </div>
+      <StatsGrid stats={stats} />
 
       <div className="lpv-o-bibliotheque__searchbar">
         <label className="lpv-visually-hidden" htmlFor="recherche-catalogue">
@@ -221,9 +210,11 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
           value={niveauFiltre}
         >
           <option value="">Tous les niveaux</option>
-          <option value="primaire">Primaire</option>
-          <option value="college">Collège</option>
-          <option value="lycee">Lycée</option>
+          {NIVEAUX_LIVRE.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
         {peutGerer ? (
           <Button href="/profs/bibliotheque/prets/nouveau" variant="success">
@@ -288,7 +279,9 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
           <div className="lpv-t-dashboard-page__aside-card">
             <h3 className="lpv-t-dashboard-page__aside-card__title">Rappels à venir</h3>
             {rappels.length === 0 ? (
-              <p className="lpv-muted">Aucun rappel pour les prochains jours.</p>
+              <p className="lpv-t-dashboard-page__aside-card__empty-text">
+                Aucun rappel pour les prochains jours.
+              </p>
             ) : (
               <div className="lpv-t-dashboard-page__aside-card__stack">
                 {rappels.map((pret) => (
@@ -308,15 +301,16 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
           {peutGerer ? (
             <div className="lpv-t-dashboard-page__aside-card">
               <h3 className="lpv-t-dashboard-page__aside-card__title">Ajouter un livre</h3>
-              <p className="lpv-muted" style={{ marginTop: 0 }}>
+              <p className="lpv-t-dashboard-page__aside-card__empty-text" style={{ marginTop: 0 }}>
                 Nouvel ouvrage à référencer au catalogue.
               </p>
               <Button
                 href="/profs/bibliotheque/livres/nouveau"
-                variant="success"
-                className="w-full"
+                variant="secondary"
+                className="w-full mt-7 flex justify-center items-start"
               >
-                <Icon icon={'rivet-icons:plus-circle-solid'} size={19} />&nbsp;Nouveau livre
+                <Icon icon={'rivet-icons:plus-circle-solid'} size={19} className="inline-flex -translate-y-px" />
+                &nbsp;Nouveau livre
               </Button>
             </div>
           ) : null}

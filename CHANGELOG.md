@@ -6,6 +6,27 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+## [0.10.0] — 2026-09-30
+
+### Ajouté
+- Page « Ajouter un livre » repensée en un seul écran : pré-remplissage à l'aide de l'ISBN, choix du nombre d'exemplaires (codes attribués automatiquement) et récapitulatif de succès.
+- Import en masse de livres depuis un fichier CSV : une ligne par livre, aperçu des lignes détectées avec leurs erreurs éventuelles, puis compte des livres ajoutés.
+- Niveaux conseillés enrichis (Maternelle, CP – CE2, CM1 – CM2) et nouvelles catégories d'ouvrages (Roman jeunesse, Conte et fable, Bande dessinée, Documentaire, Dictionnaire / Encyclopédie), proposées à l'ajout, sur la fiche livre et dans le panneau d'administration.
+
+### Modifié
+- La bascule du thème du portail est désormais un sélecteur à trois segments (machine, clair, sombre) reconnaissable à ses icônes.
+- La bibliothèque affiche ses statistiques (catalogue, prêts en cours, retards) avec la grille standard du tableau de bord.
+- Calendrier du tableau de bord : les jours des mois voisins complètent la grille avec leur numéro grisé et le panneau du jour cliqué reprend les couleurs de la pastille associée (l'inversion suit le mode clair/sombre) ; la légende ne liste plus que les catégories effectivement visibles dans le mois.
+- Récapitulatif de l'assistant de prêt : chaque livre choisi est précédé d'une puce carrée et le nombre de livres est affiché.
+- Assistant « nouvelle séance » : le récapitulatif devient une sixième étape et chaque question retrouve son lien de retour.
+- Fiche livre : la carte « Informations » adopte la nouvelle carte à bandeau coloré.
+- Nouvelle mise en page du parcours « mot de passe oublié » : écran de confirmation après l'envoi du lien, résumé des erreurs en tête de formulaire et liens de retour adaptés au portail (profs ou parents).
+- Assistant « nouvelle séance » : les élèves se choisissent via une boîte de recherche (prénom ou nom, sélection multiple, retrait facile) au lieu des cases à cocher, les questions sont plus naturelles et la durée choisie s'affiche en toutes lettres (par exemple « une demi-heure »).
+- L'encadré de confirmation s'affiche à nouveau sur fond bleu, avec une bordure basse en dessous.
+
+### Corrigé
+- Les assistants en questions (nouveau prêt, nouvelle séance…) affichent une colonne de largeur constante, quel que soit le libellé de la question.
+
 ## [0.9.0] — 2026-09-29
 
 ### Ajouté

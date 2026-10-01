@@ -2,8 +2,6 @@
 
 import { useMemo, useState } from 'react'
 
-import Link from 'next/link'
-
 import { Button, InsetText, Panel, WarningText } from '@/components/atoms'
 import { Combobox, ErrorSummary, Radios, type ComboboxOption } from '@/components/molecules'
 import { QuestionPage, QuestionPageAnswers } from '@/components/templates'
@@ -15,6 +13,7 @@ import {
   useListPretsEnCours,
 } from '@/bibliotheque'
 import { nomEleve, useListElevesDuProf } from '@/students'
+import { EnterText } from '@/components/atoms/a-enter-text'
 
 type Etape = 1 | 2 | 3 | 4 | 5
 
@@ -95,15 +94,19 @@ export default function NouveauPretView({ profId }: { profId: number }) {
     ? [eleveChoisi.niveau, eleveChoisi.groupe].filter(Boolean).join(' · ')
     : null
 
-  // Avertissement non bloquant : livres toujours en retard chez cet élève.
-  // Requête absente (chargement ou erreur) → pas d'avertissement, flux intact.
+  // Avertissement non bloquant : livres déjà en possession de cet élève
+  // (prêts en cours, en retard ou non). Requête absente (chargement ou
+  // erreur) → pas d'avertissement, flux intact.
   const pretsEleve = useListPretsEnCours({ eleveId: eleveId ?? undefined })
-  const retards = (pretsEleve.data ?? []).filter((p) => joursDeRetard(p.dateRetourPrevue) > 0)
-  const phraseRetards =
-    eleveChoisi && retards.length > 0
-      ? `${nomEleveChoisi} a déjà ${retards.length} livre${retards.length > 1 ? 's' : ''} en retard : ${retards
+  const pretsEnCours = pretsEleve.data ?? []
+  const retards = pretsEnCours.filter((p) => joursDeRetard(p.dateRetourPrevue) > 0)
+  const phrasePrets =
+    eleveChoisi && pretsEnCours.length > 0
+      ? `${nomEleveChoisi} a déjà ${pretsEnCours.length} livre${
+          pretsEnCours.length > 1 ? 's' : ''
+        } en sa possession : ${pretsEnCours
           .map((p) => (p.livreLabel ? `« ${p.livreLabel} »` : 'un livre'))
-          .join(', ')}`
+          .join(', ')}${retards.length > 0 ? `, dont ${retards.length} en retard` : ''}`
       : null
 
   const optionsEleves = useMemo<ComboboxOption<number>[]>(
@@ -167,14 +170,16 @@ export default function NouveauPretView({ profId }: { profId: number }) {
   const retirerLivre = (livreId: number) =>
     setLivresChoisis((prev) => prev.filter((l) => l.livreId !== livreId))
 
-  const titresEnLigne = (
-    <>
+  // Récap « Livres » (étape 4) : une puce carrée bleue par titre choisi —
+  // sans elle, une sélection multiple se lit comme un seul livre.
+  const titresChoisis = (
+    <ul className="lpv-t-question-page__answers-books">
       {livresChoisis.map((livre) => (
-        <span key={livre.livreId} style={{ display: 'block' }}>
+        <li className="lpv-t-question-page__answers-books__item" key={livre.livreId}>
           {livre.titre}
-        </span>
+        </li>
       ))}
-    </>
+    </ul>
   )
 
   const reinitialiser = () => {
@@ -260,7 +265,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
               Continuer
             </Button>
           }
-          question="Quel élève emprunte ?"
+          question="À quel élève souhaite t-on preter un ouvrage ?"
           retour={{ href: '/profs/bibliotheque', label: 'Retour à la bibliothèque' }}
           step={1}
           stepSize={4}
@@ -291,7 +296,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
           ) : (
             <Combobox
               ariaLabel="Élève"
-              hint="Tape un prénom ou un nom."
+              hint="Entrez un prénom ou un nom ou une classe."
               id="pret-eleve"
               label=""
               onChange={(option) => {
@@ -302,7 +307,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
               placeholder="Prénom ou nom…"
             />
           )}
-          {phraseRetards && <WarningText>{phraseRetards}.</WarningText>}
+          {phrasePrets && <WarningText>{phrasePrets}.</WarningText>}
           {/*<WarningText>Benjamin B. a déjà 1 livre en retard (« Le Petit Prince »).</WarningText>*/}
         </QuestionPage>
       )}
@@ -415,8 +420,11 @@ export default function NouveauPretView({ profId }: { profId: number }) {
           stepSize={4}
         >
           {erreur.length > 0 && <ErrorSummary errors={erreur} />}
+          <InsetText>
+            La durée habituelle est de <span className="font-semibold">2 semaines.</span>
+          </InsetText>
+          {/*<WarningText>La durée habituelle est de 2 semaines.</WarningText>*/}
           <Radios
-            hint="La durée habituelle est de 2 semaines."
             idPrefix="duree-retour"
             name=""
             onChange={(e) => setDuree(e.target.value as Duree)}
@@ -459,9 +467,10 @@ export default function NouveauPretView({ profId }: { profId: number }) {
             reponses={[
               { question: 'Élève', valeur: nomEleveChoisi ?? '—', onClick: () => setEtape(1) },
               {
-                question: 'Livres',
-                valeur: livresChoisis.length > 0 ? titresEnLigne : '—',
                 onClick: () => setEtape(2),
+                question:
+                  livresChoisis.length > 1 ? `Livres (${livresChoisis.length})` : 'Livres',
+                valeur: livresChoisis.length > 0 ? titresChoisis : '—',
               },
               {
                 question: 'Retour prévu',
@@ -478,42 +487,39 @@ export default function NouveauPretView({ profId }: { profId: number }) {
               {resultats.enregistres + resultats.echecs.length > 1 ? 's' : ''}.
             </InsetText>
           )}
-          {phraseRetards && (
-            <WarningText>{phraseRetards}. Prêt possible, à toi de juger.</WarningText>
-          )}
+          {phrasePrets && <WarningText>{phrasePrets}. Prêt possible, à toi de juger.</WarningText>}
         </QuestionPage>
       )}
 
       {etape === 5 && (
-        <Panel variante="success" title="Prêt enregistré">
-          <p>
-            {resultats.enregistres} livre{resultats.enregistres > 1 ? 's' : ''} pour{' '}
-            {nomEleveChoisi ?? "l'élève"}, à rendre le{' '}
-            {dateRetourPrevue ? formatDateLongue(dateRetourPrevue) : '—'}.
+        <div className="lpv-t-question-page">
+          <Panel variante="success" title="Prêt enregistré">
+            <p>
+              `Vous pouvez remettre le{resultats.enregistres > 1 ? 's' : ''} {resultats.enregistres}{' '}
+              livre{resultats.enregistres > 1 ? 's' : ''} à {nomEleveChoisi ?? "l'élève"}, à rendre
+              au plus tard le {dateRetourPrevue ? formatDateLongue(dateRetourPrevue) : '—'}.
+            </p>
+          </Panel>
+          <p className="pb-7">
+            Nous vous le rappellerons{' '}
+            <span className="font-semibold">deux jours avant la date de retour</span>.
           </p>
-        </Panel>
-      )}
-      {etape === 5 && (
-        <>
-          <p className="pb-7">Un rappel sera créé 2 jours avant la date de retour.</p>
           <p className="pb-3">
-            <a
-              className="lpv-link-inline"
-              href="#"
-              onClick={(e) => {
-                e.preventDefault()
-                reinitialiser()
-              }}
-            >
-              Enregistrer un autre prêt
-            </a>
+            <EnterText hrf="#">
+              <p
+                onClick={(e) => {
+                  e.preventDefault()
+                  reinitialiser()
+                }}
+              >
+                Enregistrer un autre prêt
+              </p>
+            </EnterText>
           </p>
           <p>
-            <Link className="lpv-link-inline" href="/profs/bibliotheque">
-              Retour à la bibliothèque
-            </Link>
+            <EnterText hrf="/profs/bibliotheque">Retour à la bibliothèque</EnterText>
           </p>
-        </>
+        </div>
       )}
 
       {confirmOuvert && eleveChoisi && livresChoisis.length > 0 ? (

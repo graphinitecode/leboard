@@ -65,10 +65,21 @@ export const useCreerLivre = () => {
     mutationFn: (command: {
       titre: string
       auteur?: string
+      isbn?: string
       niveau?: string
       categorie?: string
       resume?: string
     }) => bibliothequeRepository.creerLivre(command),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['bibliotheque', 'catalogue'] }),
+  })
+}
+
+export const useCreerExemplaire = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (command: { livre: number }) =>
+      bibliothequeRepository.creerExemplaire(command),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['bibliotheque', 'catalogue'] }),
   })
 }

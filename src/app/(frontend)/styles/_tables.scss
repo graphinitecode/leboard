@@ -63,6 +63,9 @@
 .lpv-m-table {
   border-collapse: separate;
   border-spacing: 0;
+  border: 1px solid var(--lpv-grey-border);
+  border-radius: var(--lpv-border-radius);
+  overflow: hidden;
   width: 100%;
 
   &__caption {
@@ -89,14 +92,16 @@
 
   &__head {
     border-bottom: 2px solid var(--lpv-text);
+    background-color: var(--lpv-grey-border);
   }
 
   &__head-cell {
-    color: var(--lpv-text-muted);
-    font-size: 0.875rem;
+    color: var(--lpv-text);
+    opacity: .7;
+    font-size: 0.775rem;
     font-weight: 700;
     letter-spacing: 0.03em;
-    padding: 0.75rem 1rem 0.5rem;
+    padding: .77rem 1rem;
     text-align: left;
     text-transform: uppercase;
 

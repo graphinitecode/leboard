@@ -6,7 +6,6 @@
   background-color: var(--lpv-grey-bg);
   border-radius: var(--lpv-radius-lg);
   margin-bottom: 1.5rem;
-  padding: 1.25rem;
 
   &__title {
     font-size: 1.125rem;
@@ -61,22 +60,37 @@
 .lpv-stat {
   display: block;
   background-color: var(--lpv-background-color);
-  border: 1px solid var(--lpv-grey-border);
-  border-top: 6px solid var(--lpv-a-tag--blue-text);
+  border-top-width: 0;
   color: var(--lpv-a-tag--blue-text);
-  border-radius: 0;
 
+  &__color {
+    background-color: var(--lpv-a-tag--blue-text);
+    height: 7px;
+    border-radius: var(--lpv-border-radius-sm) var(--lpv-border-radius-sm) 0 0 ;
+    &.success {
+      background-color: var(--lpv-a-tag--green-text);
+    }
+    &.alert {
+      background-color: var(--lpv-a-tag--red-text);
+    }
+    &.warning {
+      background-color: var(--lpv-a-tag--yellow-text);
+    }
+  }
   &.success {
-    border-top-color: var(--lpv-a-tag--green-text);
     color: var(--lpv-a-tag--green-text);
   }
   &.alert {
-    border-top-color: var(--lpv-a-tag--red-text);
     color: var(--lpv-a-tag--red-text);
   }
   &.warning {
-    border-top-color: var(--lpv-a-tag--yellow-text);
     color: var(--lpv-a-tag--yellow-text);
+  }
+
+  &__details {
+    padding: 1.25rem;
+    border: 1px solid var(--lpv-grey-border);
+    border-radius: 0 0 var(--lpv-border-radius) var(--lpv-border-radius) ;
   }
 
   &__value {

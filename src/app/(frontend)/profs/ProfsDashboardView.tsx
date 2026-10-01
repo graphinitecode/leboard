@@ -260,7 +260,7 @@ function DetailJour({
 }) {
   const duJour = seancesParJour.get(jour.toDateString())
   if (!duJour || duJour.length === 0) {
-    return <p className="lpv-muted" style={{ margin: 0 }}>Aucune séance ce jour.</p>
+    return <p className="text-white" style={{ margin: 0 }}>Aucune séance ce jour.</p>
   }
   return (
     <ul style={{ margin: 0, paddingLeft: '1.25rem' }}>

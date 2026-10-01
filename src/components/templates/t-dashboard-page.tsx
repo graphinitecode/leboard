@@ -1,5 +1,13 @@
 import type { ReactNode } from 'react'
 
+import { StatsGrid } from '@/components/templates/t-stats-grid'
+import type { DashboardStat } from '@/components/templates/t-stats-grid'
+
+// Compat : StatsGrid et DashboardStat vivent dans t-stats-grid ; on
+// ré-exporte pour conserver les chemins d'import historiques.
+export { StatsGrid } from './t-stats-grid'
+export type { DashboardStat } from './t-stats-grid'
+
 // Template : tableau de bord — grille de stats puis sections titrées.
 // Chaque section rend children ; empty fournit un contenu alternatif
 // (état vide) piloté par l'appelant.
@@ -46,37 +54,8 @@ export function DashboardPage({
   )
 }
 
-export interface DashboardStat {
-  value: string | number
-  label: string
-  type?: string
-  detail?: string
-  detailColor?: string
-}
-
 export interface DashboardSection {
   title: string
   children?: ReactNode
   empty?: ReactNode
-}
-
-export function StatsGrid({ stats }: { stats: DashboardStat[] }) {
-  return (
-    <div className={`lpv-cards-grid${stats.length === 3 ? ' lpv-cards-grid--3' : ' lpv-cards-grid--4'}`}>
-      {stats.map((stat) => (
-        <div className={`lpv-card lpv-stat ${stat.type ?? ''}`} key={stat.label}>
-          <span className="lpv-stat__value">{stat.value}</span>
-          <div className="lpv-stat__label">{stat.label}</div>
-          {stat.detail && (
-            <div
-              className="lpv-stat__detail"
-              style={stat.detailColor ? { color: stat.detailColor } : undefined}
-            >
-              {stat.detail}
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  )
 }

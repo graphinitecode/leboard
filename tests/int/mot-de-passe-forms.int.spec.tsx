@@ -19,51 +19,97 @@ beforeEach(() => {
 })
 
 describe('MotDePasseOublieForm', () => {
-  it('soumet l email et affiche le message de confirmation', async () => {
-    mockDemander.mockResolvedValue({
-      ok: true,
-      message: 'Si un compte existe pour cette adresse, un e-mail avec le lien de réinitialisation vient de partir.',
-    })
+  it('affiche le back-link vers la connexion du portail et le bouton', () => {
+    render(<MotDePasseOublieForm portail="profs" />)
 
-    const user = userEvent.setup()
-    render(<MotDePasseOublieForm />)
-
-    await user.type(screen.getByLabelText('Adresse e-mail'), 'parent@lpv.fr')
-    await user.click(screen.getByRole('button', { name: 'Recevoir le lien' }))
-
-    await waitFor(() => {
-      expect(mockDemander).toHaveBeenCalledWith('parent@lpv.fr')
-      expect(screen.getByText(/Si un compte existe pour cette adresse/)).toBeDefined()
-    })
+    expect(screen.getByRole('heading', { name: 'Réinitialiser votre mot de passe' })).toBeDefined()
+    const backLink = screen.getByRole('link', { name: 'Retour à la connexion' })
+    expect(backLink).toHaveAttribute('href', '/profs/login')
+    expect(screen.getByLabelText('Adresse e-mail')).toBeDefined()
+    expect(screen.getByRole('button', { name: 'Envoyer le lien' })).toBeDefined()
   })
 
-  it('affiche le message meme en cas d erreur serveur (pas de fuite)', async () => {
+  it('bloque une soumission vide côté client sans appel serveur', async () => {
+    const user = userEvent.setup()
+    render(<MotDePasseOublieForm portail="profs" />)
+
+    await user.click(screen.getByRole('button', { name: 'Envoyer le lien' }))
+
+    expect(screen.getByText('Il y a un problème')).toBeDefined()
+    // Le texte d'erreur est affiché deux fois (résumé + erreur inline du champ).
+    expect(screen.getAllByText('Saisissez votre adresse e-mail').length).toBeGreaterThan(0)
+    expect(mockDemander).not.toHaveBeenCalled()
+  })
+
+  it('rejette une adresse mal formée côté client sans appel serveur', async () => {
+    const user = userEvent.setup()
+    render(<MotDePasseOublieForm portail="profs" />)
+
+    await user.type(screen.getByLabelText('Adresse e-mail'), 'invalide')
+    await user.click(screen.getByRole('button', { name: 'Envoyer le lien' }))
+
+    expect(screen.getByText('Il y a un problème')).toBeDefined()
+    expect(screen.getAllByText(/format nom@exemple\.fr/).length).toBeGreaterThan(0)
+    expect(mockDemander).not.toHaveBeenCalled()
+  })
+
+  it('envoie le lien puis affiche l écran de confirmation (portail profs)', async () => {
     mockDemander.mockResolvedValue({
       ok: true,
       message: 'Si un compte existe pour cette adresse, un e-mail vient de partir.',
     })
 
     const user = userEvent.setup()
-    render(<MotDePasseOublieForm />)
+    render(<MotDePasseOublieForm portail="profs" />)
 
-    await user.type(screen.getByLabelText('Adresse e-mail'), 'inconnu@lpv.fr')
-    await user.click(screen.getByRole('button', { name: 'Recevoir le lien' }))
+    await user.type(screen.getByLabelText('Adresse e-mail'), 'parent@lpv.fr')
+    await user.click(screen.getByRole('button', { name: 'Envoyer le lien' }))
 
     await waitFor(() => {
-      expect(screen.getByText(/un e-mail vient de partir/)).toBeDefined()
+      expect(mockDemander).toHaveBeenCalledWith('parent@lpv.fr')
+      expect(screen.getByRole('heading', { name: 'Consultez vos e-mails' })).toBeDefined()
     })
+    // Pas d'énumération : « si un compte existe » quel que soit le résultat serveur.
+    expect(screen.getByText(/Si l'adresse e-mail/)).toBeDefined()
+    expect(screen.getByText('parent@lpv.fr')).toBeDefined()
+    expect(screen.getByText(/valable 2 heures/)).toBeDefined()
+    const lienSucces = screen.getByRole('link', { name: 'Revenir à la connexion' })
+    expect(lienSucces).toHaveAttribute('href', '/profs/login')
+  })
+
+  it('oriente le retour à la connexion vers le portail parents', async () => {
+    mockDemander.mockResolvedValue({ ok: true, message: '' })
+
+    const user = userEvent.setup()
+    render(<MotDePasseOublieForm portail="parents" />)
+
+    expect(screen.getByRole('link', { name: 'Retour à la connexion' })).toHaveAttribute(
+      'href',
+      '/parents/login',
+    )
+
+    await user.type(screen.getByLabelText('Adresse e-mail'), 'parent@lpv.fr')
+    await user.click(screen.getByRole('button', { name: 'Envoyer le lien' }))
+
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: 'Consultez vos e-mails' })).toBeDefined()
+    })
+    expect(screen.getByRole('link', { name: 'Revenir à la connexion' })).toHaveAttribute(
+      'href',
+      '/parents/login',
+    )
   })
 })
 
 describe('ReinitialiserMotDePasseForm', () => {
-  it('soumet le nouveau mot de passe avec le token', async () => {
+  it('modifie le mot de passe et propose la connexion au bon portail', async () => {
     mockReinitialiser.mockResolvedValue({
       ok: true,
       message: 'Mot de passe modifié. Vous pouvez vous connecter.',
     })
 
     const user = userEvent.setup()
-    render(<ReinitialiserMotDePasseForm tokenInitial="jeton-abc" />)
+    render(<ReinitialiserMotDePasseForm portail="profs" tokenInitial="jeton-abc" />)
 
     await user.type(screen.getByLabelText('Nouveau mot de passe'), 'motdepasse-long')
     await user.type(screen.getByLabelText('Confirmer le mot de passe'), 'motdepasse-long')
@@ -72,26 +118,49 @@ describe('ReinitialiserMotDePasseForm', () => {
     await waitFor(() => {
       expect(mockReinitialiser).toHaveBeenCalledWith('jeton-abc', 'motdepasse-long')
       expect(screen.getByText('Mot de passe modifié. Vous pouvez vous connecter.')).toBeDefined()
+      expect(screen.getByRole('link', { name: 'Se connecter' })).toHaveAttribute(
+        'href',
+        '/profs/login',
+      )
     })
   })
 
   it('bloque si les mots de passe ne correspondent pas', async () => {
     const user = userEvent.setup()
-    render(<ReinitialiserMotDePasseForm tokenInitial="jeton-abc" />)
+    render(<ReinitialiserMotDePasseForm portail="profs" tokenInitial="jeton-abc" />)
 
     await user.type(screen.getByLabelText('Nouveau mot de passe'), 'motdepasse-long')
     await user.type(screen.getByLabelText('Confirmer le mot de passe'), 'autre-mdp')
     await user.click(screen.getByRole('button', { name: 'Modifier le mot de passe' }))
 
     expect(mockReinitialiser).not.toHaveBeenCalled()
-    expect(screen.getByText('Les deux mots de passe ne correspondent pas.')).toBeDefined()
+    expect(screen.getByText('Il y a un problème')).toBeDefined()
+    expect(
+      screen.getAllByText('Les deux mots de passe ne correspondent pas.').length,
+    ).toBeGreaterThan(0)
+  })
+
+  it('affiche l erreur serveur dans le résumé', async () => {
+    mockReinitialiser.mockResolvedValue({ ok: false, message: 'Lien invalide : jeton expiré.' })
+
+    const user = userEvent.setup()
+    render(<ReinitialiserMotDePasseForm portail="profs" tokenInitial="jeton-abc" />)
+
+    await user.type(screen.getByLabelText('Nouveau mot de passe'), 'motdepasse-long')
+    await user.type(screen.getByLabelText('Confirmer le mot de passe'), 'motdepasse-long')
+    await user.click(screen.getByRole('button', { name: 'Modifier le mot de passe' }))
+
+    await waitFor(() => {
+      expect(screen.getByText('Il y a un problème')).toBeDefined()
+      expect(screen.getAllByText('Lien invalide : jeton expiré.').length).toBeGreaterThan(0)
+    })
   })
 
   it('signale le token manquant', async () => {
     mockReinitialiser.mockResolvedValue({ ok: false, message: 'Lien invalide : jeton manquant.' })
 
     const user = userEvent.setup()
-    render(<ReinitialiserMotDePasseForm tokenInitial="" />)
+    render(<ReinitialiserMotDePasseForm portail="profs" tokenInitial="" />)
 
     await user.type(screen.getByLabelText('Nouveau mot de passe'), 'motdepasse-long')
     await user.type(screen.getByLabelText('Confirmer le mot de passe'), 'motdepasse-long')
@@ -99,7 +168,7 @@ describe('ReinitialiserMotDePasseForm', () => {
 
     await waitFor(() => {
       expect(mockReinitialiser).toHaveBeenCalledWith('', 'motdepasse-long')
-      expect(screen.getByText('Lien invalide : jeton manquant.')).toBeDefined()
+      expect(screen.getAllByText('Lien invalide : jeton manquant.').length).toBeGreaterThan(0)
     })
   })
 })

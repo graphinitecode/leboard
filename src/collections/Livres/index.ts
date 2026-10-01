@@ -1,14 +1,11 @@
 import type { CollectionConfig } from 'payload'
 
 import { biblioDelete, biblioRead, biblioWrite } from '../../access/biblio'
+import { CATEGORIES_LIVRE, NIVEAUX_LIVRE } from '../../bibliotheque/domain/livre.options'
 
-export const categorieLivreOptions = [
-  { label: 'Lecture', value: 'lecture' },
-  { label: 'Méthodologie', value: 'methodologie' },
-  { label: 'Anglais', value: 'anglais' },
-  { label: 'Manuel', value: 'manuel' },
-  { label: 'Autre', value: 'autre' },
-]
+// Alias : les options de catégorie vivent désormais dans le module domaine
+// partagé (livre.options) — maintenu pour les éventuels import historiques.
+export const categorieLivreOptions = CATEGORIES_LIVRE
 
 export const Livres: CollectionConfig = {
   slug: 'livres',
@@ -51,11 +48,7 @@ export const Livres: CollectionConfig = {
     {
       label: 'Niveau',
       name: 'niveau',
-      options: [
-        { label: 'Primaire', value: 'primaire' },
-        { label: 'Collège', value: 'college' },
-        { label: 'Lycée', value: 'lycee' },
-      ],
+      options: NIVEAUX_LIVRE,
       type: 'select',
     },
     {

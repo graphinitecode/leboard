@@ -13,6 +13,7 @@ import { ActionIconcard } from '@/components/molecules/m-action-iconcard'
 import { EnterText } from '@/components/atoms/a-enter-text'
 import { DashboardPage, DetailPage, FormPage, QuestionPage } from '@/components/templates'
 import { Stepper } from '@/components/atoms/a-stepper'
+import { ValidateText } from '@/components/molecules/m-validate-text'
 
 export const metadata: Metadata = {
   title: 'Design system — LPV Board',
@@ -142,6 +143,9 @@ export default function DesignSystemPage() {
           <Button type="button">Primaire</Button>
           <Button type="button" variant="secondary">
             Secondaire
+          </Button>
+          <Button type="button" variant="tertiary">
+            Tertiaire
           </Button>
           <Button type="button" variant="success">
             Succès
@@ -286,6 +290,34 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">Accordeon</h3>
         <Accordion id="demo-accordion" sections={ACCORDION_SECTIONS} />
+
+        <h3 className="lpv-h3">Checked Textes</h3>
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-4 mt-7 mb-12">
+          <ValidateText checker="checked" icon="rivet-icons:check">
+            <p>
+              Mon texte en cours de <span className="bold">validation</span> juste a titre
+              d&#39;exemple
+            </p>
+          </ValidateText>
+          <ValidateText checker="warning" icon="rivet-icons:bell-solid">
+            <p>
+              Mon texte en cours de <span className="bold">validation</span> juste a titre
+              d&#39;exemple
+            </p>
+          </ValidateText>
+          <ValidateText checker="unchecked" icon="rivet-icons:heart-solid">
+            <p>
+              Mon texte en cours de <span className="bold">validation</span> juste a titre
+              d&#39;exemple
+            </p>
+          </ValidateText>
+          <ValidateText checker="info" icon="rivet-icons:thumbs-up-solid">
+            <p>
+              Mon texte en cours de <span className="bold">validation</span> juste a titre
+              d&#39;exemple
+            </p>
+          </ValidateText>
+        </div>
 
         <h3 className="lpv-h3">Onglets</h3>
         <Tabs id="demo-tabs" tabs={TABS} title="Cours par jour" />
@@ -632,12 +664,12 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">Carte calendrier mensuel</h3>
         <p className="lpv-muted">
-          Molécule <code>m-month-calendar</code> : vue mensuelle compacte avec marqueurs
-          dynamiques — chaque catégorie choisit sa couleur dans la palette des tags, sa forme
-          (point ou carré) et alimente la légende. Un jour portant plusieurs marqueurs affiche le
-          carré en priorité. Avec <code>renduDetailJour</code>, les jours marqués sont cliquables :
-          le détail du jour s&apos;affiche entre la grille et la légende (re-clic pour refermer).
-          Jour courant inversé, lien « Voir tout » optionnel.
+          Molécule <code>m-month-calendar</code> : vue mensuelle compacte avec marqueurs dynamiques
+          — chaque catégorie choisit sa couleur dans la palette des tags, sa forme (point ou carré)
+          et alimente la légende. Un jour portant plusieurs marqueurs affiche le carré en priorité.
+          Avec <code>renduDetailJour</code>, les jours marqués sont cliquables : le détail du jour
+          s&apos;affiche entre la grille et la légende (re-clic pour refermer). Jour courant
+          inversé, lien « Voir tout » optionnel.
         </p>
         <DemoMonthCalendars />
       </section>
