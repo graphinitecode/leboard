@@ -25,6 +25,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - L'encadré de confirmation s'affiche à nouveau sur fond bleu, avec une bordure basse en dessous.
 
 ### Corrigé
+- Le panneau « Prêt enregistré » de l'assistant de prêt ne commence plus par un caractère parasite.
 - Les assistants en questions (nouveau prêt, nouvelle séance…) affichent une colonne de largeur constante, quel que soit le libellé de la question.
 
 ## [0.9.0] — 2026-09-29
