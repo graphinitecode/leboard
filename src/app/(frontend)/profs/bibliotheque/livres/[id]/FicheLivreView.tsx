@@ -191,7 +191,9 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
           <div className={'lpv-t-dashboard-page__aside-color-card__actions'}>
             <Icon icon={`rivet-icons:lock-closed-solid`} size={22} className="lpv-t-dashboard-page__aside-color-card__actions--icon" />
             <p className={`lpv-t-dashboard-page__aside-color-card__actions--content`}>
-              Les exemplaires physiques se gèrent dans{' '}
+              Le nombre d&apos;exemplaires se règle dans « Modifier la fiche du
+              livre » ; les exemplaires individuels (état, notes d&apos;entretien)
+              se gèrent dans{' '}
               <Link className="lpv-link-inline" href="/admin">
                 le panneau d&apos;administration
               </Link>

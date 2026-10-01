@@ -160,11 +160,13 @@ describe('FicheLivreView (alignee maquette)', () => {
     expect(container.textContent).toContain('Ajouté au catalogue')
     expect(screen.getByText('Modifier la fiche du livre')).toBeDefined()
 
-    // Note « exemplaires physiques » dans la carte Informations (carte colorée)
+    // Note « gestion des exemplaires » dans la carte Informations (carte colorée)
     const cardInfo = Array.from(
       container.querySelectorAll('.lpv-t-dashboard-page__aside-color-card'),
     ).find((card) => card.querySelector('h3')?.textContent === 'Informations')
-    expect(cardInfo?.textContent).toContain('Les exemplaires physiques se gèrent dans')
+    expect(cardInfo?.textContent).toContain(
+      "Le nombre d'exemplaires se règle dans « Modifier la fiche du livre »",
+    )
     expect(cardInfo?.querySelector('a[href="/admin"]')).not.toBeNull()
   })
 
@@ -177,11 +179,11 @@ describe('FicheLivreView (alignee maquette)', () => {
     expect(container.textContent).toContain('Informations')
   })
 
-  it('masque la note exemplaires physiques pour un non gerant', () => {
+  it('masque la note gestion des exemplaires pour un non gerant', () => {
     pretsLivreRetour.data = PRETS
     const { container } = rendre(false)
 
-    expect(container.textContent).not.toContain('Les exemplaires physiques se gèrent dans')
+    expect(container.textContent).not.toContain("Le nombre d'exemplaires se règle dans")
   })
 
   it('affiche l etat livre introuvable', () => {
