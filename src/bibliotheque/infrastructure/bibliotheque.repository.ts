@@ -179,8 +179,16 @@ export const bibliothequeRepository = {
     resume?: string
   }): Promise<number> {
     try {
-      const res = await httpClient.post<Livre>('/livres', command)
-      return res.data.id
+      // REST Payload : la création répond { doc, message } (et non le document
+      // aplati) — l'id du livre créé vit dans res.data.doc.id. Lu à plat, il
+      // valait undefined et les exemplaires partaient avec une référence vide
+      // (« The following field is invalid: Livre »).
+      const res = await httpClient.post<{ doc: Livre }>('/livres', command)
+      const id = res.data.doc?.id
+      if (typeof id !== 'number') {
+        throw new Error("La création du livre n'a pas renvoyé son identifiant.")
+      }
+      return id
     } catch (err) {
       throw new Error(getAxiosErrorMessage(err, 'Impossible de créer le livre.'))
     }
@@ -198,16 +206,45 @@ export const bibliothequeRepository = {
     }
   },
 
+  /**
+   * Supprimer physiquement un exemplaire. À réserver aux exemplaires sans
+   * historique de prêt : la clé étrangère (prets → exemplaires, sans action
+   * en cascade) rejette toute suppression d'un exemplaire déjà emprunté,
+   * même retourné depuis.
+   */
+  async supprimerExemplaire(command: { id: number }): Promise<void> {
+    try {
+      await httpClient.delete(`/exemplaires/${command.id}`)
+    } catch (err) {
+      throw new Error(getAxiosErrorMessage(err, "Impossible de retirer l'exemplaire."))
+    }
+  },
+
+  /**
+   * Retirer un livre du catalogue (archivage). La suppression physique est
+   * impossible dès qu'un exemplaire existe (clé étrangère exemplaires →
+   * livres) ; l'archivage conserve l'historique des prêts et les prêts en
+   * cours, et masque le livre du catalogue du portail (déjà filtré sur
+   * archived not_equals true).
+   */
+  async retirerCatalogue(command: { id: number }): Promise<void> {
+    try {
+      await httpClient.patch(`/livres/${command.id}`, { archived: true })
+    } catch (err) {
+      throw new Error(getAxiosErrorMessage(err, 'Impossible de retirer le livre du catalogue.'))
+    }
+  },
+
   /** Modifier les métadonnées d'un livre (admin/bénévole — biblioWrite côté API). */
   async modifierLivre(command: {
     id: number
     titre: string
-    auteur?: string
-    isbn?: string
-    niveau?: string
-    categorie?: string
-    editeur?: string
-    resume?: string
+    auteur?: string | null
+    isbn?: string | null
+    niveau?: string | null
+    categorie?: string | null
+    editeur?: string | null
+    resume?: string | null
   }): Promise<void> {
     try {
       const { id, ...champs } = command
