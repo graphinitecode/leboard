@@ -95,6 +95,7 @@ export function Input({
           name={name ?? id}
           onChange={onChange as never}
           required={required}
+          value={value}
         >
           {(options ?? []).map((option) => (
             <option key={option.value} value={option.value}>

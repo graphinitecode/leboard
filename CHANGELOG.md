@@ -13,6 +13,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - La modification d'un livre reprend la mise en page d'« Ajouter un livre » : un seul formulaire pré-rempli, enregistrement sans encart de confirmation, résumé des erreurs en tête, et choix du nombre d'exemplaires avec un rappel visible des exemplaires actuellement prêtés (impossible de descendre en dessous).
 
 ### Corrigé
+- Les listes déroulantes des formulaires réaffichent la valeur enregistrée du livre (niveau conseillé, catégorie) lors de la modification.
 - L'ajout d'un livre au catalogue refonctionne : le livre était créé sans ses exemplaires, ce qui faisait échouer l'enregistrement.
 
 ## [0.10.0] — 2026-09-30
