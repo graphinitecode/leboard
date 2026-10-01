@@ -132,7 +132,7 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
           <div className="lpv-t-dashboard-page__aside-card__actions">
             <Button href="/profs/bibliotheque/prets/nouveau" variant="success">
               <Icon icon={'rivet-icons:plus-circle-solid'} size={19} />
-              &nbsp;Enregistrer un prêt
+              &nbsp;Prêter ce livre
             </Button>
             {enCours.length > 0 ? (
               <Button
@@ -148,15 +148,15 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
                 type="button"
                 variant="primary"
               >
-                Marquer un retour
+                Signaler un retour
               </Button>
             ) : (
               <Button disabled variant="secondary">
-                Marquer un retour
+                Signaler un retour
               </Button>
             )}
-            <Button href={`/profs/bibliotheque/livres/${livre.id}/modifier`} variant="secondary">
-              Modifier la fiche
+            <Button href={`/profs/bibliotheque/livres/${livre.id}/modifier`} variant="primary">
+              Modifier la fiche du livre
             </Button>
           </div>
         </div>
@@ -324,7 +324,7 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
                 <InsetText>Aucun emprunt enregistré pour ce livre.</InsetText>
               ) : (
                 <div style={{ overflowX: 'auto' }}>
-                  <Table caption="Emprunts" head={head} rows={rows} />
+                  <Table caption="" head={head} rows={rows} />
                 </div>
               ),
           },
