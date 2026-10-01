@@ -234,13 +234,15 @@ describe('NouveauPretView', () => {
     expect(epoch).toBeLessThanOrEqual(attendu + 3 * 3_600_000)
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Prêt enregistré' })).toBeDefined()
-    expect(screen.getByText(/2 livres pour Lucas Martin, à rendre le /)).toBeDefined()
-    expect(screen.getByText('Un rappel sera créé 2 jours avant la date de retour.')).toBeDefined()
+    expect(
+      screen.getByText(/Vous pouvez remettre les 2 livres à Lucas Martin, à rendre au plus tard le /),
+    ).toBeDefined()
+    expect(screen.getByText(/rappellerons/)).toBeDefined()
     trouverTexte(libellesLongs())
-    expect(screen.getByRole('link', { name: 'Retour à la bibliothèque' })).toBeDefined()
+    expect(screen.getByRole('link', { name: /Retour à la bibliothèque$/ })).toBeDefined()
 
     await user.click(screen.getByText('Enregistrer un autre prêt'))
-    expect(screen.getByText('Quel élève emprunte ?')).toBeDefined()
+    expect(screen.getByText('À quel élève souhaite t-on preter un ouvrage ?')).toBeDefined()
     expect(screen.getByRole('combobox', { name: 'Élève' })).toHaveValue('')
   })
 
@@ -252,7 +254,7 @@ describe('NouveauPretView', () => {
     await user.type(screen.getByRole('combobox', { name: 'Élève' }), 'lucas')
     await user.click(screen.getByText('Lucas Martin'))
     expect(
-      screen.getByText(/a déjà 1 livre en retard : « Charlie et la chocolaterie »\./),
+      screen.getByText(/a déjà 1 livre en sa possession : « Charlie et la chocolaterie », dont 1 en retard\./),
     ).toBeDefined()
 
     await user.click(screen.getByRole('button', { name: 'Continuer' }))
@@ -364,7 +366,7 @@ describe('NouveauPretView', () => {
     expect(screen.getByText('Vérifiez vos réponses')).toBeDefined()
 
     await user.click(screen.getAllByText('Modifier')[0])
-    expect(screen.getByText('Quel élève emprunte ?')).toBeDefined()
+    expect(screen.getByText('À quel élève souhaite t-on preter un ouvrage ?')).toBeDefined()
     expect(screen.getByText('Lucas Martin')).toBeDefined()
   })
 })

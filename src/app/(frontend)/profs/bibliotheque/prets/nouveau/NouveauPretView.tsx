@@ -495,7 +495,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
         <div className="lpv-t-question-page">
           <Panel variante="success" title="Prêt enregistré">
             <p>
-              `Vous pouvez remettre le{resultats.enregistres > 1 ? 's' : ''} {resultats.enregistres}{' '}
+              Vous pouvez remettre le{resultats.enregistres > 1 ? 's' : ''} {resultats.enregistres}{' '}
               livre{resultats.enregistres > 1 ? 's' : ''} à {nomEleveChoisi ?? "l'élève"}, à rendre
               au plus tard le {dateRetourPrevue ? formatDateLongue(dateRetourPrevue) : '—'}.
             </p>
