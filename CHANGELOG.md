@@ -6,6 +6,15 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+### Ajouté
+- La suppression d'un livre a sa propre page d'avertissement : les conséquences sont expliquées avant le geste (l'historique des emprunts est conservé et le livre sort du catalogue ; un prêt en cours n'est pas annulé), avec un bouton rouge de confirmation et une annulation neutre.
+
+### Modifié
+- La modification d'un livre reprend la mise en page d'« Ajouter un livre » : un seul formulaire pré-rempli, enregistrement sans encart de confirmation, résumé des erreurs en tête, et choix du nombre d'exemplaires avec un rappel visible des exemplaires actuellement prêtés (impossible de descendre en dessous).
+
+### Corrigé
+- L'ajout d'un livre au catalogue refonctionne : le livre était créé sans ses exemplaires, ce qui faisait échouer l'enregistrement.
+
 ## [0.10.0] — 2026-09-30
 
 ### Ajouté
