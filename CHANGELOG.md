@@ -14,6 +14,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Niveaux conseillés enrichis (Maternelle, CP – CE2, CM1 – CM2) et nouvelles catégories d'ouvrages (Roman jeunesse, Conte et fable, Bande dessinée, Documentaire, Dictionnaire / Encyclopédie), proposées à l'ajout, sur la fiche livre et dans le panneau d'administration.
 
 ### Modifié
+- Fiche livre : les boutons d'actions parlent plus clairement — « Prêter ce livre », « Signaler un retour » et « Modifier la fiche du livre ».
 - La bascule du thème du portail est désormais un sélecteur à trois segments (machine, clair, sombre) reconnaissable à ses icônes.
 - La bibliothèque affiche ses statistiques (catalogue, prêts en cours, retards) avec la grille standard du tableau de bord.
 - Calendrier du tableau de bord : les jours des mois voisins complètent la grille avec leur numéro grisé et le panneau du jour cliqué reprend les couleurs de la pastille associée (l'inversion suit le mode clair/sombre) ; la légende ne liste plus que les catégories effectivement visibles dans le mois.
