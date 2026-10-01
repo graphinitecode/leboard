@@ -169,10 +169,11 @@ export const bibliothequeRepository = {
     }
   },
 
-  /** Créer un livre au catalogue. */
+  /** Créer un livre au catalogue (isbn persisté, optionnel). */
   async creerLivre(command: {
     titre: string
     auteur?: string
+    isbn?: string
     niveau?: string
     categorie?: string
     resume?: string
@@ -182,6 +183,18 @@ export const bibliothequeRepository = {
       return res.data.id
     } catch (err) {
       throw new Error(getAxiosErrorMessage(err, 'Impossible de créer le livre.'))
+    }
+  },
+
+  /**
+   * Créer un exemplaire d'un livre (code auto-généré côté Payload quand
+   * absent — ex. LPV-0001).
+   */
+  async creerExemplaire(command: { livre: number; code?: string }): Promise<void> {
+    try {
+      await httpClient.post('/exemplaires', command)
+    } catch (err) {
+      throw new Error(getAxiosErrorMessage(err, "Impossible de créer l'exemplaire."))
     }
   },
 

@@ -14,6 +14,7 @@ import {
   useListPretsParLivre,
   useMarquerRetourne,
   useEnregistrerPret,
+  useCreerExemplaire,
   useCreerLivre,
   useModifierLivre,
   PRETS_QUERY_KEY,
@@ -25,9 +26,19 @@ import {
   exemplairesDisponibles,
   joursDeRetard,
 } from './domain/pret.entity'
+import {
+  CATEGORIES_LIVRE,
+  labelCategorieLivre,
+  labelNiveauLivre,
+  NIVEAUX_LIVRE,
+} from './domain/livre.options'
 
 export type { Pret, LivreCatalogue }
 export {
+  CATEGORIES_LIVRE,
+  labelCategorieLivre,
+  labelNiveauLivre,
+  NIVEAUX_LIVRE,
   estPretEnCours,
   exemplairesDisponibles,
   joursDeRetard,
@@ -45,6 +56,7 @@ export {
   useListPretsParLivre,
   useMarquerRetourne,
   useEnregistrerPret,
+  useCreerExemplaire,
   useCreerLivre,
   useModifierLivre,
   PRETS_QUERY_KEY,
