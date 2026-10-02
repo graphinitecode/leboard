@@ -105,7 +105,7 @@ export default function ProfsDashboard({ prenom, alertes }: ProfsDashboardProps)
                   <ActionRow
                     accent="red"
                     action={{
-                      href: `/profs/seances/${seance.id}`,
+                      href: `/profs/seances/${seance.id}/modifier`,
                       label: 'Compléter',
                       variant: 'success',
                     }}

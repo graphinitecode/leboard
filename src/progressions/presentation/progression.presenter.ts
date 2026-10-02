@@ -2,7 +2,9 @@ import type { NiveauProgression, Progression } from '@/progressions/domain/progr
 
 export interface ProgressionViewModel {
   id: number
+  eleveNom: string | null
   competenceLabel: string
+  niveau: NiveauProgression
   niveauLabel: string
   dateLabel: string
   commentaire: string | null
@@ -16,7 +18,9 @@ const niveauLabels: Record<NiveauProgression, string> = {
 
 export const presentProgression = (progression: Progression): ProgressionViewModel => ({
   id: progression.id,
+  eleveNom: progression.eleveNom,
   competenceLabel: progression.competenceLabel ?? '—',
+  niveau: progression.niveau,
   niveauLabel: niveauLabels[progression.niveau] ?? progression.niveau,
   dateLabel: new Date(progression.date).toLocaleDateString('fr-FR'),
   commentaire: progression.commentaire,

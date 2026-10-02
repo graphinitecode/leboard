@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { Button } from '@/components/atoms/a-button'
 import {
   Input,
-  NotificationBanner,
   ErrorSummary,
 } from '@/components/molecules'
 import { ConfirmAction } from '@/components/organisms/o-confirm-action'
@@ -15,24 +14,28 @@ import { useEnregistrerRetour } from '@/seances/application/seances.hooks'
 export function ReturnForm({
   seanceId,
   initial,
+  onAnnule,
+  onEnregistre,
 }: {
   seanceId: number
   initial: string
+  /** Appelé à l'annulation (sortie du mode édition sans enregistrer). */
+  onAnnule?: () => void
+  /** Appelé après un enregistrement réussi (sortie du mode édition). */
+  onEnregistre?: () => void
 }) {
   const [text, setText] = useState(initial)
-  const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [confirmOuvert, setConfirmOuvert] = useState(false)
 
   const enregistrerRetour = useEnregistrerRetour(seanceId)
 
   function enregistrer() {
-    setSuccess(false)
     setError(null)
     enregistrerRetour.mutate(text, {
       onSuccess: () => {
         setConfirmOuvert(false)
-        setSuccess(true)
+        onEnregistre?.()
       },
       onError: (err) => {
         setError(err.message)
@@ -48,21 +51,25 @@ export function ReturnForm({
         setConfirmOuvert(true)
       }}
     >
-      {success && <NotificationBanner title="Retour enregistré" type="success" />}
       <ErrorSummary errors={error ? [error] : []} />
       <Input
         as="textarea"
         hint="Texte libre. Ce retour sera visible par les parents."
         id="retour"
-        label="Retour de séance"
+        label="" //"Retour de séance"
         onChange={(e) => setText(e.target.value)}
         rows={4}
         value={text}
       />
-      <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+      <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-start' }}>
         <Button disabled={enregistrerRetour.isPending} type="submit">
           {enregistrerRetour.isPending ? 'Enregistrement…' : 'Enregistrer le retour'}
         </Button>
+        {onAnnule && !enregistrerRetour.isPending && (
+          <Button onClick={onAnnule} type="button" variant="secondary">
+            Annuler
+          </Button>
+        )}
       </div>
 
       {confirmOuvert ? (
