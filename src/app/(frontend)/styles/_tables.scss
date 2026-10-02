@@ -123,6 +123,10 @@
     padding: 0.75rem 1rem;
     vertical-align: top;
 
+    /* th (entête de ligne) : le style UA centre le th — aligner à gauche
+       comme les td, sous l'entête de colonne (motif GOV.UK). */
+    text-align: left;
+
     &--numeric {
       text-align: right;
     }

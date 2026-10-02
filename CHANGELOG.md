@@ -6,6 +6,18 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+## [0.11.0] — 2026-10-02
+
+### Ajouté
+- Une page « Compléter la séance » rassemble le passage de l’appel (présent, absent, absent justifié — élève par élève) et la rédaction du retour de séance, avec une confirmation avant l’enregistrement ; une fois le retour écrit, elle devient « Modifier la séance ».
+- La fiche de séance liste les notes de progression prises pendant la séance, avec le niveau observé (acquis, en cours, à revoir) et le commentaire pour la famille.
+
+### Modifié
+- La fiche d’une séance se présente désormais comme les autres fiches : titre, matière, date, heure et prof en entête, compteurs de présences et d’absences, retour de séance affiché en lecture simple, et un tableau des présences avec les élèves numérotés et leur statut en pastille colorée.
+
+### Corrigé
+- Un élève ajouté à une séance déjà créée reçoit sa présence dès l’enregistrement : il apparaissait « non initialisé » — impossible de comptabiliser son statut ni de le modifier.
+
 ## [0.10.0] — 2026-09-30
 
 ### Ajouté
@@ -14,6 +26,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Niveaux conseillés enrichis (Maternelle, CP – CE2, CM1 – CM2) et nouvelles catégories d'ouvrages (Roman jeunesse, Conte et fable, Bande dessinée, Documentaire, Dictionnaire / Encyclopédie), proposées à l'ajout, sur la fiche livre et dans le panneau d'administration.
 
 ### Modifié
+- Fiche livre : les boutons d'actions parlent plus clairement — « Prêter ce livre », « Signaler un retour » et « Modifier la fiche du livre ».
 - La bascule du thème du portail est désormais un sélecteur à trois segments (machine, clair, sombre) reconnaissable à ses icônes.
 - La bibliothèque affiche ses statistiques (catalogue, prêts en cours, retards) avec la grille standard du tableau de bord.
 - Calendrier du tableau de bord : les jours des mois voisins complètent la grille avec leur numéro grisé et le panneau du jour cliqué reprend les couleurs de la pastille associée (l'inversion suit le mode clair/sombre) ; la légende ne liste plus que les catégories effectivement visibles dans le mois.
@@ -25,6 +38,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - L'encadré de confirmation s'affiche à nouveau sur fond bleu, avec une bordure basse en dessous.
 
 ### Corrigé
+- Le panneau « Prêt enregistré » de l'assistant de prêt ne commence plus par un caractère parasite.
 - Les assistants en questions (nouveau prêt, nouvelle séance…) affichent une colonne de largeur constante, quel que soit le libellé de la question.
 
 ## [0.9.0] — 2026-09-29

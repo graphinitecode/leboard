@@ -27,10 +27,17 @@ export const useTogglePresence = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (command: { presenceId: number; statut: 'present' | 'absent' | 'absent-justifie' }) =>
-      togglePresenceHandler(command),
+    mutationFn: (command: {
+      presenceId: number
+      seanceId?: number
+      statut: 'present' | 'absent' | 'absent-justifie'
+    }) => togglePresenceHandler(command),
     onSuccess: (_data, command) => {
-      queryClient.invalidateQueries({ queryKey: SEANCE_QUERY_KEY(command.presenceId) })
+      // seanceId : fourni par la vue séance cibler la bonne requête détail
+      // (la présence ≠ l'id de la séance).
+      if (command.seanceId) {
+        queryClient.invalidateQueries({ queryKey: SEANCE_QUERY_KEY(command.seanceId) })
+      }
       queryClient.invalidateQueries({ queryKey: SEANCES_QUERY_KEY })
     },
   })

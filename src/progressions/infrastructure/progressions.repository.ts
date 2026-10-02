@@ -2,11 +2,12 @@ import type { Competence, Progression as ProgressionDto } from '@/payload-types'
 import type {
   AjouterProgressionCommand,
   ListByEleveQuery,
-} from '@/progressions/domain/interfaces/progressions-repository.interface'
+  ListBySeanceQuery,
+} from '../domain/interfaces/progressions-repository.interface'
 import type {
   CompetenceOption,
   Progression,
-} from '@/progressions/domain/progression.entity'
+} from '../domain/progression.entity'
 import { getAxiosErrorMessage } from '@/shared/infrastructure/axios-error'
 import { httpClient } from '@/shared/infrastructure/http.client'
 
@@ -15,6 +16,10 @@ type Paginated<T> = { docs: T[]; totalDocs: number }
 const mapDtoToProgression = (dto: ProgressionDto): Progression => ({
   id: dto.id,
   eleveId: typeof dto.eleve === 'object' ? dto.eleve.id : dto.eleve,
+  eleveNom:
+    typeof dto.eleve === 'object' && dto.eleve
+      ? `${dto.eleve.prenom} ${dto.eleve.nom}`
+      : null,
   competenceId: typeof dto.competence === 'object' ? dto.competence.id : dto.competence,
   competenceLabel:
     typeof dto.competence === 'object' ? (dto.competence?.label ?? null) : null,
@@ -38,6 +43,22 @@ export const progressionsRepository = {
           limit: limite,
           sort: '-date',
           where: JSON.stringify({ eleve: { equals: eleveId } }),
+        },
+      })
+      return res.data.docs.map(mapDtoToProgression)
+    } catch (err) {
+      throw new Error(getAxiosErrorMessage(err, 'Impossible de charger les progressions.'))
+    }
+  },
+
+  async listBySeance({ seanceId, limite = 50 }: ListBySeanceQuery): Promise<Progression[]> {
+    try {
+      const res = await httpClient.get<Paginated<ProgressionDto>>('/progressions', {
+        params: {
+          depth: 1,
+          limit: limite,
+          sort: '-date',
+          where: JSON.stringify({ seance: { equals: seanceId } }),
         },
       })
       return res.data.docs.map(mapDtoToProgression)

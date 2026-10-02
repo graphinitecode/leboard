@@ -15,10 +15,13 @@ export function PresenceToggle({
   presenceId,
   initialStatus,
   studentName,
+  seanceId,
 }: {
   presenceId: number
   initialStatus: string
   studentName: string
+  /** Id de la séance : rafraîchit le détail (compteurs) après bascule. */
+  seanceId?: number
 }) {
   const toggle = useTogglePresence()
 
@@ -28,7 +31,7 @@ export function PresenceToggle({
       dataAttribute={(option) => ({ 'data-status': option.value })}
       onChange={(value) =>
         toggle.mutate(
-          { presenceId, statut: value as 'present' },
+          { presenceId, seanceId, statut: value as 'present' },
           {
             onError: () => undefined,
           },

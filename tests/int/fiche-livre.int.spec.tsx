@@ -158,11 +158,11 @@ describe('FicheLivreView (alignee maquette)', () => {
     expect(container.textContent).toContain('978-2-07-040850-4')
     expect(container.textContent).toContain('Exemplaires')
     expect(container.textContent).toContain('Ajouté au catalogue')
-    expect(screen.getByText('Modifier la fiche')).toBeDefined()
+    expect(screen.getByText('Modifier la fiche du livre')).toBeDefined()
 
-    // Note « exemplaires physiques » dans la card Informations
+    // Note « exemplaires physiques » dans la carte Informations (carte colorée)
     const cardInfo = Array.from(
-      container.querySelectorAll('.lpv-t-dashboard-page__aside-card'),
+      container.querySelectorAll('.lpv-t-dashboard-page__aside-color-card'),
     ).find((card) => card.querySelector('h3')?.textContent === 'Informations')
     expect(cardInfo?.textContent).toContain('Les exemplaires physiques se gèrent dans')
     expect(cardInfo?.querySelector('a[href="/admin"]')).not.toBeNull()
@@ -173,7 +173,7 @@ describe('FicheLivreView (alignee maquette)', () => {
     const { container } = rendre(false)
 
     expect(container.textContent).not.toContain('Actions')
-    expect(screen.queryByText('Modifier la fiche')).toBeNull()
+    expect(screen.queryByText('Modifier la fiche du livre')).toBeNull()
     expect(container.textContent).toContain('Informations')
   })
 
@@ -225,7 +225,7 @@ describe('FicheLivreView (alignee maquette)', () => {
     const user = userEvent.setup()
     rendre()
 
-    await user.click(screen.getByRole('button', { name: 'Marquer un retour' }))
+    await user.click(screen.getByRole('button', { name: 'Signaler un retour' }))
 
     expect(screen.getByText('Marquer le retour du prêt ?')).toBeDefined()
     const champ = screen.getByLabelText('Mot de passe du compte connecté')
