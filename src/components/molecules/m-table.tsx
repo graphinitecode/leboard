@@ -1,7 +1,11 @@
 export interface TableHeadCell {
-  text: string
-  format?: 'numeric'
+  /** Position du trie actif (entête cliquable) — laissé vide sinon. */
+  ariaSort?: 'ascending' | 'descending'
   colspan?: number
+  /** Contenu riche (lien de tri…) : remplace text à l'affichage. */
+  content?: React.ReactNode
+  format?: 'numeric'
+  text: string
 }
 
 export interface TableRowCell {
@@ -43,12 +47,13 @@ export function Table({
           <tr className="lpv-m-table__row">
             {head.map((cell, index) => (
               <th
+                aria-sort={cell.ariaSort}
                 className={`lpv-m-table__head-cell${cell.format === 'numeric' ? ' lpv-m-table__head-cell--numeric' : ''}`}
                 colSpan={cell.colspan}
                 key={index}
                 scope="col"
               >
-                {cell.text}
+                {cell.content ?? cell.text}
               </th>
             ))}
           </tr>
@@ -71,7 +76,7 @@ export function Table({
                     rowSpan={cell.rowspan}
                     scope="row"
                   >
-                    {cell.html ? null : cell.text}
+                    {cell.content ?? (cell.html ? null : cell.text)}
                   </th>
                 )
               }

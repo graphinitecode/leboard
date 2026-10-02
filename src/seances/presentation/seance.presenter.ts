@@ -3,8 +3,13 @@ import type { Seance, SeanceDetail, StatutPresence } from '@/seances/domain/sean
 export interface SeanceLigneViewModel {
   id: number
   dateLabel: string
+  dateLongueLabel: string
   date: Date
+  heureLabel: string
+  creneauLabel: string
+  dureeMin: number | null
   matiereLabel: string
+  profLabel: string | null
   retourPresent: boolean
 }
 
@@ -19,6 +24,11 @@ export interface SeanceDetailViewModel {
   seance: SeanceLigneViewModel
   presences: PresenceViewModel[]
   aEleves: boolean
+  /** Libellé du (des) groupe(s) d'après les élèves (« CM2 · Groupe B »). */
+  groupeLabel: string | null
+  totalEleves: number
+  nbPresents: number
+  nbAbsents: number
 }
 
 const matiereLabels: Record<string, string> = {
@@ -34,22 +44,60 @@ export const statutPresenceLabel = (statut: StatutPresence): string => {
   return 'Absent'
 }
 
-export const presentSeanceLigne = (seance: Seance): SeanceLigneViewModel => ({
-  id: seance.id,
-  date: new Date(seance.date),
-  dateLabel: new Date(seance.date).toLocaleDateString('fr-FR', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-  }),
-  matiereLabel: matiereLabels[seance.matiere] ?? seance.matiere,
-  retourPresent: seance.aRetour,
-})
+export const statutPresenceColor = (statut: StatutPresence): 'green' | 'red' | 'yellow' => {
+  if (statut === 'present') return 'green'
+  if (statut === 'absent-justifie') return 'yellow'
+  return 'red'
+}
+
+// Créneau horaire (« 17h00 – 18h00 »), simple heure si la durée est absente.
+export const creneauSeance = (date: Date, dureeMin: number | null): string => {
+  const debut = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+  if (!dureeMin || dureeMin <= 0) return debut
+  const fin = new Date(date.getTime() + dureeMin * 60000)
+  return `${debut} – ${fin.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}`
+}
+
+export const presentSeanceLigne = (seance: Seance): SeanceLigneViewModel => {
+  const date = new Date(seance.date)
+  return {
+    id: seance.id,
+    date: date,
+    dateLabel: date.toLocaleDateString('fr-FR', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+    }),
+    dateLongueLabel: date.toLocaleDateString('fr-FR', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }),
+    heureLabel: date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+    creneauLabel: creneauSeance(date, seance.duree ?? null),
+    dureeMin: seance.duree ?? null,
+    matiereLabel: matiereLabels[seance.matiere] ?? seance.matiere,
+    profLabel: seance.profLabel ?? null,
+    retourPresent: seance.aRetour,
+  }
+}
 
 export const presentSeanceDetail = (detail: SeanceDetail): SeanceDetailViewModel => {
   const presencesParEleve = new Map(
     detail.presences.map((presence) => [presence.eleveId, presence]),
   )
+
+  // Libellé de groupe déduit des élèves (« CM2 · Groupe B ») — toutes les
+  // combinaisons uniques niveau · groupe, jointes si plusieurs groupes.
+  const labelsGroupes = [
+    ...new Set(
+      detail.elevesDuGroupe
+        .map((eleve) => [eleve.niveau ?? null, eleve.groupe ?? null].filter(Boolean).join(' · '))
+        .filter(Boolean),
+    ),
+  ]
+  const nbPresents = detail.presences.filter((presence) => presence.present === 'present').length
 
   return {
     seance: presentSeanceLigne(detail.seance),
@@ -63,5 +111,9 @@ export const presentSeanceDetail = (detail: SeanceDetail): SeanceDetailViewModel
         statutInitial: presence?.present ?? null,
       }
     }),
+    groupeLabel: labelsGroupes.length > 0 ? labelsGroupes.join(', ') : null,
+    totalEleves: detail.elevesDuGroupe.length,
+    nbPresents: nbPresents,
+    nbAbsents: detail.presences.length - nbPresents,
   }
 }

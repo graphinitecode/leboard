@@ -7,7 +7,11 @@ export const preCreerPresencesSeance: CollectionAfterChangeHook = async ({
   operation,
   req,
 }) => {
-  if (operation !== 'create') return doc
+  // La création initialise le jeu de présences ; la mise à jour complète
+  // les manquantes — un élève ajouté au groupe après coup (update) doit
+  // recevoir sa présence, sinon elle reste non initialisée et non
+  // modifiable depuis la page de complétion.
+  if (operation !== 'create' && operation !== 'update') return doc
 
   const groupe = doc.groupe as EleveRef[] | undefined
   if (!groupe?.length) return doc

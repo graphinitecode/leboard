@@ -26,6 +26,8 @@ const mapDtoToSeance = (dto: SeanceDto): Seance => ({
   matiere: dto.matiere as Matiere,
   groupeIds: (dto.groupe ?? []).map((eleve) => (typeof eleve === 'object' ? eleve.id : eleve)),
   profId: typeof dto.prof === 'object' ? dto.prof.id : dto.prof,
+  duree: dto.duree ?? null,
+  profLabel: labelUtilisateur(typeof dto.prof === 'object' ? dto.prof : null),
   retourTexte: extraireTexte(dto.retour),
   aRetour: Boolean(dto.retour),
 })
@@ -42,7 +44,15 @@ const mapDtoToEleveLigne = (dto: Eleve): EleveLigne => ({
   prenom: dto.prenom,
   nom: dto.nom,
   groupe: dto.groupe ?? null,
+  niveau: dto.niveau ?? null,
 })
+
+// Libellé court d'un utilisateur (« Claire D. ») : prénom + initiale du nom.
+const labelUtilisateur = (profil: { prenom?: string; nom?: string } | null | undefined): string | null => {
+  if (!profil || typeof profil !== 'object' || !profil.prenom) return null
+  const initiale = (profil.nom ?? '').charAt(0).toUpperCase()
+  return initiale ? `${profil.prenom} ${initiale}.` : profil.prenom
+}
 
 function extraireTexte(retour: unknown): string {
   if (!retour || typeof retour !== 'object') return ''
