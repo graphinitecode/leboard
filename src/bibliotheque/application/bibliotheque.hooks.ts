@@ -69,6 +69,7 @@ export const useCreerLivre = () => {
       niveau?: string
       categorie?: string
       resume?: string
+      imageUrl?: string
     }) => bibliothequeRepository.creerLivre(command),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['bibliotheque', 'catalogue'] }),
   })
@@ -91,13 +92,32 @@ export const useModifierLivre = () => {
     mutationFn: (command: {
       id: number
       titre: string
-      auteur?: string
-      isbn?: string
-      niveau?: string
-      categorie?: string
-      editeur?: string
-      resume?: string
+      auteur?: string | null
+      isbn?: string | null
+      niveau?: string | null
+      categorie?: string | null
+      editeur?: string | null
+      resume?: string | null
+      imageUrl?: null | string
     }) => bibliothequeRepository.modifierLivre(command),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['bibliotheque', 'catalogue'] }),
+  })
+}
+
+export const useSupprimerExemplaire = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (command: { id: number }) => bibliothequeRepository.supprimerExemplaire(command),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['bibliotheque', 'catalogue'] }),
+  })
+}
+
+export const useRetirerCatalogue = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (command: { id: number }) => bibliothequeRepository.retirerCatalogue(command),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['bibliotheque', 'catalogue'] }),
   })
 }

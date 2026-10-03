@@ -242,7 +242,7 @@ describe('NouveauPretView', () => {
     expect(screen.getByRole('link', { name: /Retour à la bibliothèque$/ })).toBeDefined()
 
     await user.click(screen.getByText('Enregistrer un autre prêt'))
-    expect(screen.getByText('À quel élève souhaite t-on preter un ouvrage ?')).toBeDefined()
+    expect(screen.getByText('À quel élève souhaitez-vous prêter un ouvrage ?')).toBeDefined()
     expect(screen.getByRole('combobox', { name: 'Élève' })).toHaveValue('')
   })
 
@@ -366,7 +366,7 @@ describe('NouveauPretView', () => {
     expect(screen.getByText('Vérifiez vos réponses')).toBeDefined()
 
     await user.click(screen.getAllByText('Modifier')[0])
-    expect(screen.getByText('À quel élève souhaite t-on preter un ouvrage ?')).toBeDefined()
+    expect(screen.getByText('À quel élève souhaitez-vous prêter un ouvrage ?')).toBeDefined()
     expect(screen.getByText('Lucas Martin')).toBeDefined()
   })
 })

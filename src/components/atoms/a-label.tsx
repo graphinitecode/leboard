@@ -7,6 +7,8 @@
 // - isPageHeading enveloppe le label dans un <h1> (page-question).
 // - size pilote la classe de taille : 'l' (défaut), 'm', 's'.
 
+import { Tag } from '@/components/atoms/a-tag'
+
 type LabelSize = 'l' | 'm' | 's'
 
 export function Label({
@@ -28,7 +30,11 @@ export function Label({
   const label = (
     <label className={classes} htmlFor={htmlFor}>
       {children}
-      {optional ? <span className="lpv-a-label__optional"> (optional)</span> : null}
+      {optional ? (
+        <span className="lpv-a-label__optional">
+          (Facultatif)
+        </span>
+      ) : null}
     </label>
   )
 

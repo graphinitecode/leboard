@@ -110,6 +110,19 @@
     }
   }
 
+  /* Entête cliquable (tri de table). Lien en ligne-flex : le texte et l'icône
+     Rivet (arrow-up / arrow-down, rendue par l'atome Icon) restent sur la
+     même ligne, le gap donne l'espacement. */
+  &__head-link {
+    align-items: center;
+    color: inherit;
+    display: inline-flex;
+    gap: .3rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+  }
+
   &__body {
     vertical-align: top;
   }

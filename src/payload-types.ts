@@ -359,6 +359,10 @@ export interface Livre {
    */
   resume?: string | null;
   /**
+   * Adresse web (https://…) de la couverture, affichée sur la fiche du livre dans le portail. L’image n’est pas stockée sur le site.
+   */
+  imageUrl?: string | null;
+  /**
    * Préférer l’archivage à la suppression : un livre avec historique de prêts ne peut pas être supprimé.
    */
   archived?: boolean | null;
@@ -1480,6 +1484,7 @@ export interface LivresSelect<T extends boolean = true> {
   categorie?: T;
   editeur?: T;
   resume?: T;
+  imageUrl?: T;
   archived?: T;
   updatedAt?: T;
   createdAt?: T;

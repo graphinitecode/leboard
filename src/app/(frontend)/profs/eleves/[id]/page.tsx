@@ -1,14 +1,17 @@
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
-import { Tag } from '@/components/atoms'
+import { Icon, Tag } from '@/components/atoms'
 import { AlertCard } from '@/components/molecules/m-alert-card'
-import { Table } from '@/components/molecules'
+import { EmptyState, Table } from '@/components/molecules'
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
 import { DetailPage } from '@/components/templates'
 import type { DashboardStat } from '@/components/templates'
 import { requireProf } from '@/utilities/profAuth'
+import { ordrePresences, trierPresences } from '@/utilities/presences'
+import type { OrdrePresences } from '@/utilities/presences'
 import { niveauLabel, texteLexical } from '@/utilities/rapports'
 
 export const dynamic = 'force-dynamic'
@@ -27,7 +30,7 @@ export default async function EleveProfPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>
-  searchParams: Promise<{ retour?: string }>
+  searchParams: Promise<{ retour?: string; tri?: string }>
 }) {
   const { id } = await params
   const user = await requireProf()
@@ -37,7 +40,7 @@ export default async function EleveProfPage({
   // « Retour » renvoie à la liste « Mes élèves » par défaut, ou à l'écran
   // d'où l'utilisateur vient (fiche livre) — chemin interne uniquement
   // (anti open-redirect : doit commencer par « / » mais pas « // »).
-  const { retour: retourParam } = await searchParams
+  const { retour: retourParam, tri: triParam } = await searchParams
   const retour =
     retourParam && retourParam.startsWith('/') && !retourParam.startsWith('//')
       ? retourParam
@@ -138,13 +141,47 @@ export default async function EleveProfPage({
     },
   ]
 
+  // L'ordre voulu est celui de la date de SÉANCE (récent en premier), comme
+  // la Progression et les Retours de séance — createdAt est trompeur, voir
+  // utilities/presences. Le paramètre `tri` de l'URL permet d'inverser l'ordre
+  // chronologique (clic sur « Date ») ou de trier par matière/statut.
+  const ordre = ordrePresences(triParam)
+  const docsPresences = trierPresences(presences.docs, ordre)
+
+  const lienTri = (cible: OrdrePresences): string => {
+    const params = new URLSearchParams()
+    if (retourParam) params.set('retour', retourParam)
+    // L'ordre par défaut n'encombre pas l'URL — le lien y ramène aussi.
+    if (cible !== 'date-desc') params.set('tri', cible)
+    const requete = params.toString()
+    return requete ? `/profs/eleves/${id}?${requete}` : `/profs/eleves/${id}`
+  }
+  const enteteTri = (texte: string, cible: OrdrePresences, actif: boolean, sens?: 'asc' | 'desc'): TableHeadCell => ({
+    ariaSort: !actif ? undefined : sens === 'asc' ? 'ascending' : 'descending',
+    content: (
+      <Link className="lpv-m-table__head-link" href={lienTri(cible)}>
+        {texte}
+        {actif && sens ? (
+          <Icon icon={sens === 'asc' ? 'rivet-icons:arrow-up' : 'rivet-icons:arrow-down'} size={12} />
+        ) : null}
+      </Link>
+    ),
+    text: texte,
+  })
+  const enteteDate: TableHeadCell =
+    ordre === 'date-asc'
+      ? enteteTri('Date', 'date-desc', true, 'asc')
+      : ordre === 'date-desc'
+        ? enteteTri('Date', 'date-asc', true, 'desc')
+        : enteteTri('Date', 'date-desc', false)
+
   const presencesHead: TableHeadCell[] = [
-    { text: 'Date' },
-    { text: 'Matière' },
-    { text: 'Statut' },
+    enteteDate,
+    enteteTri('Matière', 'matiere', ordre === 'matiere', 'asc'),
+    enteteTri('Statut', 'statut', ordre === 'statut', 'asc'),
   ]
 
-  const presencesRows: TableRowCell[][] = presences.docs.map((presence) => {
+  const presencesRows: TableRowCell[][] = docsPresences.map((presence) => {
     const seance = presence.seance as unknown as { date?: string; matiere?: string }
     const statut = presenceStatus(presence.present)
     return [
@@ -219,16 +256,16 @@ export default async function EleveProfPage({
           title: 'Historique de présence',
           children:
             presences.docs.length === 0 ? (
-              <p className="lpv-muted">Aucune présence enregistrée.</p>
+              <EmptyState icon="rivet-icons:check-circle" title="Aucune présence enregistrée" variant="neutral" />
             ) : (
-              <Table caption="Présences" head={presencesHead} rows={presencesRows} />
+              <Table caption="" head={presencesHead} rows={presencesRows} />
             ),
         },
         {
           title: 'Progression',
           children:
             progressions.docs.length === 0 ? (
-              <p className="lpv-muted">Aucune progression.</p>
+              <EmptyState icon="rivet-icons:note" title="Aucune progression" description="" variant="neutral" />
             ) : (
               <div className="lpv-m-progression-list">
                 {progressions.docs.map((progression) => {
@@ -259,7 +296,7 @@ export default async function EleveProfPage({
           title: 'Retours de séance',
           children:
             seances.docs.filter((s) => s.retour).length === 0 ? (
-              <p className="lpv-muted">Aucun retour.</p>
+              <EmptyState icon="rivet-icons:chat" title="Aucun retour de séance" variant="neutral" />
             ) : (
               seances.docs
                 .filter((s) => s.retour)

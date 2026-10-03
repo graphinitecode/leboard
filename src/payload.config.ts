@@ -25,6 +25,7 @@ import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
+import { AUTOLOGIN_EMAIL } from '@/shared/auto-login'
 import { getServerSideURL } from './utilities/getURL'
 
 const filename = fileURLToPath(import.meta.url)
@@ -32,6 +33,9 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    // Connexion auto réservée au développement : en production, tout visiteur
+    // serait authentifié avec ce compte
+    autoLogin: process.env.NODE_ENV === 'development' ? { email: AUTOLOGIN_EMAIL } : false,
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.

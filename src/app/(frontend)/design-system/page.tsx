@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
-import { Button, BackLink, Breadcrumbs, Icon, InsetText, Panel, Tag, WarningText, Details, FileUpload } from '@/components/atoms'
+import { Button, BackLink, Breadcrumbs, Icon, InsetText, Panel, Progress, Tag, WarningText, Details, FileUpload } from '@/components/atoms'
 import { Label } from '@/components/atoms/a-label'
-import { Accordion, Avatar, Checkbox, DateInput, InputField, Input, CharacterCount, TaskList, NotificationBanner, Tabs, Pagination, ErrorSummary, SummaryList, Table, ThemeToggle } from '@/components/molecules'
+import { Accordion, Avatar, Checkbox, DateInput, EmptyState, InputField, Input, CharacterCount, TaskList, NotificationBanner, Tabs, Pagination, ErrorSummary, SummaryList, Table, ThemeToggle } from '@/components/molecules'
 import type { AccordionSection, Tab, CheckboxOption, TableHeadCell, TableRowCell, Task, PageNumber } from '@/components/molecules'
 
 import { DemoCombobox, DemoModale, DemoRadio, DemoToggle, DemoToast, DemoMonthCalendars } from './DemoClient'
@@ -134,6 +134,7 @@ export default function DesignSystemPage() {
           {/*<EnterText hrf={'#calendrier'}>Le Calendrier</EnterText>*/}
           <EnterText hrf={'/design-system/colors'}>Les Couleurs</EnterText>
           <EnterText hrf={'/design-system/typography'}>La Typographie</EnterText>
+          <EnterText hrf={'/design-system/sidebar'}>Esquisse — sidebar menu</EnterText>
         </div>
       </section>
 
@@ -232,6 +233,35 @@ export default function DesignSystemPage() {
           Cette action est irréversible. Vérifiez les informations avant de continuer.
         </WarningText>
 
+        <h3 className="lpv-h3">EmptyState</h3>
+        <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(17rem, 1fr))' }}>
+          <EmptyState
+            description="Aucun retour en attente pour le moment."
+            icon="rivet-icons:chat-solid"
+            title="Toutes tes séances sont à jour"
+            variant="success"
+          />
+          <EmptyState
+            description="Essaie un autre titre, auteur ou niveau."
+            icon="boxicons:search"
+            title="Aucun livre ne correspond à ta recherche"
+            variant="neutral"
+          />
+          <EmptyState
+            description="Les parents attendent une réponse sur une demande."
+            icon="rivet-icons:caution"
+            title="Aucune disponibilité déclarée"
+            variant="warning"
+          />
+          <EmptyState
+            compact
+            description="L'administration doit t'affecter un groupe."
+            icon="rivet-icons:info-circle"
+            title="Aucun élève ne t'est encore assigné"
+            variant="info"
+          />
+        </div>
+
         <h3 className="lpv-h3">NotificationBanner</h3>
         <NotificationBanner title="Vos disponibilités ont été enregistrées" type="success" />
 
@@ -277,6 +307,16 @@ export default function DesignSystemPage() {
           next={{ href: '#', label: 'Élèves' }}
           variant="block"
         />
+
+        <h3 className="lpv-h3">Progression</h3>
+        <p className="lpv-muted">
+          Atome <code>Progress</code> (jauge) : <code>role=&quot;progressbar&quot;</code> avec valeur/max et
+          texte lisible, remplissage de la couleur du portail. Utilisé par l&apos;écran d&apos;import
+          CSV de livres (avancement du versement).
+        </p>
+        <div style={{ maxWidth: '26rem' }}>
+          <Progress label="Progression d'essai" max={10} value={7} />
+        </div>
 
         <h3 className="lpv-h3">Details</h3>
         <Details summary="Quelles sont les horaires possibles ?" open>

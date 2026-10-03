@@ -18,10 +18,11 @@ const catalogueRetour: { data?: LivreCatalogue[]; isLoading: boolean; isError: b
 }
 
 const searchParamsCourants = { params: new URLSearchParams() }
+const mockRouterReplace = vi.fn()
 const mockMarquerRetourne = vi.fn().mockResolvedValue(undefined)
 
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({ refresh: vi.fn(), push: vi.fn(), replace: vi.fn() }),
+  useRouter: () => ({ refresh: vi.fn(), push: vi.fn(), replace: mockRouterReplace }),
   useSearchParams: () => searchParamsCourants.params,
   usePathname: () => '/profs/bibliotheque',
 }))
@@ -93,6 +94,23 @@ const CATALOGUE: LivreCatalogue[] = [
   },
 ]
 
+const livreTest = (index: number): LivreCatalogue => ({
+  id: 200 + index,
+  titre: `Livre ${String(index + 1).padStart(2, '0')}`,
+  auteur: null,
+  isbn: null,
+  resume: null,
+  editeur: null,
+  niveau: 'college',
+  categorie: 'lecture',
+  archived: false,
+  createdAt: '2026-09-01T00:00:00.000Z',
+  exemplaires: [{ id: index, code: `LPV-${String(index + 1).padStart(4, '0')}`, etat: 'bon', disponible: true }],
+})
+
+const livresDeTest = (quantite: number): LivreCatalogue[] =>
+  Array.from({ length: quantite }, (_, index) => livreTest(index))
+
 const rendre = (peutGerer = true) => {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   return render(
@@ -112,6 +130,7 @@ beforeEach(() => {
   catalogueRetour.data = []
   catalogueRetour.isLoading = false
   catalogueRetour.isError = false
+  mockRouterReplace.mockClear()
   mockMarquerRetourne.mockReset().mockResolvedValue(undefined)
 })
 
@@ -240,5 +259,58 @@ describe('BibliothequeView', () => {
     // Caption maquette
     // Texte de présentation (le nombre d'ouvrages vit dans les stats)
     expect(container.textContent).toContain('Gérez le catalogue')
+  })
+
+  it('pagine le catalogue par lots de 10', () => {
+    catalogueRetour.data = livresDeTest(23)
+    const { container } = rendre()
+
+    expect(container.querySelectorAll('.lpv-m-table tbody .lpv-m-table__row').length).toBe(10)
+    expect(screen.getByRole('navigation', { name: 'Pagination du catalogue' })).toBeDefined()
+    expect(screen.queryByText('Précédent')).toBeNull()
+    expect(container.querySelector('a[href="/profs/bibliotheque?page=2"]')).not.toBeNull()
+  })
+
+  it('affiche la page 2 via le parametre url avec bornes precedentes/suivantes', () => {
+    catalogueRetour.data = livresDeTest(23)
+    searchParamsCourants.params = new URLSearchParams('page=2')
+    const { container } = rendre()
+
+    expect(container.querySelectorAll('.lpv-m-table tbody .lpv-m-table__row').length).toBe(10)
+    expect(screen.getByText('Précédent')).toBeDefined()
+    expect(screen.getByText('Suivant')).toBeDefined()
+    // Page 1 sans paramètre (URL canonique) ; page 3 avec ?page=3
+    expect(
+      container.querySelector('.lpv-m-pagination__previous a[href="/profs/bibliotheque"]'),
+    ).not.toBeNull()
+    expect(container.querySelector('a[href="/profs/bibliotheque?page=3"]')).not.toBeNull()
+  })
+
+  it('borne la page demandee au total de pages', () => {
+    catalogueRetour.data = livresDeTest(23)
+    searchParamsCourants.params = new URLSearchParams('page=99')
+    const { container } = rendre()
+
+    expect(container.querySelectorAll('.lpv-m-table tbody .lpv-m-table__row').length).toBe(3)
+  })
+
+  it('n affiche pas de pagination sous une page de resultats', () => {
+    catalogueRetour.data = CATALOGUE
+    const { container } = rendre()
+
+    expect(container.querySelector('.lpv-m-pagination')).toBeNull()
+  })
+
+  it('remet a la page 1 quand le filtre change', async () => {
+    catalogueRetour.data = livresDeTest(23)
+    searchParamsCourants.params = new URLSearchParams('page=2')
+    const user = userEvent.setup()
+    rendre()
+
+    await user.selectOptions(screen.getByLabelText(/Filtrer par niveau/), 'primaire')
+
+    await waitFor(() => {
+      expect(mockRouterReplace).toHaveBeenCalledWith('/profs/bibliotheque')
+    })
   })
 })

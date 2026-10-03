@@ -22,6 +22,8 @@ export interface LivreCatalogue {
   categorie: string | null
   archived: boolean
   createdAt: string
+  /** Couverture éventuelle : simple adresse web (l'image n'est pas stockée). */
+  imageUrl?: null | string
   exemplaires: {
     id: number
     code: string
