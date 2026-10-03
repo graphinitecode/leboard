@@ -36,9 +36,16 @@
     outline-offset: 0;
   }
 
-  &:disabled {
+  &:disabled, &:disabled:hover {
     cursor: default;
     opacity: 0.7;
+    box-shadow: none;
+    transform: translateY(2px);
+    background-color: color-mix(in srgb, var(--lpv-text-muted) 17%, var(--lpv-mix-color));
+    color: color-mix(in srgb, var(--lpv-text-muted) 77%, var(--lpv-mix-color));
+    font-weight: 500;
+    border: 1px solid color-mix(in srgb, var(--lpv-text-muted) 27%, var(--lpv-mix-color));
+    //border: none;
   }
 
   &:focus {

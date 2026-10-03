@@ -50,10 +50,6 @@
       text-decoration-thickness: var(--lpv-decoration-thickness-hover);
       text-underline-offset: var(--lpv-text-underline-offset-hover);
     }
-
-    &:focus {
-      @include mixins.lpv-focused-text;
-    }
   }
 
   &__current {
@@ -107,11 +103,6 @@
     text-underline-offset: var(--lpv-text-underline-offset-hover);
   }
 
-  &:focus {
-    @include mixins.lpv-focused-text;
-    color: black;
-  }
-
   &__icon {
     display: inline-flex;
     flex-shrink: 0;
@@ -158,10 +149,6 @@
     &::marker {
       content: '';
       display: none;
-    }
-
-    &:focus {
-      @include mixins.lpv-focused-text;
     }
   }
 
@@ -276,11 +263,12 @@
     color: var(--lpv-text-muted);
     font-size: 1rem;
     font-weight: 400;
-    margin: 0.25rem 0 0 1.25rem;
+    margin: -0.37rem 0 .47rem 0;
   }
 
   &__content {
     padding: 0.5rem 0 1rem;
+    margin-left: var(--lpv-spacing-xl);
 
     &--hidden {
       display: none;
@@ -343,10 +331,8 @@
       text-underline-offset: var(--lpv-text-underline-offset-hover);
     }
 
-    &:focus {
-      @include mixins.lpv-focused-text;
-    }
-
+    /* Le focus est porté par la règle partagée des liens de texte
+       (_base.scss : fond jaune + texte noir), comme tous les autres liens. */
     &--active {
       color: var(--lpv-text);
       text-decoration: none;

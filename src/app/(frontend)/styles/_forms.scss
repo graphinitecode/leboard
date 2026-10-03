@@ -18,6 +18,9 @@
     color: var(--lpv-text-muted);
     font-size: 1rem;
     font-weight: 400;
+    padding: 7px 5px;
+    margin-left: var(--lpv-spacing-xs);
+    margin-bottom: var(--lpv-spacing-lg);
   }
 }
 
@@ -341,6 +344,17 @@
   }
 }
 
+/* --- Case à cocher isolée (atome) ---------------------------------------- */
+
+.lpv-a-checkbox {
+  border-radius: var(--lpv-border-radius-sm);
+  flex-shrink: 0;
+  height: 2.5ex;
+  min-height: 44px;
+  min-width: 44px;
+  width: 2.5ex;
+}
+
 /* --- Boutons radio -------------------------------------------------------- */
 
 .lpv-m-radios {
@@ -573,7 +587,7 @@
 .lpv-a-file-upload {
   appearance: none;
   background-color: var(--lpv-surface);
-  border: 2px dashed var(--lpv-grey-border);
+  border: 3px dashed var(--lpv-grey-border);
   border-radius: var(--lpv-radius-2xl);
   box-sizing: border-box;
   line-height: 1.4;

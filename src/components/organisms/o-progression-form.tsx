@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 
 import { Button } from '@/components/atoms/a-button'
 import {
@@ -19,9 +19,12 @@ const OPTIONS_NIVEAU: { label: string; value: NiveauProgression }[] = [
 export function ProgressionForm({
   seanceId,
   students,
+  renderTrigger,
 }: {
   seanceId?: number
   students: { id: number; label: string }[]
+  /** Déclencheur alternatif (ex. action d'un EmptyState) : reçoit « ouvrir ». */
+  renderTrigger?: (ouvrir: () => void) => ReactNode
 }) {
   const competences = useListCompetences()
   const ajouter = useAjouterProgression(seanceId)
@@ -30,6 +33,9 @@ export function ProgressionForm({
   const [formError, setFormError] = useState<string | null>(null)
 
   if (!open) {
+    if (renderTrigger) {
+      return <>{renderTrigger(() => setOpen(true))}</>
+    }
     return (
       <Button onClick={() => setOpen(true)} type="button">
         Ajouter une progression

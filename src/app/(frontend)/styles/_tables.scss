@@ -110,6 +110,19 @@
     }
   }
 
+  /* Entête cliquable (tri de table). Lien en ligne-flex : le texte et l'icône
+     Rivet (arrow-up / arrow-down, rendue par l'atome Icon) restent sur la
+     même ligne, le gap donne l'espacement. */
+  &__head-link {
+    align-items: center;
+    color: inherit;
+    display: inline-flex;
+    gap: .3rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+  }
+
   &__body {
     vertical-align: top;
   }
@@ -122,6 +135,10 @@
     border-bottom: 1px solid var(--lpv-grey-border);
     padding: 0.75rem 1rem;
     vertical-align: top;
+
+    /* th (entête de ligne) : le style UA centre le th — aligner à gauche
+       comme les td, sous l'entête de colonne (motif GOV.UK). */
+    text-align: left;
 
     &--numeric {
       text-align: right;

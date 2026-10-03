@@ -1,0 +1,71 @@
+/* LPV Board Design System — État vide (EmptyState)
+   Badge circulaire teinté (couleurs douces des tags, comme a-icon-card),
+   pas de bandeau de couleur en tête : la teinte vit sur l'icône. */
+
+.lpv-m-empty-state {
+  align-items: center;
+  border: 2px dashed var(--lpv-grey-border);
+  border-radius: var(--lpv-border-radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  text-align: center;
+  padding: 3.97rem .77rem !important;
+
+  &__badge {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+
+  &__title {
+    font-size: var(--lpv-font-size-lg);
+    color: var(--lpv-text);
+    font-weight: 700;
+    margin: 0;
+  }
+
+  &__description {
+    color: var(--lpv-text-muted);
+    font-size: var(--lpv-font-size-sm);
+    margin: 0.125rem 0 0;
+    max-width: 38ch;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-top: 1.27rem;
+  }
+
+  &--compact {
+    padding: 1.25rem 1rem;
+  }
+
+  /* Teintes de badge, selon la grille des tags doux (voir _tokens) ; */
+  /* neutre = gris du système.                                       */
+  &--neutral &__badge {
+    //background-color: var(--lpv-darkgrey-bg);
+    color: var(--lpv-text-muted);
+  }
+
+  &--info &__badge {
+    //background-color: var(--lpv-a-tag--blue-bg);
+    color: var(--lpv-a-tag--blue-text);
+  }
+
+  &--success &__badge {
+    //background-color: var(--lpv-a-tag--green-bg);
+    color: var(--lpv-a-tag--green-text);
+  }
+
+  /* La maquette d'inspiration colore « warning » en rouge : l'accent          */
+  /* demande l'attention, plus fort qu'un jaune de tag.                        */
+  &--warning &__badge {
+    background-color: var(--lpv-a-tag--red-bg);
+    color: var(--lpv-a-tag--red-text);
+  }
+}

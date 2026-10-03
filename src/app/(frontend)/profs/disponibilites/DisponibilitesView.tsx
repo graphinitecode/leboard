@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 
 import { InsetText } from '@/components/atoms'
-import { Toast } from '@/components/molecules'
+import { EmptyState, Toast } from '@/components/molecules'
 import { AvailabilityList, trierDisponibilites, useListMesDisponibilites } from '@/planning'
 
 export default function DisponibilitesView() {
@@ -66,7 +66,12 @@ function VueDisponibilites() {
           Vos créneaux
         </h2>
         {dispos.length === 0 ? (
-          <InsetText>Aucune disponibilité déclarée. Ajoutez votre premier créneau ci-dessous.</InsetText>
+          <EmptyState
+            description="Ajoutez votre premier créneau ci-dessous : l'association l'utilise pour planifier vos séances."
+            icon="rivet-icons:calendar"
+            title="Aucune disponibilité déclarée"
+            variant="warning"
+          />
         ) : (
           <AvailabilityList dispos={dispos} />
         )}

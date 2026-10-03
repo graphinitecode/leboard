@@ -60,6 +60,18 @@
   }
 }
 
+/* --- Focus partagé des liens de texte (motif GOV.UK) -------------------------- */
+/* Tous les liens de texte (liens inline, onglets, summary, actions de liste…)
+   partagent le même traitement au focus clavier : fond jaune + texte noir
+   (lpv-focused-text). Les composants à fond ou sur bande colorée (boutons
+   lpv-a-button, entête portail, calendrier…) gardent leurs variantes propres,
+   plus spécifiques, qui surchargent cette règle de base : la pseudo-classe
+   :where() neutralise le poids de l'exclusion des boutons-liens. */
+a:where(:not(.lpv-a-button)):focus-visible,
+summary:focus-visible {
+  @include mixins.lpv-focused-text;
+}
+
 /* --- Utilitaire d'accessibilité --------------------------------------------- */
 
 .lpv-visually-hidden {
