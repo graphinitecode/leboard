@@ -18,7 +18,7 @@ import {
 } from './application/seances.hooks'
 import { seancesRepository } from './infrastructure/seances.repository'
 import type { SeanceLigneViewModel, SeanceDetailViewModel } from './presentation/seance.presenter'
-import { presentSeanceLigne, presentSeanceDetail, statutPresenceLabel } from './presentation/seance.presenter'
+import { presentSeanceLigne, presentSeanceDetail, statutPresenceLabel, statutPresenceColor, creneauSeance } from './presentation/seance.presenter'
 import { useSeancesStore } from './presentation/store/seances.store'
 import { PresenceToggle } from '@/components/organisms/o-presence-toggle'
 import { ReturnForm } from '@/components/organisms/o-return-form'
@@ -46,6 +46,8 @@ export {
   presentSeanceLigne,
   presentSeanceDetail,
   statutPresenceLabel,
+  statutPresenceColor,
+  creneauSeance,
   useSeancesStore,
   PresenceToggle,
   ReturnForm,

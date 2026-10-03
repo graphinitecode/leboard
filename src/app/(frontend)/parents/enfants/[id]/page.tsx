@@ -1,12 +1,16 @@
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 
 import { BackLink, Tag } from '@/components/atoms'
-import { Table } from '@/components/molecules'
+import { Icon } from '@/components/atoms/a-icon'
+import { EmptyState, Table } from '@/components/molecules'
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
 import { WeekCalendar } from '@/calendrier'
 import type { EventCalendrier } from '@/calendrier'
 import { matiereFiable } from '@/calendrier/domain/calendrier.utils'
 import { requireParent } from '@/utilities/parentAuth'
+import { ordrePresences, trierPresences } from '@/utilities/presences'
+import type { OrdrePresences } from '@/utilities/presences'
 import { getPayloadInstance, verifierParentEleve } from '@/utilities/parentPortal'
 
 export const dynamic = 'force-dynamic'
@@ -33,10 +37,10 @@ export default async function EnfantPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>
-  searchParams: Promise<{ semaine?: string }>
+  searchParams: Promise<{ semaine?: string; tri?: string }>
 }) {
   const { id } = await params
-  const { semaine } = await searchParams
+  const { semaine, tri: triParam } = await searchParams
   const user = await requireParent()
   const payload = await getPayloadInstance()
 
@@ -97,14 +101,44 @@ export default async function EnfantPage({
   const presentes = presences.docs.filter((p) => p.present === 'present').length
   const taux = presences.totalDocs > 0 ? Math.round((presentes / presences.totalDocs) * 100) : null
 
+  // Ordre d'affichage : date de la séance (récent d'abord) par défaut, avec
+  // `?tri=…` pour inverser la chronologie ou trier matière/statut (entêtes
+  // cliquables, voir utilities/presences) — createdAt n'est pas la date utile.
+  const ordre = ordrePresences(triParam)
+  const lienTri = (cible: OrdrePresences): string => {
+    const params = new URLSearchParams()
+    if (semaine) params.set('semaine', semaine)
+    if (cible !== 'date-desc') params.set('tri', cible)
+    const requete = params.toString()
+    return requete ? `/parents/enfants/${id}?${requete}` : `/parents/enfants/${id}`
+  }
+  const enteteTri = (texte: string, cible: OrdrePresences, actif: boolean, sens?: 'asc' | 'desc'): TableHeadCell => ({
+    ariaSort: !actif ? undefined : sens === 'asc' ? 'ascending' : 'descending',
+    content: (
+      <Link className="lpv-m-table__head-link" href={lienTri(cible)}>
+        {texte}
+        {actif && sens ? (
+          <Icon icon={sens === 'asc' ? 'rivet-icons:arrow-up' : 'rivet-icons:arrow-down'} size={12} />
+        ) : null}
+      </Link>
+    ),
+    text: texte,
+  })
+  const enteteDate: TableHeadCell =
+    ordre === 'date-asc'
+      ? enteteTri('Date', 'date-desc', true, 'asc')
+      : ordre === 'date-desc'
+        ? enteteTri('Date', 'date-asc', true, 'desc')
+        : enteteTri('Date', 'date-desc', false)
+
   const presencesHead: TableHeadCell[] = [
-    { text: 'Date' },
-    { text: 'Matière' },
-    { text: 'Statut' },
+    enteteDate,
+    enteteTri('Matière', 'matiere', ordre === 'matiere', 'asc'),
+    enteteTri('Statut', 'statut', ordre === 'statut', 'asc'),
     { text: 'Commentaire' },
   ]
 
-  const presencesRows: TableRowCell[][] = presences.docs.map((presence) => {
+  const presencesRows: TableRowCell[][] = trierPresences(presences.docs, ordre).map((presence) => {
     const seance = presence.seance as unknown as { date?: string; matiere?: string }
     return [
       { text: seance?.date ? new Date(String(seance.date)).toLocaleDateString('fr-FR') : '—' },
@@ -162,7 +196,7 @@ export default async function EnfantPage({
       <section>
         <h2 className="lpv-h2">Présences {taux !== null && `— ${taux}%`}</h2>
         {presences.docs.length === 0 ? (
-          <p className="lpv-muted">Aucune séance enregistrée pour le moment.</p>
+          <EmptyState icon="rivet-icons:check-circle" title="Aucune séance enregistrée pour le moment" variant="neutral" />
         ) : (
           <Table caption="Présences" head={presencesHead} rows={presencesRows} />
         )}
@@ -171,7 +205,7 @@ export default async function EnfantPage({
       <section>
         <h2 className="lpv-h2">Retours de séance</h2>
         {seances.docs.length === 0 ? (
-          <p className="lpv-muted">Aucun retour pour le moment.</p>
+          <EmptyState icon="rivet-icons:chat" title="Aucun retour pour le moment" variant="neutral" />
         ) : (
           seances.docs
             .filter((s) => s.retour)
@@ -189,7 +223,7 @@ export default async function EnfantPage({
       <section>
         <h2 className="lpv-h2">Progressions</h2>
         {progressions.docs.length === 0 ? (
-          <p className="lpv-muted">Aucune progression enregistrée pour le moment.</p>
+          <EmptyState icon="rivet-icons:note" title="Aucune progression enregistrée pour le moment" variant="neutral" />
         ) : (
           <Table caption="Progressions" head={progressionsHead} rows={progressionsRows} />
         )}
@@ -198,7 +232,7 @@ export default async function EnfantPage({
       <section>
         <h2 className="lpv-h2">Prêts</h2>
         {prets.docs.length === 0 ? (
-          <p className="lpv-muted">Aucun prêt enregistré.</p>
+          <EmptyState icon="boxicons:book" title="Aucun prêt enregistré" variant="neutral" />
         ) : (
           <Table caption="Prêts" head={pretsHead} rows={pretsRows} />
         )}

@@ -5,6 +5,11 @@ export interface ListByEleveQuery {
   limite?: number
 }
 
+export interface ListBySeanceQuery {
+  seanceId: number
+  limite?: number
+}
+
 export interface AjouterProgressionCommand {
   eleveId: number
   competenceId: number
@@ -15,6 +20,7 @@ export interface AjouterProgressionCommand {
 
 export interface IProgressionsRepository {
   listByEleve(query: ListByEleveQuery): Promise<Progression[]>
+  listBySeance(query: ListBySeanceQuery): Promise<Progression[]>
   ajouter(command: AjouterProgressionCommand): Promise<void>
   listCompetences(): Promise<CompetenceOption[]>
 }
