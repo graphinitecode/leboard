@@ -263,11 +263,12 @@
     color: var(--lpv-text-muted);
     font-size: 1rem;
     font-weight: 400;
-    margin: 0.25rem 0 0 1.25rem;
+    margin: -0.37rem 0 .47rem 0;
   }
 
   &__content {
     padding: 0.5rem 0 1rem;
+    margin-left: var(--lpv-spacing-xl);
 
     &--hidden {
       display: none;

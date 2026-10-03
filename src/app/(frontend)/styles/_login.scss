@@ -17,7 +17,7 @@
   &__subtitle {
     color: var(--lpv-text-muted);
     font-size: var(--lpv-font-size-xl);
-    line-height: 1.27;
+    line-height: 1.17;
     padding-bottom: 1.27rem;
   }
 
@@ -33,7 +33,7 @@
 
   /* Lien « Mot de passe oublié ? » isolé sous le bouton (cf. image de référence) */
   &__forgot , &__help{
-    margin-block: 0.57rem;
+    margin-block: 0.27rem;
     color: var(--lpv-text-muted);
     line-height: 1.77rem;
     font-size: var(--lpv-font-size-md);

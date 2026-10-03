@@ -6,7 +6,7 @@ import { useMemo, useState } from 'react'
 
 import { InsetText, Tag } from '@/components/atoms'
 import { BackLink } from '@/components/atoms/a-back-link'
-import { AlertCard, Pagination, Table } from '@/components/molecules'
+import { AlertCard, EmptyState, Pagination, Table } from '@/components/molecules'
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
 import { StatsGrid } from '@/components/templates'
 import type { DashboardStat } from '@/components/templates'
@@ -291,11 +291,16 @@ export default function ElevesView({ profId, alertes, retour }: ElevesViewProps)
             {tauxQuery.isLoading ? (
               <p className="lpv-muted">Calcul des taux de présence…</p>
             ) : listeFiltree.length === 0 ? (
-              <InsetText>
-                {liste.length === 0
-                  ? 'Aucun élève n’est relié à votre compte pour le moment. Contactez l’association si cela vous semble anormal.'
-                  : 'Aucun élève ne correspond à votre recherche.'}
-              </InsetText>
+              <EmptyState
+                description={
+                  liste.length === 0
+                    ? 'Contactez l’association si cela vous semble anormal.'
+                    : 'Essaie un autre nom, niveau ou statut.'
+                }
+                icon="rivet-icons:user-group"
+                title={liste.length === 0 ? 'Aucun élève n’est relié à votre compte pour le moment' : 'Aucun élève ne correspond à votre recherche'}
+                variant={liste.length === 0 ? 'info' : 'neutral'}
+              />
             ) : (
               <>
                 <div style={{ overflowX: 'auto' }}>
@@ -320,7 +325,7 @@ export default function ElevesView({ profId, alertes, retour }: ElevesViewProps)
           <div className="lpv-t-dashboard-page__aside-card">
             <h3 className="lpv-t-dashboard-page__aside-card__title">À surveiller</h3>
             {nbSurveillance === 0 ? (
-              <p className="lpv-muted">Aucun élève à surveiller pour le moment.</p>
+              <EmptyState compact icon="rivet-icons:user" title="Aucun élève à surveiller pour le moment" variant="neutral" />
             ) : (
               <div className="lpv-t-dashboard-page__aside-card__stack">
                 {liste

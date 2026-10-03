@@ -15,8 +15,10 @@ import {
   useMarquerRetourne,
   useEnregistrerPret,
   useCreerExemplaire,
+  useSupprimerExemplaire,
   useCreerLivre,
   useModifierLivre,
+  useRetirerCatalogue,
   PRETS_QUERY_KEY,
   CATALOGUE_QUERY_KEY,
 } from './application/bibliotheque.hooks'
@@ -32,13 +34,19 @@ import {
   labelNiveauLivre,
   NIVEAUX_LIVRE,
 } from './domain/livre.options'
+import { compacterIsbn, detecterDoublonCatalogue } from './domain/livre.doublon'
+import type { LigneImportLivre } from './domain/livre.import'
+import { analyserImportLivre } from './domain/livre.import'
 
-export type { Pret, LivreCatalogue }
+export type { Pret, LivreCatalogue, LigneImportLivre }
 export {
   CATEGORIES_LIVRE,
   labelCategorieLivre,
   labelNiveauLivre,
   NIVEAUX_LIVRE,
+  analyserImportLivre,
+  compacterIsbn,
+  detecterDoublonCatalogue,
   estPretEnCours,
   exemplairesDisponibles,
   joursDeRetard,
@@ -57,8 +65,10 @@ export {
   useMarquerRetourne,
   useEnregistrerPret,
   useCreerExemplaire,
+  useSupprimerExemplaire,
   useCreerLivre,
   useModifierLivre,
+  useRetirerCatalogue,
   PRETS_QUERY_KEY,
   CATALOGUE_QUERY_KEY,
   bibliothequeRepository,

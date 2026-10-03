@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 
 import { Button, InsetText, Panel, WarningText } from '@/components/atoms'
-import { Combobox, ErrorSummary, Radios, type ComboboxOption } from '@/components/molecules'
+import { Combobox, EmptyState, ErrorSummary, Radios, type ComboboxOption } from '@/components/molecules'
 import { QuestionPage, QuestionPageAnswers } from '@/components/templates'
 import { ConfirmAction } from '@/components/organisms/o-confirm-action'
 import {
@@ -265,7 +265,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
               Continuer
             </Button>
           }
-          question="À quel élève souhaite t-on preter un ouvrage ?"
+          question="À quel élève souhaitez-vous prêter un ouvrage ?"
           retour={{ href: '/profs/bibliotheque', label: 'Retour à la bibliothèque' }}
           step={1}
           stepSize={4}
@@ -274,7 +274,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
           {eleves.isLoading ? (
             <p className="lpv-muted">Chargement des élèves…</p>
           ) : (eleves.data ?? []).length === 0 ? (
-            <p className="lpv-muted">Aucun élève relié à votre compte.</p>
+            <EmptyState compact icon="rivet-icons:user" title="Aucun élève relié à votre compte" variant="info" />
           ) : eleveChoisi ? (
             <div className="lpv-m-combobox__selection">
               <div className="lpv-m-combobox__selection__content">
@@ -351,7 +351,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
           {catalogue.isLoading ? (
             <p className="lpv-muted">Chargement du catalogue…</p>
           ) : aucunExemplaireDisponible ? (
-            <p className="lpv-muted">Aucun exemplaire disponible pour le moment.</p>
+            <EmptyState compact icon="boxicons:book" title="Aucun exemplaire disponible pour le moment" variant="info" />
           ) : (
             <>
               <Combobox
@@ -468,8 +468,7 @@ export default function NouveauPretView({ profId }: { profId: number }) {
               { question: 'Élève', valeur: nomEleveChoisi ?? '—', onClick: () => setEtape(1) },
               {
                 onClick: () => setEtape(2),
-                question:
-                  livresChoisis.length > 1 ? `Livres (${livresChoisis.length})` : 'Livres',
+                question: livresChoisis.length > 1 ? `Livres (${livresChoisis.length})` : 'Livres',
                 valeur: livresChoisis.length > 0 ? titresChoisis : '—',
               },
               {
@@ -504,21 +503,20 @@ export default function NouveauPretView({ profId }: { profId: number }) {
             Nous vous le rappellerons{' '}
             <span className="font-semibold">deux jours avant la date de retour</span>.
           </p>
-          <p className="pb-3">
-            <EnterText hrf="#">
-              <p
-                onClick={(e) => {
-                  e.preventDefault()
-                  reinitialiser()
-                }}
-              >
-                Enregistrer un autre prêt
-              </p>
+          <div className="pb-3">
+            <EnterText
+              hrf="#"
+              onClick={(e) => {
+                e.preventDefault()
+                reinitialiser()
+              }}
+            >
+              Enregistrer un autre prêt
             </EnterText>
-          </p>
-          <p>
+          </div>
+          <div>
             <EnterText hrf="/profs/bibliotheque">Retour à la bibliothèque</EnterText>
-          </p>
+          </div>
         </div>
       )}
 

@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 
 import { Button } from '@/components/atoms/a-button'
 import { Panel, WarningText } from '@/components/atoms'
-import { Combobox, type ComboboxOption, ErrorSummary, Input } from '@/components/molecules'
+import { Combobox, EmptyState, type ComboboxOption, ErrorSummary, Input } from '@/components/molecules'
 import { QuestionPage, QuestionPageAnswers } from '@/components/templates'
 import { ConfirmAction } from '@/components/organisms/o-confirm-action'
 import {
@@ -276,7 +276,7 @@ function ParcoursNouvelleSeance() {
           {eleves.isLoading ? (
             <p className="lpv-muted">Chargement des élèves…</p>
           ) : (eleves.data ?? []).length === 0 ? (
-            <p className="lpv-muted">Aucun élève relié à votre compte.</p>
+            <EmptyState compact icon="rivet-icons:user" title="Aucun élève relié à votre compte" variant="info" />
           ) : (
             <>
               <Combobox

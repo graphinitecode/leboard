@@ -152,7 +152,7 @@ describe('FicheLivreView (alignee maquette)', () => {
     pretsLivreRetour.data = PRETS
     const { container } = rendre()
 
-    expect(container.textContent).toContain('Actions')
+    expect(container.textContent).toContain('Faites état du prêt')
     expect(container.textContent).toContain('Retard en cours')
     expect(container.textContent).toContain('Informations')
     expect(container.textContent).toContain('978-2-07-040850-4')
@@ -160,11 +160,13 @@ describe('FicheLivreView (alignee maquette)', () => {
     expect(container.textContent).toContain('Ajouté au catalogue')
     expect(screen.getByText('Modifier la fiche du livre')).toBeDefined()
 
-    // Note « exemplaires physiques » dans la carte Informations (carte colorée)
+    // Note « gestion des exemplaires » dans la carte Informations (carte colorée)
     const cardInfo = Array.from(
       container.querySelectorAll('.lpv-t-dashboard-page__aside-color-card'),
     ).find((card) => card.querySelector('h3')?.textContent === 'Informations')
-    expect(cardInfo?.textContent).toContain('Les exemplaires physiques se gèrent dans')
+    expect(cardInfo?.textContent).toContain(
+      "notes d'entretien) se gèrent dans le panneau d'administration",
+    )
     expect(cardInfo?.querySelector('a[href="/admin"]')).not.toBeNull()
   })
 
@@ -172,16 +174,16 @@ describe('FicheLivreView (alignee maquette)', () => {
     pretsLivreRetour.data = PRETS
     const { container } = rendre(false)
 
-    expect(container.textContent).not.toContain('Actions')
+    expect(container.textContent).not.toContain('Faites état du prêt')
     expect(screen.queryByText('Modifier la fiche du livre')).toBeNull()
     expect(container.textContent).toContain('Informations')
   })
 
-  it('masque la note exemplaires physiques pour un non gerant', () => {
+  it('masque la note gestion des exemplaires pour un non gerant', () => {
     pretsLivreRetour.data = PRETS
     const { container } = rendre(false)
 
-    expect(container.textContent).not.toContain('Les exemplaires physiques se gèrent dans')
+    expect(container.textContent).not.toContain("notes d'entretien")
   })
 
   it('affiche l etat livre introuvable', () => {

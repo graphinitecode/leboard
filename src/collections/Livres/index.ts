@@ -1,6 +1,8 @@
 import type { CollectionConfig } from 'payload'
 
 import { biblioDelete, biblioRead, biblioWrite } from '../../access/biblio'
+import { livresBeforeChange } from '../../hooks/livres/livresBeforeChange'
+import { compacterIsbn } from '../../bibliotheque/domain/livre.doublon'
 import { CATEGORIES_LIVRE, NIVEAUX_LIVRE } from '../../bibliotheque/domain/livre.options'
 
 // Alias : les options de catégorie vivent désormais dans le module domaine
@@ -39,8 +41,8 @@ export const Livres: CollectionConfig = {
         description: 'ISBN-10 ou ISBN-13 (optionnel)',
       },
       validate: (value: string | null | undefined) => {
-        if (!value) return true
-        const compact = value.replace(/[\s-]/g, '')
+        const compact = compacterIsbn(value)
+        if (!compact) return true
         if (/^\d{10}$/.test(compact) || /^\d{13}$/.test(compact)) return true
         return 'ISBN invalide (10 ou 13 chiffres attendus).'
       },
@@ -71,6 +73,26 @@ export const Livres: CollectionConfig = {
       },
     },
     {
+      label: 'Image de couverture',
+      name: 'imageUrl',
+      type: 'text',
+      admin: {
+        description:
+          'Adresse web (https://…) de la couverture, affichée sur la fiche du livre dans le portail. L’image n’est pas stockée sur le site.',
+      },
+      validate: (valeur: null | string | undefined) => {
+        if (!valeur) return true
+        try {
+          const url = new URL(valeur)
+          return url.protocol === 'http:' || url.protocol === 'https:'
+            ? true
+            : 'Saisissez une adresse commençant par https://'
+        } catch {
+          return 'Saisissez une adresse complète (par exemple https://…/couverture.jpg)'
+        }
+      },
+    },
+    {
       defaultValue: false,
       label: 'Retiré du catalogue',
       name: 'archived',
@@ -81,5 +103,8 @@ export const Livres: CollectionConfig = {
       },
     },
   ],
+  hooks: {
+    beforeChange: [livresBeforeChange],
+  },
   timestamps: true,
 }
