@@ -6,6 +6,8 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+## [0.12.0] — 2026-10-04
+
 ### Ajouté
 - Fiche livre : une couverture facultative désignée par son adresse web (l'image n'est pas stockée sur le site), affichée à côté du résumé quand il existe, sinon sur la carte « Informations », et modifiable à tout moment.
 - La suppression d'un livre a sa propre page d'avertissement : les conséquences sont expliquées avant le geste (l'historique des emprunts est conservé et le livre sort du catalogue ; un prêt en cours n'est pas annulé), avec un bouton rouge de confirmation et une annulation neutre.
