@@ -37,12 +37,12 @@ export default function SupprimerLivreView({ livreId }: SupprimerLivreProps) {
   if (supprime) {
     return (
       <div className="lpv-t-question-page">
-        <Panel title="Livre supprimé">
+        <Panel title="Livre supprimé" variante="success">
           <p>« {supprime} » n&apos;est plus au catalogue.</p>
         </Panel>
-        <p>
+        <div>
           <EnterText hrf="/profs/bibliotheque">Retour à la bibliothèque</EnterText>
-        </p>
+        </div>
       </div>
     )
   }
@@ -51,9 +51,9 @@ export default function SupprimerLivreView({ livreId }: SupprimerLivreProps) {
     return (
       <>
         <InsetText>Livre introuvable ou retiré du catalogue.</InsetText>
-        <p>
+        <div>
           <EnterText hrf="/profs/bibliotheque">Retour à la bibliothèque</EnterText>
-        </p>
+        </div>
       </>
     )
   }

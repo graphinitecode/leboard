@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 import { BackLink, Icon, InsetText, Tag } from '@/components/atoms'
 import { Button } from '@/components/atoms/a-button'
-import { AlertCard, Table, Toast } from '@/components/molecules'
+import { AlertCard, EmptyState, Table, Toast } from '@/components/molecules'
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
 import { DetailPage } from '@/components/templates'
 import type { DashboardStat } from '@/components/templates'
@@ -128,7 +128,7 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
     <>
       {peutGerer ? (
         <div className="lpv-t-dashboard-page__aside-card">
-          <h3 className="lpv-t-dashboard-page__aside-card__title">Actions</h3>
+          <h3 className="lpv-t-dashboard-page__aside-card__title">Faites état du prêt ou de l&#39;emprunt du livre !</h3>
           <div className="lpv-t-dashboard-page__aside-card__actions">
             <Button href="/profs/bibliotheque/prets/nouveau" variant="success">
               <Icon icon={'rivet-icons:plus-circle-solid'} size={19} />
@@ -155,9 +155,6 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
                 Signaler un retour
               </Button>
             )}
-            <Button href={`/profs/bibliotheque/livres/${livre.id}/modifier`} variant="primary">
-              Modifier la fiche du livre
-            </Button>
           </div>
         </div>
       ) : null}
@@ -172,6 +169,19 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
       <div className="lpv-t-dashboard-page__aside-color-card">
         <h3 className="lpv-t-dashboard-page__aside-color-card__title">Informations</h3>
 
+        {livre.imageUrl && !livre.resume ? (
+          /* Pas de résumé : la couverture reste sur la carte Informations (sinon
+             elle vit à côté du résumé, section homonyme — pas de doublon). */
+          <div className="lpv-t-dashboard-page__aside-cover-frame">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt={`Couverture de « ${livre.titre} »`}
+              className="lpv-t-dashboard-page__aside-cover"
+              loading="lazy"
+              src={livre.imageUrl}
+            />
+          </div>
+        ) : null}
         <dl className="lpv-m-infolist">
           <dt>Catégorie</dt>
           <dd>{livre.categorie ? (CATEGORIE_LABELS[livre.categorie] ?? livre.categorie) : '—'}</dd>
@@ -188,55 +198,49 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
           </dd>
         </dl>
         {peutGerer ? (
-          <div className={'lpv-t-dashboard-page__aside-color-card__actions'}>
-            <Icon icon={`rivet-icons:lock-closed-solid`} size={22} className="lpv-t-dashboard-page__aside-color-card__actions--icon" />
-            <p className={`lpv-t-dashboard-page__aside-color-card__actions--content`}>
-              Le nombre d&apos;exemplaires se règle dans « Modifier la fiche du
-              livre » ; les exemplaires individuels (état, notes d&apos;entretien)
-              se gèrent dans{' '}
-              <Link className="lpv-link-inline" href="/admin">
-                le panneau d&apos;administration
-              </Link>
-              .
-            </p>
-          </div>
+          <>
+            <div className="flex mb-5 justify-center px-4">
+              <Button
+                href={`/profs/bibliotheque/livres/${livre.id}/modifier`}
+                variant="tertiary"
+                className="w-full"
+              >
+                Modifier la fiche du livre
+              </Button>
+            </div>
+            <div className={'lpv-t-dashboard-page__aside-color-card__actions'}>
+              <Icon
+                icon={`rivet-icons:lock-closed-solid`}
+                size={22}
+                className="lpv-t-dashboard-page__aside-color-card__actions--icon"
+              />
+              <p className={`lpv-t-dashboard-page__aside-color-card__actions--content`}>
+                les exemplaires individuels (état, notes d&apos;entretien) se gèrent dans{' '}
+                <Link className="lpv-link-inline" href="/admin">
+                  le panneau d&apos;administration
+                </Link>
+                .
+              </p>
+            </div>
+          </>
         ) : null}
       </div>
-      {/*<div className="lpv-t-dashboard-page__aside-card">*/}
-      {/*  <h3 className="lpv-t-dashboard-page__aside-card__title">Informations</h3>*/}
-      {/*  <dl className="lpv-m-infolist">*/}
-      {/*    <dt>Catégorie</dt>*/}
-      {/*    <dd>{livre.categorie ? (CATEGORIE_LABELS[livre.categorie] ?? livre.categorie) : '—'}</dd>*/}
-      {/*    <dt>ISBN</dt>*/}
-      {/*    <dd>{livre.isbn ?? '—'}</dd>*/}
-      {/*    <dt>Exemplaires</dt>*/}
-      {/*    <dd>{totalExemplaires}</dd>*/}
-      {/*    <dt>Ajouté au catalogue</dt>*/}
-      {/*    <dd>*/}
-      {/*      {new Date(String(livre.createdAt)).toLocaleDateString('fr-FR', {*/}
-      {/*        month: 'long',*/}
-      {/*        year: 'numeric',*/}
-      {/*      })}*/}
-      {/*    </dd>*/}
-      {/*  </dl>*/}
-      {/*  {peutGerer ? (*/}
-      {/*    <p*/}
-      {/*      style={{*/}
-      {/*        borderTop: '1px solid var(--lpv-grey-border)',*/}
-      {/*        color: 'var(--lpv-text-muted)',*/}
-      {/*        fontSize: '0.8rem',*/}
-      {/*        marginTop: '0.625rem',*/}
-      {/*        paddingTop: '0.625rem',*/}
-      {/*      }}*/}
-      {/*    >*/}
-      {/*      Les exemplaires physiques se gèrent dans{' '}*/}
-      {/*      <Link className="lpv-link-inline" href="/admin">*/}
-      {/*        le panneau d&apos;administration*/}
-      {/*      </Link>*/}
-      {/*      .*/}
-      {/*    </p>*/}
-      {/*  ) : null}*/}
-      {/*</div>*/}
+
+      <div className="lpv-t-dashboard-page__aside-card">
+        <h3 className="lpv-t-dashboard-page__aside-card__title">Zone Dangereuse</h3>
+        <div className="lpv-t-dashboard-page__aside-card__actions">
+          <p className="mb-4 opacity-80">
+            Cliquez sur le bouton ci-dessous pour supprimer définitivement le livre du catalogue.
+          </p>
+          <Button
+            href={`/profs/bibliotheque/livres/${livre.id}/supprimer`}
+            variant="danger"
+            className="w-full"
+          >
+            Supprimer le livre
+          </Button>
+        </div>
+      </div>
     </>
   )
 
@@ -261,7 +265,8 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
     <>
       {(erreur || prets.isError) && (
         <InsetText>
-          {erreur ?? 'Impossible de charger les emprunts. Rechargez la page ou réessayez plus tard.'}
+          {erreur ??
+            'Impossible de charger les emprunts. Rechargez la page ou réessayez plus tard.'}
         </InsetText>
       )}
       {retourMarque && (
@@ -300,7 +305,21 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
         sections={[
           {
             title: 'Résumé',
-            children: livre.resume ? (
+            children: livre.resume && livre.imageUrl ? (
+              <div className="lpv-t-dashboard-page__couverture-resume">
+                {/* Couverture externe (lien web) : pas d'optimisation next/image. */}
+                <div className="lpv-t-dashboard-page__aside-cover-frame">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    alt={`Couverture de « ${livre.titre} »`}
+                    className="lpv-t-dashboard-page__aside-cover"
+                    loading="lazy"
+                    src={livre.imageUrl}
+                  />
+                </div>
+                <p>{livre.resume}</p>
+              </div>
+            ) : livre.resume ? (
               <p>{livre.resume}</p>
             ) : peutGerer ? (
               <p className="lpv-muted">
@@ -319,16 +338,31 @@ export default function FicheLivreView({ livreId, peutGerer }: FicheLivreProps) 
           },
           {
             title: 'Historique des emprunts',
-            children:
-              prets.isLoading ? (
-                <p className="lpv-muted">Chargement des emprunts…</p>
-              ) : (prets.data ?? []).length === 0 ? (
-                <InsetText>Aucun emprunt enregistré pour ce livre.</InsetText>
-              ) : (
-                <div style={{ overflowX: 'auto' }}>
-                  <Table caption="" head={head} rows={rows} />
-                </div>
-              ),
+            children: prets.isLoading ? (
+              <p className="lpv-muted">Chargement des emprunts…</p>
+            ) : (prets.data ?? []).length === 0 ? (
+              <EmptyState
+                compact
+                icon="rivet-icons:eye-off"
+                title="Vu par aucun élève..."
+                description={`Ce livre ${livre.titre} n'a pas encore été preté a un ou plusieurs élèves, afin d'etre lu.`}
+                variant="neutral"
+                actions={[
+                  // bouton simple
+                  // { label: 'Contacter l’association', variant: 'primary' },
+                  // avec navigation (page → lien <a>)
+                  {
+                    label: 'Je prête ce livre',
+                    href: "/profs/bibliotheque/prets/nouveau",
+                    variant: 'secondary',
+                  },
+                ]}
+              />
+            ) : (
+              <div style={{ overflowX: 'auto' }}>
+                <Table caption="" head={head} rows={rows} />
+              </div>
+            ),
           },
         ]}
         sidebar={sidebar}

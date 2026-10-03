@@ -69,6 +69,7 @@ export const useCreerLivre = () => {
       niveau?: string
       categorie?: string
       resume?: string
+      imageUrl?: string
     }) => bibliothequeRepository.creerLivre(command),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['bibliotheque', 'catalogue'] }),
   })
@@ -97,6 +98,7 @@ export const useModifierLivre = () => {
       categorie?: string | null
       editeur?: string | null
       resume?: string | null
+      imageUrl?: null | string
     }) => bibliothequeRepository.modifierLivre(command),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['bibliotheque', 'catalogue'] }),
   })

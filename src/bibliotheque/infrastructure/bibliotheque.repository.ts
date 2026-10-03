@@ -32,6 +32,9 @@ const codesEmpruntesDepuisPrets = (prets: PretDto[]): Set<string> => {
   return codes
 }
 
+// La couverture vit désormais sur une adresse web (Livres.imageUrl) : pas de
+// stockage, pas de relation média — mapping à plat.
+
 export const bibliothequeRepository = {
   async listPretsEnCours({ eleveId }: ListPretsEnCoursQuery): Promise<Pret[]> {
     try {
@@ -114,7 +117,7 @@ export const bibliothequeRepository = {
       const [livresRes, exemplairesRes, pretsRes] = await Promise.all([
         httpClient.get<{ docs: Livre[]; totalDocs: number }>('/livres', {
           params: {
-            depth: 0,
+            depth: 0, // aucune relation du Livre : la couverture est un lien texte
             limit: 0,
             sort: 'titre',
             where: JSON.stringify({ archived: { not_equals: true } }),
@@ -156,6 +159,7 @@ export const bibliothequeRepository = {
           categorie: livre.categorie ?? null,
           archived: livre.archived ?? false,
           createdAt: livre.createdAt,
+          imageUrl: livre.imageUrl ?? null,
           exemplaires: exemplaires.map((ex) => ({
             id: ex.id,
             code: ex.code ?? '',
@@ -177,6 +181,7 @@ export const bibliothequeRepository = {
     niveau?: string
     categorie?: string
     resume?: string
+    imageUrl?: string
   }): Promise<number> {
     try {
       // REST Payload : la création répond { doc, message } (et non le document
@@ -235,7 +240,9 @@ export const bibliothequeRepository = {
     }
   },
 
-  /** Modifier les métadonnées d'un livre (admin/bénévole — biblioWrite côté API). */
+  /** Modifier les métadonnées d'un livre (admin/bénévole — biblioWrite côté API).
+   *  imageUrl : adresse de couverture à associer/retirer, ou undefined
+   *  (ne pas toucher — le PATCH Payload ne touche que les clés presentes). */
   async modifierLivre(command: {
     id: number
     titre: string
@@ -245,6 +252,7 @@ export const bibliothequeRepository = {
     categorie?: string | null
     editeur?: string | null
     resume?: string | null
+    imageUrl?: null | string
   }): Promise<void> {
     try {
       const { id, ...champs } = command

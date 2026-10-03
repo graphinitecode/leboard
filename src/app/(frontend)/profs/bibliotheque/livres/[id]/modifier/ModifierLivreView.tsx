@@ -53,6 +53,7 @@ export default function ModifierLivreView({ livreId }: ModifierLivreProps) {
   const [categorie, setCategorie] = useState('')
   const [exemplaires, setExemplaires] = useState('1')
   const [resume, setResume] = useState('')
+  const [urlImage, setUrlImage] = useState('')
   const [erreurs, setErreurs] = useState<(string | { fieldId: string; text: string })[]>([])
   const [pending, setPending] = useState(false)
   const [succes, setSucces] = useState<string | null>(null)
@@ -67,6 +68,7 @@ export default function ModifierLivreView({ livreId }: ModifierLivreProps) {
     setCategorie(livre.categorie ?? '')
     setExemplaires(String(livre.exemplaires.length))
     setResume(livre.resume ?? '')
+    setUrlImage(livre.imageUrl ?? '')
     setPrerempli(true)
   }
 
@@ -78,9 +80,9 @@ export default function ModifierLivreView({ livreId }: ModifierLivreProps) {
     return (
       <>
         <InsetText>Livre introuvable ou retiré du catalogue.</InsetText>
-        <p>
+        <div>
           <EnterText hrf="/profs/bibliotheque">Retour au catalogue</EnterText>
-        </p>
+        </div>
       </>
     )
   }
@@ -128,11 +130,13 @@ export default function ModifierLivreView({ livreId }: ModifierLivreProps) {
 
     setPending(true)
     try {
-      // null = vider le champ (le PATCH Payload ne touche que les clés présentes).
+      // Couverture : ChampTexte d'adresse web — vide = retirée, changée =
+      // remplacée (le PATCH Payload ne touche que les clés présentes).
       await modifier.mutateAsync({
         auteur: auteur.trim() || null,
         categorie: categorie || null,
         id: livreId,
+        imageUrl: urlImage.trim() || null,
         isbn: isbnCompact || null,
         niveau: niveau || null,
         resume: resume.trim() || null,
@@ -172,14 +176,14 @@ export default function ModifierLivreView({ livreId }: ModifierLivreProps) {
         <Panel title="Modifications enregistrées" variante="success">
           <p>{succes}</p>
         </Panel>
-        <p>
+        <div>
           <EnterText hrf={`/profs/bibliotheque/livres/${livreId}`}>
             Retour à la fiche du livre
           </EnterText>
-        </p>
-        <p>
+        </div>
+        <div>
           <EnterText hrf="/profs/bibliotheque">Retour au catalogue</EnterText>
-        </p>
+        </div>
       </div>
     )
   }
@@ -269,6 +273,28 @@ export default function ModifierLivreView({ livreId }: ModifierLivreProps) {
         optional
         value={resume}
       />
+      <Input
+        hint="Adresse web (https://…) de la couverture. Vide = retirée à l'enregistrement."
+        id="livre-image"
+        label="Image de couverture (adresse web)"
+        name="image"
+        onChange={(e) => setUrlImage(e.target.value)}
+        optional
+        placeholder="https://example.com/couverture.jpg"
+        type="url"
+        value={urlImage}
+      />
+      {urlImage.trim() ? (
+        /* Couverture externe (lien web) : pas d'optimisation next/image. */
+        <div className="lpv-t-dashboard-page__aside-cover-frame" style={{ maxWidth: '14rem' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt={`Couverture de « ${titre.trim() || 'livre'} »`}
+            className="lpv-t-dashboard-page__aside-cover"
+            src={urlImage.trim()}
+          />
+        </div>
+      ) : null}
     </QuestionPage>
   )
 }

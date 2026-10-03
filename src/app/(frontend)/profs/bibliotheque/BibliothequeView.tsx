@@ -2,12 +2,13 @@
 
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Suspense, useMemo, useState } from 'react'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 
 import { Icon, InsetText, Tag } from '@/components/atoms'
 import { Button } from '@/components/atoms/a-button'
-import { ActionRow, AlertCard, Table, Toast } from '@/components/molecules'
+import { ActionRow, AlertCard, EmptyState, Pagination, Table, Toast } from '@/components/molecules'
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
+import { buildPaginationItems } from '@/components/molecules/m-pagination'
 import { ConfirmAction } from '@/components/organisms/o-confirm-action'
 import { StatsGrid } from '@/components/templates'
 import type { DashboardStat } from '@/components/templates'
@@ -21,6 +22,9 @@ import {
   useListTousPretsEnCours,
   useMarquerRetourne,
 } from '@/bibliotheque'
+
+// Le catalogue s'affiche par lots de 10 livres (page lue dans ?page=).
+const LIVRES_PAR_PAGE = 10
 
 // Libellés de catégorie, enrichis : dérivés de la source unique domain.
 const CATEGORIE_LABELS: Record<string, string> = Object.fromEntries(
@@ -79,6 +83,47 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
     )
   }, [catalogue.data, recherche, niveauFiltre])
 
+  // Pagination du catalogue : page lue dans l'URL (?page=N), bornée au total
+  // courant — un lien profond périmé (liste réduite par les filtres) retombe
+  // sur la dernière page de résultats.
+  const pageBrute = Number.parseInt(params.get('page') ?? '1', 10)
+  const totalPages = Math.max(1, Math.ceil(catalogueFiltre.length / LIVRES_PAR_PAGE))
+  const pageDemandee = Number.isNaN(pageBrute) ? 1 : Math.max(1, pageBrute)
+  const page = Math.min(pageDemandee, totalPages)
+  const cataloguePage = useMemo(
+    () => catalogueFiltre.slice((page - 1) * LIVRES_PAR_PAGE, page * LIVRES_PAR_PAGE),
+    [catalogueFiltre, page],
+  )
+
+  // Liens de pagination : les autres params (ex. ?pret=enregistre) sont
+  // conservés ; ?page disparaît en page 1 (URL canonique).
+  const hrefPourPage = (pageCible: number): string => {
+    const suivants = new URLSearchParams(params.toString())
+    if (pageCible <= 1) {
+      suivants.delete('page')
+    } else {
+      suivants.set('page', String(pageCible))
+    }
+    const query = suivants.toString()
+    return `/profs/bibliotheque${query ? `?${query}` : ''}`
+  }
+  const paginationItems =
+    totalPages > 1
+      ? buildPaginationItems({ currentPage: page, hrefFor: hrefPourPage, totalPages })
+      : []
+
+  // Changement de filtres (recherche ou niveau) : revenir à la page 1 de
+  // l'URL — débounce pour ne pas navigate à chaque frappe. Au premier rendu
+  // la signature est déjà posée : aucun replace.
+  const derniersFiltres = useRef(`${recherche}|${niveauFiltre}`)
+  useEffect(() => {
+    const signature = `${recherche}|${niveauFiltre}`
+    if (signature === derniersFiltres.current) return undefined
+    derniersFiltres.current = signature
+    const timeout = setTimeout(() => router.replace('/profs/bibliotheque'), 400)
+    return () => clearTimeout(timeout)
+  }, [niveauFiltre, recherche, router])
+
   async function retourner(pretId: number, motDePasse?: string) {
     setErreur(null)
     if (!motDePasse) return
@@ -109,7 +154,7 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
     { text: '' },
   ]
 
-  const catalogueRows: TableRowCell[][] = catalogueFiltre.map((livre) => {
+  const catalogueRows: TableRowCell[][] = cataloguePage.map((livre) => {
     const dispo = livre.exemplaires.some((ex) => ex.disponible)
     return [
       { content: <strong>{livre.titre}</strong> },
@@ -266,11 +311,32 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
             {catalogue.isLoading ? (
               <p className="lpv-muted">Chargement du catalogue…</p>
             ) : catalogueFiltre.length === 0 ? (
-              <InsetText>Aucun livre ne correspond à votre recherche.</InsetText>
+              <EmptyState
+                actions={
+                  recherche || niveauFiltre
+                    ? [{ label: 'Réinitialiser les filtres', onClick: () => {
+                        setRecherche('')
+                        setNiveauFiltre('')
+                      }, variant: 'secondary' }]
+                    : undefined
+                }
+                description="Essaie un autre titre, auteur ou niveau."
+                icon="boxicons:search"
+                title="Aucun livre ne correspond à ta recherche"
+                variant="neutral"
+              />
             ) : (
               <div style={{ overflowX: 'auto' }}>
                 <Table caption="" head={catalogueHead} rows={catalogueRows} />
               </div>
+            )}
+            {totalPages > 1 && (
+              <Pagination
+                ariaLabel="Pagination du catalogue"
+                items={paginationItems}
+                next={page < totalPages ? { href: hrefPourPage(page + 1) } : undefined}
+                previous={page > 1 ? { href: hrefPourPage(page - 1) } : undefined}
+              />
             )}
           </section>
         </div>
@@ -300,9 +366,9 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
           </div>
           {peutGerer ? (
             <div className="lpv-t-dashboard-page__aside-card">
-              <h3 className="lpv-t-dashboard-page__aside-card__title">Ajouter un livre</h3>
+              <h3 className="lpv-t-dashboard-page__aside-card__title">Alimenter le catalogue</h3>
               <p className="lpv-t-dashboard-page__aside-card__empty-text" style={{ marginTop: 0 }}>
-                Nouvel ouvrage à référencer au catalogue.
+                Nouvel ouvrage à référencer, ou plusieurs livres d&apos;un coup depuis un CSV.
               </p>
               <Button
                 href="/profs/bibliotheque/livres/nouveau"
@@ -311,6 +377,14 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
               >
                 <Icon icon={'rivet-icons:plus-circle-solid'} size={19} className="inline-flex -translate-y-px" />
                 &nbsp;Nouveau livre
+              </Button>
+              <Button
+                href="/profs/bibliotheque/livres/import"
+                variant="secondary"
+                className="w-full mt-3 flex justify-center items-start"
+              >
+                <Icon icon={'rivet-icons:upload'} size={19} className="inline-flex -translate-y-px" />
+                &nbsp;Importer un CSV
               </Button>
             </div>
           ) : null}
