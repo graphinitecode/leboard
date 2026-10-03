@@ -9,7 +9,6 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ### Ajouté
 - Fiche livre : une couverture facultative désignée par son adresse web (l'image n'est pas stockée sur le site), affichée à côté du résumé quand il existe, sinon sur la carte « Informations », et modifiable à tout moment.
 - La suppression d'un livre a sa propre page d'avertissement : les conséquences sont expliquées avant le geste (l'historique des emprunts est conservé et le livre sort du catalogue ; un prêt en cours n'est pas annulé), avec un bouton rouge de confirmation et une annulation neutre.
-- Une séance se complète ou se modifie sur sa propre page : ajustement des présences et rédaction du retour visible par les parents, la fiche de séance restant en lecture seule.
 - Le catalogue de la bibliothèque s'affiche par pages de 10 livres, avec une pagination standard (numéros, ellipses, « Précédent » / « Suivant ») qui respecte la recherche et le filtre par niveau.
 
 ### Modifié
@@ -25,6 +24,18 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Le réimport d'un livre précédemment retiré du catalogue était refusé comme doublon : corrigé — retiré un livre libère sa fiche et son ISBN, un réimport suivant le recrée normalement.
 - Les listes déroulantes des formulaires réaffichent la valeur enregistrée du livre (niveau conseillé, catégorie) lors de la modification.
 - L'ajout d'un livre au catalogue refonctionne : le livre était créé sans ses exemplaires, ce qui faisait échouer l'enregistrement.
+
+## [0.11.0] — 2026-10-02
+
+### Ajouté
+- Une page « Compléter la séance » rassemble le passage de l’appel (présent, absent, absent justifié — élève par élève) et la rédaction du retour de séance, avec une confirmation avant l’enregistrement ; une fois le retour écrit, elle devient « Modifier la séance ».
+- La fiche de séance liste les notes de progression prises pendant la séance, avec le niveau observé (acquis, en cours, à revoir) et le commentaire pour la famille.
+
+### Modifié
+- La fiche d’une séance se présente désormais comme les autres fiches : titre, matière, date, heure et prof en entête, compteurs de présences et d’absences, retour de séance affiché en lecture simple, et un tableau des présences avec les élèves numérotés et leur statut en pastille colorée.
+
+### Corrigé
+- Un élève ajouté à une séance déjà créée reçoit sa présence dès l’enregistrement : il apparaissait « non initialisé » — impossible de comptabiliser son statut ni de le modifier.
 
 ## [0.10.0] — 2026-09-30
 
