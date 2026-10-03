@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { Button } from '@/components/atoms/a-button'
 import { Input, ErrorSummary } from '@/components/molecules'
 import { useLoginParent, useLoginProf } from '@/auth/application/auth.hooks'
+import { AUTOLOGIN_EMAIL } from '@/shared/auto-login'
 
 interface LoginFormProps {
   portail: 'profs' | 'parents'
@@ -17,7 +18,9 @@ interface LoginFormProps {
 export function LoginForm({ portail, cible, title = 'Connexion', subtitle }: LoginFormProps) {
   const loginProf = useLoginProf(cible)
   const loginParent = useLoginParent(cible)
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState(
+    process.env.NODE_ENV === 'production' ? '' : AUTOLOGIN_EMAIL,
+  )
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
 
