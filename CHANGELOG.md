@@ -7,12 +7,22 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ## [Unreleased]
 
 ### Ajouté
+- Fiche livre : une couverture facultative désignée par son adresse web (l'image n'est pas stockée sur le site), affichée à côté du résumé quand il existe, sinon sur la carte « Informations », et modifiable à tout moment.
 - La suppression d'un livre a sa propre page d'avertissement : les conséquences sont expliquées avant le geste (l'historique des emprunts est conservé et le livre sort du catalogue ; un prêt en cours n'est pas annulé), avec un bouton rouge de confirmation et une annulation neutre.
+- Une séance se complète ou se modifie sur sa propre page : ajustement des présences et rédaction du retour visible par les parents, la fiche de séance restant en lecture seule.
+- Le catalogue de la bibliothèque s'affiche par pages de 10 livres, avec une pagination standard (numéros, ellipses, « Précédent » / « Suivant ») qui respecte la recherche et le filtre par niveau.
 
 ### Modifié
+- Les vides donnent plus d'infos : partout dans le portail (fiche d'un élève, catalogue, recherche sans résultat, séances, disponibilités, prêts), un bloc lisible avec pictogramme remplace la simple mention « Aucun… », avec parfois une action directe (réinitialiser les filtres, ajouter un premier créneau).
+- L'import CSV de livres a sa page dédiée : sélection du fichier, résumé des contrôles en compteurs, aperçu paginé (15 lignes par page) filtrable par statut (toutes, prêtes, à préciser, erreurs), puis choix des lignes à importer une à une : chaque ligne importable est cochée d'avance et se décoche à volonté (« tout sélectionner » / « tout désélectionner » inclus), les lignes en erreur restent non importables (une explication dédiée s'affiche quand un fichier est déjà intégralement au catalogue) ; barre de progression pendant le versement (livre en cours affiché) et bilan final lisible : succès en panneau + table de lignes ignorées, « réimporter ensuite sans re-créer les livres déjà ajoutés ».
+- L'historique de présence d'un élève se retrie en cliquant sur les entêtes du tableau : un clic sur « Date » inverse la chronologie, et le tri peut se faire par matière ou par statut (absences regroupées en tête). Idem sur la version consultée par les parents.
+- Les niveaux et catégories des CSV sont compris même écrits fin (« CP », « CE1 », « 6ème », « Terminale ») : alias vers les paliers du site quand c'est sans ambiguïté ; valeur inconnue = livre importé sans cette information, à préciser sur la fiche. Le résumé du livre est pris en compte (7ᵉ colonne, facultative), visible dans l'aperçu, et un résumé contenant des « ; » non quotés est signalé au lieu de décaler silencieusement les colonnes.
+- L'ajout d'un livre refuse les doublons : même ISBN ou même titre et auteur déjà au catalogue est signalé dès la saisie et la création est bloquée, avec un lien direct pour ajouter des exemplaires sur la fiche existante. Un même titre avec un ISBN différent (édition distincte) déclenche un simple avertissement.
 - La modification d'un livre reprend la mise en page d'« Ajouter un livre » : un seul formulaire pré-rempli, enregistrement sans encart de confirmation, résumé des erreurs en tête, et choix du nombre d'exemplaires avec un rappel visible des exemplaires actuellement prêtés (impossible de descendre en dessous).
 
 ### Corrigé
+- Sur la fiche d'un élève, l'historique de présence se lit du plus récent au plus ancien : l'ordre ne suit plus la date de saisie, qui pouvait différer de la date de la séance (pareil sur la fiche consultée par les parents).
+- Le réimport d'un livre précédemment retiré du catalogue était refusé comme doublon : corrigé — retiré un livre libère sa fiche et son ISBN, un réimport suivant le recrée normalement.
 - Les listes déroulantes des formulaires réaffichent la valeur enregistrée du livre (niveau conseillé, catégorie) lors de la modification.
 - L'ajout d'un livre au catalogue refonctionne : le livre était créé sans ses exemplaires, ce qui faisait échouer l'enregistrement.
 
