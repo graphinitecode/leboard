@@ -78,6 +78,16 @@ export const Users: CollectionConfig = {
       label: 'Téléphone',
     },
     {
+      name: 'alertesEmail',
+      admin: {
+        condition: (data) => data?.role === 'parent',
+        description: 'Retards de livres, rappels de retour et absences répétées de ses enfants',
+      },
+      defaultValue: true,
+      label: 'Recevoir les alertes par e-mail',
+      type: 'checkbox',
+    },
+    {
       name: 'disponibilites',
       type: 'array',
       label: 'Disponibilités',

@@ -1,6 +1,9 @@
 import type { CollectionConfig } from 'payload'
 
+import type { CollectionAfterChangeHook } from 'payload'
+
 import { adminOnly } from '../../access/roles'
+import { notifierParentsAlerte } from '../../utilities/notifierParents'
 
 export const typeAlerteOptions = [
   { label: 'Décrochage', value: 'decrochage' },
@@ -14,6 +17,27 @@ export const statutAlerteOptions = [
   { label: 'Vue', value: 'vue' },
   { label: 'Traitée', value: 'traitee' },
 ]
+
+// Création d'une alerte qui concerne une famille : e-mail aux parents, puis
+// date d'envoi enregistrée (traçabilité, et jamais deux envois par alerte)
+const notifierALaCreation: CollectionAfterChangeHook = async ({ doc, operation, req }) => {
+  if (operation !== 'create' || doc.notifieLe) return doc
+  try {
+    const envoyes = await notifierParentsAlerte(req.payload, doc)
+    if (envoyes > 0) {
+      await req.payload.update({
+        collection: 'alertes',
+        data: { notifieLe: new Date().toISOString() },
+        id: doc.id,
+        overrideAccess: true,
+        req,
+      })
+    }
+  } catch (err) {
+    req.payload.logger.error({ err, msg: `alerte ${doc.id} : notification des parents impossible` })
+  }
+  return doc
+}
 
 export const Alertes: CollectionConfig = {
   slug: 'alertes',
@@ -74,6 +98,16 @@ export const Alertes: CollectionConfig = {
       },
     },
     {
+      name: 'notifieLe',
+      admin: {
+        date: { displayFormat: 'dd/MM/yyyy HH:mm', pickerAppearance: 'dayAndTime' },
+        description: 'Date d’envoi de l’e-mail aux parents (vide : non envoyé)',
+        readOnly: true,
+      },
+      label: 'Parents prévenus le',
+      type: 'date',
+    },
+    {
       name: 'resolution',
       type: 'textarea',
       admin: {
@@ -81,5 +115,8 @@ export const Alertes: CollectionConfig = {
       },
     },
   ],
+  hooks: {
+    afterChange: [notifierALaCreation],
+  },
   timestamps: true,
 }

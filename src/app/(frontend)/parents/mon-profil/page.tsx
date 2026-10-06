@@ -1,6 +1,5 @@
 import { requireParent } from '@/utilities/parentAuth'
 import { MonProfilForm } from '@/components/organisms/o-mon-profil-form'
-import { BackLink } from '@/components/atoms/a-back-link'
 
 import { FormPage } from '@/components/templates'
 
@@ -12,8 +11,11 @@ export default async function MonProfilParentsPage() {
   const user = await requireParent()
 
   return (
-    <FormPage title="Mon profil" subtitle="Modifiez vos informations personnelles.">
-      <BackLink href="/parents">Retour à l&apos;accueil</BackLink>
+    <FormPage
+      retour={{ href: '/parents', label: 'Retour à l’accueil' }}
+      subtitle="Modifiez vos informations personnelles."
+      title="Mon profil"
+    >
       <MonProfilForm
         portail="parents"
         initial={{
@@ -21,6 +23,7 @@ export default async function MonProfilParentsPage() {
           nom: user.nom,
           telephone: user.telephone ?? '',
           email: user.email,
+          alertesEmail: user.alertesEmail ?? true,
         }}
       />
     </FormPage>
