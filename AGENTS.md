@@ -243,6 +243,9 @@ n'évolue **que** par migrations (`src/migrations/`).
 - Vercel lance `pnpm run ci` (`payload migrate` puis `next build`, cf. `vercel.json`).
 - Ne jamais réactiver `push` ni lancer `payload migrate:fresh` / `migrate:reset` : données de
   production.
+- Si une ligne `dev` (batch -1) réapparaît dans `payload_migrations` (serveur de dev lancé avec
+  l'ancienne config), `payload migrate` bloque sur une invite : redémarrer le serveur de dev, puis
+  `APPLY=1 MIGRATION=<nom> pnpm migrate:baseline` pour la migration déjà poussée.
 
 ## Payload CMS
 
