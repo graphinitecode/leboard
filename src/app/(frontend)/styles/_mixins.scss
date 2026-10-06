@@ -119,6 +119,7 @@ $lpv-focus-width: 3px !default;
    `portail` (définie dans tokens.scss), qui suit la couleur du portail
    courant (data-lpv-portail) : bleu profs, violet parents. */
 $lpv-color-families: (
+  primary: blue,
   portal: portail,
   secondary: gray,
   warning: orange,

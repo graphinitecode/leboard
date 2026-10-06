@@ -37,17 +37,17 @@ describe('PortalPage', () => {
     expect(container.querySelector('main#contenu-principal')).not.toBeNull()
   })
 
-  it('rend le header en slot et les liens du footer', () => {
+  it('rend le header et le footer en slot', () => {
     const { container } = render(
       <PortalPage
-        footerLinks={[{ href: '/profs/login', label: 'Connexion' }]}
+        footer={<footer>Pied</footer>}
         header={<div>Entête</div>}
       >
         <p>Contenu</p>
       </PortalPage>,
     )
     expect(screen.getByText('Entête')).toBeDefined()
-    expect(screen.getByText('Connexion')).toBeDefined()
+    expect(screen.getByText('Pied')).toBeDefined()
     expect(container.querySelector('.lpv-t-portal-page')).not.toBeNull()
   })
 })
