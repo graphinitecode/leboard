@@ -181,6 +181,12 @@ export default function SeanceProfView({ seanceId }: SeanceProfViewProps) {
           ) : null}
           <dt>Durée</dt>
           <dd>{viewModel.seance.creneauLabel}</dd>
+          {viewModel.seance.repetitionLabel ? (
+            <>
+              <dt>Répétition</dt>
+              <dd>{viewModel.seance.repetitionLabel}</dd>
+            </>
+          ) : null}
           <dt>Retour</dt>
           <dd>
             <Tag color={viewModel.seance.retourPresent ? 'green' : 'orange'}>
@@ -205,6 +211,22 @@ export default function SeanceProfView({ seanceId }: SeanceProfViewProps) {
           </Button>
         </div>
       </div>
+
+      {/* Suppression ouverte aux profs pour les séances d'une série (une
+          séance ponctuelle reste supprimable par l'administration seule) */}
+      {viewModel.seance.repetitionLabel ? (
+        <div className="lpv-t-dashboard-page__aside-card">
+          <h3 className="lpv-t-dashboard-page__aside-card__title">Séance récurrente</h3>
+          <p className="lpv-t-dashboard-page__aside-card__empty-text">
+            Supprimer cette séance, les suivantes ou toute la série.
+          </p>
+          <div className="lpv-t-dashboard-page__aside-card__actions">
+            <Button href={`/profs/seances/${seanceId}/supprimer`} variant="danger">
+              Supprimer
+            </Button>
+          </div>
+        </div>
+      ) : null}
 
       {elevesAbsents.length > 0 && (
         <div className="lpv-t-dashboard-page__aside-card">
