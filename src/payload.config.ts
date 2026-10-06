@@ -74,6 +74,9 @@ export default buildConfig({
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
   db: postgresAdapter({
+    // La base locale est celle de production : le schéma n'évolue que par
+    // migrations (src/migrations), jamais par la synchronisation du mode dev
+    push: false,
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
