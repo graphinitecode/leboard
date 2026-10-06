@@ -10,6 +10,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Une séance peut se répéter chaque semaine ou chaque mois (même jour de semaine, par exemple « le 2e mardi »), sans fin ou jusqu'à une date : toutes les séances sont créées d'un coup et apparaissent dans le calendrier.
 - Une icône signale les séances récurrentes dans le calendrier : colorée quand la série n'a pas de fin, atténuée quand elle s'arrête à une date.
 - Déplacer, changer la durée ou supprimer une séance récurrente propose de l'appliquer à cette séance seulement, à celle-ci et aux suivantes, ou à toute la série ; les séances passées ne sont jamais modifiées.
+- Une page « Prêts en cours » liste tous les livres empruntés, du retour le plus urgent au plus lointain, avec leur statut (en retard, à rendre sous 3 jours, dans les temps), une recherche par livre ou élève, un filtre par statut et le retour en un clic. Elle est accessible depuis la bibliothèque.
 
 ### Modifié
 - L'entête des portails est réorganisé : les rubriques (tableau de bord, calendrier, élèves, bibliothèque, disponibilités) s'affichent en onglets, et un seul menu, celui du compte, regroupe « Mon profil », le choix du thème et la déconnexion. Sur mobile, ce menu reprend aussi les rubriques.
@@ -21,6 +22,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Les cours se terminent au plus tard à 18h : le calendrier s'arrête à 18h, et une séance ou une disponibilité qui finirait plus tard est refusée avec un message (création, déplacement, changement de durée).
 
 ### Corrigé
+- L'encart « Rappels à venir » de la bibliothèque ne liste plus que les prêts à rendre dans les 3 prochains jours (il affichait tous les prêts dans les temps).
 - Dans la vue jour du calendrier, « Jour suivant » et « Jour précédent » partent du jour affiché (et non plus du lundi).
 - Le dimanche est un jour de cours comme les autres : il apparaît dans le calendrier (une séance du dimanche n'était pas visible) et peut être choisi pour une disponibilité.
 - Dans le calendrier des professeurs, les séances peuvent de nouveau être ouvertes d'un clic ou déplacées par glisser-déposer : les cases de création les recouvraient.
