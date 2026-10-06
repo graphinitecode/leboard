@@ -300,22 +300,6 @@
 
   &__chevron {
     display: inline-flex;
-
-    @media (width < 48rem) {
-      &:has(+ .lpv-m-avatar-header__menu-icon) {
-        display: none;
-      }
-    }
-  }
-
-  /* Icône menu/close : le compte est le seul menu en mobile, il porte aussi
-     la navigation du portail */
-  &__menu-icon {
-    display: inline-flex;
-
-    @media (width >= 48rem) {
-      display: none;
-    }
   }
 }
 
