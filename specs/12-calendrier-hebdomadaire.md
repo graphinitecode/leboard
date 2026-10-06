@@ -12,7 +12,7 @@ Donner aux profs (et aux parents, pour leurs enfants) une vue de la semaine type
 
 ## 3. Périmètre
 - **Inclus** :
-  - Organism `o-week-calendar` : grille 6 colonnes (lun→sam) × créneaux 30 min (8h→20h).
+  - Organism `o-week-calendar` : grille 7 colonnes (lun→dim) × créneaux 30 min (8h→18h, fin des cours).
   - Pastilles séances (position, durée, couleur par matière, lien fiche séance).
   - Bandes de disponibilités déclarées en fond (profs, lecture seule).
   - Navigation semaine (‹ ›, « Aujourd'hui »).
@@ -23,8 +23,8 @@ Donner aux profs (et aux parents, pour leurs enfants) une vue de la semaine type
 - **Exclu** : déplacement des disponibilités (lecture seule) ; récurrences/exceptions ponctuelles ; vue mois ; vue fusionnée multi-enfants côté parents ; salles ; notifications de modification.
 
 ## 4. Spécification fonctionnelle
-- **Fenêtre** : la semaine commence lundi 00:00 et finit dimanche (lundi→samedi affichés). Navigation ±7 jours, retour à la semaine courante.
-- **Positionnement** : une pastille est positionnée à `date` (datetime) et s'étend sur `duree` minutes (défaut 60 si absent). Les séances hors plage 8h–20h sont affichées bornées dans la grille.
+- **Fenêtre** : la semaine commence lundi 00:00 et finit dimanche (lundi→dimanche affichés). Navigation ±7 jours, retour à la semaine courante.
+- **Positionnement** : une pastille est positionnée à `date` (datetime) et s'étend sur `duree` minutes (défaut 60 si absent). Les séances hors plage 8h–18h sont affichées bornées dans la grille ; une séance ne peut pas finir après 18h (création, dépôt, redimensionnement).
 - **Chevauchements** : deux séances du même créneau sont affichées côte à côte (répartition simple).
 - **Drag & drop (prof)** : saisir une pastille et la déposer sur une case déplace la séance (PATCH `date`/`duree`, durée conservée) ; calcul cible = colonne (jour) + rangée (heure de début, arrondie 30 min). Échec réseau → toast d'erreur et retour à la position initiale. Alternative clavier : la modale d'édition permet de changer la date/heure sans drag.
 - **Création (prof)** : clic (ou drop de rien) sur une case vide ouvre la modale de création : matière (select), heure début (préremplie par la case), durée (30/60/90), groupe (élèves du prof, multi-select). Validation client : pas de chevauchement avec une séance existante du prof sur la semaine. À la création, les présences sont pré-créées par le hook existant (Spec 01).
@@ -86,13 +86,13 @@ Mobile-first : la grille passe en défilement horizontal avec colonnes de largeu
 - Drag & drop : API HTML5 native, aucun ajout de dépendance ; la logique de calcul (jour/créneau cible, chevauchement) est extraite en fonctions pures testées.
 
 ## 7. Critères d'acceptation
-- [ ] Le prof voit ses séances de la semaine en pastilles + ses dispos en fond, navigue ‹ › et « Aujourd'hui ».
-- [ ] Glisser une pastille la déplace (PATCH) ; échec → toast d'erreur, position restaurée.
-- [ ] Clic sur une case vide ouvre la modale de création ; la séance apparaît et ses présences sont pré-créées.
-- [ ] Le dashboard /profs affiche le calendrier à la place des listes « Aujourd'hui » / « Cette semaine ».
-- [ ] Le parent voit la semaine de son enfant en lecture seule ; 404 hors périmètre ; aucune interface de modification.
-- [ ] La démo statique est visible sur /design-system, en clair et en sombre.
-- [ ] Lint, typecheck, tests (unit utils + int organism) passent.
+- [x] Le prof voit ses séances de la semaine en pastilles + ses dispos en fond, navigue ‹ › et « Aujourd'hui ».
+- [x] Glisser une pastille la déplace (PATCH) ; échec → toast d'erreur, position restaurée (aucun déplacement optimiste : la pastille ne bouge qu'après succès).
+- [x] Clic sur une case vide ouvre la création ; la séance apparaît et ses présences sont pré-créées. *Évolution (spec 13 / 11)* : la modale est remplacée par la page `/profs/seances/nouvelle`.
+- [x] Le calendrier interactif est accessible depuis le dashboard. *Évolution* : il vit sur `/profs/calendrier` (onglet « Calendrier ») ; le dashboard affiche une carte calendrier mensuel avec lien « Voir tout ».
+- [x] Le parent voit la semaine de son enfant en lecture seule ; 404 hors périmètre ; aucune interface de modification.
+- [x] La démo statique est visible sur /design-system, en clair et en sombre.
+- [x] Lint, typecheck, tests (unit utils + int organism) passent.
 
 ## 8. Risques & questions ouvertes
 - DnD natif moins fluide qu'une lib (pas d'animation de fantôme riche) — acceptable en v1 ; `@dnd-kit` en option si le ressenti est insuffisant.

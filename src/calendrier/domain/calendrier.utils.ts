@@ -1,3 +1,4 @@
+import { HEURE_DEBUT_COURS, HEURE_FIN_COURS } from '@/shared/horaires'
 import type {
   BandeDispo,
   CibleCreneau,
@@ -6,11 +7,19 @@ import type {
   PlageSelectionnee,
 } from './calendrier.entity'
 
-export const HEURE_DEBUT_GRILLE = 8
-export const HEURE_FIN_GRILLE = 20
+export const HEURE_DEBUT_GRILLE = HEURE_DEBUT_COURS
+export const HEURE_FIN_GRILLE = HEURE_FIN_COURS
 export const MINUTES_CRENEAU = 30
 export const DUREE_DEFAUT = 60
-export const JOURS_GRILLE = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'] as const
+export const JOURS_GRILLE = [
+  'Lundi',
+  'Mardi',
+  'Mercredi',
+  'Jeudi',
+  'Vendredi',
+  'Samedi',
+  'Dimanche',
+] as const
 
 // Renvoie le lundi de la semaine contenant la date donnée, à 00:00 locale.
 export const debutSemaine = (date: Date): Date => {
@@ -36,7 +45,7 @@ export const bornesSemaine = (lundi: Date): { debut: Date; fin: Date } => {
   return { debut: lundi, fin }
 }
 
-// Index du jour de la grille (0 = lundi … 5 = samedi) ou null si hors grille.
+// Index du jour de la grille (0 = lundi … 6 = dimanche) ou null si hors grille.
 export const indexJourGrille = (date: Date): number | null => {
   const index = (date.getDay() + 6) % 7
   return index < JOURS_GRILLE.length ? index : null
@@ -61,6 +70,31 @@ export const positionMinutes = (date: Date): number => {
 // Durée bornée à la fin de la grille (en minutes, minimum un créneau).
 export const dureeBornee = (dureeMin: number): number =>
   Math.min(Math.max(dureeMin, MINUTES_CRENEAU), (HEURE_FIN_GRILLE - HEURE_DEBUT_GRILLE) * 60)
+
+// Durée lisible d'une séance : « 30 min », « 1 h », « 1 h 30 ». Espaces
+// insécables : la durée ne se coupe pas dans une pastille étroite.
+const ESPACE = '\u00a0'
+export const labelDuree = (dureeMin: number): string => {
+  const heures = Math.floor(dureeMin / 60)
+  const minutes = dureeMin % 60
+  if (heures === 0) return `${minutes}${ESPACE}min`
+  return minutes === 0
+    ? `${heures}${ESPACE}h`
+    : `${heures}${ESPACE}h${ESPACE}${String(minutes).padStart(2, '0')}`
+}
+
+// Durée après redimensionnement d'une pastille : arrondie au créneau (30 min),
+// au moins un créneau, sans dépasser la fin de la grille.
+export const dureeRedimensionnee = (debut: Date, dureeInitiale: number, deltaMinutes: number): number => {
+  const arrondie = Math.round((dureeInitiale + deltaMinutes) / MINUTES_CRENEAU) * MINUTES_CRENEAU
+  const maximum = HEURE_FIN_GRILLE * 60 - (debut.getHours() * 60 + debut.getMinutes())
+  return Math.max(MINUTES_CRENEAU, Math.min(arrondie, maximum))
+}
+
+// Vrai si une séance commençant à `debut` et durant `dureeMin` finit après
+// la fin des cours (18h)
+export const depasseFinCours = (debut: Date, dureeMin: number): boolean =>
+  debut.getHours() * 60 + debut.getMinutes() + dureeMin > HEURE_FIN_GRILLE * 60
 
 // Arrondit une date au créneau inférieur (30 min) pour une cible de dépôt.
 export const arrondirAuCreneau = (date: Date): { heureDebut: string; jourIndex: number } => {
@@ -125,7 +159,7 @@ export const bandeEnMinutes = (bande: BandeDispo): [number, number] => [
 // Libellé « Semaine du 23 au 28 septembre » (mois répété condensé).
 export const labelSemaine = (lundi: Date): string => {
   const fin = new Date(lundi)
-  fin.setDate(fin.getDate() + 5)
+  fin.setDate(fin.getDate() + 6)
   const fmtJourMois = (d: Date) =>
     d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })
   const debutLabel = fmtJourMois(lundi)
@@ -180,6 +214,17 @@ export const ajouterJours = (date: Date, n: number): Date => {
   const copie = new Date(date)
   copie.setDate(copie.getDate() + n)
   return copie
+}
+
+// Jour voisin du jour affiché en vue jour : la semaine suit quand on
+// franchit ses bornes (lundi ↔ dimanche).
+export const jourVoisin = (
+  lundi: Date,
+  jourIndex: number,
+  sens: 1 | -1,
+): { lundi: Date; jourIndex: number } => {
+  const jour = ajouterJours(joursGrille(lundi)[jourIndex] ?? lundi, sens)
+  return { lundi: debutSemaine(jour), jourIndex: (jour.getDay() + 6) % 7 }
 }
 
 // Index de rangée (créneau de 30 min) depuis une heure « HH:mm ».

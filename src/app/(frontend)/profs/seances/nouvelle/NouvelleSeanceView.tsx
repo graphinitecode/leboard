@@ -22,6 +22,7 @@ import type { MatiereCalendrier } from '@/calendrier/domain/calendrier.entity'
 import { useCreerSeance, useElevesDuProf, useSeancesPeriode } from '@/calendrier'
 import { nomEleve } from '@/students'
 import { EnterText } from '@/components/atoms/a-enter-text'
+import { HEURE_FIN_COURS_HHMM, MESSAGE_FIN_COURS } from '@/shared/horaires'
 
 const MATIERES: { label: string; value: MatiereCalendrier }[] = [
   { label: 'Maths', value: 'maths' },
@@ -78,6 +79,9 @@ function ParcoursNouvelleSeance() {
 
   const events = seances.data ?? []
   const duree = heureDebut && heureFin ? plageMinutes(heureDebut, heureFin) : null
+  // Les cours se terminent au plus tard à 18h : début au plus tard à 17h30
+  const debutTropTard = Boolean(heureDebut) && heureDebut > `${HEURE_FIN_GRILLE - 1}:30`
+  const finTropTard = Boolean(heureFin) && heureFin > HEURE_FIN_COURS_HHMM
   const conflit =
     heureDebut && heureFin
       ? chevaucheUne(
@@ -159,7 +163,7 @@ function ParcoursNouvelleSeance() {
         <QuestionPage
           actions={
             <Button
-              disabled={!heureDebut}
+              disabled={!heureDebut || debutTropTard}
               onClick={() => setStep('fin')}
               type="button"
               variant="success"
@@ -174,10 +178,11 @@ function ParcoursNouvelleSeance() {
           stepSize={6}
         >
           <Input
-            hint={`Choisir une heure entre ${HEURE_DEBUT_GRILLE}h et ${HEURE_FIN_GRILLE}h.`}
+            hint={`Choisir une heure entre ${HEURE_DEBUT_GRILLE}h et ${HEURE_FIN_GRILLE - 1}h30 : les cours se terminent au plus tard à ${HEURE_FIN_GRILLE}h.`}
+            error={debutTropTard ? MESSAGE_FIN_COURS : undefined}
             id="seance-debut"
             label=""
-            max="20:00"
+            max={`${HEURE_FIN_GRILLE - 1}:30`}
             min="08:00"
             onChange={(e) => setHeureDebut(e.target.value)}
             type="time"
@@ -190,7 +195,7 @@ function ParcoursNouvelleSeance() {
         <QuestionPage
           actions={
             <Button
-              disabled={!heureFin || (duree !== null && duree < 30)}
+              disabled={!heureFin || (duree !== null && duree < 30) || finTropTard}
               onClick={() => setStep('matiere')}
               type="button"
               variant="success"
@@ -205,10 +210,11 @@ function ParcoursNouvelleSeance() {
           stepSize={6}
         >
           <Input
+            error={finTropTard ? MESSAGE_FIN_COURS : undefined}
             hint={duree ? `Durée : ${formaterDuree(duree)}` : 'Par exemple 14:30'}
             id="seance-fin"
             label=""
-            max="20:00"
+            max={HEURE_FIN_COURS_HHMM}
             min={heureDebut || '08:00'}
             onChange={(e) => setHeureFin(e.target.value)}
             type="time"
@@ -441,7 +447,7 @@ function initialiserDepuisParams(params: URLSearchParams): {
     const date = new Date(`${dateParam}T12:00:00`)
     const index = (date.getDay() + 6) % 7
     const lundiCible = debutSemaine(date)
-    if (lundiCible.toDateString() === lundi.toDateString() && index <= 5) {
+    if (lundiCible.toDateString() === lundi.toDateString()) {
       jourIndex = index
     }
   }

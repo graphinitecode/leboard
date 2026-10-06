@@ -14,6 +14,7 @@ import { EnterText } from '@/components/atoms/a-enter-text'
 import { DashboardPage, DetailPage, FormPage, QuestionPage } from '@/components/templates'
 import { Stepper } from '@/components/atoms/a-stepper'
 import { ValidateText } from '@/components/molecules/m-validate-text'
+import { WeekCalendar } from '@/components/organisms/o-week-calendar'
 
 export const metadata: Metadata = {
   title: 'Design system — LPV Board',
@@ -320,7 +321,7 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">Details</h3>
         <Details summary="Quelles sont les horaires possibles ?" open>
-          Les cours ont lieu du lundi au samedi, de 8h à 18h.
+          Les cours ont lieu du lundi au dimanche, de 8h à 18h.
         </Details>
         <Details summary="Aide concernant la nationalité">
           Nous avons besoin de connaître votre nationalité afin de déterminer à quelles élections
@@ -700,7 +701,7 @@ export default function DesignSystemPage() {
           plage au clic-tirer et de créer une séance via un assistant pas à pas — la démo ci-dessous
           est en lecture seule avec des données d&apos;exemple.
         </p>
-        {/*<WeekCalendar mode="demo" />*/}
+        <WeekCalendar mode="demo" />
 
         <h3 className="lpv-h3">Carte calendrier mensuel</h3>
         <p className="lpv-muted">
@@ -723,8 +724,7 @@ export default function DesignSystemPage() {
           d&apos;initiales et chevron. Le panneau présente l&apos;identité, « Mon profil », la
           bascule de thème et la déconnexion (retour à la page de connexion du portail). En
           desktop, la navigation du portail est portée par les onglets sous le logo ; en mobile
-          (&lt; 48rem), le prénom disparaît, le chevron devient l&apos;icône menu et le panneau
-          reprend aussi les liens de navigation. Se ferme au clic extérieur ou à Escape.
+          (&lt; 48rem), le prénom disparaît et le panneau reprend aussi les liens de navigation. Se ferme au clic extérieur ou à Escape.
         </p>
         <div
           className="lpv-card"

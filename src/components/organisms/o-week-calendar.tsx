@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState, useSyncExternalStore } from 'react'
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { Button } from '@/components/atoms/a-button'
@@ -11,19 +11,23 @@ import {
   HEURE_DEBUT_GRILLE,
   JOURS_GRILLE,
   MINUTES_CRENEAU,
-  ajouterJours,
   ajouterSemaines,
   bandeEnMinutes,
   brouillonDepuisPlage,
   bornesSemaine,
   couleurMatiere,
   dateCiblee,
+  depasseFinCours,
   debutSemaine,
   dureeBornee,
+  dureeRedimensionnee,
   indexJourGrille,
   joursAvecSeances,
   joursGrille,
+  jourVoisin,
+  labelDuree,
   labelSemaine,
+  HEURE_FIN_GRILLE,
   plageDepuisCases,
   positionMinutes,
   rangeesGrille,
@@ -41,6 +45,7 @@ import {
   useDeplacerSeance,
   useSeancesPeriode,
 } from '@/calendrier/application/calendrier.hooks'
+import { MESSAGE_FIN_COURS } from '@/shared/horaires'
 import { MonthPicker } from './o-month-picker'
 
 export type WeekCalendarMode = 'prof' | 'parent' | 'demo'
@@ -55,10 +60,16 @@ export interface WeekCalendarEvent {
   href: string
 }
 
+type SurRedimension = (seanceId: number, dureeMin: number, terminer: () => void) => void
+
 const RANGEES = rangeesGrille()
 const HAUTEUR_CRENEAU = 44 // px par créneau de 30 min
 const PX_PAR_MINUTE = HAUTEUR_CRENEAU / MINUTES_CRENEAU
 const CLE_VUE = 'lpv-calendrier-vue'
+
+// Glisser-déposer d'une pastille en cours : les cases de création ignorent
+// alors le pointeur (un dépôt ne doit jamais ouvrir la création)
+let glissementEnCours = false
 
 interface WeekCalendarProps {
   mode: WeekCalendarMode
@@ -109,6 +120,16 @@ function useVuePreferee(): [VueCalendrier, (v: VueCalendrier) => void] {
     storeVue,
     () => 'semaine' as VueCalendrier,
   )
+
+  useEffect(() => {
+    // En < 48rem, la grille semaine est illisible : vue jour au montage, pour
+    // tous les modes (prof comme parent). Écriture du store externe, pas de
+    // setState local dans l'effet.
+    if (window.matchMedia?.('(max-width: 47.99rem)').matches && storeVue() === 'semaine') {
+      ecrireVue('jour')
+    }
+  }, [])
+
   return [vue, ecrireVue]
 }
 
@@ -171,6 +192,39 @@ function Navigation({
   )
 }
 
+// Navigation jour par jour (vue jour) : part du jour affiché.
+function NavigationJour({
+  lundi,
+  jourIndex,
+  onChanger,
+}: {
+  lundi: Date
+  jourIndex: number
+  onChanger: (voisin: { lundi: Date; jourIndex: number }) => void
+}) {
+  return (
+    <div className="lpv-o-week-calendar__day-nav">
+      <Button
+        ariaLabel="Jour précédent"
+        onClick={() => onChanger(jourVoisin(lundi, jourIndex, -1))}
+        type="button"
+        variant="secondary"
+      >
+        ‹ Jour
+      </Button>
+      <strong>{JOURS_GRILLE[jourIndex]}</strong>
+      <Button
+        ariaLabel="Jour suivant"
+        onClick={() => onChanger(jourVoisin(lundi, jourIndex, 1))}
+        type="button"
+        variant="secondary"
+      >
+        Jour ›
+      </Button>
+    </div>
+  )
+}
+
 /* ------------------------------------------------------------------ */
 /* Grille semaine (desktop par défaut)                                 */
 /* ------------------------------------------------------------------ */
@@ -182,6 +236,7 @@ function GrilleSemaine({
   mode,
   surPlage,
   onDrop,
+  onResize,
 }: {
   lundi: Date
   events: WeekCalendarEvent[]
@@ -189,6 +244,7 @@ function GrilleSemaine({
   mode: WeekCalendarMode
   surPlage?: (plage: PlageSelectionnee) => void
   onDrop?: (cible: CibleCreneau, seanceId: number) => void
+  onResize?: SurRedimension
 }) {
   const jours = joursGrille(lundi)
   const aujourdhui = new Date()
@@ -221,6 +277,7 @@ function GrilleSemaine({
             const duJour = events.filter((e) => indexJourGrille(e.debut) === jourIndex)
             return (
               <div className="lpv-o-week-calendar__day-col" key={jour.toISOString()}>
+                <LignesHeures />
                 {dispos
                   .filter((d) => d.jour.toLowerCase() === JOURS_GRILLE[jourIndex]?.toLowerCase())
                   .map((d, i) => {
@@ -230,7 +287,7 @@ function GrilleSemaine({
                     return <div className="lpv-o-week-calendar__dispo" key={i} style={{ top, height }} />
                   })}
                 {duJour.map((event) => (
-                  <Pastille event={event} key={event.id} mode={mode} />
+                  <Pastille event={event} key={event.id} mode={mode} onResize={onResize} />
                 ))}
                 {mode === 'prof' && (
                   <ColonneSelectable
@@ -262,7 +319,22 @@ function ColonneSelectable({
   onDrop?: (cible: CibleCreneau, seanceId: number) => void
 }) {
   const [plageEnCours, setPlageEnCours] = useState<PlageSelectionnee | null>(null)
-  const [plageSurvolee, setPlageSurvolee] = useState<number | null>(null)
+  // Case d'appui : la sélection n'existe que si elle a commencé ici (un
+  // simple survol suivi d'un relâchement n'ouvre jamais la création)
+  const rangeeAppui = useRef<number | null>(null)
+
+  // Le pointeur est capturé par la case d'appui : la rangée survolée se
+  // déduit de sa position dans la colonne, pas de la case qui reçoit l'événement
+  const rangeeSousPointeur = (e: React.PointerEvent<HTMLElement>): number => {
+    const colonne = e.currentTarget.parentElement?.getBoundingClientRect()
+    const rangee = Math.floor((e.clientY - (colonne?.top ?? 0)) / HAUTEUR_CRENEAU)
+    return Math.min(Math.max(rangee, 0), RANGEES.length - 1)
+  }
+
+  const annuler = () => {
+    rangeeAppui.current = null
+    setPlageEnCours(null)
+  }
 
   return (
     <>
@@ -276,29 +348,50 @@ function ColonneSelectable({
           onDragOver={(e) => e.preventDefault()}
           onDrop={(e) => {
             e.preventDefault()
+            annuler()
             const id = Number(e.dataTransfer.getData('text/plain'))
             if (Number.isFinite(id) && id > 0) onDrop?.({ jourIndex, heureDebut: heure }, id)
           }}
-          onPointerCancel={() => {
-            setPlageEnCours(null)
-            setPlageSurvolee(null)
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') annuler()
           }}
+          onPointerCancel={annuler}
           onPointerDown={(e) => {
-            if (e.button !== 0 && e.pointerType === 'mouse') return
+            if (glissementEnCours || (e.pointerType === 'mouse' && e.button !== 0)) return
             e.currentTarget.setPointerCapture(e.pointerId)
+            rangeeAppui.current = rangee
             setPlageEnCours({ jourIndex, rangeeDebut: rangee, rangeeFin: rangee + 1 })
           }}
-          onPointerEnter={() => setPlageSurvolee(rangee)}
-          onPointerMove={() => setPlageSurvolee(rangee)}
-          onPointerUp={() => {
-            if (plageSurvolee === null) return
-            const { rangeeDebut, rangeeFin } = plageDepuisCases(rangee, plageSurvolee)
-            setPlageEnCours(null)
-            setPlageSurvolee(null)
-            surPlage?.({ jourIndex, rangeeDebut, rangeeFin })
+          onPointerMove={(e) => {
+            if (rangeeAppui.current === null) return
+            setPlageEnCours({ jourIndex, ...plageDepuisCases(rangeeAppui.current, rangeeSousPointeur(e)) })
           }}
-          style={{ top: RANGEES.indexOf(heure) * HAUTEUR_CRENEAU, touchAction: 'none' }}
+          onPointerUp={(e) => {
+            const appui = rangeeAppui.current
+            annuler()
+            if (appui === null || glissementEnCours) return
+            surPlage?.({ jourIndex, ...plageDepuisCases(appui, rangeeSousPointeur(e)) })
+          }}
+          style={{ top: rangee * HAUTEUR_CRENEAU, touchAction: 'none' }}
           type="button"
+        />
+      ))}
+    </>
+  )
+}
+
+// Lignes horizontales en pointillés à chaque heure : repères pour viser un
+// créneau pendant un glisser-déposer ou une sélection
+function LignesHeures() {
+  const heures = HEURE_FIN_GRILLE - HEURE_DEBUT_GRILLE
+  return (
+    <>
+      {Array.from({ length: heures - 1 }, (_, i) => (
+        <div
+          aria-hidden="true"
+          className="lpv-o-week-calendar__hour-line"
+          key={i}
+          style={{ top: (i + 1) * 2 * HAUTEUR_CRENEAU }}
         />
       ))}
     </>
@@ -323,6 +416,7 @@ function GrilleJour({
   mode,
   surPlage,
   onDrop,
+  onResize,
 }: {
   lundi: Date
   jourIndex: number
@@ -331,6 +425,7 @@ function GrilleJour({
   mode: WeekCalendarMode
   surPlage?: (plage: PlageSelectionnee) => void
   onDrop?: (cible: CibleCreneau, seanceId: number) => void
+  onResize?: SurRedimension
 }) {
   const jour = joursGrille(lundi)[jourIndex]
   const aujourdhui = new Date()
@@ -358,6 +453,7 @@ function GrilleJour({
           </div>
 
           <div className="lpv-o-week-calendar__day-col">
+            <LignesHeures />
             {dispos
               .filter((d) => d.jour.toLowerCase() === JOURS_GRILLE[jourIndex]?.toLowerCase())
               .map((d, i) => {
@@ -367,7 +463,7 @@ function GrilleJour({
                 return <div className="lpv-o-week-calendar__dispo" key={i} style={{ top, height }} />
               })}
             {seancesDuJourTriees(events, jourIndex).map((event) => (
-              <Pastille event={event} key={event.id} mode={mode} />
+              <Pastille event={event} key={event.id} mode={mode} onResize={onResize} />
             ))}
             {mode === 'prof' && (
               <ColonneSelectable
@@ -410,7 +506,8 @@ function VueListe({ events, lundi }: { events: WeekCalendarEvent[]; lundi: Date 
                   <span className="lpv-chip">
                     {event.debut.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
                   </span>{' '}
-                  <span className="lpv-m-list-row__title">{labelMatiere(event.matiere)}</span>
+                  <span className="lpv-m-list-row__title">{labelMatiere(event.matiere)}</span>{' '}
+                  <span className="lpv-muted">({labelDuree(dureeBornee(event.dureeMin))})</span>
                   {event.labelGroupe && <span className="lpv-muted">· {event.labelGroupe}</span>}
                 </a>
               ))}
@@ -426,27 +523,107 @@ function VueListe({ events, lundi }: { events: WeekCalendarEvent[]; lundi: Date 
 /* Pastille                                                            */
 /* ------------------------------------------------------------------ */
 
-function Pastille({ event, mode }: { event: WeekCalendarEvent; mode: WeekCalendarMode }) {
+function Pastille({
+  event,
+  mode,
+  onResize,
+}: {
+  event: WeekCalendarEvent
+  mode: WeekCalendarMode
+  onResize?: SurRedimension
+}) {
+  const dureeInitiale = dureeBornee(event.dureeMin)
+  // Durée affichée pendant le redimensionnement, jusqu'au rechargement des séances
+  const [dureeApercu, setDureeApercu] = useState<number | null>(null)
+  const appuiPoignee = useRef<number | null>(null)
+
+  const duree = dureeApercu ?? dureeInitiale
   const top = positionMinutes(event.debut) * PX_PAR_MINUTE
-  const height = Math.max(dureeBornee(event.dureeMin) * PX_PAR_MINUTE - 2, 20)
+  const height = Math.max(duree * PX_PAR_MINUTE - 2, 20)
+  const fin = new Date(event.debut.getTime() + duree * 60_000)
+  const redimensionnable = mode === 'prof' && Boolean(onResize)
+
+  const dureeSousPointeur = (clientY: number) =>
+    dureeRedimensionnee(event.debut, dureeInitiale, (clientY - (appuiPoignee.current ?? clientY)) / PX_PAR_MINUTE)
 
   return (
     <a
-      className={`lpv-o-week-calendar__event lpv-o-week-calendar__event--${couleurMatiere(event.matiere)}`}
+      className={`lpv-o-week-calendar__event lpv-o-week-calendar__event--${couleurMatiere(event.matiere)}${dureeApercu !== null ? ' lpv-o-week-calendar__event--resizing' : ''}`}
       draggable={mode === 'prof'}
       href={event.href || undefined}
+      onDragEnd={(e) => {
+        e.currentTarget.closest('.lpv-o-week-calendar')?.classList.remove('lpv-o-week-calendar--dragging')
+        // Après le dépôt : un relâchement tardif sur une case reste ignoré
+        setTimeout(() => {
+          glissementEnCours = false
+        }, 0)
+      }}
       onDragStart={(e) => {
+        if (appuiPoignee.current !== null) {
+          e.preventDefault()
+          return
+        }
+        glissementEnCours = true
         e.dataTransfer.setData('text/plain', String(event.id))
         e.dataTransfer.effectAllowed = 'move'
+        // Différé : modifier le DOM pendant dragstart annule le glissement (Chrome)
+        const calendrier = e.currentTarget.closest('.lpv-o-week-calendar')
+        setTimeout(() => calendrier?.classList.add('lpv-o-week-calendar--dragging'), 0)
       }}
       style={{ top, height }}
     >
       <span className="lpv-o-week-calendar__event-matiere">{labelMatiere(event.matiere)}</span>
+      <span className="lpv-o-week-calendar__event-horaire">
+        {heureCourte(event.debut)} – {heureCourte(fin)} · {labelDuree(duree)}
+      </span>
       {event.labelGroupe && (
         <span className="lpv-o-week-calendar__event-groupe">{event.labelGroupe}</span>
       )}
+      {redimensionnable && (
+        <span
+          aria-hidden="true"
+          className="lpv-o-week-calendar__event-resize"
+          draggable={false}
+          // Le clic qui suit le relâchement ne doit pas ouvrir la séance
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+          }}
+          onPointerCancel={() => {
+            appuiPoignee.current = null
+            setDureeApercu(null)
+          }}
+          onPointerDown={(e) => {
+            // Empêche le glisser-déposer natif de la pastille
+            e.preventDefault()
+            e.stopPropagation()
+            e.currentTarget.setPointerCapture(e.pointerId)
+            appuiPoignee.current = e.clientY
+            setDureeApercu(dureeInitiale)
+          }}
+          onPointerMove={(e) => {
+            if (appuiPoignee.current === null) return
+            setDureeApercu(dureeSousPointeur(e.clientY))
+          }}
+          onPointerUp={(e) => {
+            if (appuiPoignee.current === null) return
+            const nouvelleDuree = dureeSousPointeur(e.clientY)
+            appuiPoignee.current = null
+            if (nouvelleDuree === dureeInitiale) {
+              setDureeApercu(null)
+              return
+            }
+            onResize?.(event.id, nouvelleDuree, () => setDureeApercu(null))
+          }}
+          title="Glisser pour changer la durée"
+        />
+      )}
     </a>
   )
+}
+
+function heureCourte(date: Date): string {
+  return date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
 }
 
 function labelMatiere(matiere: MatiereCalendrier): string {
@@ -535,14 +712,6 @@ function WeekCalendarProf({ dispos = [], semaineInitiale }: WeekCalendarProps) {
 
   const events = seances.data ?? []
 
-  useEffect(() => {
-    // En < 48rem, la vue semaine est illisible : forcer la vue jour au montage
-    // (écriture du store externe, pas de setState local dans l'effet).
-    if (window.matchMedia('(max-width: 47.99rem)').matches) {
-      ecrireVue('jour')
-    }
-  }, [])
-
   // La sélection de plage (clic-tirer) ouvre le parcours de création sur la
   // page dédiée, avec le jour et les heures préremplis dans l'URL.
   const surPlage = (plage: PlageSelectionnee) => {
@@ -550,10 +719,26 @@ function WeekCalendarProf({ dispos = [], semaineInitiale }: WeekCalendarProps) {
     router.push(urlNouvelleSeance(lundi, brouillon))
   }
 
+  const surRedimension: SurRedimension = (seanceId, dureeMin, terminer) => {
+    const existante = events.find((e) => e.id === seanceId)
+    if (!existante) return terminer()
+    deplacer.mutate(
+      { seanceId, nouvelleDate: existante.debut, dureeMin },
+      {
+        onError: (err) => setToast(err.message),
+        onSettled: terminer,
+      },
+    )
+  }
+
   const surDepot = (cible: CibleCreneau, seanceId: number) => {
     const existante = events.find((e) => e.id === seanceId)
     if (!existante) return
     const nouvelleDate = dateCiblee(lundi, cible)
+    if (depasseFinCours(nouvelleDate, dureeBornee(existante.dureeMin))) {
+      setToast(MESSAGE_FIN_COURS)
+      return
+    }
     deplacer.mutate(
       { seanceId, nouvelleDate, dureeMin: dureeBornee(existante.dureeMin) },
       {
@@ -574,7 +759,7 @@ function WeekCalendarProf({ dispos = [], semaineInitiale }: WeekCalendarProps) {
           onChoisirJour={(jour) => {
             const nouveauLundi = debutSemaine(jour)
             setLundi(nouveauLundi)
-            setJourIndex(Math.min((jour.getDay() + 6) % 7, 5))
+            setJourIndex((jour.getDay() + 6) % 7)
           }}
           lundi={lundi}
           vue={vue}
@@ -584,33 +769,14 @@ function WeekCalendarProf({ dispos = [], semaineInitiale }: WeekCalendarProps) {
       <Navigation lundi={lundi} modeJour={vue === 'jour'} onChanger={setLundi} />
 
       {vue === 'jour' && (
-        <div className="lpv-o-week-calendar__day-nav">
-          <Button
-            ariaLabel="Jour précédent"
-            onClick={() => {
-              const nouveau = ajouterJours(lundi, -1)
-              setLundi(debutSemaine(nouveau))
-              setJourIndex(Math.min((nouveau.getDay() + 6) % 7, 5))
-            }}
-            type="button"
-            variant="secondary"
-          >
-            ‹ Jour
-          </Button>
-          <strong>{JOURS_GRILLE[jourIndex]}</strong>
-          <Button
-            ariaLabel="Jour suivant"
-            onClick={() => {
-              const nouveau = ajouterJours(lundi, 1)
-              setLundi(debutSemaine(nouveau))
-              setJourIndex(Math.min((nouveau.getDay() + 6) % 7, 5))
-            }}
-            type="button"
-            variant="secondary"
-          >
-            Jour ›
-          </Button>
-        </div>
+        <NavigationJour
+          jourIndex={jourIndex}
+          lundi={lundi}
+          onChanger={(voisin) => {
+            setLundi(voisin.lundi)
+            setJourIndex(voisin.jourIndex)
+          }}
+        />
       )}
 
       {seances.isLoading ? (
@@ -622,6 +788,7 @@ function WeekCalendarProf({ dispos = [], semaineInitiale }: WeekCalendarProps) {
           lundi={lundi}
           mode="prof"
           onDrop={surDepot}
+          onResize={surRedimension}
           surPlage={surPlage}
         />
       ) : vue === 'jour' ? (
@@ -632,6 +799,7 @@ function WeekCalendarProf({ dispos = [], semaineInitiale }: WeekCalendarProps) {
           lundi={lundi}
           mode="prof"
           onDrop={surDepot}
+          onResize={surRedimension}
           surPlage={surPlage}
         />
       ) : (
@@ -641,13 +809,16 @@ function WeekCalendarProf({ dispos = [], semaineInitiale }: WeekCalendarProps) {
       {events.length === 0 && !seances.isLoading && vue === 'semaine' && (
         <p className="lpv-muted">Aucune séance cette semaine.</p>
       )}
+      {!seances.isLoading && vue === 'jour' && seancesDuJourTriees(events, jourIndex).length === 0 && (
+        <p className="lpv-muted">Aucune séance ce jour.</p>
+      )}
       {toast && <Toast message={toast} type="error" onClose={() => setToast(null)} />}
     </div>
   )
 }
 
 function jourDuJour(): number {
-  return Math.min((new Date().getDay() + 6) % 7, 5)
+  return (new Date().getDay() + 6) % 7
 }
 
 // URL du parcours de création avec préremplissage (jour 1..6 de la semaine
@@ -680,7 +851,7 @@ function WeekCalendarStatic({ events = [], dispos = [], semaineInitiale }: WeekC
           onChoisirJour={(jour) => {
             const nouveauLundi = debutSemaine(jour)
             setLundi(nouveauLundi)
-            setJourIndex(Math.min((jour.getDay() + 6) % 7, 5))
+            setJourIndex((jour.getDay() + 6) % 7)
           }}
           vue={vue}
         />
@@ -688,33 +859,14 @@ function WeekCalendarStatic({ events = [], dispos = [], semaineInitiale }: WeekC
       <Navigation lundi={lundi} modeJour={vue === 'jour'} onChanger={setLundi} />
 
       {vue === 'jour' && (
-        <div className="lpv-o-week-calendar__day-nav">
-          <Button
-            ariaLabel="Jour précédent"
-            onClick={() => {
-              const nouveau = ajouterJours(lundi, -1)
-              setLundi(debutSemaine(nouveau))
-              setJourIndex(Math.min((nouveau.getDay() + 6) % 7, 5))
-            }}
-            type="button"
-            variant="secondary"
-          >
-            ‹ Jour
-          </Button>
-          <strong>{JOURS_GRILLE[jourIndex]}</strong>
-          <Button
-            ariaLabel="Jour suivant"
-            onClick={() => {
-              const nouveau = ajouterJours(lundi, 1)
-              setLundi(debutSemaine(nouveau))
-              setJourIndex(Math.min((nouveau.getDay() + 6) % 7, 5))
-            }}
-            type="button"
-            variant="secondary"
-          >
-            Jour ›
-          </Button>
-        </div>
+        <NavigationJour
+          jourIndex={jourIndex}
+          lundi={lundi}
+          onChanger={(voisin) => {
+            setLundi(voisin.lundi)
+            setJourIndex(voisin.jourIndex)
+          }}
+        />
       )}
 
       {vue === 'semaine' ? (

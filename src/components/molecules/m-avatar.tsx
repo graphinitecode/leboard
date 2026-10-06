@@ -22,8 +22,7 @@ function firstName(name: string): string {
 }
 
 // Molécule : menu du compte de l'entête portail (connecté uniquement), seul
-// menu de l'entête. Trigger : prénom + cercle d'initiales + chevron (icône
-// menu en mobile). Panneau : identité, navigation du portail (mobile
+// menu de l'entête. Trigger : prénom + cercle d'initiales + chevron. Panneau : identité, navigation du portail (mobile
 // uniquement, les onglets la portent en desktop), profil, thème, déconnexion.
 export function Avatar({
   nom,
@@ -66,11 +65,6 @@ export function Avatar({
         <span aria-hidden="true" className="lpv-m-avatar-header__chevron">
           <Icon icon={open ? 'rivet-icons:chevron-up' : 'rivet-icons:chevron-down'} size={18} />
         </span>
-        {navLinks.length > 0 && (
-          <span aria-hidden="true" className="lpv-m-avatar-header__menu-icon">
-            <Icon icon={open ? 'rivet-icons:close' : 'rivet-icons:menu'} size={22} />
-          </span>
-        )}
       </button>
 
       {open && (
