@@ -1,4 +1,5 @@
 import { LoginForm } from '@/auth'
+import { FormPage } from '@/components/templates'
 
 export const dynamic = 'force-dynamic'
 
@@ -6,10 +7,8 @@ export const dynamic = 'force-dynamic'
 // Le formulaire de connexion est centré sous le hero.
 export default function ProfLoginPage() {
   return (
-    <LoginForm
-      cible="/profs"
-      portail="profs"
-      subtitle="Connectez pour accéder à votre espace de professeur."
-    />
+    <FormPage subtitle="Connectez pour accéder à votre espace de professeur." title="Connexion">
+      <LoginForm cible="/profs" portail="profs" />
+    </FormPage>
   )
 }

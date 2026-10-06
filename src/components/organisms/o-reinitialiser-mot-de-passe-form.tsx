@@ -46,7 +46,7 @@ export function ReinitialiserMotDePasseForm({
   }
 
   return (
-    <form className="lpv-login" noValidate onSubmit={submit}>
+    <form className="lpv-login__form" noValidate onSubmit={submit}>
       <ErrorSummary
         errors={erreur ? [{ fieldId: 'nouveau-mdp', text: erreur }] : []}
         title="Il y a un problème"
