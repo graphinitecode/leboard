@@ -20,6 +20,7 @@ Les specs suivent le template `specs/_TEMPLATE.md`. Chaque spec est implémenté
 | 12 | [Calendrier hebdomadaire avec pastilles](12-calendrier-hebdomadaire.md) | Moyenne | 01, 02, 07, 10 | Implémenté |
 | 13 | [Calendrier : vues multiples et assistant de création](13-calendrier-vues-et-assistant.md) | Moyenne | 12 | Implémenté |
 | 14 | [Type scale responsive des titres](14-type-scale.md) | Moyenne | 11 | Implémenté |
+| 15 | [Séances récurrentes](15-seances-recurrentes.md) | Haute | 01, 10, 12, 13 | Implémenté |
 
 ## Portail profs (découpage)
 
