@@ -15,6 +15,7 @@ const pret = (id: number, livre: string, eleve: string, retourDans: number, rend
   eleveLabel: eleve,
   exemplaireCode: `LPV-000${id}`,
   id,
+  livreId: 12,
   livreLabel: livre,
 })
 

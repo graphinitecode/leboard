@@ -5,12 +5,14 @@ import configPromise from '@payload-config'
 
 import { Icon, Tag } from '@/components/atoms'
 import { AlertCard } from '@/components/molecules/m-alert-card'
-import { EmptyState, Table } from '@/components/molecules'
+import { EmptyState, Pagination, Table } from '@/components/molecules'
+import { buildPaginationItems } from '@/components/molecules/m-pagination'
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
 import { DetailPage } from '@/components/templates'
 import type { DashboardStat } from '@/components/templates'
+import { PretsEleveCard } from '@/components/organisms/o-prets-eleve-card'
 import { requireProf } from '@/utilities/profAuth'
-import { ordrePresences, trierPresences } from '@/utilities/presences'
+import { ordrePresences, paginerParPage, trierPresences } from '@/utilities/presences'
 import type { OrdrePresences } from '@/utilities/presences'
 import { niveauLabel, texteLexical } from '@/utilities/rapports'
 
@@ -30,7 +32,7 @@ export default async function EleveProfPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>
-  searchParams: Promise<{ retour?: string; tri?: string }>
+  searchParams: Promise<{ page?: string; retour?: string; tri?: string }>
 }) {
   const { id } = await params
   const user = await requireProf()
@@ -40,7 +42,7 @@ export default async function EleveProfPage({
   // « Retour » renvoie à la liste « Mes élèves » par défaut, ou à l'écran
   // d'où l'utilisateur vient (fiche livre) — chemin interne uniquement
   // (anti open-redirect : doit commencer par « / » mais pas « // »).
-  const { retour: retourParam, tri: triParam } = await searchParams
+  const { page: pageParam, retour: retourParam, tri: triParam } = await searchParams
   const retour =
     retourParam && retourParam.startsWith('/') && !retourParam.startsWith('//')
       ? retourParam
@@ -148,6 +150,21 @@ export default async function EleveProfPage({
   const ordre = ordrePresences(triParam)
   const docsPresences = trierPresences(presences.docs, ordre)
 
+  // Lot de 10 lignes dans l'historique : pagination en mémoire après le tri
+  // voulu (les entêtes de tri gardent leur logique en mémoire).
+  const { lignes: presencesPage, page: pageCourante, totalPages } = paginerParPage(
+    docsPresences,
+    Number(pageParam),
+  )
+
+  const lienPage = (page: number): string => {
+    const params = new URLSearchParams()
+    if (retourParam) params.set('retour', retourParam)
+    if (triParam) params.set('tri', triParam)
+    if (page > 1) params.set('page', String(page))
+    const requete = params.toString()
+    return requete ? `/profs/eleves/${id}?${requete}` : `/profs/eleves/${id}`
+  }
   const lienTri = (cible: OrdrePresences): string => {
     const params = new URLSearchParams()
     if (retourParam) params.set('retour', retourParam)
@@ -181,7 +198,7 @@ export default async function EleveProfPage({
     enteteTri('Statut', 'statut', ordre === 'statut', 'asc'),
   ]
 
-  const presencesRows: TableRowCell[][] = docsPresences.map((presence) => {
+  const presencesRows: TableRowCell[][] = presencesPage.map((presence) => {
     const seance = presence.seance as unknown as { date?: string; matiere?: string }
     const statut = presenceStatus(presence.present)
     return [
@@ -190,6 +207,10 @@ export default async function EleveProfPage({
       { content: <Tag color={statut.color}>{statut.label}</Tag> },
     ]
   })
+
+  // Carte des prêts : l'action « Rendre » est réservée aux gestionnaires de
+  // bibliothèque (admin, bénévole) — un prof ne peut que consulter.
+  const peutGererBiblio = user.role === 'admin' || user.role === 'benevole-bibliotheque'
 
   const sidebar = (
     <>
@@ -204,6 +225,11 @@ export default async function EleveProfPage({
           ))}
         </AlertCard>
       ) : null}
+      <PretsEleveCard
+        eleveId={Number(id)}
+        eleveNom={`${eleve.prenom} ${eleve.nom}`}
+        peutGerer={peutGererBiblio}
+      />
       <section className="lpv-t-dashboard-page__aside-card">
         <h3 className="lpv-t-dashboard-page__aside-card__title">Informations</h3>
         <dl className="lpv-m-infolist">
@@ -258,7 +284,26 @@ export default async function EleveProfPage({
             presences.docs.length === 0 ? (
               <EmptyState icon="rivet-icons:check-circle" title="Aucune présence enregistrée" variant="neutral" />
             ) : (
-              <Table caption="" head={presencesHead} rows={presencesRows} />
+              <>
+                <Table caption="" head={presencesHead} rows={presencesRows} />
+                {totalPages > 1 && (
+                  <Pagination
+                    items={buildPaginationItems({
+                      currentPage: pageCourante,
+                      hrefFor: lienPage,
+                      totalPages,
+                    })}
+                    next={pageCourante < totalPages ? { href: lienPage(pageCourante + 1) } : undefined}
+                    previous={pageCourante > 1 ? { href: lienPage(pageCourante - 1) } : undefined}
+                  />
+                )}
+                {/* Lien simple (pas de navigation client) : la route renvoie un fichier */}
+                <p>
+                  <a className="lpv-link-inline" download href={`/profs/export/presences?eleve=${eleve.id}`}>
+                    Exporter l’historique de présence (CSV)
+                  </a>
+                </p>
+              </>
             ),
         },
         {

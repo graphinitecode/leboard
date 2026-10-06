@@ -14,6 +14,7 @@ const mapDtoToPret = (dto: PretDto): Pret => {
     eleveId: eleve?.id ?? 0,
     eleveLabel: eleve ? `${eleve.prenom} ${eleve.nom}` : null,
     exemplaireCode: exemplaire?.code ?? null,
+    livreId: livre?.id ?? null,
     livreLabel: livre?.titre ?? null,
     dateEmprunt: dto.dateEmprunt ?? dto.createdAt ?? null,
     dateRetourPrevue: dto.dateRetourPrevue ?? null,

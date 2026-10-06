@@ -96,6 +96,7 @@ const pretEnRetard = (): Pret => ({
   eleveId: 10,
   eleveLabel: 'Lucas Martin',
   exemplaireCode: 'LPV-0009',
+  livreId: 12,
   livreLabel: 'Charlie et la chocolaterie',
   dateEmprunt: new Date(Date.now() - 30 * 86_400_000).toISOString(),
   dateRetourPrevue: new Date(Date.now() - 5 * 86_400_000).toISOString(),

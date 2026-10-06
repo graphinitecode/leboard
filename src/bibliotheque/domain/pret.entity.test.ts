@@ -10,6 +10,7 @@ const pret = (id: number, dateRetourPrevue: string | null): Pret => ({
   eleveLabel: 'Lucas M.',
   exemplaireCode: `EX-${id}`,
   id,
+  livreId: 12,
   livreLabel: 'Le Petit Prince',
 })
 
