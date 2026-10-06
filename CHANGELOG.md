@@ -6,6 +6,8 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+## [0.13.0] — 2026-10-06
+
 ### Ajouté
 - Une séance peut se répéter chaque semaine ou chaque mois (même jour de semaine, par exemple « le 2e mardi »), sans fin ou jusqu'à une date : toutes les séances sont créées d'un coup et apparaissent dans le calendrier.
 - Une icône signale les séances récurrentes dans le calendrier : colorée quand la série n'a pas de fin, atténuée quand elle s'arrête à une date.
