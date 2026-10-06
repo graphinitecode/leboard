@@ -14,13 +14,8 @@ export default async function RGPDPage() {
   return (
     <PortalPage
       header={
-        <ServiceHeader
-          heroTitle="Politique de protection des données"
-          legalLinks={[{ href: '/rgpd', label: 'Protection des données' }]}
-          services={[{ href: '/rgpd', label: 'Protection des données' }]}
-        />
+        <ServiceHeader heroTitle="Politique de protection des données" />
       }
-      footerLinks={[]}
     >
       {politique?.contenu ? (
         <RichText data={politique.contenu} />

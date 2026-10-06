@@ -2,36 +2,38 @@ import Link from 'next/link'
 
 import { Avatar } from '@/components/molecules/m-avatar'
 
-import { CollapsibleMenu } from './m-collapsible-menu'
+import { PortalNav, type PortalNavLink } from './m-portal-nav'
 
 // Molécule : entête pleine largeur du portail (couleur selon data-lpv-portail).
-// Logo blanc « Association Les Pierres Vivantes » + Menu dépliant + identité.
+// Ligne haute : logo (retour à l'accueil du portail) + menu du compte.
+// Ligne basse (connecté, ≥ 48rem) : onglets de navigation du portail.
 // Le hero est fusionné dans la même bande colorée.
-// utilisateur : session serveur (getMeUserServer) — connecté : avatar dropdown
-// + séparateur vertical avant le menu, sinon rien (les pages login n'affichent
-// pas d'identité).
+// user : session serveur (getMeUserServer). Déconnecté (pages de connexion,
+// RGPD) : ni navigation ni compte, le thème suit celui de la machine.
 export function ServiceHeader({
+  homeHref = '/',
+  navLinks = [],
   heroTitle,
   heroText,
   user,
-  services,
-  legalLinks,
 }: {
+  homeHref?: string
+  navLinks?: PortalNavLink[]
   heroTitle?: string
   heroText?: string
-  user?: { nom: string; email: string } | null
-  services: { href: string; label: string; description?: string }[]
-  legalLinks: { href: string; label: string; description?: string }[]
+  user?: { nom: string; email: string; profileHref?: string; logoutRedirect?: string } | null
 }) {
+  const showNav = Boolean(user) && navLinks.length > 0
+
   return (
     <header className="lpv-o-header">
       <div className="lpv-o-header__inner">
-        <Link className="lpv-o-header__logo" href="/">
+        <Link className="lpv-o-header__logo" href={homeHref}>
           {/* Deux rendus du logo, la bascule est faite par CSS :
               slim (symbole seul) en mobile, large (inscription incluse) ≥ 48rem. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            alt="Association Les Pierres Vivantes"
+            alt="Association Les Pierres Vivantes — accueil"
             className="lpv-o-header__logo-slim"
             height={93}
             src="/lpv-logo-white.svg"
@@ -39,7 +41,7 @@ export function ServiceHeader({
           />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            alt="Association Les Pierres Vivantes"
+            alt="Association Les Pierres Vivantes — accueil"
             className="lpv-o-header__logo-large"
             height={93}
             src="/lpv-logo_large.png"
@@ -48,11 +50,24 @@ export function ServiceHeader({
         </Link>
 
         <div className="lpv-o-header__actions">
-          {user && <Avatar email={user.email} nom={user.nom} />}
-          {user && <span aria-hidden="true" className="lpv-o-header__separator" />}
-          <CollapsibleMenu services={services} legalLinks={legalLinks} />
+          {user && (
+            <Avatar
+              email={user.email}
+              homeHref={homeHref}
+              logoutRedirect={user.logoutRedirect}
+              navLinks={showNav ? navLinks : []}
+              nom={user.nom}
+              profileHref={user.profileHref}
+            />
+          )}
         </div>
       </div>
+
+      {showNav && (
+        <div className="lpv-o-header__nav">
+          <PortalNav homeHref={homeHref} links={navLinks} />
+        </div>
+      )}
 
       {heroTitle && (
         <div className="lpv-o-header__hero">

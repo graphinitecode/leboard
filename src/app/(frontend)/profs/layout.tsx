@@ -22,21 +22,26 @@ export default async function ProfsLayout({ children }: { children: ReactNode })
       header={
         <ServiceHeader
           heroText="Vos séances, présences et retours de séance, au même endroit."
-          legalLinks={[
-            { href: '/rgpd', label: 'Mentions légales' },
-            { href: '/rgpd', label: 'Politique de confidentialité' },
+          homeHref="/profs"
+          navLinks={[
+            { href: '/profs', label: 'Tableau de bord', match: ['/profs/seances'] },
+            { href: '/profs/calendrier', label: 'Calendrier' },
+            { href: '/profs/eleves', label: 'Élèves' },
+            { href: '/profs/bibliotheque', label: 'Bibliothèque' },
+            { href: '/profs/disponibilites', label: 'Disponibilités' },
           ]}
-          services={[
-            { description: 'Vos séances, présences et retours', href: '/profs', label: 'Mes séances' },
-            { description: 'Vues semaine, jour et liste', href: '/profs/calendrier', label: 'Calendrier' },
-            { description: 'Vos disponibilités hebdomadaires', href: '/profs/disponibilites', label: 'Mes disponibilités' },
-            { description: 'Vos informations personnelles', href: '/profs/mon-profil', label: 'Mon profil' },
-            { href: '/parents', label: 'Espace parents' },
-          ]}
-          user={user ? { nom: `${user.prenom} ${user.nom}`, email: user.email } : null}
+          user={
+            user
+              ? {
+                  email: user.email,
+                  logoutRedirect: '/profs/login',
+                  nom: `${user.prenom} ${user.nom}`,
+                  profileHref: '/profs/mon-profil',
+                }
+              : null
+          }
         />
       }
-      footerLinks={[{ href: '/profs/login', label: 'Connexion' }]}
     >
       {children}
     </PortalPage>
