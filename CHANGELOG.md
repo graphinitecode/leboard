@@ -11,6 +11,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Une icône signale les séances récurrentes dans le calendrier : colorée quand la série n'a pas de fin, atténuée quand elle s'arrête à une date.
 - Déplacer, changer la durée ou supprimer une séance récurrente propose de l'appliquer à cette séance seulement, à celle-ci et aux suivantes, ou à toute la série ; les séances passées ne sont jamais modifiées.
 - Une page « Prêts en cours » liste tous les livres empruntés, du retour le plus urgent au plus lointain, avec leur statut (en retard, à rendre sous 3 jours, dans les temps), une recherche par livre ou élève, un filtre par statut et le retour en un clic. Elle est accessible depuis la bibliothèque.
+- Les parents sont prévenus par e-mail quand un livre emprunté par leur enfant est à rendre bientôt ou en retard, et en cas d'absences répétées aux séances. Ils peuvent désactiver ces e-mails dans « Mon profil ».
 
 ### Modifié
 - L'entête des portails est réorganisé : les rubriques (tableau de bord, calendrier, élèves, bibliothèque, disponibilités) s'affichent en onglets, et un seul menu, celui du compte, regroupe « Mon profil », le choix du thème et la déconnexion. Sur mobile, ce menu reprend aussi les rubriques.
