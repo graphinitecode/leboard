@@ -26,8 +26,13 @@ import { bibliothequeRepository } from './infrastructure/bibliotheque.repository
 import {
   estPretEnCours,
   exemplairesDisponibles,
+  JOURS_RAPPEL,
+  joursAvantRetour,
   joursDeRetard,
+  statutPret,
+  trierParRetour,
 } from './domain/pret.entity'
+import type { StatutPret } from './domain/pret.entity'
 import {
   CATEGORIES_LIVRE,
   labelCategorieLivre,
@@ -38,7 +43,7 @@ import { compacterIsbn, detecterDoublonCatalogue } from './domain/livre.doublon'
 import type { LigneImportLivre } from './domain/livre.import'
 import { analyserImportLivre } from './domain/livre.import'
 
-export type { Pret, LivreCatalogue, LigneImportLivre }
+export type { Pret, LivreCatalogue, LigneImportLivre, StatutPret }
 export {
   CATEGORIES_LIVRE,
   labelCategorieLivre,
@@ -49,7 +54,11 @@ export {
   detecterDoublonCatalogue,
   estPretEnCours,
   exemplairesDisponibles,
+  JOURS_RAPPEL,
+  joursAvantRetour,
   joursDeRetard,
+  statutPret,
+  trierParRetour,
   listPretsEnCoursHandler,
   listTousPretsEnCoursHandler,
   listCatalogueHandler,

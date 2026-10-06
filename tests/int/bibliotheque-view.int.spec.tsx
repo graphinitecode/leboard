@@ -146,6 +146,31 @@ describe('BibliothequeView', () => {
     expect(container.textContent).toContain('Retards')
   })
 
+  it('les rappels ne listent que les prêts à rendre sous 3 jours', () => {
+    pretsRetour.data = [
+      ...PRETS,
+      {
+        ...PRETS[1],
+        dateRetourPrevue: new Date(Date.now() + 15 * 86_400_000).toISOString(),
+        eleveLabel: 'Noé Lointain',
+        id: 3,
+      },
+    ]
+    catalogueRetour.data = CATALOGUE
+    const { container } = rendre()
+
+    const rappels = [...container.querySelectorAll('.lpv-t-dashboard-page__aside-card')].find((carte) =>
+      carte.textContent?.includes('Rappels à venir'),
+    ) as HTMLElement
+    expect(rappels.textContent).toContain('Emma Roux')
+    expect(rappels.textContent).not.toContain('Noé Lointain')
+    // Le retard a sa propre section, pas un rappel
+    expect(rappels.textContent).not.toContain('Lucas Martin')
+    expect(screen.getByRole('link', { name: 'Voir tous les prêts en cours' }).getAttribute('href')).toBe(
+      '/profs/bibliotheque/prets',
+    )
+  })
+
   it('liste les retards avec bouton retourne', () => {
     pretsRetour.data = PRETS
     const { container } = rendre()
