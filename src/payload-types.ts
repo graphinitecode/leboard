@@ -191,6 +191,10 @@ export interface Alerte {
   dateCreation: string;
   dateTraitement?: string | null;
   /**
+   * Date d’envoi de l’e-mail aux parents (vide : non envoyé)
+   */
+  notifieLe?: string | null;
+  /**
    * Action réalisée (ex. parent appelé, profil anonymisé)
    */
   resolution?: string | null;
@@ -247,6 +251,10 @@ export interface User {
   name?: string | null;
   role: 'admin' | 'prof' | 'benevole-bibliotheque' | 'parent';
   telephone?: string | null;
+  /**
+   * Retards de livres, rappels de retour et absences répétées de ses enfants
+   */
+  alertesEmail?: boolean | null;
   /**
    * Créneaux hebdomadaires de disponibilité (pour le planning)
    */
@@ -1433,6 +1441,7 @@ export interface AlertesSelect<T extends boolean = true> {
   statut?: T;
   dateCreation?: T;
   dateTraitement?: T;
+  notifieLe?: T;
   resolution?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1877,6 +1886,7 @@ export interface UsersSelect<T extends boolean = true> {
   name?: T;
   role?: T;
   telephone?: T;
+  alertesEmail?: T;
   disponibilites?:
     | T
     | {
