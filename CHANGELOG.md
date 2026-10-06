@@ -12,7 +12,9 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Sur téléphone, le calendrier s'ouvre en vue jour aussi dans l'espace parents, comme côté professeurs.
 
 ### Corrigé
-- Dans la vue jour du calendrier, « Jour suivant » et « Jour précédent » partent du jour affiché (et non plus du lundi) et sautent le dimanche.
+- Dans la vue jour du calendrier, « Jour suivant » et « Jour précédent » partent du jour affiché (et non plus du lundi).
+- Le dimanche est un jour de cours comme les autres : il apparaît dans le calendrier (une séance du dimanche n'était pas visible) et peut être choisi pour une disponibilité.
+- Dans le calendrier des professeurs, les séances peuvent de nouveau être ouvertes d'un clic ou déplacées par glisser-déposer : les cases de création les recouvraient.
 
 ## [0.12.0] — 2026-10-04
 
