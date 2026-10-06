@@ -6,6 +6,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+### Ajouté
+- Une séance peut se répéter chaque semaine ou chaque mois (même jour de semaine, par exemple « le 2e mardi »), sans fin ou jusqu'à une date : toutes les séances sont créées d'un coup et apparaissent dans le calendrier.
+- Une icône signale les séances récurrentes dans le calendrier : colorée quand la série n'a pas de fin, atténuée quand elle s'arrête à une date.
+- Déplacer, changer la durée ou supprimer une séance récurrente propose de l'appliquer à cette séance seulement, à celle-ci et aux suivantes, ou à toute la série ; les séances passées ne sont jamais modifiées.
+
 ### Modifié
 - L'entête des portails est réorganisé : les rubriques (tableau de bord, calendrier, élèves, bibliothèque, disponibilités) s'affichent en onglets, et un seul menu, celui du compte, regroupe « Mon profil », le choix du thème et la déconnexion. Sur mobile, ce menu reprend aussi les rubriques.
 - Le logo ramène à l'accueil du portail, la déconnexion renvoie à la page de connexion du portail, et le pied de page ne propose plus que « Protection des données » (les liens en double ou sans objet ont été retirés).

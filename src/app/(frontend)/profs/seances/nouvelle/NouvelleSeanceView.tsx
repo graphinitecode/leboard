@@ -19,7 +19,9 @@ import {
   joursGrille,
 } from '@/calendrier/domain/calendrier.utils'
 import type { MatiereCalendrier } from '@/calendrier/domain/calendrier.entity'
-import { useCreerSeance, useElevesDuProf, useSeancesPeriode } from '@/calendrier'
+import { useCreerSeance, useCreerSerie, useElevesDuProf, useSeancesPeriode } from '@/calendrier'
+import { Radios } from '@/components/molecules/m-radios'
+import { HORIZON_MOIS, libelleRegle, type FrequenceSerie } from '@/seances/domain/recurrence'
 import { nomEleve } from '@/students'
 import { EnterText } from '@/components/atoms/a-enter-text'
 import { HEURE_FIN_COURS_HHMM, MESSAGE_FIN_COURS } from '@/shared/horaires'
@@ -31,7 +33,9 @@ const MATIERES: { label: string; value: MatiereCalendrier }[] = [
   { label: 'Autre', value: 'autre' },
 ]
 
-type Etape = 'jour' | 'debut' | 'fin' | 'matiere' | 'eleves' | 'recap' | 'confirme'
+type Etape = 'jour' | 'debut' | 'fin' | 'matiere' | 'eleves' | 'repetition' | 'fin-repetition' | 'recap' | 'confirme'
+
+type Repetition = 'ponctuelle' | FrequenceSerie
 
 // Parcours « une question par écran » (pattern GOV.UK question pages),
 // construit sur le template QuestionPage : chaque page = back link + caption
@@ -59,12 +63,16 @@ function ParcoursNouvelleSeance() {
   const [heureDebut, setHeureDebut] = useState(initial.heureDebut)
   const [heureFin, setHeureFin] = useState(initial.heureFin)
   const [matiere, setMatiere] = useState<MatiereCalendrier | ''>('')
+  const [repetition, setRepetition] = useState<Repetition>('ponctuelle')
+  const [finRepetition, setFinRepetition] = useState<'jamais' | 'date'>('jamais')
+  const [dateFin, setDateFin] = useState('')
 
   const lundi = useMemo(() => debutSemaine(new Date()), [])
   const { debut, fin } = useMemo(() => bornesSemaine(lundi), [lundi])
   const seances = useSeancesPeriode({ debut, fin })
   const eleves = useElevesDuProf()
   const creer = useCreerSeance()
+  const creerSerie = useCreerSerie()
   const optionsEleves = useMemo<ComboboxOption<number>[]>(
     () =>
       (eleves.data ?? []).map((eleve) => ({
@@ -90,6 +98,20 @@ function ParcoursNouvelleSeance() {
         )
       : null
 
+  // Jour choisi au format « YYYY-MM-DD » (date locale) : première occurrence d'une série
+  const premiere = jourIso(joursGrille(lundi)[jourIndex])
+  const recurrente = repetition !== 'ponctuelle'
+  // Étapes : jour, début, fin, matière, élèves, répétition, [fin de répétition], récapitulatif
+  const nbEtapes = recurrente ? 8 : 7
+  const dateFinInvalide = finRepetition === 'date' && (!dateFin || dateFin < premiere)
+  const libelleRepetition = !recurrente
+    ? 'Une seule fois'
+    : `${libelleRegle(repetition, premiere)}${
+        finRepetition === 'date' && dateFin
+          ? `, jusqu’au ${new Date(`${dateFin}T12:00:00`).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`
+          : ', sans fin'
+      }`
+
   const elevesSelectionnes = (eleves.data ?? []).filter((e) => eleveIds.includes(e.id))
   const nomsEleves = elevesSelectionnes.map(nomEleve)
 
@@ -103,12 +125,24 @@ function ParcoursNouvelleSeance() {
     setErreur([])
     setPending(true)
     try {
-      await creer.mutateAsync({
-        debut: dateCiblee(lundi, { jourIndex, heureDebut }),
-        dureeMin: plageMinutes(heureDebut, heureFin),
-        matiere,
-        eleveIds,
-      })
+      if (recurrente) {
+        await creerSerie.mutateAsync({
+          dureeMin: plageMinutes(heureDebut, heureFin),
+          eleveIds,
+          fin: finRepetition === 'date' ? dateFin : null,
+          frequence: repetition,
+          heureDebut,
+          matiere,
+          premiere,
+        })
+      } else {
+        await creer.mutateAsync({
+          debut: dateCiblee(lundi, { jourIndex, heureDebut }),
+          dureeMin: plageMinutes(heureDebut, heureFin),
+          matiere,
+          eleveIds,
+        })
+      }
       setPending(false)
       setConfirmOuvert(false)
       setStep('confirme')
@@ -125,6 +159,9 @@ function ParcoursNouvelleSeance() {
     setHeureDebut('')
     setHeureFin('')
     setMatiere('')
+    setRepetition('ponctuelle')
+    setFinRepetition('jamais')
+    setDateFin('')
     setEleveIds([])
     setErreur([])
   }
@@ -142,7 +179,7 @@ function ParcoursNouvelleSeance() {
           retour={{ href: '/profs', label: 'Retour au Tableau de bord' }}
           htmlFor="seance-jour"
           step={1}
-          stepSize={6}
+          stepSize={nbEtapes}
         >
           <div className="lpv-o-availability-wizard__days" id="seance-jour">
             {JOURS_GRILLE.map((label, index) => (
@@ -175,7 +212,7 @@ function ParcoursNouvelleSeance() {
           retour={{ href: '#', onClick: () => setStep('jour') }}
           htmlFor="seance-debut"
           step={2}
-          stepSize={6}
+          stepSize={nbEtapes}
         >
           <Input
             hint={`Choisir une heure entre ${HEURE_DEBUT_GRILLE}h et ${HEURE_FIN_GRILLE - 1}h30 : les cours se terminent au plus tard à ${HEURE_FIN_GRILLE}h.`}
@@ -207,7 +244,7 @@ function ParcoursNouvelleSeance() {
           retour={{ href: '#', onClick: () => setStep('debut') }}
           step={3}
           htmlFor="seance-fin"
-          stepSize={6}
+          stepSize={nbEtapes}
         >
           <Input
             error={finTropTard ? MESSAGE_FIN_COURS : undefined}
@@ -238,7 +275,7 @@ function ParcoursNouvelleSeance() {
           question="Sur quelle matière portera t-elle ?"
           retour={{ href: '#', onClick: () => setStep('fin') }}
           step={4}
-          stepSize={6}
+          stepSize={nbEtapes}
         >
           <div className="lpv-o-availability-wizard__days">
             {MATIERES.map((option) => (
@@ -265,7 +302,7 @@ function ParcoursNouvelleSeance() {
                   return
                 }
                 setErreur([])
-                setStep('recap')
+                setStep('repetition')
               }}
               type="button"
               variant="success"
@@ -276,7 +313,7 @@ function ParcoursNouvelleSeance() {
           question="Quels sont les élèves conviés ?"
           retour={{ href: '#', onClick: () => setStep('matiere') }}
           step={5}
-          stepSize={6}
+          stepSize={nbEtapes}
         >
           {erreur.length > 0 && <ErrorSummary errors={erreur} />}
           {eleves.isLoading ? (
@@ -327,6 +364,81 @@ function ParcoursNouvelleSeance() {
         </QuestionPage>
       )}
 
+      {step === 'repetition' && (
+        <QuestionPage
+          actions={
+            <Button
+              onClick={() => setStep(recurrente ? 'fin-repetition' : 'recap')}
+              type="button"
+              variant="success"
+            >
+              Continuer
+            </Button>
+          }
+          question="Cette séance se répète-t-elle ?"
+          retour={{ href: '#', onClick: () => setStep('eleves') }}
+          step={6}
+          stepSize={nbEtapes}
+        >
+          <Radios
+            idPrefix="seance-repetition"
+            legendSize="s"
+            name="Répétition"
+            onChange={(e) => setRepetition(e.target.value as Repetition)}
+            options={[
+              { label: 'Une seule fois', value: 'ponctuelle' },
+              { hint: libelleRegle('hebdomadaire', premiere), label: 'Chaque semaine', value: 'hebdomadaire' },
+              { hint: libelleRegle('mensuelle', premiere), label: 'Chaque mois', value: 'mensuelle' },
+            ]}
+            value={repetition}
+          />
+        </QuestionPage>
+      )}
+
+      {step === 'fin-repetition' && (
+        <QuestionPage
+          actions={
+            <Button disabled={dateFinInvalide} onClick={() => setStep('recap')} type="button" variant="success">
+              Continuer
+            </Button>
+          }
+          question="Jusqu’à quand se répète-t-elle ?"
+          retour={{ href: '#', onClick: () => setStep('repetition') }}
+          step={7}
+          stepSize={nbEtapes}
+        >
+          <Radios
+            idPrefix="seance-fin-repetition"
+            legendSize="s"
+            name="Fin de la répétition"
+            onChange={(e) => setFinRepetition(e.target.value as 'jamais' | 'date')}
+            options={[
+              {
+                hint: `Les séances sont prévues sur ${HORIZON_MOIS} mois, puis prolongées automatiquement.`,
+                label: 'Jamais',
+                value: 'jamais',
+              },
+              {
+                conditional: (
+                  <Input
+                    error={dateFin && dateFin < premiere ? 'La date de fin doit suivre la première séance.' : undefined}
+                    id="seance-date-fin"
+                    label="Dernier jour"
+                    min={premiere}
+                    onChange={(e) => setDateFin(e.target.value)}
+                    type="date"
+                    value={dateFin}
+                  />
+                ),
+                label: 'Jusqu’à une date',
+                value: 'date',
+              },
+            ]}
+            value={finRepetition}
+          />
+        </QuestionPage>
+      )}
+
       {step === 'recap' && (
         <QuestionPage
           actions={
@@ -336,7 +448,7 @@ function ParcoursNouvelleSeance() {
               type="button"
               variant="success"
             >
-              Créer la séance
+              {recurrente ? 'Créer les séances' : 'Créer la séance'}
             </Button>
           }
           question="Vérifiez vos réponses"
@@ -345,11 +457,11 @@ function ParcoursNouvelleSeance() {
             onClick: (e) => {
               e.preventDefault()
               setErreur([])
-              setStep('eleves')
+              setStep(recurrente ? 'fin-repetition' : 'repetition')
             },
           }}
-          step={6}
-          stepSize={6}
+          step={nbEtapes}
+          stepSize={nbEtapes}
         >
           {erreur.length > 0 && <ErrorSummary errors={erreur} />}
           <QuestionPageAnswers
@@ -385,6 +497,11 @@ function ParcoursNouvelleSeance() {
                   ),
                 onClick: () => setStep('eleves'),
               },
+              {
+                question: 'Répétition',
+                valeur: libelleRepetition,
+                onClick: () => setStep('repetition'),
+              },
             ]}
             titre=""
           />
@@ -399,10 +516,14 @@ function ParcoursNouvelleSeance() {
       )}
 
       {step === 'confirme' && (
-        <QuestionPage question="Séance créée">
-          <Panel variante="success" title="Votre séance est enregristrée">
+        <QuestionPage question={recurrente ? 'Séances créées' : 'Séance créée'}>
+          <Panel
+            variante="success"
+            title={recurrente ? 'Vos séances sont enregistrées' : 'Votre séance est enregistrée'}
+          >
             {JOURS_GRILLE[jourIndex]} {joursGrille(lundi)[jourIndex].getDate()} · {heureDebut} →{' '}
             {heureFin} · {labelMatiere(matiere)} · {nomsEleves.join(', ') || '—'}
+            {recurrente && <> · {libelleRepetition}</>}
           </Panel>
 
           <div className="lpv-t-question-page__actions">
@@ -416,8 +537,8 @@ function ParcoursNouvelleSeance() {
 
       {confirmOuvert && step === 'recap' ? (
         <ConfirmAction
-          confirmLabel="Créer la séance"
-          description={`${JOURS_GRILLE[jourIndex]} ${heureDebut} → ${heureFin}${matiere ? ` · ${labelMatiere(matiere)}` : ''}${nomsEleves.length > 0 ? ` pour ${nomsEleves.join(', ')}` : ''}. Cette séance apparaîtra dans votre planning.`}
+          confirmLabel={recurrente ? 'Créer les séances' : 'Créer la séance'}
+          description={`${JOURS_GRILLE[jourIndex]} ${heureDebut} → ${heureFin}${matiere ? ` · ${labelMatiere(matiere)}` : ''}${nomsEleves.length > 0 ? ` pour ${nomsEleves.join(', ')}` : ''}${recurrente ? ` · ${libelleRepetition}` : ''}. ${recurrente ? 'Ces séances apparaîtront' : 'Cette séance apparaîtra'} dans votre planning.`}
           onClose={() => {
             setConfirmOuvert(false)
             setErreur([])
@@ -427,7 +548,7 @@ function ParcoursNouvelleSeance() {
           }}
           pending={pending}
           pendingLabel="Enregistrement…"
-          title="Créer cette séance ?"
+          title={recurrente ? 'Créer ces séances ?' : 'Créer cette séance ?'}
         />
       ) : null}
     </div>
@@ -478,4 +599,9 @@ function formaterDuree(minutes: number): string {
   const heures = Math.floor(minutes / 60)
   const reste = minutes % 60
   return reste === 0 ? `${heures}h` : `${heures}h${reste}`
+}
+
+// Date locale au format « YYYY-MM-DD »
+function jourIso(date: Date): string {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 }

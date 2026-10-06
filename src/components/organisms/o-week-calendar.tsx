@@ -47,6 +47,8 @@ import {
 } from '@/calendrier/application/calendrier.hooks'
 import { MESSAGE_FIN_COURS } from '@/shared/horaires'
 import { MonthPicker } from './o-month-picker'
+import { PorteeSerieModal } from './o-portee-serie'
+import type { PorteeSerie } from '@/seances/domain/recurrence'
 
 export type WeekCalendarMode = 'prof' | 'parent' | 'demo'
 
@@ -58,6 +60,8 @@ export interface WeekCalendarEvent {
   matiere: MatiereCalendrier
   labelGroupe: string
   href: string
+  // Séance d'une série : 'continue' (sans fin, icône colorée) ou 'bornee'
+  recurrence?: 'continue' | 'bornee'
 }
 
 type SurRedimension = (seanceId: number, dureeMin: number, terminer: () => void) => void
@@ -572,7 +576,17 @@ function Pastille({
       }}
       style={{ top, height }}
     >
-      <span className="lpv-o-week-calendar__event-matiere">{labelMatiere(event.matiere)}</span>
+      <span className="lpv-o-week-calendar__event-matiere">
+        {labelMatiere(event.matiere)}
+        {event.recurrence && (
+          <span
+            className={`lpv-o-week-calendar__event-recurrence lpv-o-week-calendar__event-recurrence--${event.recurrence}`}
+            title={libelleRecurrence(event.recurrence)}
+          >
+            <Icon icon="rivet-icons:sync" label={libelleRecurrence(event.recurrence)} size={12} />
+          </span>
+        )}
+      </span>
       <span className="lpv-o-week-calendar__event-horaire">
         {heureCourte(event.debut)} – {heureCourte(fin)} · {labelDuree(duree)}
       </span>
@@ -620,6 +634,10 @@ function Pastille({
       )}
     </a>
   )
+}
+
+function libelleRecurrence(recurrence: 'continue' | 'bornee'): string {
+  return recurrence === 'continue' ? 'Séance récurrente, sans fin' : 'Séance récurrente, avec une date de fin'
 }
 
 function heureCourte(date: Date): string {
@@ -705,6 +723,10 @@ function WeekCalendarProf({ dispos = [], semaineInitiale }: WeekCalendarProps) {
   const [vue, changerVue] = useVuePreferee()
   const [jourIndex, setJourIndex] = useState(() => jourDuJour())
   const [toast, setToast] = useState<string | null>(null)
+  const [actionSerie, setActionSerie] = useState<{
+    envoyer: (portee: PorteeSerie) => void
+    annuler: () => void
+  } | null>(null)
 
   const { debut, fin } = useMemo(() => bornesSemaine(lundi), [lundi])
   const seances = useSeancesPeriode({ debut, fin })
@@ -719,16 +741,35 @@ function WeekCalendarProf({ dispos = [], semaineInitiale }: WeekCalendarProps) {
     router.push(urlNouvelleSeance(lundi, brouillon))
   }
 
+  // Séance d'une série : la portée est demandée avant d'enregistrer
+  const enregistrer = (
+    existante: WeekCalendarEvent,
+    nouvelleDate: Date,
+    dureeMin: number,
+    terminer: () => void = () => undefined,
+  ) => {
+    const envoyer = (portee?: PorteeSerie) =>
+      deplacer.mutate(
+        { dureeMin, nouvelleDate, portee, seanceId: existante.id },
+        {
+          onError: (err) => setToast(err.message),
+          onSettled: () => {
+            setActionSerie(null)
+            terminer()
+          },
+        },
+      )
+    if (existante.recurrence) {
+      setActionSerie({ annuler: terminer, envoyer })
+    } else {
+      envoyer()
+    }
+  }
+
   const surRedimension: SurRedimension = (seanceId, dureeMin, terminer) => {
     const existante = events.find((e) => e.id === seanceId)
     if (!existante) return terminer()
-    deplacer.mutate(
-      { seanceId, nouvelleDate: existante.debut, dureeMin },
-      {
-        onError: (err) => setToast(err.message),
-        onSettled: terminer,
-      },
-    )
+    enregistrer(existante, existante.debut, dureeMin, terminer)
   }
 
   const surDepot = (cible: CibleCreneau, seanceId: number) => {
@@ -739,12 +780,7 @@ function WeekCalendarProf({ dispos = [], semaineInitiale }: WeekCalendarProps) {
       setToast(MESSAGE_FIN_COURS)
       return
     }
-    deplacer.mutate(
-      { seanceId, nouvelleDate, dureeMin: dureeBornee(existante.dureeMin) },
-      {
-        onError: (err) => setToast(err.message),
-      },
-    )
+    enregistrer(existante, nouvelleDate, dureeBornee(existante.dureeMin))
   }
 
   return (
@@ -813,6 +849,18 @@ function WeekCalendarProf({ dispos = [], semaineInitiale }: WeekCalendarProps) {
         <p className="lpv-muted">Aucune séance ce jour.</p>
       )}
       {toast && <Toast message={toast} type="error" onClose={() => setToast(null)} />}
+      {actionSerie && (
+        <PorteeSerieModal
+          confirmLabel="Enregistrer"
+          onClose={() => {
+            actionSerie.annuler()
+            setActionSerie(null)
+          }}
+          onConfirm={actionSerie.envoyer}
+          pending={deplacer.isPending}
+          titre="Modifier une séance récurrente"
+        />
+      )}
     </div>
   )
 }
@@ -894,6 +942,7 @@ const EVENTS_DEMO: WeekCalendarEvent[] = [
     matiere: 'maths',
     labelGroupe: 'Maths-3e',
     href: '#demo',
+    recurrence: 'continue',
   },
   {
     id: 2,
@@ -910,6 +959,7 @@ const EVENTS_DEMO: WeekCalendarEvent[] = [
     matiere: 'anglais',
     labelGroupe: '5e',
     href: '#demo',
+    recurrence: 'bornee',
   },
 ]
 

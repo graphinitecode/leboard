@@ -14,6 +14,15 @@ export interface Seance {
   profLabel: string | null
   retourTexte: string
   aRetour: boolean
+  /** Série dont la séance est une occurrence (null = séance ponctuelle). */
+  serie: SerieSeance | null
+}
+
+export interface SerieSeance {
+  id: number
+  frequence: 'hebdomadaire' | 'mensuelle'
+  premiere: string
+  fin: string | null
 }
 
 export interface Presence {

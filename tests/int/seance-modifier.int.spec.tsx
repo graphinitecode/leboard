@@ -70,6 +70,7 @@ const seanceDetail: SeanceDetail = {
     profLabel: 'Claire D.',
     retourTexte: '',
     aRetour: false,
+    serie: null,
   },
   presences: [
     { id: 11, seanceId: 12, eleveId: 1, present: 'present' },

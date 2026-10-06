@@ -19,6 +19,7 @@ import { Presences } from './collections/Presences'
 import { Prets } from './collections/Prets'
 import { Progressions } from './collections/Progressions'
 import { Seances } from './collections/Seances'
+import { Series } from './collections/Series'
 import { Users } from './collections/Users'
 import { PolitiqueRgpd } from './globals/PolitiqueRgpd'
 import { Footer } from './Footer/config'
@@ -86,6 +87,7 @@ export default buildConfig({
     Alertes,
     Eleves,
     Seances,
+    Series,
     Presences,
     Progressions,
     Competences,

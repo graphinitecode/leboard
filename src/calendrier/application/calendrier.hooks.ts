@@ -4,7 +4,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { calendrierHandlers } from './calendrier.handlers'
 import type { CreerSeanceCommand, SeancesPeriodeQuery } from '../domain/interfaces/calendrier-repository.interface'
-import type { DeplacerSeanceCommand } from '../domain/interfaces/calendrier-repository.interface'
+import type {
+  CreerSerieCommand,
+  DeplacerSeanceCommand,
+  SupprimerSeanceCommand,
+} from '../domain/interfaces/calendrier-repository.interface'
 
 export const CALENDRIER_QUERY_KEY = (debut: string) => ['calendrier', 'seances', debut]
 
@@ -35,5 +39,22 @@ export const useDeplacerSeance = () => {
   return useMutation({
     mutationFn: (command: DeplacerSeanceCommand) => calendrierHandlers.deplacerSeance(command),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['calendrier'] }),
+  })
+}
+export const useCreerSerie = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (command: CreerSerieCommand) => calendrierHandlers.creerSerie(command),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['calendrier'] }),
+  })
+}
+
+export const useSupprimerSeance = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (command: SupprimerSeanceCommand) => calendrierHandlers.supprimerSeance(command),
+    onSuccess: () => queryClient.invalidateQueries(),
   })
 }

@@ -1,11 +1,14 @@
 import type {
   CreerSeanceCommand,
+  CreerSerieCommand,
   DeplacerSeanceCommand,
+  SupprimerSeanceCommand,
   ICalendrierRepository,
   SeancesPeriodeQuery,
 } from '../domain/interfaces/calendrier-repository.interface'
 import type { EventCalendrier, MatiereCalendrier } from '../domain/calendrier.entity'
 import { matiereFiable } from '../domain/calendrier.utils'
+import { etatRecurrence } from '@/seances/domain/recurrence'
 import type { Eleve, Seance as SeanceDto, User } from '@/payload-types'
 import { getAxiosErrorMessage } from '@/shared/infrastructure/axios-error'
 import { httpClient } from '@/shared/infrastructure/http.client'
@@ -33,6 +36,10 @@ const mapDtoToEvent = (dto: SeanceDto): EventCalendrier => {
     matiere: matiereFiable(String(dto.matiere)),
     labelGroupe,
     href: `/profs/seances/${dto.id}`,
+    // depth 1 : la série est peuplée, sa date de fin donne l'état de l'icône
+    ...(typeof dto.serie === 'object' && dto.serie !== null
+      ? { recurrence: etatRecurrence(dto.serie.fin) }
+      : {}),
   }
 }
 
@@ -84,14 +91,49 @@ export const calendrierRepository: ICalendrierRepository = {
     }
   },
 
-  async deplacerSeance({ seanceId, nouvelleDate, dureeMin }: DeplacerSeanceCommand): Promise<void> {
+  async deplacerSeance({ seanceId, nouvelleDate, dureeMin, portee }: DeplacerSeanceCommand): Promise<void> {
     try {
+      if (portee) {
+        // Séance d'une série : la portée est appliquée côté serveur
+        await httpClient.post(`/seances/${seanceId}/serie`, {
+          date: nouvelleDate.toISOString(),
+          duree: dureeMin,
+          portee,
+        })
+        return
+      }
       await httpClient.patch(`/seances/${seanceId}`, {
         date: nouvelleDate.toISOString(),
         duree: dureeMin,
       })
     } catch (err) {
       throw new Error(getAxiosErrorMessage(err, 'Impossible de déplacer la séance.'))
+    }
+  },
+
+  async creerSerie(command: CreerSerieCommand): Promise<void> {
+    try {
+      // Les séances de la série sont générées côté serveur à la création
+      await httpClient.post('/series', {
+        duree: command.dureeMin,
+        fin: command.fin,
+        frequence: command.frequence,
+        groupe: command.eleveIds,
+        heureDebut: command.heureDebut,
+        matiere: command.matiere,
+        premiere: command.premiere,
+        prof: await monId(),
+      })
+    } catch (err) {
+      throw new Error(getAxiosErrorMessage(err, 'Impossible de créer la série de séances.'))
+    }
+  },
+
+  async supprimerSeance({ seanceId, portee }: SupprimerSeanceCommand): Promise<void> {
+    try {
+      await httpClient.post(`/seances/${seanceId}/supprimer`, { portee })
+    } catch (err) {
+      throw new Error(getAxiosErrorMessage(err, 'Impossible de supprimer la séance.'))
     }
   },
 }

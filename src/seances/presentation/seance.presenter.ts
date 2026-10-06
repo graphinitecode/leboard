@@ -1,4 +1,5 @@
 import type { Seance, SeanceDetail, StatutPresence } from '@/seances/domain/seance.entity'
+import { libelleRegle } from '@/seances/domain/recurrence'
 
 export interface SeanceLigneViewModel {
   id: number
@@ -11,6 +12,8 @@ export interface SeanceLigneViewModel {
   matiereLabel: string
   profLabel: string | null
   retourPresent: boolean
+  /** « Chaque semaine le mardi, sans fin » ; null pour une séance ponctuelle. */
+  repetitionLabel: string | null
 }
 
 export interface PresenceViewModel {
@@ -80,7 +83,19 @@ export const presentSeanceLigne = (seance: Seance): SeanceLigneViewModel => {
     matiereLabel: matiereLabels[seance.matiere] ?? seance.matiere,
     profLabel: seance.profLabel ?? null,
     retourPresent: seance.aRetour,
+    repetitionLabel: seance.serie ? libelleRepetition(seance.serie) : null,
   }
+}
+
+const libelleRepetition = (serie: NonNullable<Seance['serie']>): string => {
+  const regle = libelleRegle(serie.frequence, serie.premiere)
+  if (!serie.fin) return `${regle}, sans fin`
+  const fin = new Date(`${serie.fin}T12:00:00`).toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
+  return `${regle}, jusqu’au ${fin}`
 }
 
 export const presentSeanceDetail = (detail: SeanceDetail): SeanceDetailViewModel => {

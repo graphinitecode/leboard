@@ -332,6 +332,23 @@
     font-weight: 600;
   }
 
+  /* Icône de récurrence : couleur du portail pour une série sans fin,
+     atténuée pour une série qui a une date de fin */
+  &__event-recurrence {
+    display: inline-flex;
+    margin-inline-start: 0.3rem;
+    vertical-align: -1px;
+
+    &--continue {
+      color: var(--lpv-portail);
+    }
+
+    &--bornee {
+      color: var(--lpv-text-muted);
+      opacity: 0.7;
+    }
+  }
+
   &__event-horaire {
     font-size: 0.75rem;
     font-variant-numeric: tabular-nums;

@@ -30,6 +30,11 @@ const mapDtoToSeance = (dto: SeanceDto): Seance => ({
   profLabel: labelUtilisateur(typeof dto.prof === 'object' ? dto.prof : null),
   retourTexte: extraireTexte(dto.retour),
   aRetour: Boolean(dto.retour),
+  // depth 1 : la série est peuplée
+  serie:
+    typeof dto.serie === 'object' && dto.serie !== null
+      ? { fin: dto.serie.fin ?? null, frequence: dto.serie.frequence, id: dto.serie.id, premiere: dto.serie.premiere }
+      : null,
 })
 
 const mapDtoToPresence = (dto: Presence): { id: number; seanceId: number; eleveId: number; present: StatutPresence } => ({
