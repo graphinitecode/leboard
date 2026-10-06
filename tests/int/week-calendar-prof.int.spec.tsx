@@ -20,9 +20,25 @@ const SEANCE: WeekCalendarEvent = {
   href: '/profs/seances/7',
 }
 
+const SERIE_CONTINUE: WeekCalendarEvent = {
+  ...SEANCE,
+  debut: new Date(2025, 8, 23, 10, 0),
+  id: 8,
+  labelGroupe: 'Groupe continu',
+  recurrence: 'continue',
+}
+
+const SERIE_BORNEE: WeekCalendarEvent = {
+  ...SEANCE,
+  debut: new Date(2025, 8, 24, 10, 0),
+  id: 9,
+  labelGroupe: 'Groupe borné',
+  recurrence: 'bornee',
+}
+
 vi.mock('@/calendrier/application/calendrier.hooks', () => ({
-  useDeplacerSeance: () => ({ mutate }),
-  useSeancesPeriode: () => ({ data: [SEANCE], isLoading: false }),
+  useDeplacerSeance: () => ({ isPending: false, mutate }),
+  useSeancesPeriode: () => ({ data: [SEANCE, SERIE_CONTINUE, SERIE_BORNEE], isLoading: false }),
 }))
 
 // jsdom n'implémente pas la capture du pointeur
@@ -63,7 +79,7 @@ describe('WeekCalendar (mode prof)', () => {
 
   it('un glisser-déposer en cours empêche la sélection de démarrer', () => {
     render(<WeekCalendar mode="prof" semaineInitiale={new Date(2025, 8, 22)} />)
-    const pastille = screen.getByText('Maths').closest('a') as HTMLElement
+    const pastille = screen.getByText('Maths-3e').closest('a') as HTMLElement
     fireEvent.dragStart(pastille, { dataTransfer: { setData: vi.fn(), effectAllowed: '' } })
     fireEvent.pointerDown(caseDe('16:00'), { button: 0, clientY: 352, pointerId: 1, pointerType: 'mouse' })
     fireEvent.pointerUp(caseDe('16:00'), { clientY: 352, pointerId: 1, pointerType: 'mouse' })
@@ -90,9 +106,40 @@ describe('WeekCalendar (mode prof)', () => {
     expect(mutate).toHaveBeenCalledTimes(1)
   })
 
-  it('la poignée allonge la séance par pas de 30 min et enregistre la durée', () => {
+  it("l'icône de récurrence est colorée pour une série sans fin, atténuée sinon", () => {
     const { container } = render(<WeekCalendar mode="prof" semaineInitiale={new Date(2025, 8, 22)} />)
-    const poignee = container.querySelector('.lpv-o-week-calendar__event-resize') as HTMLElement
+    expect(container.querySelector('.lpv-o-week-calendar__event-recurrence--continue')).not.toBeNull()
+    expect(container.querySelector('.lpv-o-week-calendar__event-recurrence--bornee')).not.toBeNull()
+    expect(screen.getByRole('img', { name: 'Séance récurrente, sans fin' })).toBeDefined()
+    // Séance ponctuelle : pas d'icône
+    expect(container.querySelectorAll('.lpv-o-week-calendar__event-recurrence')).toHaveLength(2)
+  })
+
+  it('déplacer une séance récurrente demande la portée avant d’enregistrer', () => {
+    render(<WeekCalendar mode="prof" semaineInitiale={new Date(2025, 8, 22)} />)
+    fireEvent.drop(screen.getByRole('button', { name: 'Nouvelle séance le Jeudi à 10:00' }), {
+      dataTransfer: { getData: () => '8' },
+    })
+    expect(mutate).not.toHaveBeenCalled()
+    expect(screen.getByText('Modifier une séance récurrente')).toBeDefined()
+
+    fireEvent.click(screen.getByLabelText('Cette séance et les suivantes'))
+    fireEvent.click(screen.getByRole('button', { name: 'Enregistrer' }))
+    expect(mutate).toHaveBeenCalledTimes(1)
+    expect(mutate.mock.calls[0][0]).toMatchObject({ portee: 'suivantes', seanceId: 8 })
+  })
+
+  it('déplacer une séance ponctuelle enregistre directement, sans portée', () => {
+    render(<WeekCalendar mode="prof" semaineInitiale={new Date(2025, 8, 22)} />)
+    fireEvent.drop(caseDe('09:00'), { dataTransfer: { getData: () => '7' } })
+    expect(mutate).toHaveBeenCalledTimes(1)
+    expect(mutate.mock.calls[0][0].portee).toBeUndefined()
+  })
+
+  it('la poignée allonge la séance par pas de 30 min et enregistre la durée', () => {
+    render(<WeekCalendar mode="prof" semaineInitiale={new Date(2025, 8, 22)} />)
+    const pastille = screen.getByText('Maths-3e').closest('a') as HTMLElement
+    const poignee = pastille.querySelector('.lpv-o-week-calendar__event-resize') as HTMLElement
     fireEvent.pointerDown(poignee, { button: 0, clientY: 100, pointerId: 2 })
     // 44 px = 30 min : +44 px → 1 h 30
     fireEvent.pointerMove(poignee, { clientY: 144, pointerId: 2 })
