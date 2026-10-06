@@ -6,6 +6,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+## [0.13.1] — 2026-10-06
+
+### Modifié
+- La création d'une séance permet de choisir un jour dans les semaines suivantes (navigation semaine par semaine) ; les jours déjà passés ne sont pas proposés. Depuis le calendrier, la création s'ouvre sur la semaine affichée.
+
 ## [0.13.0] — 2026-10-06
 
 ### Ajouté

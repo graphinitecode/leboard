@@ -12,6 +12,8 @@ import {
   HEURE_DEBUT_GRILLE,
   HEURE_FIN_GRILLE,
   JOURS_GRILLE,
+  ajouterSemaines,
+  labelSemaine,
   chevaucheUne,
   dateCiblee,
   debutSemaine,
@@ -59,6 +61,7 @@ function ParcoursNouvelleSeance() {
 
   // Préremplissage depuis l'URL (clic-tirer sur le calendrier, bouton d'un jour).
   const initial = useMemo(() => initialiserDepuisParams(params), [params])
+  const [lundi, setLundi] = useState(initial.lundi)
   const [jourIndex, setJourIndex] = useState(initial.jourIndex)
   const [heureDebut, setHeureDebut] = useState(initial.heureDebut)
   const [heureFin, setHeureFin] = useState(initial.heureFin)
@@ -67,7 +70,15 @@ function ParcoursNouvelleSeance() {
   const [finRepetition, setFinRepetition] = useState<'jamais' | 'date'>('jamais')
   const [dateFin, setDateFin] = useState('')
 
-  const lundi = useMemo(() => debutSemaine(new Date()), [])
+  // Semaine courante : on ne revient pas avant (pas de séance dans le passé)
+  const lundiCourant = useMemo(() => debutSemaine(new Date()), [])
+  const jourPasse = (index: number) => estPasse(joursGrille(lundi)[index])
+  const changerSemaine = (sens: 1 | -1) => {
+    const nouveau = ajouterSemaines(lundi, sens)
+    setLundi(nouveau)
+    // Le jour choisi garde sa place dans la semaine, sauf s'il est déjà passé
+    if (estPasse(joursGrille(nouveau)[jourIndex])) setJourIndex(premierJourDisponible(nouveau))
+  }
   const { debut, fin } = useMemo(() => bornesSemaine(lundi), [lundi])
   const seances = useSeancesPeriode({ debut, fin })
   const eleves = useElevesDuProf()
@@ -155,7 +166,7 @@ function ParcoursNouvelleSeance() {
 
   function recommencer() {
     setStep('jour')
-    setJourIndex(0)
+    setJourIndex(premierJourDisponible(lundi))
     setHeureDebut('')
     setHeureFin('')
     setMatiere('')
@@ -171,7 +182,7 @@ function ParcoursNouvelleSeance() {
       {step === 'jour' && (
         <QuestionPage
           actions={
-            <Button onClick={() => setStep('debut')} type="button" variant="success">
+            <Button disabled={jourPasse(jourIndex)} onClick={() => setStep('debut')} type="button" variant="success">
               Continuer
             </Button>
           }
@@ -181,10 +192,28 @@ function ParcoursNouvelleSeance() {
           step={1}
           stepSize={nbEtapes}
         >
+          <div className="lpv-o-week-calendar__nav">
+            <Button
+              ariaLabel="Semaine précédente"
+              disabled={lundi.getTime() <= lundiCourant.getTime()}
+              onClick={() => changerSemaine(-1)}
+              type="button"
+              variant="secondary"
+            >
+              ‹
+            </Button>
+            <p aria-live="polite" className="lpv-o-week-calendar__label">
+              {labelSemaine(lundi)}
+            </p>
+            <Button ariaLabel="Semaine suivante" onClick={() => changerSemaine(1)} type="button" variant="secondary">
+              ›
+            </Button>
+          </div>
           <div className="lpv-o-availability-wizard__days" id="seance-jour">
             {JOURS_GRILLE.map((label, index) => (
               <button
                 className={`lpv-o-availability-wizard__day-option${jourIndex === index ? ' lpv-o-availability-wizard__day-option--active' : ''}`}
+                disabled={jourPasse(index)}
                 key={label}
                 onClick={() => setJourIndex(index)}
                 type="button"
@@ -468,7 +497,7 @@ function ParcoursNouvelleSeance() {
             reponses={[
               {
                 question: 'Jour',
-                valeur: `${JOURS_GRILLE[jourIndex]} ${joursGrille(lundi)[jourIndex].getDate()}`,
+                valeur: libelleJour(joursGrille(lundi)[jourIndex]),
                 onClick: () => setStep('jour'),
               },
               {
@@ -521,7 +550,7 @@ function ParcoursNouvelleSeance() {
             variante="success"
             title={recurrente ? 'Vos séances sont enregistrées' : 'Votre séance est enregistrée'}
           >
-            {JOURS_GRILLE[jourIndex]} {joursGrille(lundi)[jourIndex].getDate()} · {heureDebut} →{' '}
+            {libelleJour(joursGrille(lundi)[jourIndex])} · {heureDebut} →{' '}
             {heureFin} · {labelMatiere(matiere)} · {nomsEleves.join(', ') || '—'}
             {recurrente && <> · {libelleRepetition}</>}
           </Panel>
@@ -538,7 +567,7 @@ function ParcoursNouvelleSeance() {
       {confirmOuvert && step === 'recap' ? (
         <ConfirmAction
           confirmLabel={recurrente ? 'Créer les séances' : 'Créer la séance'}
-          description={`${JOURS_GRILLE[jourIndex]} ${heureDebut} → ${heureFin}${matiere ? ` · ${labelMatiere(matiere)}` : ''}${nomsEleves.length > 0 ? ` pour ${nomsEleves.join(', ')}` : ''}${recurrente ? ` · ${libelleRepetition}` : ''}. ${recurrente ? 'Ces séances apparaîtront' : 'Cette séance apparaîtra'} dans votre planning.`}
+          description={`${libelleJour(joursGrille(lundi)[jourIndex])}, ${heureDebut} → ${heureFin}${matiere ? ` · ${labelMatiere(matiere)}` : ''}${nomsEleves.length > 0 ? ` pour ${nomsEleves.join(', ')}` : ''}${recurrente ? ` · ${libelleRepetition}` : ''}. ${recurrente ? 'Ces séances apparaîtront' : 'Cette séance apparaîtra'} dans votre planning.`}
           onClose={() => {
             setConfirmOuvert(false)
             setErreur([])
@@ -555,28 +584,44 @@ function ParcoursNouvelleSeance() {
   )
 }
 
-// Lecture des paramètres de préremplissage (?date=YYYY-MM-DD&debut=HH:mm&fin=HH:mm).
-function initialiserDepuisParams(params: URLSearchParams): {
+// Lecture des paramètres de préremplissage (?date=YYYY-MM-DD&debut=HH:mm&fin=HH:mm) :
+// la semaine de la date reçue (celle affichée dans le calendrier), sinon la
+// semaine courante ; un jour déjà passé retombe sur le premier jour disponible.
+export function initialiserDepuisParams(params: URLSearchParams, maintenant = new Date()): {
+  lundi: Date
   jourIndex: number
   heureDebut: string
   heureFin: string
 } {
-  const lundi = debutSemaine(new Date())
   const dateParam = params.get('date')
-  let jourIndex = 0
-  if (dateParam !== null && /^\d{4}-\d{2}-\d{2}$/.test(dateParam)) {
-    const date = new Date(`${dateParam}T12:00:00`)
-    const index = (date.getDay() + 6) % 7
-    const lundiCible = debutSemaine(date)
-    if (lundiCible.toDateString() === lundi.toDateString()) {
-      jourIndex = index
-    }
-  }
+  const date =
+    dateParam !== null && /^\d{4}-\d{2}-\d{2}$/.test(dateParam) ? new Date(`${dateParam}T12:00:00`) : null
+  const valide = date !== null && !Number.isNaN(date.getTime()) && !estPasse(date, maintenant)
+  const lundi = debutSemaine(valide ? date : maintenant)
   return {
-    jourIndex,
+    jourIndex: valide ? (date.getDay() + 6) % 7 : premierJourDisponible(lundi, maintenant),
+    lundi,
     heureDebut: /^\d{2}:\d{2}$/.test(params.get('debut') ?? '') ? (params.get('debut') as string) : '',
     heureFin: /^\d{2}:\d{2}$/.test(params.get('fin') ?? '') ? (params.get('fin') as string) : '',
   }
+}
+
+// Jour antérieur à aujourd'hui (comparaison au jour près, heure ignorée)
+function estPasse(jour: Date, maintenant = new Date()): boolean {
+  const aMinuit = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime()
+  return aMinuit(jour) < aMinuit(maintenant)
+}
+
+// Premier jour non passé de la semaine (lundi d'une semaine à venir)
+function premierJourDisponible(lundi: Date, maintenant = new Date()): number {
+  const index = joursGrille(lundi).findIndex((jour) => !estPasse(jour, maintenant))
+  return index === -1 ? 0 : index
+}
+
+// « Lundi 12 octobre »
+function libelleJour(jour: Date): string {
+  const texte = jour.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', weekday: 'long' })
+  return texte.charAt(0).toUpperCase() + texte.slice(1)
 }
 
 function labelMatiere(matiere: MatiereCalendrier | ''): string {
