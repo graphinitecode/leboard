@@ -12,6 +12,8 @@ export interface ProfilInput {
   prenom: string
   nom: string
   telephone?: string
+  /** Parents : recevoir les alertes par e-mail (retards, rappels, absences). */
+  alertesEmail?: boolean
 }
 
 export type ResultatProfil =
@@ -51,6 +53,10 @@ export async function updateMonProfil(input: ProfilInput): Promise<ResultatProfi
       prenom,
       nom,
       telephone: input.telephone?.trim() || undefined,
+      // Préférence propre aux parents : ignorée pour les autres rôles
+      ...(user.role === 'parent' && typeof input.alertesEmail === 'boolean'
+        ? { alertesEmail: input.alertesEmail }
+        : {}),
     }
 
     await payload.update({
