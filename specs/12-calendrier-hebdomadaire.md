@@ -86,13 +86,13 @@ Mobile-first : la grille passe en défilement horizontal avec colonnes de largeu
 - Drag & drop : API HTML5 native, aucun ajout de dépendance ; la logique de calcul (jour/créneau cible, chevauchement) est extraite en fonctions pures testées.
 
 ## 7. Critères d'acceptation
-- [ ] Le prof voit ses séances de la semaine en pastilles + ses dispos en fond, navigue ‹ › et « Aujourd'hui ».
-- [ ] Glisser une pastille la déplace (PATCH) ; échec → toast d'erreur, position restaurée.
-- [ ] Clic sur une case vide ouvre la modale de création ; la séance apparaît et ses présences sont pré-créées.
-- [ ] Le dashboard /profs affiche le calendrier à la place des listes « Aujourd'hui » / « Cette semaine ».
-- [ ] Le parent voit la semaine de son enfant en lecture seule ; 404 hors périmètre ; aucune interface de modification.
-- [ ] La démo statique est visible sur /design-system, en clair et en sombre.
-- [ ] Lint, typecheck, tests (unit utils + int organism) passent.
+- [x] Le prof voit ses séances de la semaine en pastilles + ses dispos en fond, navigue ‹ › et « Aujourd'hui ».
+- [x] Glisser une pastille la déplace (PATCH) ; échec → toast d'erreur, position restaurée (aucun déplacement optimiste : la pastille ne bouge qu'après succès).
+- [x] Clic sur une case vide ouvre la création ; la séance apparaît et ses présences sont pré-créées. *Évolution (spec 13 / 11)* : la modale est remplacée par la page `/profs/seances/nouvelle`.
+- [x] Le calendrier interactif est accessible depuis le dashboard. *Évolution* : il vit sur `/profs/calendrier` (onglet « Calendrier ») ; le dashboard affiche une carte calendrier mensuel avec lien « Voir tout ».
+- [x] Le parent voit la semaine de son enfant en lecture seule ; 404 hors périmètre ; aucune interface de modification.
+- [x] La démo statique est visible sur /design-system, en clair et en sombre.
+- [x] Lint, typecheck, tests (unit utils + int organism) passent.
 
 ## 8. Risques & questions ouvertes
 - DnD natif moins fluide qu'une lib (pas d'animation de fantôme riche) — acceptable en v1 ; `@dnd-kit` en option si le ressenti est insuffisant.

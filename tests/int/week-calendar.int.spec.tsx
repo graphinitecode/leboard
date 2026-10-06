@@ -1,5 +1,6 @@
-import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { WeekCalendar } from '@/components/organisms/o-week-calendar'
 import type { WeekCalendarEvent } from '@/components/organisms/o-week-calendar'
@@ -71,3 +72,30 @@ describe('WeekCalendar (mode demo/parent)', () => {
 function linkElementHref(element: Element | null): string {
   return (element as HTMLAnchorElement | null)?.getAttribute('href') ?? ''
 }
+describe('WeekCalendar (vue jour)', () => {
+  afterEach(() => {
+    vi.useRealTimers()
+    window.localStorage.clear()
+  })
+
+  it('navigue depuis le jour affiché et saute le dimanche', async () => {
+    // Mercredi 24 septembre 2025 : la vue jour s'ouvre sur ce jour
+    vi.useFakeTimers({ now: new Date(2025, 8, 24, 10), shouldAdvanceTime: true })
+    const user = userEvent.setup()
+    const { container } = render(<WeekCalendar events={EVENTS} mode="parent" semaineInitiale={new Date(2025, 8, 22)} />)
+
+    await user.click(screen.getByRole('button', { name: 'Vue jour' }))
+    const navJour = () => within(container.querySelector('.lpv-o-week-calendar__day-nav') as HTMLElement)
+    expect(navJour().getByText('Mercredi')).toBeDefined()
+
+    await user.click(screen.getByRole('button', { name: 'Jour suivant' }))
+    expect(navJour().getByText('Jeudi')).toBeDefined()
+
+    await user.click(screen.getByRole('button', { name: 'Jour suivant' }))
+    await user.click(screen.getByRole('button', { name: 'Jour suivant' }))
+    await user.click(screen.getByRole('button', { name: 'Jour suivant' }))
+    // Samedi 27 → lundi 29 : le dimanche est sauté, la semaine suit
+    expect(navJour().getByText('Lundi')).toBeDefined()
+    expect(screen.getByText(/Semaine du 29 septembre/)).toBeDefined()
+  })
+})

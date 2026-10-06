@@ -82,15 +82,15 @@ Aucune nouvelle collection. Écritures inchangées (`POST /seances`, `PATCH /sea
 - Le mini-calendrier dérive ses jours « chargés » des événements déjà chargés (aucune requête supplémentaire en v1).
 
 ## 7. Critères d'acceptation
-- [ ] En < 48rem, le calendrier s'affiche jour par jour, sans défilement horizontal ; pastilles ≥ 44px.
-- [ ] Le toggle `Semaine | Jour | Liste` fonctionne en desktop ; la préférence persiste dans la session.
-- [ ] La vue liste condensée exclut les jours vides et reste lisible.
-- [ ] Le mini-calendrier surligne les jours de la semaine affichée et permet de sauter à un jour/mois.
-- [ ] Cliquer-glisser une plage ouvre l'assistant pré-rempli ; « + Nouvelle séance » ouvre l'étape 1.
-- [ ] L'assistant crée la séance (présences pré-créées) et ferme sur succès ; erreur → toast.
-- [ ] La modale de création de la Spec 12 est supprimée ; le déplacement par drag reste opérationnel.
-- [ ] La démo `/design-system` expose le toggle de vues et l'assistant.
-- [ ] Lint, typecheck, tests passent.
+- [x] En < 48rem, le calendrier s'affiche jour par jour (prof et parent), sans défilement horizontal. Cases de création de 44 px ; une pastille de 30 min mesure 42 px (hauteur du créneau moins la gouttière), au-delà elle dépasse 44 px.
+- [x] Le toggle `Semaine | Jour | Liste` fonctionne en desktop ; la préférence persiste (localStorage).
+- [x] La vue liste condensée exclut les jours vides et reste lisible.
+- [x] Le mini-calendrier surligne les jours de la semaine affichée et permet de sauter à un jour/mois.
+- [x] Cliquer-glisser une plage ouvre la création pré-remplie ; « + Nouvelle séance » ouvre la première question.
+- [x] La création enregistre la séance (présences pré-créées) puis confirme ; erreur → message. *Évolution (spec 11)* : l'assistant est la page `/profs/seances/nouvelle` (template `QuestionPage`).
+- [x] La modale de création de la Spec 12 est supprimée ; le déplacement par drag reste opérationnel.
+- [x] La démo `/design-system` expose le toggle de vues (lecture seule ; la création se démontre via `QuestionPage`).
+- [x] Lint, typecheck, tests passent. Navigation jour par jour depuis le jour affiché (dimanche sauté) couverte par `jourVoisin` + test d'intégration.
 
 ## 8. Risques & questions ouvertes
 - Pointer events sur la grille : gérer le scroll mobile pendant la sélection (désactiver le touch-scroll pendant le drag : `touch-action: none` sur les cases vides uniquement).

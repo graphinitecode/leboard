@@ -17,6 +17,7 @@ import {
   heureDepuisRangee,
   indexJourGrille,
   joursAvecSeances,
+  jourVoisin,
   labelSemaine,
   matiereFiable,
   plageDepuisCases,
@@ -235,5 +236,18 @@ describe('seancesDuJourTriees / joursAvecSeances', () => {
     const triees = seancesDuJourTriees(events, 1)
     expect(triees.map((e) => e.debut.getHours())).toEqual([10, 14])
     expect(joursAvecSeances(events)).toEqual([1, 3])
+  })
+})
+describe('jourVoisin', () => {
+  const lundi = new Date(2025, 8, 22)
+
+  it('avance et recule depuis le jour affiché, pas depuis le lundi', () => {
+    expect(jourVoisin(lundi, 2, 1)).toEqual({ lundi, jourIndex: 3 })
+    expect(jourVoisin(lundi, 2, -1)).toEqual({ lundi, jourIndex: 1 })
+  })
+
+  it('saute le dimanche et change de semaine aux bornes', () => {
+    expect(jourVoisin(lundi, 5, 1)).toEqual({ lundi: new Date(2025, 8, 29), jourIndex: 0 })
+    expect(jourVoisin(lundi, 0, -1)).toEqual({ lundi: new Date(2025, 8, 15), jourIndex: 5 })
   })
 })

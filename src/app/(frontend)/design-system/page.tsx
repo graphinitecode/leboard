@@ -14,6 +14,7 @@ import { EnterText } from '@/components/atoms/a-enter-text'
 import { DashboardPage, DetailPage, FormPage, QuestionPage } from '@/components/templates'
 import { Stepper } from '@/components/atoms/a-stepper'
 import { ValidateText } from '@/components/molecules/m-validate-text'
+import { WeekCalendar } from '@/components/organisms/o-week-calendar'
 
 export const metadata: Metadata = {
   title: 'Design system — LPV Board',
@@ -700,7 +701,7 @@ export default function DesignSystemPage() {
           plage au clic-tirer et de créer une séance via un assistant pas à pas — la démo ci-dessous
           est en lecture seule avec des données d&apos;exemple.
         </p>
-        {/*<WeekCalendar mode="demo" />*/}
+        <WeekCalendar mode="demo" />
 
         <h3 className="lpv-h3">Carte calendrier mensuel</h3>
         <p className="lpv-muted">

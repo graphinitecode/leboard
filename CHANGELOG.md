@@ -9,6 +9,10 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ### Modifié
 - L'entête des portails est réorganisé : les rubriques (tableau de bord, calendrier, élèves, bibliothèque, disponibilités) s'affichent en onglets, et un seul menu, celui du compte, regroupe « Mon profil », le choix du thème et la déconnexion. Sur mobile, ce menu reprend aussi les rubriques.
 - Le logo ramène à l'accueil du portail, la déconnexion renvoie à la page de connexion du portail, et le pied de page ne propose plus que « Protection des données » (les liens en double ou sans objet ont été retirés).
+- Sur téléphone, le calendrier s'ouvre en vue jour aussi dans l'espace parents, comme côté professeurs.
+
+### Corrigé
+- Dans la vue jour du calendrier, « Jour suivant » et « Jour précédent » partent du jour affiché (et non plus du lundi) et sautent le dimanche.
 
 ## [0.12.0] — 2026-10-04
 

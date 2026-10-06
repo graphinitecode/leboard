@@ -11,7 +11,6 @@ import {
   HEURE_DEBUT_GRILLE,
   JOURS_GRILLE,
   MINUTES_CRENEAU,
-  ajouterJours,
   ajouterSemaines,
   bandeEnMinutes,
   brouillonDepuisPlage,
@@ -23,6 +22,7 @@ import {
   indexJourGrille,
   joursAvecSeances,
   joursGrille,
+  jourVoisin,
   labelSemaine,
   plageDepuisCases,
   positionMinutes,
@@ -109,6 +109,16 @@ function useVuePreferee(): [VueCalendrier, (v: VueCalendrier) => void] {
     storeVue,
     () => 'semaine' as VueCalendrier,
   )
+
+  useEffect(() => {
+    // En < 48rem, la grille semaine est illisible : vue jour au montage, pour
+    // tous les modes (prof comme parent). Écriture du store externe, pas de
+    // setState local dans l'effet.
+    if (window.matchMedia?.('(max-width: 47.99rem)').matches && storeVue() === 'semaine') {
+      ecrireVue('jour')
+    }
+  }, [])
+
   return [vue, ecrireVue]
 }
 
@@ -167,6 +177,39 @@ function Navigation({
           })}
         </div>
       )}
+    </div>
+  )
+}
+
+// Navigation jour par jour (vue jour) : part du jour affiché, saute le dimanche.
+function NavigationJour({
+  lundi,
+  jourIndex,
+  onChanger,
+}: {
+  lundi: Date
+  jourIndex: number
+  onChanger: (voisin: { lundi: Date; jourIndex: number }) => void
+}) {
+  return (
+    <div className="lpv-o-week-calendar__day-nav">
+      <Button
+        ariaLabel="Jour précédent"
+        onClick={() => onChanger(jourVoisin(lundi, jourIndex, -1))}
+        type="button"
+        variant="secondary"
+      >
+        ‹ Jour
+      </Button>
+      <strong>{JOURS_GRILLE[jourIndex]}</strong>
+      <Button
+        ariaLabel="Jour suivant"
+        onClick={() => onChanger(jourVoisin(lundi, jourIndex, 1))}
+        type="button"
+        variant="secondary"
+      >
+        Jour ›
+      </Button>
     </div>
   )
 }
@@ -535,14 +578,6 @@ function WeekCalendarProf({ dispos = [], semaineInitiale }: WeekCalendarProps) {
 
   const events = seances.data ?? []
 
-  useEffect(() => {
-    // En < 48rem, la vue semaine est illisible : forcer la vue jour au montage
-    // (écriture du store externe, pas de setState local dans l'effet).
-    if (window.matchMedia('(max-width: 47.99rem)').matches) {
-      ecrireVue('jour')
-    }
-  }, [])
-
   // La sélection de plage (clic-tirer) ouvre le parcours de création sur la
   // page dédiée, avec le jour et les heures préremplis dans l'URL.
   const surPlage = (plage: PlageSelectionnee) => {
@@ -584,33 +619,14 @@ function WeekCalendarProf({ dispos = [], semaineInitiale }: WeekCalendarProps) {
       <Navigation lundi={lundi} modeJour={vue === 'jour'} onChanger={setLundi} />
 
       {vue === 'jour' && (
-        <div className="lpv-o-week-calendar__day-nav">
-          <Button
-            ariaLabel="Jour précédent"
-            onClick={() => {
-              const nouveau = ajouterJours(lundi, -1)
-              setLundi(debutSemaine(nouveau))
-              setJourIndex(Math.min((nouveau.getDay() + 6) % 7, 5))
-            }}
-            type="button"
-            variant="secondary"
-          >
-            ‹ Jour
-          </Button>
-          <strong>{JOURS_GRILLE[jourIndex]}</strong>
-          <Button
-            ariaLabel="Jour suivant"
-            onClick={() => {
-              const nouveau = ajouterJours(lundi, 1)
-              setLundi(debutSemaine(nouveau))
-              setJourIndex(Math.min((nouveau.getDay() + 6) % 7, 5))
-            }}
-            type="button"
-            variant="secondary"
-          >
-            Jour ›
-          </Button>
-        </div>
+        <NavigationJour
+          jourIndex={jourIndex}
+          lundi={lundi}
+          onChanger={(voisin) => {
+            setLundi(voisin.lundi)
+            setJourIndex(voisin.jourIndex)
+          }}
+        />
       )}
 
       {seances.isLoading ? (
@@ -640,6 +656,9 @@ function WeekCalendarProf({ dispos = [], semaineInitiale }: WeekCalendarProps) {
 
       {events.length === 0 && !seances.isLoading && vue === 'semaine' && (
         <p className="lpv-muted">Aucune séance cette semaine.</p>
+      )}
+      {!seances.isLoading && vue === 'jour' && seancesDuJourTriees(events, jourIndex).length === 0 && (
+        <p className="lpv-muted">Aucune séance ce jour.</p>
       )}
       {toast && <Toast message={toast} type="error" onClose={() => setToast(null)} />}
     </div>
@@ -688,33 +707,14 @@ function WeekCalendarStatic({ events = [], dispos = [], semaineInitiale }: WeekC
       <Navigation lundi={lundi} modeJour={vue === 'jour'} onChanger={setLundi} />
 
       {vue === 'jour' && (
-        <div className="lpv-o-week-calendar__day-nav">
-          <Button
-            ariaLabel="Jour précédent"
-            onClick={() => {
-              const nouveau = ajouterJours(lundi, -1)
-              setLundi(debutSemaine(nouveau))
-              setJourIndex(Math.min((nouveau.getDay() + 6) % 7, 5))
-            }}
-            type="button"
-            variant="secondary"
-          >
-            ‹ Jour
-          </Button>
-          <strong>{JOURS_GRILLE[jourIndex]}</strong>
-          <Button
-            ariaLabel="Jour suivant"
-            onClick={() => {
-              const nouveau = ajouterJours(lundi, 1)
-              setLundi(debutSemaine(nouveau))
-              setJourIndex(Math.min((nouveau.getDay() + 6) % 7, 5))
-            }}
-            type="button"
-            variant="secondary"
-          >
-            Jour ›
-          </Button>
-        </div>
+        <NavigationJour
+          jourIndex={jourIndex}
+          lundi={lundi}
+          onChanger={(voisin) => {
+            setLundi(voisin.lundi)
+            setJourIndex(voisin.jourIndex)
+          }}
+        />
       )}
 
       {vue === 'semaine' ? (

@@ -182,6 +182,18 @@ export const ajouterJours = (date: Date, n: number): Date => {
   return copie
 }
 
+// Jour voisin du jour affiché en vue jour (grille lundi→samedi) : le
+// dimanche est sauté, la semaine suit quand on franchit ses bornes.
+export const jourVoisin = (
+  lundi: Date,
+  jourIndex: number,
+  sens: 1 | -1,
+): { lundi: Date; jourIndex: number } => {
+  let jour = ajouterJours(joursGrille(lundi)[jourIndex] ?? lundi, sens)
+  if (jour.getDay() === 0) jour = ajouterJours(jour, sens)
+  return { lundi: debutSemaine(jour), jourIndex: (jour.getDay() + 6) % 7 }
+}
+
 // Index de rangée (créneau de 30 min) depuis une heure « HH:mm ».
 export const rangeeDepuisHeure = (heure: string): number => {
   const [h, m] = heure.split(':').map(Number)
