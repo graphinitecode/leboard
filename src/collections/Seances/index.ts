@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { seancesCreate, seancesDelete, seancesRead, seancesWrite } from '../../access/seances'
 import { preCreerPresencesSeance } from '../../hooks/preCreerPresencesSeance'
+import { modifierSerieEndpoint, supprimerSerieEndpoint } from '../../seances/infrastructure/series.endpoints'
 
 export const matiereOptions = [
   { label: 'Maths', value: 'maths' },
@@ -71,7 +72,19 @@ export const Seances: CollectionConfig = {
       type: 'richText',
       label: 'Retour du prof',
     },
+    {
+      name: 'serie',
+      admin: {
+        description: 'Série dont cette séance est une occurrence (vide = séance ponctuelle)',
+        position: 'sidebar',
+        readOnly: true,
+      },
+      label: 'Série',
+      relationTo: 'series',
+      type: 'relationship',
+    },
   ],
+  endpoints: [modifierSerieEndpoint, supprimerSerieEndpoint],
   hooks: {
     afterChange: [preCreerPresencesSeance],
   },
