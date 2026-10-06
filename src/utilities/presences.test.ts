@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest'
 
-import { ordrePresences, trierPresences } from './presences'
+import {
+  ordrePresences,
+  paginerParPage,
+  trierPresences,
+} from './presences'
 
 // L'historique des présences se lit sur la date de la SÉANCE liée : createdAt
 // de la ligne (son ordre de saisie) peut diverger — l'absence est ajoutée
@@ -82,5 +86,46 @@ describe('ordrePresences', () => {
     expect(ordrePresences('pirate')).toEqual('date-desc')
     expect(ordrePresences(undefined)).toEqual('date-desc')
     expect(ordrePresences(null)).toEqual('date-desc')
+  })
+})
+describe('paginerParPage', () => {
+  const lots = Array.from({ length: 23 }, (_, i) => i) // 0..22
+
+  it('page 1 : les 10 premières lignes', () => {
+    const resultat = paginerParPage(lots, 1)
+    expect(resultat).toEqual({ lignes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], page: 1, totalPages: 3 })
+  })
+
+  it('page du milieu : le lot voulu', () => {
+    const resultat = paginerParPage(lots, 2)
+    expect(resultat.lignes).toEqual([10, 11, 12, 13, 14, 15, 16, 17, 18, 19])
+    expect(resultat.page).toBe(2)
+  })
+
+  it('dernière page partielle : les 3 dernières lignes', () => {
+    const resultat = paginerParPage(lots, 3)
+    expect(resultat.lignes).toEqual([20, 21, 22])
+    expect(resultat.totalPages).toBe(3)
+  })
+
+  it('page hors bornes : bornée à la dernière', () => {
+    const resultat = paginerParPage(lots, 99)
+    expect(resultat.page).toBe(3)
+    expect(resultat.lignes).toEqual([20, 21, 22])
+  })
+
+  it('page invalide : bornée à la première', () => {
+    const resultat = paginerParPage(lots, Number('abc'))
+    expect(resultat.page).toBe(1)
+  })
+
+  it('liste vide : une page vide, pas de division impossible', () => {
+    const resultat = paginerParPage([], 1)
+    expect(resultat).toEqual({ lignes: [], page: 1, totalPages: 1 })
+  })
+
+  it('moins de lignes qu\'un lot : une seule page', () => {
+    const resultat = paginerParPage([1, 2], 1)
+    expect(resultat).toEqual({ lignes: [1, 2], page: 1, totalPages: 1 })
   })
 })

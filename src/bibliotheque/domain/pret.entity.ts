@@ -3,6 +3,8 @@ export interface Pret {
   eleveId: number
   eleveLabel: string | null
   exemplaireCode: string | null
+  /** Id du livre emprunté (lien fiche) — null si relation non résolue. */
+  livreId: number | null
   livreLabel: string | null
   dateEmprunt: string | null
   dateRetourPrevue: string | null

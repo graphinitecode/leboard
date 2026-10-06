@@ -6,7 +6,9 @@ import { useMemo, useState } from 'react'
 
 import { InsetText, Tag } from '@/components/atoms'
 import { BackLink } from '@/components/atoms/a-back-link'
-import { AlertCard, EmptyState, Pagination, Table } from '@/components/molecules'
+import { AlertCard, EmptyState, Input, Pagination, Table } from '@/components/molecules'
+import { Button } from '@/components/atoms/a-button'
+import { periodeAnneeScolaire } from '@/utilities/exportPresences'
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
 import { StatsGrid } from '@/components/templates'
 import type { DashboardStat } from '@/components/templates'
@@ -350,6 +352,7 @@ export default function ElevesView({ profId, alertes, retour }: ElevesViewProps)
               </div>
             )}
           </div>
+          <ExportPresences />
         </aside>
       </div>
     </>
@@ -379,4 +382,39 @@ function itemsPagination(
   if (fin < nbPages) items.push({ href: hrefPage(nbPages), number: nbPages })
 
   return items
+}
+
+// Export CSV des présences sur une période (formulaire GET : la route
+// renvoie directement le fichier, limité aux séances du prof connecté)
+function ExportPresences() {
+  const [periode, setPeriode] = useState(() => periodeAnneeScolaire())
+  const invalide = Boolean(periode.debut && periode.fin && periode.fin < periode.debut)
+
+  return (
+    <div className="lpv-t-dashboard-page__aside-card">
+      <h3 className="lpv-t-dashboard-page__aside-card__title">Exporter les présences</h3>
+      <form action="/profs/export/presences" method="get">
+        <Input
+          id="export-debut"
+          label="Du"
+          name="debut"
+          onChange={(e) => setPeriode((p) => ({ ...p, debut: e.target.value }))}
+          type="date"
+          value={periode.debut}
+        />
+        <Input
+          error={invalide ? 'La date de fin doit suivre la date de début.' : undefined}
+          id="export-fin"
+          label="Au"
+          name="fin"
+          onChange={(e) => setPeriode((p) => ({ ...p, fin: e.target.value }))}
+          type="date"
+          value={periode.fin}
+        />
+        <Button disabled={invalide} type="submit" variant="secondary">
+          Télécharger le fichier CSV
+        </Button>
+      </form>
+    </div>
+  )
 }
