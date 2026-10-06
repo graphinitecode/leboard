@@ -23,19 +23,19 @@ export default async function ParentsLayout({ children }: { children: ReactNode 
         <ServiceHeader
           heroText="Le suivi de votre enfant : présences, retours et prêts."
           heroTitle="Espace parents"
-          legalLinks={[
-            { href: '/rgpd', label: 'Mentions légales' },
-            { href: '/rgpd', label: 'Politique de confidentialité' },
-          ]}
-          services={[
-            { description: 'Le suivi de votre enfant', href: '/parents', label: 'Espace parents' },
-            { description: 'Vos informations personnelles', href: '/parents/mon-profil', label: 'Mon profil' },
-            { href: '/rgpd', label: 'Protection des données' },
-          ]}
-          user={user ? { nom: `${user.prenom} ${user.nom}`, email: user.email } : null}
+          homeHref="/parents"
+          user={
+            user
+              ? {
+                  email: user.email,
+                  logoutRedirect: '/parents/login',
+                  nom: `${user.prenom} ${user.nom}`,
+                  profileHref: '/parents/mon-profil',
+                }
+              : null
+          }
         />
       }
-      footerLinks={[{ href: '/parents/login', label: 'Connexion' }]}
       portail="parents"
     >
       {children}

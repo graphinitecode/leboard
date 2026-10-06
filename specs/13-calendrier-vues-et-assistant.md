@@ -28,7 +28,7 @@ Corriger la grille hebdomadaire en mobile (défilement horizontal illisible) et 
 - **Mini-calendrier** : mois affiché autour de la semaine courante, ‹ › mois ; chaque jour : pastille « a des séances » (point) ; cliquer un jour bascule sur la semaine le contenant (et sélectionne le jour si en vue jour).
 - **Sélection de plage** : mousedown sur une case vide → glisser sur les créneaux contigus (même jour) → mouseup : plage surlignée ; à la fin, ouverture de l'assistant pré-rempli (jour, heure début, heure fin = créneau suivant). Mousemove/mouseup hors case = abandon propre. Support équivalent tactile (pointer events).
 - **Bouton « + Nouvelle séance »** : ouvre l'assistant à l'étape 1, sans préremplissage.
-- **Assistant** : réutilise le pattern `AvailabilityWizard` (stepper, boutons-choix jour, inputs time avec bornes 8h–20h, récapitulatif). La durée n'est plus un choix figé : elle découle de début/fin (durée min 30 min, fin après début). Étape matière : boutons-choix. Étape élèves : cases à cocher (élèves du prof). Valider → création (présences pré-créées par le hook existant) + toast succès + retour à la vue.
+- **Assistant** : réutilise le pattern `AvailabilityWizard` (stepper, boutons-choix jour, inputs time avec bornes 8h–18h, récapitulatif). La durée n'est plus un choix figé : elle découle de début/fin (durée min 30 min, fin après début). Étape matière : boutons-choix. Étape élèves : cases à cocher (élèves du prof). Valider → création (présences pré-créées par le hook existant) + toast succès + retour à la vue.
 - **Chevauchements** : l'assistant affiche un avertissement si la plage chevauche une séance existante du prof (non bloquant, le serveur fait foi).
 - **Déplacement (drag d'une pastille existante)** : inchangé (Spec 12) ; en vue jour, le drop se fait sur les cases du jour.
 
@@ -82,15 +82,15 @@ Aucune nouvelle collection. Écritures inchangées (`POST /seances`, `PATCH /sea
 - Le mini-calendrier dérive ses jours « chargés » des événements déjà chargés (aucune requête supplémentaire en v1).
 
 ## 7. Critères d'acceptation
-- [ ] En < 48rem, le calendrier s'affiche jour par jour, sans défilement horizontal ; pastilles ≥ 44px.
-- [ ] Le toggle `Semaine | Jour | Liste` fonctionne en desktop ; la préférence persiste dans la session.
-- [ ] La vue liste condensée exclut les jours vides et reste lisible.
-- [ ] Le mini-calendrier surligne les jours de la semaine affichée et permet de sauter à un jour/mois.
-- [ ] Cliquer-glisser une plage ouvre l'assistant pré-rempli ; « + Nouvelle séance » ouvre l'étape 1.
-- [ ] L'assistant crée la séance (présences pré-créées) et ferme sur succès ; erreur → toast.
-- [ ] La modale de création de la Spec 12 est supprimée ; le déplacement par drag reste opérationnel.
-- [ ] La démo `/design-system` expose le toggle de vues et l'assistant.
-- [ ] Lint, typecheck, tests passent.
+- [x] En < 48rem, le calendrier s'affiche jour par jour (prof et parent), sans défilement horizontal. Cases de création de 44 px ; une pastille de 30 min mesure 42 px (hauteur du créneau moins la gouttière), au-delà elle dépasse 44 px.
+- [x] Le toggle `Semaine | Jour | Liste` fonctionne en desktop ; la préférence persiste (localStorage).
+- [x] La vue liste condensée exclut les jours vides et reste lisible.
+- [x] Le mini-calendrier surligne les jours de la semaine affichée et permet de sauter à un jour/mois.
+- [x] Cliquer-glisser une plage ouvre la création pré-remplie ; « + Nouvelle séance » ouvre la première question.
+- [x] La création enregistre la séance (présences pré-créées) puis confirme ; erreur → message. *Évolution (spec 11)* : l'assistant est la page `/profs/seances/nouvelle` (template `QuestionPage`).
+- [x] La modale de création de la Spec 12 est supprimée ; le déplacement par drag reste opérationnel.
+- [x] La démo `/design-system` expose le toggle de vues (lecture seule ; la création se démontre via `QuestionPage`).
+- [x] Lint, typecheck, tests passent. Navigation jour par jour depuis le jour affiché (dimanche sauté) couverte par `jourVoisin` + test d'intégration.
 
 ## 8. Risques & questions ouvertes
 - Pointer events sur la grille : gérer le scroll mobile pendant la sélection (désactiver le touch-scroll pendant le drag : `touch-action: none` sur les cases vides uniquement).

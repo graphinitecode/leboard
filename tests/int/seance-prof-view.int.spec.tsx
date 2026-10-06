@@ -43,6 +43,7 @@ const seanceDetail: SeanceDetail = {
     profLabel: 'Claire D.',
     retourTexte: 'Bonne séance sur les fractions.',
     aRetour: true,
+    serie: null,
   },
   presences: [
     { id: 11, seanceId: 12, eleveId: 1, present: 'present' },

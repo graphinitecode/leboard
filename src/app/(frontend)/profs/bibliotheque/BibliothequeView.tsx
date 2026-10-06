@@ -11,13 +11,17 @@ import type { TableHeadCell, TableRowCell } from '@/components/molecules'
 import { buildPaginationItems } from '@/components/molecules/m-pagination'
 import { ConfirmAction } from '@/components/organisms/o-confirm-action'
 import { StatsGrid } from '@/components/templates'
+import { nomFichierCsv, telechargerCsv, versCsv } from '@/shared/csv'
 import type { DashboardStat } from '@/components/templates'
 import {
   CATEGORIES_LIVRE,
   estPretEnCours,
   joursDeRetard,
   labelNiveauLivre,
+  lignesExportCatalogue,
   NIVEAUX_LIVRE,
+  statutPret,
+  trierParRetour,
   useListCatalogue,
   useListTousPretsEnCours,
   useMarquerRetourne,
@@ -64,10 +68,8 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
 
   const enCours = (prets.data ?? []).filter(estPretEnCours)
   const retards = enCours.filter((pret) => joursDeRetard(pret.dateRetourPrevue) > 0)
-  const rappels = enCours.filter((pret) => {
-    const jours = joursDeRetard(pret.dateRetourPrevue)
-    return jours === 0 || jours === -2 || jours === -1
-  })
+  // Prêts à rendre dans les 3 prochains jours (les retards ont leur section)
+  const rappels = trierParRetour(enCours.filter((pret) => statutPret(pret) === 'bientot'))
 
   const catalogueFiltre = useMemo(() => {
     let liste = catalogue.data ?? []
@@ -261,6 +263,16 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
             </option>
           ))}
         </select>
+        <Button
+          disabled={!catalogue.data?.length}
+          onClick={() =>
+            telechargerCsv(nomFichierCsv('catalogue'), versCsv(lignesExportCatalogue(catalogue.data ?? [])))
+          }
+          type="button"
+          variant="secondary"
+        >
+          Exporter le catalogue (CSV)
+        </Button>
         {peutGerer ? (
           <Button href="/profs/bibliotheque/prets/nouveau" variant="success">
             Enregistrer un prêt
@@ -274,6 +286,11 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
             <h2 className="lpv-h2" id="retards">
               Retards
             </h2>
+            <p>
+              <Link className="lpv-link-inline" href="/profs/bibliotheque/prets">
+                Voir tous les prêts en cours
+              </Link>
+            </p>
             {prets.isLoading ? (
               <p className="lpv-muted">Chargement des prêts…</p>
             ) : retards.length === 0 ? (

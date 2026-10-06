@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
-import { Button, BackLink, Breadcrumbs, Icon, InsetText, Panel, Progress, Tag, WarningText, Details, FileUpload } from '@/components/atoms'
+import { Button, BackLink, Breadcrumbs, InsetText, Panel, Progress, Tag, WarningText, Details, FileUpload } from '@/components/atoms'
 import { Label } from '@/components/atoms/a-label'
-import { Accordion, Avatar, Checkbox, DateInput, EmptyState, InputField, Input, CharacterCount, TaskList, NotificationBanner, Tabs, Pagination, ErrorSummary, SummaryList, Table, ThemeToggle } from '@/components/molecules'
+import { Accordion, Avatar, Checkbox, DateInput, EmptyState, InputField, Input, CharacterCount, TaskList, NotificationBanner, Tabs, Pagination, PortalNav, ErrorSummary, SummaryList, Table, ThemeToggle } from '@/components/molecules'
 import type { AccordionSection, Tab, CheckboxOption, TableHeadCell, TableRowCell, Task, PageNumber } from '@/components/molecules'
 
 import { DemoCombobox, DemoModale, DemoRadio, DemoToggle, DemoToast, DemoMonthCalendars } from './DemoClient'
@@ -14,6 +14,7 @@ import { EnterText } from '@/components/atoms/a-enter-text'
 import { DashboardPage, DetailPage, FormPage, QuestionPage } from '@/components/templates'
 import { Stepper } from '@/components/atoms/a-stepper'
 import { ValidateText } from '@/components/molecules/m-validate-text'
+import { WeekCalendar } from '@/components/organisms/o-week-calendar'
 
 export const metadata: Metadata = {
   title: 'Design system — LPV Board',
@@ -320,7 +321,7 @@ export default function DesignSystemPage() {
 
         <h3 className="lpv-h3">Details</h3>
         <Details summary="Quelles sont les horaires possibles ?" open>
-          Les cours ont lieu du lundi au samedi, de 8h à 18h.
+          Les cours ont lieu du lundi au dimanche, de 8h à 18h.
         </Details>
         <Details summary="Aide concernant la nationalité">
           Nous avons besoin de connaître votre nationalité afin de déterminer à quelles élections
@@ -700,7 +701,7 @@ export default function DesignSystemPage() {
           plage au clic-tirer et de créer une séance via un assistant pas à pas — la démo ci-dessous
           est en lecture seule avec des données d&apos;exemple.
         </p>
-        {/*<WeekCalendar mode="demo" />*/}
+        <WeekCalendar mode="demo" />
 
         <h3 className="lpv-h3">Carte calendrier mensuel</h3>
         <p className="lpv-muted">
@@ -717,13 +718,13 @@ export default function DesignSystemPage() {
       <section id="surfaces">
         <h2 className="lpv-h2">Surfaces</h2>
 
-        <h3 className="lpv-h3">Avatar utilisateur (entête portail)</h3>
+        <h3 className="lpv-h3">Menu du compte (entête portail)</h3>
         <p className="lpv-muted">
-          Affiché quand une session est active : prénom, cercle d&apos;initiales et chevron,
-          séparateur vertical avant le menu. Le panneau déroulant présente l&apos;identité et la
-          déconnexion. Se ferme au clic extérieur ou à Escape. En mobile (&lt; 48rem) le prénom
-          disparaît et le bouton Menu devient l&apos;icône rivet-icons:menu (close panneau ouvert,
-          sections en accordéon).
+          Seul menu de l&apos;entête, affiché quand une session est active : prénom, cercle
+          d&apos;initiales et chevron. Le panneau présente l&apos;identité, « Mon profil », la
+          bascule de thème et la déconnexion (retour à la page de connexion du portail). En
+          desktop, la navigation du portail est portée par les onglets sous le logo ; en mobile
+          (&lt; 48rem), le prénom disparaît et le panneau reprend aussi les liens de navigation. Se ferme au clic extérieur ou à Escape.
         </p>
         <div
           className="lpv-card"
@@ -736,17 +737,35 @@ export default function DesignSystemPage() {
             maxWidth: '32rem',
           }}
         >
-          <Avatar email="olivier.durand@lpv.fr" nom="Olivier Durand" />
-          <span aria-hidden="true" className="lpv-o-header__separator" />
-          <button aria-expanded={false} className="lpv-m-collapsible-menu__button" type="button">
-            <span aria-hidden="true" className="lpv-m-collapsible-menu__button-icon">
-              <Icon icon="rivet-icons:menu" size={22} />
-            </span>
-            <span aria-hidden="true" className="lpv-m-collapsible-menu__button-chevron">
-              <Icon icon="rivet-icons:chevron-down" size={22} />
-            </span>
-            <span className="lpv-m-collapsible-menu__button-label">Menu</span>
-          </button>
+          <Avatar
+            email="olivier.durand@lpv.fr"
+            homeHref="/profs"
+            navLinks={[
+              { href: '/profs', label: 'Tableau de bord' },
+              { href: '/profs/eleves', label: 'Élèves' },
+            ]}
+            nom="Olivier Durand"
+            profileHref="/profs/mon-profil"
+          />
+        </div>
+
+        <h3 className="lpv-h3">Navigation du portail</h3>
+        <p className="lpv-muted">
+          Onglets sous le logo (≥ 48rem), actifs par préfixe de segment : « Élèves » reste actif
+          sur la fiche d&apos;un élève. L&apos;onglet d&apos;accueil n&apos;est actif qu&apos;à
+          l&apos;identique, ou sur les préfixes déclarés dans <code>match</code>.
+        </p>
+        <div className="lpv-card" style={{ backgroundColor: 'var(--lpv-portail)' }}>
+          <PortalNav
+            homeHref="/profs"
+            links={[
+              { href: '/profs', label: 'Tableau de bord' },
+              { href: '/profs/calendrier', label: 'Calendrier' },
+              { href: '/profs/eleves', label: 'Élèves' },
+              { href: '/profs/bibliotheque', label: 'Bibliothèque' },
+              { href: '/profs/disponibilites', label: 'Disponibilités' },
+            ]}
+          />
         </div>
 
         <h3 className="lpv-h3">Bascule de thème</h3>
@@ -754,7 +773,7 @@ export default function DesignSystemPage() {
           Le mode sombre s&apos;applique à tout le design system via <code>data-theme</code> sur{' '}
           <code>&lt;html&gt;</code>. Le choix est mémorisé (localStorage) et suit{' '}
           <code>prefers-color-scheme</code> par défaut. Dans l&apos;entête des portails, la bascule
-          vit dans le panneau du menu (variante « panneau ») et non plus dans la barre.
+          vit dans le menu du compte (variante « panneau »).
         </p>
         <div
           className="lpv-card"

@@ -232,6 +232,21 @@ est inspiré de [BEM + Atomic Design](https://www.lullabot.com/articles/bem-atom
 
 - `tests/int/*.int.spec.tsx` — nommage anglais aligné sur le composant (ex. `checkboxes.int.spec.tsx`).
 
+## Migrations de base de données
+
+La base locale est celle de production : `push: false` dans `src/payload.config.ts`, le schéma
+n'évolue **que** par migrations (`src/migrations/`).
+
+- Après toute modification de collection, champ ou global : `pnpm payload migrate:create <nom>`,
+  relire le SQL généré, puis `pnpm payload migrate`.
+- La migration est commitée avec le changement de schéma qui l'a produite.
+- Vercel lance `pnpm run ci` (`payload migrate` puis `next build`, cf. `vercel.json`).
+- Ne jamais réactiver `push` ni lancer `payload migrate:fresh` / `migrate:reset` : données de
+  production.
+- Si une ligne `dev` (batch -1) réapparaît dans `payload_migrations` (serveur de dev lancé avec
+  l'ancienne config), `payload migrate` bloque sur une invite : redémarrer le serveur de dev, puis
+  `APPLY=1 MIGRATION=<nom> pnpm migrate:baseline` pour la migration déjà poussée.
+
 ## Payload CMS
 
 La doc du projet est dans `.claude/skills/payload/` — commencer par `SKILL.md`, détails dans `reference/`.

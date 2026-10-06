@@ -1,6 +1,8 @@
 import type {
   CreerSeanceCommand,
+  CreerSerieCommand,
   DeplacerSeanceCommand,
+  SupprimerSeanceCommand,
   ICalendrierRepository,
   SeancesPeriodeQuery,
 } from '../domain/interfaces/calendrier-repository.interface'
@@ -21,9 +23,19 @@ export const deplacerSeanceHandler = (repository: ICalendrierRepository) => asyn
   command: DeplacerSeanceCommand,
 ) => repository.deplacerSeance(command)
 
+export const creerSerieHandler = (repository: ICalendrierRepository) => async (
+  command: CreerSerieCommand,
+) => repository.creerSerie(command)
+
+export const supprimerSeanceHandler = (repository: ICalendrierRepository) => async (
+  command: SupprimerSeanceCommand,
+) => repository.supprimerSeance(command)
+
 export const calendrierHandlers = {
   listMySeancesPeriode: listMySeancesPeriodeHandler(calendrierRepository),
   listElevesDuProf: listElevesDuProfHandler(calendrierRepository),
   creerSeance: creerSeanceHandler(calendrierRepository),
   deplacerSeance: deplacerSeanceHandler(calendrierRepository),
+  creerSerie: creerSerieHandler(calendrierRepository),
+  supprimerSeance: supprimerSeanceHandler(calendrierRepository),
 }

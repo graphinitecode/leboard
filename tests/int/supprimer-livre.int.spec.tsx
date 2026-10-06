@@ -59,6 +59,7 @@ const PRET_EN_COURS: Pret = {
   eleveId: 10,
   eleveLabel: 'Lucas Martin',
   exemplaireCode: 'LPV-0001',
+  livreId: 12,
   livreLabel: 'Le Petit Prince',
   dateEmprunt: new Date(Date.now() - 5 * JOUR).toISOString(),
   dateRetourPrevue: new Date(Date.now() + 16 * JOUR).toISOString(),

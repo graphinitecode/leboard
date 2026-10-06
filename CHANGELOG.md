@@ -6,6 +6,35 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+## [0.13.0] — 2026-10-06
+
+### Ajouté
+- Une séance peut se répéter chaque semaine ou chaque mois (même jour de semaine, par exemple « le 2e mardi »), sans fin ou jusqu'à une date : toutes les séances sont créées d'un coup et apparaissent dans le calendrier.
+- Une icône signale les séances récurrentes dans le calendrier : colorée quand la série n'a pas de fin, atténuée quand elle s'arrête à une date.
+- Déplacer, changer la durée ou supprimer une séance récurrente propose de l'appliquer à cette séance seulement, à celle-ci et aux suivantes, ou à toute la série ; les séances passées ne sont jamais modifiées.
+- Une page « Prêts en cours » liste tous les livres empruntés, du retour le plus urgent au plus lointain, avec leur statut (en retard, à rendre sous 3 jours, dans les temps), une recherche par livre ou élève, un filtre par statut et le retour en un clic. Elle est accessible depuis la bibliothèque.
+- Les parents sont prévenus par e-mail quand un livre emprunté par leur enfant est à rendre bientôt ou en retard, et en cas d'absences répétées aux séances. Ils peuvent désactiver ces e-mails dans « Mon profil ».
+- Le catalogue de la bibliothèque s'exporte en fichier CSV (lisible dans Excel), au même format que l'import : le fichier peut être réimporté tel quel.
+- Les présences s'exportent en fichier CSV : sur une période choisie depuis la page « Élèves », ou l'historique complet d'un élève depuis sa fiche.
+- La fiche d'un élève affiche ses livres en prêt, avec un lien vers chaque livre et le retour en un clic pour l'équipe de la bibliothèque.
+
+### Modifié
+- L'historique de présence d'un élève s'affiche par pages de 10 séances.
+- L'entête des portails est réorganisé : les rubriques (tableau de bord, calendrier, élèves, bibliothèque, disponibilités) s'affichent en onglets, et un seul menu, celui du compte, regroupe « Mon profil », le choix du thème et la déconnexion. Sur mobile, ce menu reprend aussi les rubriques.
+- Le logo ramène à l'accueil du portail, la déconnexion renvoie à la page de connexion du portail, et le pied de page ne propose plus que « Protection des données » (les liens en double ou sans objet ont été retirés).
+- Sur téléphone, le calendrier s'ouvre en vue jour aussi dans l'espace parents, comme côté professeurs.
+- Les pages « Mot de passe oublié » et « Nouveau mot de passe » reprennent l'entête et le pied de page de l'espace concerné (professeurs ou parents), au lieu de ceux du site public.
+- Le calendrier occupe toute la largeur de la page, et des lignes en pointillés marquent chaque heure pour viser plus facilement un créneau.
+- Chaque séance du calendrier affiche son horaire et sa durée ; côté professeurs, la poignée en bas d'une séance permet de l'allonger ou de la raccourcir par pas de 30 minutes.
+- Les cours se terminent au plus tard à 18h : le calendrier s'arrête à 18h, et une séance ou une disponibilité qui finirait plus tard est refusée avec un message (création, déplacement, changement de durée).
+
+### Corrigé
+- L'encart « Rappels à venir » de la bibliothèque ne liste plus que les prêts à rendre dans les 3 prochains jours (il affichait tous les prêts dans les temps).
+- Dans la vue jour du calendrier, « Jour suivant » et « Jour précédent » partent du jour affiché (et non plus du lundi).
+- Le dimanche est un jour de cours comme les autres : il apparaît dans le calendrier (une séance du dimanche n'était pas visible) et peut être choisi pour une disponibilité.
+- Dans le calendrier des professeurs, les séances peuvent de nouveau être ouvertes d'un clic ou déplacées par glisser-déposer : les cases de création les recouvraient.
+- Déposer une séance après un glisser-déposer n'ouvre plus la page d'ajout d'une séance.
+
 ## [0.12.0] — 2026-10-04
 
 ### Ajouté

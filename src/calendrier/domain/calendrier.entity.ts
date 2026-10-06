@@ -8,11 +8,13 @@ export interface EventCalendrier {
   matiere: MatiereCalendrier
   labelGroupe: string
   href: string
+  // Séance d'une série : 'continue' (sans fin) ou 'bornee' (date de fin)
+  recurrence?: 'continue' | 'bornee'
 }
 
 // Créneau hebdomadaire de disponibilité (non daté, répété chaque semaine).
 export interface BandeDispo {
-  jour: 'lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi'
+  jour: 'lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi' | 'dimanche'
   heureDebut: string
   heureFin: string
 }

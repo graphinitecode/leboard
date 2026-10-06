@@ -92,16 +92,6 @@
   }
 }
 
-/* --- Séparateur vertical (zone actions, connecté) --------------------------- */
-
-.lpv-o-header__separator {
-  align-self: center;
-  background-color: var(--lpv-on-portal);
-  height: 1.5rem;
-  opacity: 0.4;
-  width: 1px;
-}
-
 /* --- Navigation du site vitrine (liens pilotés par le global header du panel) */
 
 .lpv-o-header-nav {
@@ -207,216 +197,57 @@
   }
 }
 
-/* --- Menu dépliant de l'entête --------------------------------------------- */
-/* Mobile (< 48rem) : bouton icône (menu/close), panneau en accordéon vertical.
-   Tablette/desktop (≥ 48rem) : bouton texte + chevron, panneau 2 colonnes. */
+/* --- Navigation du portail : onglets sous le logo (≥ 48rem) ---------------- */
+/* Mobile : masquée, les liens passent dans le panneau du compte. */
 
-.lpv-m-collapsible-menu__button {
-  align-items: center;
-  background: transparent;
-  border: 0;
-  /* sur-portail (blanc constant) et non surface (presque noir en dark) :
-     l'icône menu/close et le texte restent blancs sur la bande colorée */
-  color: var(--lpv-on-portal);
-  cursor: pointer;
-  display: inline-flex;
-  font-size: 1.125rem;
-  font-weight: 700;
-  min-height: 44px;
-  padding: 0.5rem 0.75rem;
-
-  &:hover {
-    text-decoration: underline;
-  }
-
-  &:focus-visible {
-    @include mixins.lpv-focus-on-portal;
-  }
-}
-
-.lpv-m-collapsible-menu__button-icon {
-  display: inline-flex;
-}
-
-/* Chevron desktop, masqué en mobile (l'icône menu/close le remplace) */
-.lpv-m-collapsible-menu__button-chevron {
+.lpv-o-header__nav {
   display: none;
-  margin-right: 0.4rem;
-}
+  margin-inline: auto;
+  max-width: var(--lpv-container);
+  padding: 0 0.7rem;
 
-.lpv-m-collapsible-menu__button-label {
-  display: none;
-}
-
-@media (width >= 48rem) {
-  .lpv-m-collapsible-menu__button-icon {
-    display: none;
-  }
-
-  .lpv-m-collapsible-menu__button-chevron {
-    display: inline-flex;
-  }
-
-  .lpv-m-collapsible-menu__button-label {
-    display: inline;
-  }
-}
-
-.lpv-m-collapsible-menu {
-  background-color: var(--lpv-surface);
-  border-bottom: 4px solid var(--lpv-portail);
-  box-shadow: 0 12px 24px rgb(15 20 25 / 20%);
-  left: 50%;
-  position: absolute;
-  top: 100%;
-  transform: translateX(-50%);
-  width: 100vw;
-  z-index: 50;
-
-  /* Mobile : une seule colonne, sections en accordéon */
-  &__inner {
+  @media (width >= 48rem) {
     display: block;
-    padding: 0.5rem 1rem 1rem;
   }
+}
 
-  &__column {
-    ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-
-      /* Masqué tant que la section est fermée (accordéon mobile) */
-      display: none;
-    }
-
-    li {
-      margin-bottom: 0;
-    }
-
-    li a,
-    li a:visited {
-      border-top: 1px solid var(--lpv-grey-border);
-      color: var(--lpv-portail-dark);
-      display: block;
-      font-weight: 700;
-      min-height: 44px;
-      padding: 0.6rem 0 0.6rem 1rem;
-      text-decoration: underline;
-    }
-
-    li p {
-      color: var(--lpv-text-muted);
-      font-size: 0.9rem;
-      margin: -0.25rem 0 0.5rem;
-      padding-left: 1rem;
-    }
-  }
-
-  /* Section accordéon ouverte : titre souligné, liens visibles */
-  &__column--open {
-    ul {
-      display: block;
-    }
-  }
-
-  &__column-title {
-    align-items: center;
-    background: none;
-    border: 0;
-    color: var(--lpv-text);
-    cursor: pointer;
+.lpv-m-portal-nav {
+  &__list {
     display: flex;
-    font-size: 1.125rem;
-    font-weight: 700;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__link,
+  &__link:visited {
+    border-bottom: 4px solid transparent;
+    color: var(--lpv-on-portal);
+    display: inline-flex;
+    font-size: 1.05rem;
+    font-weight: 600;
     min-height: 44px;
-    padding: 0.5rem 0;
-    text-align: left;
-    width: 100%;
+    align-items: center;
+    padding: 0.4rem 0.75rem;
+    text-decoration: none;
 
     &:hover {
       text-decoration: underline;
-      text-decoration-thickness: var(--lpv-decoration-thickness-hover);
       text-underline-offset: var(--lpv-text-underline-offset-hover);
+      text-decoration-thickness: var(--lpv-decoration-thickness-hover);
     }
 
-    &:focus {
-      @include mixins.lpv-focused-text;
-    }
-  }
-
-  &__column-chevron {
-    display: inline-flex;
-  }
-
-  /* Le panneau recouvre le hero (overlay), il ne le pousse pas.
-     Il déborde volontairement du header : pas de clipping. */
-
-  /* Tablette/desktop : sections toujours dépliées en 2 colonnes,
-     les boutons de titre redeviennent des titres simples */
-  &__column-title {
-    @media (width >= 48rem) {
-      border-bottom: 1px solid var(--lpv-grey-border);
-      cursor: default;
-      font-size: 1.5rem;
-      margin: 0 0 0.75rem;
-      padding-bottom: 0.5rem;
-      pointer-events: none;
+    &:focus-visible {
+      @include mixins.lpv-focus-on-portal;
     }
   }
 
-  &__column-chevron {
-    @media (width >= 48rem) {
-      display: none;
-    }
-  }
-
-  &__inner {
-    @media (width >= 48rem) {
-      display: grid;
-      gap: 2rem;
-      grid-template-columns: 1fr 1fr;
-      margin-inline: auto;
-      max-width: var(--lpv-container);
-      padding: 1.5rem 1rem 2rem;
-    }
-  }
-
-  &__column {
-    @media (width >= 48rem) {
-      ul {
-        display: block;
-      }
-
-      li {
-        margin-bottom: 0.75rem;
-      }
-
-      li a,
-      li a:visited {
-        border-top: 0;
-        display: inline;
-        min-height: 0;
-        padding: 0;
-      }
-
-      li p {
-        margin: 0.15rem 0 0;
-        padding-left: 0;
-      }
-    }
-  }
-
-  /* Pied du panneau : bascule de thème, largeur du container */
-  &__footer {
-    border-top: 1px solid var(--lpv-grey-border);
-    margin-inline: auto;
-    max-width: var(--lpv-container);
-    padding: 0.5rem 1rem 1.25rem;
-
-    @media (width >= 48rem) {
-      padding: 0.5rem 1rem 2rem;
-    }
+  /* Onglet actif : soulignement épais sous le libellé (motif GOV.UK) */
+  &__link--active,
+  &__link--active:visited {
+    border-bottom-color: var(--lpv-on-portal);
   }
 }
 
@@ -476,7 +307,7 @@
   background-color: var(--lpv-surface);
   border-bottom: 4px solid var(--lpv-portail);
   box-shadow: var(--lpv-shadow-hover);
-  min-width: 16rem;
+  min-width: 20rem;
   position: absolute;
   right: 0;
   top: 100%;
@@ -509,6 +340,30 @@
     display: block;
   }
 
+  /* Navigation du portail dans le panneau : mobile uniquement, les onglets
+     de l'entête la portent en desktop */
+  &__nav {
+    border-bottom: 1px solid var(--lpv-grey-border);
+
+    @media (width >= 48rem) {
+      display: none;
+    }
+  }
+
+  &__list a[aria-current='page'] {
+    font-weight: 700;
+  }
+
+  &__theme {
+    padding: 0 0.75rem;
+
+    > div > span {
+      white-space: nowrap;
+    }
+  }
+
+  &__list a,
+  &__list a:visited,
   &__list button {
     align-items: center;
     background: none;
@@ -531,6 +386,10 @@
     &:focus {
       @include mixins.lpv-focus;
     }
+  }
+
+  &__list a {
+    text-decoration: none;
   }
 }
 
@@ -630,7 +489,7 @@
   }
 }
 
-/* Variante panneau : ligne libellé + icône dans le pied du menu dépliant */
+/* Variante panneau : ligne libellé + icône dans le menu du compte */
 .lpv-m-theme-toggle--panel {
   align-items: center;
   background: none;

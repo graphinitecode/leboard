@@ -274,4 +274,20 @@ describe('ElevesView (liste alignee maquette)', () => {
 
     expect(screen.getByText(/Impossible de charger vos élèves/)).toBeDefined()
   })
+
+  it("propose l'export CSV des présences sur l'année scolaire, période inversée bloquée", async () => {
+    const user = userEvent.setup()
+    rendre()
+
+    const debut = screen.getByLabelText('Du') as HTMLInputElement
+    const fin = screen.getByLabelText('Au') as HTMLInputElement
+    expect(debut.value).toMatch(/^\d{4}-09-01$/)
+    expect(debut.closest('form')?.getAttribute('action')).toBe('/profs/export/presences')
+    expect(debut.name).toBe('debut')
+    expect(fin.name).toBe('fin')
+
+    await user.clear(fin)
+    await user.type(fin, '2000-01-01')
+    expect(screen.getByRole('button', { name: 'Télécharger le fichier CSV' })).toBeDisabled()
+  })
 })

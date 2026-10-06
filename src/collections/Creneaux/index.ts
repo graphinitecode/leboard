@@ -9,6 +9,7 @@ export const jourOptions = [
   { label: 'Jeudi', value: 'jeudi' },
   { label: 'Vendredi', value: 'vendredi' },
   { label: 'Samedi', value: 'samedi' },
+  { label: 'Dimanche', value: 'dimanche' },
 ]
 
 export const Creneaux: CollectionConfig = {

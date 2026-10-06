@@ -1,4 +1,13 @@
-export type JourSemaine = 'lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi'
+import { HEURE_FIN_COURS_HHMM, MESSAGE_FIN_COURS } from '@/shared/horaires'
+
+export type JourSemaine =
+  | 'lundi'
+  | 'mardi'
+  | 'mercredi'
+  | 'jeudi'
+  | 'vendredi'
+  | 'samedi'
+  | 'dimanche'
 
 export interface Disponibilite {
   jour: JourSemaine
@@ -13,6 +22,7 @@ export const JOURS_SEMAINE: JourSemaine[] = [
   'jeudi',
   'vendredi',
   'samedi',
+  'dimanche',
 ]
 
 export const trierDisponibilites = (dispos: Disponibilite[]): Disponibilite[] =>
@@ -28,6 +38,9 @@ export const validerHeures = (heureDebut: string, heureFin: string): string | nu
   }
   if (heureFin <= heureDebut) {
     return 'L’heure de fin doit être après l’heure de début.'
+  }
+  if (heureFin > HEURE_FIN_COURS_HHMM) {
+    return MESSAGE_FIN_COURS
   }
   return null
 }

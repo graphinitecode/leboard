@@ -8,6 +8,7 @@ import {
   resoudreAlertesPretsRendus,
 } from '@/utilities/alertes'
 import { detecterFinRetention } from '@/utilities/detecterFinRetention'
+import { prolongerSeries } from '@/seances/infrastructure/series.server'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -31,15 +32,21 @@ export async function GET(req: Request) {
     detecterFinRetention(payload),
   ])
 
+  // Même cron que les alertes (nombre de crons Vercel limité) : les séries
+  // sans fin gardent leurs séances sur l'horizon glissant de 3 mois
+  const seancesRecurrentes = await prolongerSeries(payload)
+
   payload.logger.info({
     msg: 'cron alertes exécuté',
     creees: { decrochage, retards, rappels, rgpdRetention },
     resoluesAuto,
+    seancesRecurrentes,
   })
 
   return Response.json({
     ok: true,
     creees: { decrochage, retards, rappels, rgpdRetention },
     resoluesAuto,
+    seancesRecurrentes,
   })
 }

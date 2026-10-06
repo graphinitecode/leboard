@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-import { DetailPage, DetailSection } from '@/components/templates/t-portal-page'
+import { DetailPage, DetailSection } from '@/components/templates/t-detail-page'
 
 describe('DetailPage', () => {
   it('rend le back link, le titre et les sections', () => {

@@ -13,7 +13,9 @@ export type {
 } from './domain/calendrier.entity'
 export type {
   CreerSeanceCommand,
+  CreerSerieCommand,
   DeplacerSeanceCommand,
+  SupprimerSeanceCommand,
   SeancesPeriodeQuery,
 } from './domain/interfaces/calendrier-repository.interface'
 export {
@@ -56,7 +58,9 @@ export {
   useSeancesPeriode,
   useElevesDuProf,
   useCreerSeance,
+  useCreerSerie,
   useDeplacerSeance,
+  useSupprimerSeance,
 } from './application/calendrier.hooks'
 export { WeekCalendar } from '@/components/organisms/o-week-calendar'
 export type { WeekCalendarMode, WeekCalendarEvent } from '@/components/organisms/o-week-calendar'

@@ -70,6 +70,7 @@ export interface Config {
     alertes: Alerte;
     eleves: Eleve;
     seances: Seance;
+    series: Series;
     presences: Presence;
     progressions: Progression;
     competences: Competence;
@@ -102,6 +103,7 @@ export interface Config {
     alertes: AlertesSelect<false> | AlertesSelect<true>;
     eleves: ElevesSelect<false> | ElevesSelect<true>;
     seances: SeancesSelect<false> | SeancesSelect<true>;
+    series: SeriesSelect<false> | SeriesSelect<true>;
     presences: PresencesSelect<false> | PresencesSelect<true>;
     progressions: ProgressionsSelect<false> | ProgressionsSelect<true>;
     competences: CompetencesSelect<false> | CompetencesSelect<true>;
@@ -189,6 +191,10 @@ export interface Alerte {
   dateCreation: string;
   dateTraitement?: string | null;
   /**
+   * Date d’envoi de l’e-mail aux parents (vide : non envoyé)
+   */
+  notifieLe?: string | null;
+  /**
    * Action réalisée (ex. parent appelé, profil anonymisé)
    */
   resolution?: string | null;
@@ -246,11 +252,15 @@ export interface User {
   role: 'admin' | 'prof' | 'benevole-bibliotheque' | 'parent';
   telephone?: string | null;
   /**
+   * Retards de livres, rappels de retour et absences répétées de ses enfants
+   */
+  alertesEmail?: boolean | null;
+  /**
    * Créneaux hebdomadaires de disponibilité (pour le planning)
    */
   disponibilites?:
     | {
-        jour: 'lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi';
+        jour: 'lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi' | 'dimanche';
         /**
          * Format HH:mm (ex. 17:30)
          */
@@ -398,6 +408,37 @@ export interface Seance {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Série dont cette séance est une occurrence (vide = séance ponctuelle)
+   */
+  serie?: (number | null) | Series;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "series".
+ */
+export interface Series {
+  id: number;
+  frequence: 'hebdomadaire' | 'mensuelle';
+  /**
+   * Première séance (AAAA-MM-JJ)
+   */
+  premiere: string;
+  /**
+   * Dernier jour possible (AAAA-MM-JJ) ; vide = jamais
+   */
+  fin?: string | null;
+  heureDebut: string;
+  duree: number;
+  matiere: 'maths' | 'francais' | 'anglais' | 'autre';
+  groupe?: (number | Eleve)[] | null;
+  prof: number | User;
+  /**
+   * Dernier jour déjà généré (prolongé par le cron quotidien)
+   */
+  genereJusqua?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -460,7 +501,7 @@ export interface Competence {
  */
 export interface Creneau {
   id: number;
-  jour: 'lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi';
+  jour: 'lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi' | 'dimanche';
   /**
    * Format HH:mm (ex. 17:30)
    */
@@ -1275,6 +1316,10 @@ export interface PayloadLockedDocument {
         value: number | Seance;
       } | null)
     | ({
+        relationTo: 'series';
+        value: number | Series;
+      } | null)
+    | ({
         relationTo: 'presences';
         value: number | Presence;
       } | null)
@@ -1396,6 +1441,7 @@ export interface AlertesSelect<T extends boolean = true> {
   statut?: T;
   dateCreation?: T;
   dateTraitement?: T;
+  notifieLe?: T;
   resolution?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1431,6 +1477,24 @@ export interface SeancesSelect<T extends boolean = true> {
   prof?: T;
   duree?: T;
   retour?: T;
+  serie?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "series_select".
+ */
+export interface SeriesSelect<T extends boolean = true> {
+  frequence?: T;
+  premiere?: T;
+  fin?: T;
+  heureDebut?: T;
+  duree?: T;
+  matiere?: T;
+  groupe?: T;
+  prof?: T;
+  genereJusqua?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1822,6 +1886,7 @@ export interface UsersSelect<T extends boolean = true> {
   name?: T;
   role?: T;
   telephone?: T;
+  alertesEmail?: T;
   disponibilites?:
     | T
     | {

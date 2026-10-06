@@ -32,4 +32,17 @@ describe('FormPage', () => {
     )
     expect(container.querySelector('.lpv-login__subtitle')).toBeNull()
   })
+
+  it('rend le lien retour avant le titre quand fourni', () => {
+    const { container } = render(
+      <FormPage retour={{ href: '/profs/login', label: 'Retour à la connexion' }} title="Réinitialiser">
+        <p>Formulaire</p>
+      </FormPage>,
+    )
+    const lien = screen.getByRole('link', { name: 'Retour à la connexion' })
+    expect(lien.getAttribute('href')).toBe('/profs/login')
+    // Le lien précède le h1 dans le document
+    const titre = container.querySelector('h1') as HTMLElement
+    expect(lien.compareDocumentPosition(titre) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  })
 })

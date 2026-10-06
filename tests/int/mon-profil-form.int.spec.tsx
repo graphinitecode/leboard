@@ -80,4 +80,31 @@ describe('MonProfilForm', () => {
 
     expect(screen.getByText(/contactez l/)).toBeDefined()
   })
+
+  it('parents : la case des alertes par e-mail se décoche et part avec le profil', async () => {
+    mockUpdateMonProfil.mockResolvedValue({ ok: true })
+    const user = userEvent.setup()
+    render(<MonProfilForm initial={{ ...initial, alertesEmail: true }} portail="parents" />)
+
+    const caseAlertes = screen.getByLabelText('Recevoir les alertes par e-mail')
+    expect(caseAlertes).toBeChecked()
+    await user.click(caseAlertes)
+    await user.click(screen.getByRole('button', { name: 'Enregistrer' }))
+
+    await waitFor(() => {
+      expect(mockUpdateMonProfil).toHaveBeenCalledWith(expect.objectContaining({ alertesEmail: false }))
+    })
+  })
+
+  it('profs : pas de case des alertes, préférence non envoyée', async () => {
+    mockUpdateMonProfil.mockResolvedValue({ ok: true })
+    const user = userEvent.setup()
+    render(<MonProfilForm initial={initial} portail="profs" />)
+
+    expect(screen.queryByLabelText('Recevoir les alertes par e-mail')).toBeNull()
+    await user.click(screen.getByRole('button', { name: 'Enregistrer' }))
+    await waitFor(() => {
+      expect(mockUpdateMonProfil.mock.calls[0][0]).not.toHaveProperty('alertesEmail')
+    })
+  })
 })

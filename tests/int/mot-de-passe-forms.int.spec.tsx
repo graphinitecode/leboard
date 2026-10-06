@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { MotDePasseOublieForm } from '@/components/organisms/o-mot-de-passe-oublie-form'
+import MotDePasseOublieView from '@/app/(frontend)/mot-de-passe-oublie/MotDePasseOublieView'
 import { ReinitialiserMotDePasseForm } from '@/components/organisms/o-reinitialiser-mot-de-passe-form'
 
 const mockDemander = vi.fn()
@@ -18,9 +18,9 @@ beforeEach(() => {
   mockReinitialiser.mockClear()
 })
 
-describe('MotDePasseOublieForm', () => {
+describe('MotDePasseOublieView', () => {
   it('affiche le back-link vers la connexion du portail et le bouton', () => {
-    render(<MotDePasseOublieForm portail="profs" />)
+    render(<MotDePasseOublieView portail="profs" />)
 
     expect(screen.getByRole('heading', { name: 'Réinitialiser votre mot de passe' })).toBeDefined()
     const backLink = screen.getByRole('link', { name: 'Retour à la connexion' })
@@ -31,7 +31,7 @@ describe('MotDePasseOublieForm', () => {
 
   it('bloque une soumission vide côté client sans appel serveur', async () => {
     const user = userEvent.setup()
-    render(<MotDePasseOublieForm portail="profs" />)
+    render(<MotDePasseOublieView portail="profs" />)
 
     await user.click(screen.getByRole('button', { name: 'Envoyer le lien' }))
 
@@ -43,7 +43,7 @@ describe('MotDePasseOublieForm', () => {
 
   it('rejette une adresse mal formée côté client sans appel serveur', async () => {
     const user = userEvent.setup()
-    render(<MotDePasseOublieForm portail="profs" />)
+    render(<MotDePasseOublieView portail="profs" />)
 
     await user.type(screen.getByLabelText('Adresse e-mail'), 'invalide')
     await user.click(screen.getByRole('button', { name: 'Envoyer le lien' }))
@@ -60,7 +60,7 @@ describe('MotDePasseOublieForm', () => {
     })
 
     const user = userEvent.setup()
-    render(<MotDePasseOublieForm portail="profs" />)
+    render(<MotDePasseOublieView portail="profs" />)
 
     await user.type(screen.getByLabelText('Adresse e-mail'), 'parent@lpv.fr')
     await user.click(screen.getByRole('button', { name: 'Envoyer le lien' }))
@@ -81,7 +81,7 @@ describe('MotDePasseOublieForm', () => {
     mockDemander.mockResolvedValue({ ok: true, message: '' })
 
     const user = userEvent.setup()
-    render(<MotDePasseOublieForm portail="parents" />)
+    render(<MotDePasseOublieView portail="parents" />)
 
     expect(screen.getByRole('link', { name: 'Retour à la connexion' })).toHaveAttribute(
       'href',

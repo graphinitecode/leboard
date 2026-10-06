@@ -16,10 +16,12 @@ Les specs suivent le template `specs/_TEMPLATE.md`. Chaque spec est implémenté
 | 07 | [Planning bénévoles/profs](07-planning.md) | Moyenne | 01, 02 | Implémenté |
 | 08 | [Rapports périodiques](08-rapports.md) | Moyenne | 01, 03, 04 | Implémenté |
 | 10 | [Portail profs](10-portail-profs.md) | Haute | 01, 02, 03, 07 | Implémenté |
-| 11 | [Design system : couche Templates](11-design-system-templates.md) | Moyenne | 10 | En cours |
-| 12 | [Calendrier hebdomadaire avec pastilles](12-calendrier-hebdomadaire.md) | Moyenne | 01, 02, 07, 10 | En cours |
-| 13 | [Calendrier : vues multiples et assistant de création](13-calendrier-vues-et-assistant.md) | Moyenne | 12 | En cours |
+| 11 | [Design system : couche Templates](11-design-system-templates.md) | Moyenne | 10 | Implémenté |
+| 12 | [Calendrier hebdomadaire avec pastilles](12-calendrier-hebdomadaire.md) | Moyenne | 01, 02, 07, 10 | Implémenté |
+| 13 | [Calendrier : vues multiples et assistant de création](13-calendrier-vues-et-assistant.md) | Moyenne | 12 | Implémenté |
 | 14 | [Type scale responsive des titres](14-type-scale.md) | Moyenne | 11 | Implémenté |
+| 15 | [Séances récurrentes](15-seances-recurrentes.md) | Haute | 01, 10, 12, 13 | Implémenté |
+| 16 | [Alertes par e-mail aux parents](16-alertes-email-parents.md) | Moyenne | 05, 06 | Implémenté |
 
 ## Portail profs (découpage)
 

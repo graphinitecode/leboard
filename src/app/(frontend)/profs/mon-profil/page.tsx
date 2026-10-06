@@ -1,6 +1,5 @@
 import { requireProf } from '@/utilities/profAuth'
 import { MonProfilForm } from '@/components/organisms/o-mon-profil-form'
-import { BackLink } from '@/components/atoms/a-back-link'
 
 import { FormPage } from '@/components/templates'
 
@@ -12,8 +11,11 @@ export default async function MonProfilProfsPage() {
   const user = await requireProf()
 
   return (
-    <FormPage title="Mon profil" subtitle="Modifiez vos informations personnelles.">
-      <BackLink href="/profs">Retour au tableau de bord</BackLink>
+    <FormPage
+      retour={{ href: '/profs', label: 'Retour au tableau de bord' }}
+      subtitle="Modifiez vos informations personnelles."
+      title="Mon profil"
+    >
       <MonProfilForm
         portail="profs"
         initial={{

@@ -57,3 +57,28 @@ export function trierPresences<T extends PresenceAvecSeance>(
       return docs.sort(parDateDecroissante)
   }
 }
+// --- Pagination de l'historique (lots de 10) -------------------------------
+
+/** Nombre de lignes de présence par page dans la fiche. */
+export const PRESENCES_PAR_PAGE = 10
+
+/**
+ * Découpe une liste (déjà triée) en lot paginé — la fiche élève charge tout
+ * l'historique puis l'affiche par tranches : les entêtes cliquables de tri
+ * gardent leur logique en mémoire (matière, statut), inutile de doubler le
+ * tri côté requête.
+ */
+export function paginerParPage<T>(
+  valeurs: T[],
+  page: number,
+  taille = PRESENCES_PAR_PAGE,
+): { lignes: T[]; page: number; totalPages: number } {
+  const totalPages = Math.max(1, Math.ceil(valeurs.length / taille))
+  const pageSûre = Math.min(Math.max(1, Math.floor(Number.isFinite(page) ? page : 1)), totalPages)
+  const debut = (pageSûre - 1) * taille
+  return {
+    lignes: valeurs.slice(debut, debut + taille),
+    page: pageSûre,
+    totalPages,
+  }
+}

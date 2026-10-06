@@ -27,6 +27,12 @@ vi.mock('next/navigation', () => ({
   usePathname: () => '/profs/bibliotheque',
 }))
 
+const mockTelecharger = vi.fn()
+vi.mock('@/shared/csv', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/shared/csv')>()),
+  telechargerCsv: (...args: unknown[]) => mockTelecharger(...args),
+}))
+
 vi.mock('@/bibliotheque', async (importOriginal) => {
   const original = await importOriginal<typeof import('@/bibliotheque')>()
   return {
@@ -48,6 +54,7 @@ const PRETS: Pret[] = [
     eleveId: 10,
     eleveLabel: 'Lucas Martin',
     exemplaireCode: 'LPV-0001',
+    livreId: 12,
     livreLabel: 'Le Petit Prince',
     dateEmprunt: new Date(Date.now() - 29 * 86_400_000).toISOString(),
     dateRetourPrevue: new Date(Date.now() - 8 * 86_400_000).toISOString(),
@@ -58,6 +65,7 @@ const PRETS: Pret[] = [
     eleveId: 11,
     eleveLabel: 'Emma Roux',
     exemplaireCode: 'LPV-0002',
+    livreId: 12,
     livreLabel: 'Vendredi',
     dateEmprunt: new Date(Date.now() - 19 * 86_400_000).toISOString(),
     dateRetourPrevue: new Date(Date.now() + 2 * 86_400_000).toISOString(),
@@ -144,6 +152,31 @@ describe('BibliothequeView', () => {
     expect(container.textContent).toContain('Livres au catalogue')
     expect(container.textContent).toContain('Prêts en cours')
     expect(container.textContent).toContain('Retards')
+  })
+
+  it('les rappels ne listent que les prêts à rendre sous 3 jours', () => {
+    pretsRetour.data = [
+      ...PRETS,
+      {
+        ...PRETS[1],
+        dateRetourPrevue: new Date(Date.now() + 15 * 86_400_000).toISOString(),
+        eleveLabel: 'Noé Lointain',
+        id: 3,
+      },
+    ]
+    catalogueRetour.data = CATALOGUE
+    const { container } = rendre()
+
+    const rappels = [...container.querySelectorAll('.lpv-t-dashboard-page__aside-card')].find((carte) =>
+      carte.textContent?.includes('Rappels à venir'),
+    ) as HTMLElement
+    expect(rappels.textContent).toContain('Emma Roux')
+    expect(rappels.textContent).not.toContain('Noé Lointain')
+    // Le retard a sa propre section, pas un rappel
+    expect(rappels.textContent).not.toContain('Lucas Martin')
+    expect(screen.getByRole('link', { name: 'Voir tous les prêts en cours' }).getAttribute('href')).toBe(
+      '/profs/bibliotheque/prets',
+    )
   })
 
   it('liste les retards avec bouton retourne', () => {
@@ -312,5 +345,18 @@ describe('BibliothequeView', () => {
     await waitFor(() => {
       expect(mockRouterReplace).toHaveBeenCalledWith('/profs/bibliotheque')
     })
+  })
+
+  it('exporte le catalogue en CSV réimportable', async () => {
+    catalogueRetour.data = CATALOGUE
+    const user = userEvent.setup()
+    rendre()
+
+    await user.click(screen.getByRole('button', { name: 'Exporter le catalogue (CSV)' }))
+    expect(mockTelecharger).toHaveBeenCalledTimes(1)
+    const [nom, contenu] = mockTelecharger.mock.calls[0] as [string, string]
+    expect(nom).toMatch(/^catalogue-\d{4}-\d{2}-\d{2}\.csv$/)
+    expect(contenu).toContain('titre;auteur;isbn;niveau;categorie;exemplaires;resume')
+    expect(contenu).toContain('Le Petit Prince;A. de Saint-Exupéry')
   })
 })

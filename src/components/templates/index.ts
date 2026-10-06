@@ -1,4 +1,5 @@
-export { PortalPage, DetailPage, DetailSection } from './t-portal-page'
+export { PortalPage } from './t-portal-page'
+export { DetailPage, DetailSection } from './t-detail-page'
 export { DashboardPage } from './t-dashboard-page'
 export type { DashboardSection } from './t-dashboard-page'
 export { StatsGrid } from './t-stats-grid'

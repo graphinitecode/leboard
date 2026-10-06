@@ -3,6 +3,8 @@ export interface Pret {
   eleveId: number
   eleveLabel: string | null
   exemplaireCode: string | null
+  /** Id du livre emprunté (lien fiche) — null si relation non résolue. */
+  livreId: number | null
   livreLabel: string | null
   dateEmprunt: string | null
   dateRetourPrevue: string | null
@@ -43,4 +45,31 @@ export function joursDeRetard(dateRetourPrevue: string | null, maintenant = new 
   const prevue = new Date(dateRetourPrevue)
   const diff = Math.floor((maintenant.getTime() - prevue.getTime()) / 86_400_000)
   return Math.max(0, diff)
+}
+// Un prêt est « à rendre bientôt » dans les JOURS_RAPPEL jours précédant son retour prévu
+export const JOURS_RAPPEL = 3
+
+export type StatutPret = 'retard' | 'bientot' | 'a-temps'
+
+// Jours restants avant le retour prévu (0 = à rendre aujourd'hui), null sans date
+export function joursAvantRetour(dateRetourPrevue: string | null, maintenant = new Date()): number | null {
+  if (!dateRetourPrevue) return null
+  const prevue = new Date(dateRetourPrevue)
+  const jour = (d: Date) => Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())
+  return Math.round((jour(prevue) - jour(maintenant)) / 86_400_000)
+}
+
+export function statutPret(pret: Pret, maintenant = new Date()): StatutPret {
+  if (joursDeRetard(pret.dateRetourPrevue, maintenant) > 0) return 'retard'
+  const restants = joursAvantRetour(pret.dateRetourPrevue, maintenant)
+  return restants !== null && restants <= JOURS_RAPPEL ? 'bientot' : 'a-temps'
+}
+
+// Du retour le plus urgent au plus lointain ; sans date de retour en dernier
+export function trierParRetour(prets: Pret[]): Pret[] {
+  return [...prets].sort((a, b) => {
+    if (!a.dateRetourPrevue) return b.dateRetourPrevue ? 1 : 0
+    if (!b.dateRetourPrevue) return -1
+    return a.dateRetourPrevue.localeCompare(b.dateRetourPrevue)
+  })
 }

@@ -56,11 +56,12 @@ Aucune — les templates ne font ni fetch ni écriture ; les données arrivent p
 - Exports anglais simples (`PortalPage`, `DetailPage`, `DashboardPage`, `FormPage`), fichiers `t-` préfixés, classes `lpv-t-{block}__{element}`.
 
 ## 7. Critères d'acceptation
-- [ ] `/profs`, `/parents`, `/rgpd` rendus identiques via `PortalPage` ; `PageContent` n'existe plus.
-- [ ] Fiche élève rendue identique via `DetailPage`.
-- [ ] Les 4 templates sont démontrés sur `/design-system`.
-- [ ] Chaque template a un test int (render, slots, classes attendues).
-- [ ] Lint, typecheck, tests int existants passent.
+- [x] `/profs`, `/parents`, `/rgpd` rendus identiques via `PortalPage` ; `PageContent` n'existe plus. Les pages « Mot de passe oublié » et « Nouveau mot de passe » utilisent aussi `PortalPage` (shell du portail visé par `?portail=`).
+- [x] Fiche élève rendue identique via `DetailPage` (désormais dans son propre fichier `t-detail-page.tsx`).
+- [x] Les templates sont démontrés sur `/design-system` : `DetailPage`, `DashboardPage`, `FormPage`, `QuestionPage`. *Écart assumé* : `PortalPage` n'y est pas rendu, car le shell masque le chrome du site vitrine (`body:has(.lpv-shell[data-lpv-portail])`) et casserait la page de démonstration ; il se voit sur les portails.
+- [x] Chaque template a un test int (render, slots, classes attendues).
+- [x] Les pages de connexion et de mot de passe passent par `FormPage` : les organisms de formulaire ne portent plus ni conteneur `lpv-login` ni titre (fin du double conteneur sur « Nouveau mot de passe »).
+- [x] Lint, typecheck, tests int existants passent.
 
 ## 8. Risques & questions ouvertes
 - Régression visuelle lors de la migration → vérifier les 4 pages migrées avant/après.
