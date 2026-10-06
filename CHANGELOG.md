@@ -6,6 +6,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+## [0.14.0] — 2026-10-07
+
+### Modifié
+- Nouveau pied de page aux couleurs de l'association, identique sur le site et les espaces profs et parents : accroche, colonnes de liens utiles, accès direct à l'espace administration et mention de copyright. Tout son contenu se modifie depuis l'administration (« Pied de page »).
+
 ## [0.13.1] — 2026-10-06
 
 ### Modifié

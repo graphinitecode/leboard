@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import { ServiceHeader } from '@/components/molecules/m-service-header'
 import { PortalPage } from '@/components/templates'
 import { getMeUserServer } from '@/utilities/profAuth'
+import { Footer } from '@/Footer/Component'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,6 +20,7 @@ export default async function ProfsLayout({ children }: { children: ReactNode })
 
   return (
     <PortalPage
+      footer={<Footer />}
       header={
         <ServiceHeader
           heroText="Vos séances, présences et retours de séance, au même endroit."

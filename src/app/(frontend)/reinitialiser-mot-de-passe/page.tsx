@@ -1,6 +1,7 @@
 import { ReinitialiserMotDePasseForm } from '@/components/organisms/o-reinitialiser-mot-de-passe-form'
 import { ServiceHeader } from '@/components/molecules/m-service-header'
 import { FormPage, PortalPage } from '@/components/templates'
+import { Footer } from '@/Footer/Component'
 
 export const metadata = { title: 'Nouveau mot de passe — LPV Board' }
 export const dynamic = 'force-dynamic'
@@ -17,7 +18,7 @@ export default async function ReinitialiserMotDePassePage({
 
   // Shell du portail concerné (entête, pied de page) comme ses pages de connexion
   return (
-    <PortalPage header={<ServiceHeader homeHref={`/${portail}`} />} portail={portail}>
+    <PortalPage footer={<Footer />} header={<ServiceHeader homeHref={`/${portail}`} />} portail={portail}>
       <FormPage subtitle="Choisissez votre nouveau mot de passe." title="Nouveau mot de passe">
         <ReinitialiserMotDePasseForm portail={portail} tokenInitial={token ?? ''} />
       </FormPage>
