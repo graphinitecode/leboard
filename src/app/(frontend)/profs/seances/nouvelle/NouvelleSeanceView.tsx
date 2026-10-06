@@ -441,7 +441,7 @@ function initialiserDepuisParams(params: URLSearchParams): {
     const date = new Date(`${dateParam}T12:00:00`)
     const index = (date.getDay() + 6) % 7
     const lundiCible = debutSemaine(date)
-    if (lundiCible.toDateString() === lundi.toDateString() && index <= 5) {
+    if (lundiCible.toDateString() === lundi.toDateString()) {
       jourIndex = index
     }
   }

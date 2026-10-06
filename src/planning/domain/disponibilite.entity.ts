@@ -1,4 +1,11 @@
-export type JourSemaine = 'lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi'
+export type JourSemaine =
+  | 'lundi'
+  | 'mardi'
+  | 'mercredi'
+  | 'jeudi'
+  | 'vendredi'
+  | 'samedi'
+  | 'dimanche'
 
 export interface Disponibilite {
   jour: JourSemaine
@@ -13,6 +20,7 @@ export const JOURS_SEMAINE: JourSemaine[] = [
   'jeudi',
   'vendredi',
   'samedi',
+  'dimanche',
 ]
 
 export const trierDisponibilites = (dispos: Disponibilite[]): Disponibilite[] =>

@@ -96,6 +96,7 @@ export const Users: CollectionConfig = {
             { label: 'Jeudi', value: 'jeudi' },
             { label: 'Vendredi', value: 'vendredi' },
             { label: 'Samedi', value: 'samedi' },
+            { label: 'Dimanche', value: 'dimanche' },
           ],
           required: true,
           type: 'select',

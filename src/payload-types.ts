@@ -250,7 +250,7 @@ export interface User {
    */
   disponibilites?:
     | {
-        jour: 'lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi';
+        jour: 'lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi' | 'dimanche';
         /**
          * Format HH:mm (ex. 17:30)
          */
@@ -460,7 +460,7 @@ export interface Competence {
  */
 export interface Creneau {
   id: number;
-  jour: 'lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi';
+  jour: 'lundi' | 'mardi' | 'mercredi' | 'jeudi' | 'vendredi' | 'samedi' | 'dimanche';
   /**
    * Format HH:mm (ex. 17:30)
    */

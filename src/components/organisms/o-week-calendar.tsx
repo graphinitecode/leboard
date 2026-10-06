@@ -181,7 +181,7 @@ function Navigation({
   )
 }
 
-// Navigation jour par jour (vue jour) : part du jour affiché, saute le dimanche.
+// Navigation jour par jour (vue jour) : part du jour affiché.
 function NavigationJour({
   lundi,
   jourIndex,
@@ -478,9 +478,15 @@ function Pastille({ event, mode }: { event: WeekCalendarEvent; mode: WeekCalenda
       className={`lpv-o-week-calendar__event lpv-o-week-calendar__event--${couleurMatiere(event.matiere)}`}
       draggable={mode === 'prof'}
       href={event.href || undefined}
+      onDragEnd={(e) => {
+        e.currentTarget.closest('.lpv-o-week-calendar')?.classList.remove('lpv-o-week-calendar--dragging')
+      }}
       onDragStart={(e) => {
         e.dataTransfer.setData('text/plain', String(event.id))
         e.dataTransfer.effectAllowed = 'move'
+        // Différé : modifier le DOM pendant dragstart annule le glissement (Chrome)
+        const calendrier = e.currentTarget.closest('.lpv-o-week-calendar')
+        setTimeout(() => calendrier?.classList.add('lpv-o-week-calendar--dragging'), 0)
       }}
       style={{ top, height }}
     >
@@ -609,7 +615,7 @@ function WeekCalendarProf({ dispos = [], semaineInitiale }: WeekCalendarProps) {
           onChoisirJour={(jour) => {
             const nouveauLundi = debutSemaine(jour)
             setLundi(nouveauLundi)
-            setJourIndex(Math.min((jour.getDay() + 6) % 7, 5))
+            setJourIndex((jour.getDay() + 6) % 7)
           }}
           lundi={lundi}
           vue={vue}
@@ -666,7 +672,7 @@ function WeekCalendarProf({ dispos = [], semaineInitiale }: WeekCalendarProps) {
 }
 
 function jourDuJour(): number {
-  return Math.min((new Date().getDay() + 6) % 7, 5)
+  return (new Date().getDay() + 6) % 7
 }
 
 // URL du parcours de création avec préremplissage (jour 1..6 de la semaine
@@ -699,7 +705,7 @@ function WeekCalendarStatic({ events = [], dispos = [], semaineInitiale }: WeekC
           onChoisirJour={(jour) => {
             const nouveauLundi = debutSemaine(jour)
             setLundi(nouveauLundi)
-            setJourIndex(Math.min((jour.getDay() + 6) % 7, 5))
+            setJourIndex((jour.getDay() + 6) % 7)
           }}
           vue={vue}
         />

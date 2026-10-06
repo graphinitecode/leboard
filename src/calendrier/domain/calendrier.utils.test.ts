@@ -74,10 +74,10 @@ describe('bornesSemaine', () => {
 })
 
 describe('indexJourGrille', () => {
-  it('convertit lundi=0, samedi=5, dimanche=null', () => {
+  it('convertit lundi=0, samedi=5, dimanche=6', () => {
     expect(indexJourGrille(new Date(2025, 8, 22))).toBe(0)
     expect(indexJourGrille(new Date(2025, 8, 27))).toBe(5)
-    expect(indexJourGrille(new Date(2025, 8, 28))).toBeNull()
+    expect(indexJourGrille(new Date(2025, 8, 28))).toBe(6)
   })
 })
 
@@ -158,11 +158,11 @@ describe('bandeEnMinutes', () => {
 
 describe('labelSemaine', () => {
   it('condense le mois quand la semaine reste dans le mois', () => {
-    expect(labelSemaine(new Date(2025, 8, 22))).toBe('Semaine du 22 au 27 septembre')
+    expect(labelSemaine(new Date(2025, 8, 22))).toBe('Semaine du 22 au 28 septembre')
   })
 
   it('affiche les deux mois a cheval', () => {
-    expect(labelSemaine(new Date(2025, 8, 29))).toBe('Semaine du 29 septembre au 4 octobre')
+    expect(labelSemaine(new Date(2025, 8, 29))).toBe('Semaine du 29 septembre au 5 octobre')
   })
 })
 
@@ -246,8 +246,9 @@ describe('jourVoisin', () => {
     expect(jourVoisin(lundi, 2, -1)).toEqual({ lundi, jourIndex: 1 })
   })
 
-  it('saute le dimanche et change de semaine aux bornes', () => {
-    expect(jourVoisin(lundi, 5, 1)).toEqual({ lundi: new Date(2025, 8, 29), jourIndex: 0 })
-    expect(jourVoisin(lundi, 0, -1)).toEqual({ lundi: new Date(2025, 8, 15), jourIndex: 5 })
+  it('passe par le dimanche et change de semaine aux bornes', () => {
+    expect(jourVoisin(lundi, 5, 1)).toEqual({ lundi, jourIndex: 6 })
+    expect(jourVoisin(lundi, 6, 1)).toEqual({ lundi: new Date(2025, 8, 29), jourIndex: 0 })
+    expect(jourVoisin(lundi, 0, -1)).toEqual({ lundi: new Date(2025, 8, 15), jourIndex: 6 })
   })
 })

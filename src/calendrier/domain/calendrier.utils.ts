@@ -10,7 +10,15 @@ export const HEURE_DEBUT_GRILLE = 8
 export const HEURE_FIN_GRILLE = 20
 export const MINUTES_CRENEAU = 30
 export const DUREE_DEFAUT = 60
-export const JOURS_GRILLE = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'] as const
+export const JOURS_GRILLE = [
+  'Lundi',
+  'Mardi',
+  'Mercredi',
+  'Jeudi',
+  'Vendredi',
+  'Samedi',
+  'Dimanche',
+] as const
 
 // Renvoie le lundi de la semaine contenant la date donnée, à 00:00 locale.
 export const debutSemaine = (date: Date): Date => {
@@ -36,7 +44,7 @@ export const bornesSemaine = (lundi: Date): { debut: Date; fin: Date } => {
   return { debut: lundi, fin }
 }
 
-// Index du jour de la grille (0 = lundi … 5 = samedi) ou null si hors grille.
+// Index du jour de la grille (0 = lundi … 6 = dimanche) ou null si hors grille.
 export const indexJourGrille = (date: Date): number | null => {
   const index = (date.getDay() + 6) % 7
   return index < JOURS_GRILLE.length ? index : null
@@ -125,7 +133,7 @@ export const bandeEnMinutes = (bande: BandeDispo): [number, number] => [
 // Libellé « Semaine du 23 au 28 septembre » (mois répété condensé).
 export const labelSemaine = (lundi: Date): string => {
   const fin = new Date(lundi)
-  fin.setDate(fin.getDate() + 5)
+  fin.setDate(fin.getDate() + 6)
   const fmtJourMois = (d: Date) =>
     d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })
   const debutLabel = fmtJourMois(lundi)
@@ -182,15 +190,14 @@ export const ajouterJours = (date: Date, n: number): Date => {
   return copie
 }
 
-// Jour voisin du jour affiché en vue jour (grille lundi→samedi) : le
-// dimanche est sauté, la semaine suit quand on franchit ses bornes.
+// Jour voisin du jour affiché en vue jour : la semaine suit quand on
+// franchit ses bornes (lundi ↔ dimanche).
 export const jourVoisin = (
   lundi: Date,
   jourIndex: number,
   sens: 1 | -1,
 ): { lundi: Date; jourIndex: number } => {
-  let jour = ajouterJours(joursGrille(lundi)[jourIndex] ?? lundi, sens)
-  if (jour.getDay() === 0) jour = ajouterJours(jour, sens)
+  const jour = ajouterJours(joursGrille(lundi)[jourIndex] ?? lundi, sens)
   return { lundi: debutSemaine(jour), jourIndex: (jour.getDay() + 6) % 7 }
 }
 

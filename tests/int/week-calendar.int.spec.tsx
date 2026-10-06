@@ -33,6 +33,7 @@ describe('WeekCalendar (mode demo/parent)', () => {
     expect(screen.getByText(/Semaine du/)).toBeDefined()
     expect(container.textContent).toContain('Lundi')
     expect(container.textContent).toContain('Samedi')
+    expect(container.textContent).toContain('Dimanche')
     expect(screen.getAllByRole('button', { name: 'Semaine précédente' }).length).toBeGreaterThan(0)
     expect(screen.getAllByRole('button', { name: 'Semaine suivante' }).length).toBeGreaterThan(0)
     expect(screen.getByRole('button', { name: /Aujourd/ })).toBeDefined()
@@ -78,7 +79,7 @@ describe('WeekCalendar (vue jour)', () => {
     window.localStorage.clear()
   })
 
-  it('navigue depuis le jour affiché et saute le dimanche', async () => {
+  it('navigue depuis le jour affiché, dimanche compris', async () => {
     // Mercredi 24 septembre 2025 : la vue jour s'ouvre sur ce jour
     vi.useFakeTimers({ now: new Date(2025, 8, 24, 10), shouldAdvanceTime: true })
     const user = userEvent.setup()
@@ -94,8 +95,28 @@ describe('WeekCalendar (vue jour)', () => {
     await user.click(screen.getByRole('button', { name: 'Jour suivant' }))
     await user.click(screen.getByRole('button', { name: 'Jour suivant' }))
     await user.click(screen.getByRole('button', { name: 'Jour suivant' }))
-    // Samedi 27 → lundi 29 : le dimanche est sauté, la semaine suit
+    expect(navJour().getByText('Dimanche')).toBeDefined()
+
+    // Dimanche 28 → lundi 29 : la semaine suit
+    await user.click(screen.getByRole('button', { name: 'Jour suivant' }))
     expect(navJour().getByText('Lundi')).toBeDefined()
     expect(screen.getByText(/Semaine du 29 septembre/)).toBeDefined()
+  })
+})
+
+describe('WeekCalendar (dimanche)', () => {
+  it('affiche la colonne du dimanche et ses séances', () => {
+    const dimanche: WeekCalendarEvent = {
+      id: 9,
+      debut: new Date(2025, 8, 28, 10, 0),
+      dureeMin: 60,
+      matiere: 'anglais',
+      labelGroupe: 'Groupe du dimanche',
+      href: '/profs/seances/9',
+    }
+    const { container } = render(<WeekCalendar events={[dimanche]} mode="parent" semaineInitiale={new Date(2025, 8, 22)} />)
+    expect(container.textContent).toContain('Dimanche 28')
+    expect(screen.getByText('Groupe du dimanche')).toBeDefined()
+    expect(screen.getByText(/Semaine du 22 au 28 septembre/)).toBeDefined()
   })
 })

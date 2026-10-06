@@ -21,6 +21,7 @@ const OPTIONS_JOUR = [
   { label: 'Jeudi', value: 'jeudi' },
   { label: 'Vendredi', value: 'vendredi' },
   { label: 'Samedi', value: 'samedi' },
+  { label: 'Dimanche', value: 'dimanche' },
 ]
 
 type Etape = 1 | 2 | 3

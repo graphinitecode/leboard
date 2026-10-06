@@ -119,7 +119,7 @@
   /* Entête des jours */
   &__head {
     display: grid;
-    grid-template-columns: 3.5rem repeat(6, minmax(6.5rem, 1fr));
+    grid-template-columns: 3.5rem repeat(7, minmax(6.5rem, 1fr));
   }
 
   &__corner {
@@ -144,7 +144,7 @@
 
   &__body {
     display: grid;
-    grid-template-columns: 3.5rem repeat(6, minmax(6.5rem, 1fr));
+    grid-template-columns: 3.5rem repeat(7, minmax(6.5rem, 1fr));
     position: relative;
   }
 
@@ -241,6 +241,9 @@
     position: absolute;
     right: 2px;
     text-decoration: none;
+    /* Au-dessus des cases de création (mode prof), sinon elles captent le
+       clic et la saisie de la pastille */
+    z-index: 2;
 
     &:focus-visible {
       outline: var(--lpv-focus-width) solid var(--lpv-focus);
@@ -252,6 +255,12 @@
     &[draggable='true'] {
       cursor: grab;
     }
+  }
+
+  /* Pendant un glisser-déposer, les pastilles laissent passer le pointeur :
+     le dépôt vise la case sous la pastille, y compris celle qu'on déplace */
+  &--dragging &__event {
+    pointer-events: none;
   }
 
   &__event--blue {
