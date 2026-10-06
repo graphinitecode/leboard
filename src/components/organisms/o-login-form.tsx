@@ -11,11 +11,11 @@ import { AUTOLOGIN_EMAIL } from '@/shared/auto-login'
 interface LoginFormProps {
   portail: 'profs' | 'parents'
   cible: string
-  title?: string
-  subtitle?: string
 }
 
-export function LoginForm({ portail, cible, title = 'Connexion', subtitle }: LoginFormProps) {
+// Organisme : formulaire de connexion. La page l'assemble dans le template
+// FormPage, qui porte le conteneur, le titre et le sous-titre.
+export function LoginForm({ portail, cible }: LoginFormProps) {
   const loginProf = useLoginProf(cible)
   const loginParent = useLoginParent(cible)
   const [email, setEmail] = useState(
@@ -41,9 +41,7 @@ export function LoginForm({ portail, cible, title = 'Connexion', subtitle }: Log
   const connexionHref = `/mot-de-passe-oublie?portail=${portail}`
 
   return (
-    <form className="lpv-login" onSubmit={submit}>
-      <h1 className="lpv-login__title">{title}</h1>
-      {subtitle ? <p className="lpv-login__subtitle">{subtitle}</p> : null}
+    <form className="lpv-login__form" onSubmit={submit}>
       <ul className="list-disc list-inside">
         <li className="lpv-login__forgot">
           <p>

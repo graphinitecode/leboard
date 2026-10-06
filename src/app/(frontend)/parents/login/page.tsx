@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 
 import { LoginForm } from '@/auth'
+import { FormPage } from '@/components/templates'
 import { getMeUserServer } from '@/utilities/parentAuth'
 
 export const dynamic = 'force-dynamic'
@@ -13,10 +14,8 @@ export default async function LoginPage() {
   }
 
   return (
-    <LoginForm
-      cible="/parents"
-      portail="parents"
-      subtitle="Connectez pour accéder à l'espace parents."
-    />
+    <FormPage subtitle="Connectez pour accéder à l'espace parents." title="Connexion">
+      <LoginForm cible="/parents" portail="parents" />
+    </FormPage>
   )
 }

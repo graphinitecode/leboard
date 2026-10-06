@@ -15,6 +15,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - L'entête des portails est réorganisé : les rubriques (tableau de bord, calendrier, élèves, bibliothèque, disponibilités) s'affichent en onglets, et un seul menu, celui du compte, regroupe « Mon profil », le choix du thème et la déconnexion. Sur mobile, ce menu reprend aussi les rubriques.
 - Le logo ramène à l'accueil du portail, la déconnexion renvoie à la page de connexion du portail, et le pied de page ne propose plus que « Protection des données » (les liens en double ou sans objet ont été retirés).
 - Sur téléphone, le calendrier s'ouvre en vue jour aussi dans l'espace parents, comme côté professeurs.
+- Les pages « Mot de passe oublié » et « Nouveau mot de passe » reprennent l'entête et le pied de page de l'espace concerné (professeurs ou parents), au lieu de ceux du site public.
 - Le calendrier occupe toute la largeur de la page, et des lignes en pointillés marquent chaque heure pour viser plus facilement un créneau.
 - Chaque séance du calendrier affiche son horaire et sa durée ; côté professeurs, la poignée en bas d'une séance permet de l'allonger ou de la raccourcir par pas de 30 minutes.
 - Les cours se terminent au plus tard à 18h : le calendrier s'arrête à 18h, et une séance ou une disponibilité qui finirait plus tard est refusée avec un message (création, déplacement, changement de durée).
