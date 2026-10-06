@@ -4,6 +4,7 @@ import { getPayload } from 'payload'
 
 import { ServiceHeader } from '@/components/molecules/m-service-header'
 import { PortalPage } from '@/components/templates'
+import { Footer } from '@/Footer/Component'
 
 export const dynamic = 'force-dynamic'
 
@@ -13,6 +14,7 @@ export default async function RGPDPage() {
 
   return (
     <PortalPage
+      footer={<Footer />}
       header={
         <ServiceHeader heroTitle="Politique de protection des données" />
       }

@@ -394,70 +394,140 @@
 }
 
 /* --- Pied de page --------------------------------------------------------- */
+/* Fond primaire, texte blanc (contraste AA sur --lpv-primary). Commun au site
+   vitrine et aux portails ; contenu piloté par le global Payload `footer`. */
 
-.lpv-m-footer {
-  background-color: var(--lpv-surface);
-  border-top: 1px solid var(--lpv-grey-border);
+.lpv-o-footer {
+  background-color: var(--lpv-primary);
+  color: white;
   margin-top: 4rem;
 
   &__inner {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem 2rem;
-    justify-content: space-between;
     margin-inline: auto;
     max-width: var(--lpv-container);
-    padding: 2.25rem 1rem;
+    padding: 3rem 1rem 1.5rem;
   }
 
-  &__logo {
-    opacity: 0.9;
-  }
+  &__top {
+    display: grid;
+    gap: 2.5rem 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    padding-bottom: 2.5rem;
 
-  &__tagline {
-    color: var(--lpv-text-muted);
-    font-size: 0.9rem;
-    margin: 0.35rem 0 0;
-  }
-
-  &__nav {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-
-    a {
-      border-radius: 999px;
-      color: var(--lpv-text-muted);
-      font-size: 0.95rem;
-      padding: 0.4rem 0.85rem;
-      text-decoration: none;
-      transition: background-color 0.15s ease, color 0.15s ease;
-
-      &:hover {
-        background-color: var(--lpv-portail-soft);
-        color: var(--lpv-portail-dark);
-      }
+    @media (min-width: 48rem) {
+      grid-template-columns: minmax(16rem, 1.6fr) repeat(auto-fit, minmax(10rem, 1fr));
     }
   }
 
-  &__nav-zone {
-    align-items: center;
+  &__brand {
+    align-items: flex-start;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 1rem;
   }
 
+  &__logo {
+    display: inline-block;
+    border-radius: var(--lpv-border-radius-sm);
+
+    &:focus-visible {
+      @include mixins.lpv-focus-on-portal;
+    }
+  }
+
+  &__tagline {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin: 0;
+    max-width: 30ch;
+  }
+
+  &__admin {
+    align-items: center;
+    border: 1px solid rgb(255 255 255 / 55%);
+    border-radius: 999px;
+    color: white;
+    display: inline-flex;
+    font-size: 0.9rem;
+    font-weight: 600;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.4rem 1rem;
+    text-decoration: none;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+      background-color: rgb(255 255 255 / 14%);
+      border-color: white;
+    }
+
+    &:focus-visible {
+      @include mixins.lpv-focus-on-portal;
+    }
+  }
+
+  &__column-title {
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin: 0 0 1rem;
+    text-transform: uppercase;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
   &__link {
-    color: var(--lpv-text-muted);
+    color: white;
+    font-size: 0.95rem;
     text-decoration: none;
 
     &:hover {
-      color: var(--lpv-portail-dark);
       text-decoration: underline;
       text-underline-offset: var(--lpv-text-underline-offset-hover);
     }
+
+    &:focus-visible {
+      @include mixins.lpv-focus-on-portal;
+    }
+  }
+
+  &__bottom {
+    align-items: center;
+    border-top: 1px solid rgb(255 255 255 / 25%);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    padding-top: 1.25rem;
+  }
+
+  &__copyright {
+    font-size: 0.875rem;
+    margin: 0;
+    margin-right: auto;
+  }
+
+  &__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+
+    .lpv-o-footer__link {
+      font-size: 0.875rem;
+    }
+  }
+
+  /* Les options du toggle mélangent currentColor : on rétablit la couleur
+     de texte pour qu'elles restent lisibles sur leur fond clair. */
+  .lpv-m-theme-toggle {
+    color: var(--lpv-text);
   }
 }
 

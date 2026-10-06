@@ -2248,6 +2248,47 @@ export interface Header {
  */
 export interface Footer {
   id: number;
+  /**
+   * Court texte affiché sous le logo.
+   */
+  tagline?: string | null;
+  columns?:
+    | {
+        title: string;
+        links?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null);
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  adminLink?: {
+    show?: boolean | null;
+    label?: string | null;
+  };
+  /**
+   * Affiché sous la forme « © <année> <mention>. Tous droits réservés. »
+   */
+  copyright?: string | null;
+  /**
+   * Liens discrets à côté du copyright (mentions légales, RGPD…).
+   */
   navItems?:
     | {
         link: {
@@ -2351,6 +2392,34 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
+  tagline?: T;
+  columns?:
+    | T
+    | {
+        title?: T;
+        links?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  adminLink?:
+    | T
+    | {
+        show?: T;
+        label?: T;
+      };
+  copyright?: T;
   navItems?:
     | T
     | {
