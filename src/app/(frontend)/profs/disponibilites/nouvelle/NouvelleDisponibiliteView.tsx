@@ -11,7 +11,8 @@ import {
   useAjouterDisponibilite,
   useModifierDisponibilite,
 } from '@/planning/application/planning.hooks'
-import { JOURS_SEMAINE } from '@/planning/domain/disponibilite.entity'
+import { JOURS_SEMAINE, validerHeures } from '@/planning/domain/disponibilite.entity'
+import { HEURE_FIN_COURS_HHMM } from '@/shared/horaires'
 import type { Disponibilite, JourSemaine } from '@/planning/domain/disponibilite.entity'
 
 const OPTIONS_JOUR = [
@@ -60,6 +61,11 @@ function ParcoursDisponibilite() {
   }
 
   function enregistrer() {
+    const invalide = validerHeures(heureDebut, heureFin)
+    if (invalide) {
+      setErreur(invalide)
+      return
+    }
     setErreur(null)
     startTransition(async () => {
       const nouveau: Disponibilite = { heureDebut, heureFin, jour: jour as JourSemaine }
@@ -145,7 +151,7 @@ function ParcoursDisponibilite() {
             hint={`Début du créneau le ${dayLabel.toLowerCase()}.`}
             id="step-debut"
             label="De"
-            max="22:00"
+            max={HEURE_FIN_COURS_HHMM}
             min="08:00"
             onChange={(e) => setHeureDebut(e.target.value)}
             type="time"
@@ -181,7 +187,7 @@ function ParcoursDisponibilite() {
             hint={`Fin du créneau le ${dayLabel.toLowerCase()}.`}
             id="step-fin"
             label="À"
-            max="22:00"
+            max={HEURE_FIN_COURS_HHMM}
             min={heureDebut || '08:00'}
             onChange={(e) => setHeureFin(e.target.value)}
             type="time"

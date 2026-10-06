@@ -1,3 +1,4 @@
+import { HEURE_DEBUT_COURS, HEURE_FIN_COURS } from '@/shared/horaires'
 import type {
   BandeDispo,
   CibleCreneau,
@@ -6,8 +7,8 @@ import type {
   PlageSelectionnee,
 } from './calendrier.entity'
 
-export const HEURE_DEBUT_GRILLE = 8
-export const HEURE_FIN_GRILLE = 20
+export const HEURE_DEBUT_GRILLE = HEURE_DEBUT_COURS
+export const HEURE_FIN_GRILLE = HEURE_FIN_COURS
 export const MINUTES_CRENEAU = 30
 export const DUREE_DEFAUT = 60
 export const JOURS_GRILLE = [
@@ -69,6 +70,31 @@ export const positionMinutes = (date: Date): number => {
 // Durée bornée à la fin de la grille (en minutes, minimum un créneau).
 export const dureeBornee = (dureeMin: number): number =>
   Math.min(Math.max(dureeMin, MINUTES_CRENEAU), (HEURE_FIN_GRILLE - HEURE_DEBUT_GRILLE) * 60)
+
+// Durée lisible d'une séance : « 30 min », « 1 h », « 1 h 30 ». Espaces
+// insécables : la durée ne se coupe pas dans une pastille étroite.
+const ESPACE = '\u00a0'
+export const labelDuree = (dureeMin: number): string => {
+  const heures = Math.floor(dureeMin / 60)
+  const minutes = dureeMin % 60
+  if (heures === 0) return `${minutes}${ESPACE}min`
+  return minutes === 0
+    ? `${heures}${ESPACE}h`
+    : `${heures}${ESPACE}h${ESPACE}${String(minutes).padStart(2, '0')}`
+}
+
+// Durée après redimensionnement d'une pastille : arrondie au créneau (30 min),
+// au moins un créneau, sans dépasser la fin de la grille.
+export const dureeRedimensionnee = (debut: Date, dureeInitiale: number, deltaMinutes: number): number => {
+  const arrondie = Math.round((dureeInitiale + deltaMinutes) / MINUTES_CRENEAU) * MINUTES_CRENEAU
+  const maximum = HEURE_FIN_GRILLE * 60 - (debut.getHours() * 60 + debut.getMinutes())
+  return Math.max(MINUTES_CRENEAU, Math.min(arrondie, maximum))
+}
+
+// Vrai si une séance commençant à `debut` et durant `dureeMin` finit après
+// la fin des cours (18h)
+export const depasseFinCours = (debut: Date, dureeMin: number): boolean =>
+  debut.getHours() * 60 + debut.getMinutes() + dureeMin > HEURE_FIN_GRILLE * 60
 
 // Arrondit une date au créneau inférieur (30 min) pour une cible de dépôt.
 export const arrondirAuCreneau = (date: Date): { heureDebut: string; jourIndex: number } => {

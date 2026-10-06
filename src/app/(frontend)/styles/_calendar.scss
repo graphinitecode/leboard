@@ -83,19 +83,21 @@
     overflow-x: auto;
   }
 
+  /* Pleine largeur du conteneur ; en dessous de 7 colonnes lisibles
+     (3.5rem + 7 × 6.5rem), le scroller prend le relais */
   &__grid {
-    min-width: 48rem;
-    width: 48rem; /* largeur fixe : la grille ne déborde pas de son conteneur */
+    min-width: 49rem;
+    width: 100%;
   }
 
   /* Vue jour : colonne unique, pleine largeur */
   &__day-view {
     .lpv-o-week-calendar__grid {
-      grid-template-columns: 3.5rem 1fr;
       min-width: 0;
       width: 100%;
     }
 
+    .lpv-o-week-calendar__head,
     .lpv-o-week-calendar__body {
       grid-template-columns: 3.5rem 1fr;
     }
@@ -168,6 +170,15 @@
 
   &__hour + &__day-col {
     border-top: 1px solid var(--lpv-grey-border);
+  }
+
+  /* Repère horaire : ligne pointillée à chaque heure pleine */
+  &__hour-line {
+    border-top: 1px dashed var(--lpv-grey-border);
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
   }
 
   /* Créneau cliquable (mode prof) */
@@ -257,6 +268,40 @@
     }
   }
 
+  /* Poignée de durée : bande basse de la pastille, curseur vertical */
+  &__event-resize {
+    bottom: 0;
+    cursor: ns-resize;
+    height: 0.6rem;
+    left: 0;
+    position: absolute;
+    right: 0;
+    touch-action: none;
+
+    &::after {
+      background-color: currentcolor;
+      border-radius: 1px;
+      bottom: 0.2rem;
+      content: '';
+      height: 2px;
+      left: 50%;
+      opacity: 0.35;
+      position: absolute;
+      transform: translateX(-50%);
+      width: 1.5rem;
+    }
+  }
+
+  &__event:hover &__event-resize::after,
+  &__event--resizing &__event-resize::after {
+    opacity: 0.8;
+  }
+
+  &__event--resizing {
+    box-shadow: var(--lpv-shadow-hover);
+    z-index: 3;
+  }
+
   /* Pendant un glisser-déposer, les pastilles laissent passer le pointeur :
      le dépôt vise la case sous la pastille, y compris celle qu'on déplace */
   &--dragging &__event {
@@ -285,6 +330,11 @@
 
   &__event-matiere {
     font-weight: 600;
+  }
+
+  &__event-horaire {
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
   }
 
   &__event-groupe {
