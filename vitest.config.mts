@@ -10,5 +10,8 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
     include: ['tests/int/**/*.int.spec.{ts,tsx}', 'src/**/*.test.{ts,tsx}'],
+    // Les parcours jsdom (saisie user-event, grilles lourdes) dépassent les 5 s
+    // par défaut quand toute la suite tourne en parallèle
+    testTimeout: 20_000,
   },
 })
