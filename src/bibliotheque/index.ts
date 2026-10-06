@@ -40,6 +40,7 @@ import {
   NIVEAUX_LIVRE,
 } from './domain/livre.options'
 import { compacterIsbn, detecterDoublonCatalogue } from './domain/livre.doublon'
+import { lignesExportCatalogue } from './domain/livre.export'
 import type { LigneImportLivre } from './domain/livre.import'
 import { analyserImportLivre } from './domain/livre.import'
 
@@ -50,6 +51,7 @@ export {
   labelNiveauLivre,
   NIVEAUX_LIVRE,
   analyserImportLivre,
+  lignesExportCatalogue,
   compacterIsbn,
   detecterDoublonCatalogue,
   estPretEnCours,

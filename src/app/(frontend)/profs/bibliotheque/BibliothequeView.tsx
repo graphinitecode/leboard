@@ -11,12 +11,14 @@ import type { TableHeadCell, TableRowCell } from '@/components/molecules'
 import { buildPaginationItems } from '@/components/molecules/m-pagination'
 import { ConfirmAction } from '@/components/organisms/o-confirm-action'
 import { StatsGrid } from '@/components/templates'
+import { nomFichierCsv, telechargerCsv, versCsv } from '@/shared/csv'
 import type { DashboardStat } from '@/components/templates'
 import {
   CATEGORIES_LIVRE,
   estPretEnCours,
   joursDeRetard,
   labelNiveauLivre,
+  lignesExportCatalogue,
   NIVEAUX_LIVRE,
   statutPret,
   trierParRetour,
@@ -261,6 +263,16 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
             </option>
           ))}
         </select>
+        <Button
+          disabled={!catalogue.data?.length}
+          onClick={() =>
+            telechargerCsv(nomFichierCsv('catalogue'), versCsv(lignesExportCatalogue(catalogue.data ?? [])))
+          }
+          type="button"
+          variant="secondary"
+        >
+          Exporter le catalogue (CSV)
+        </Button>
         {peutGerer ? (
           <Button href="/profs/bibliotheque/prets/nouveau" variant="success">
             Enregistrer un prêt
