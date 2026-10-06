@@ -859,6 +859,16 @@
       border-color: var(--lpv-a-tag--blue-text);
     }
   }
+
+  /* Jour passé : visible pour se repérer dans la semaine, non choisissable */
+  &:disabled {
+    background-color: transparent;
+    border-style: dashed;
+    color: var(--lpv-text-muted);
+    cursor: not-allowed;
+    font-weight: 400;
+    opacity: 0.6;
+  }
 }
 
 @media (min-width: 640px) {
