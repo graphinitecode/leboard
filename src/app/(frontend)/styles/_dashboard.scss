@@ -2,8 +2,8 @@
    (t-dashboard-page, t-rail-page) et cartes du rail. */
 
 /* --- Template RailPage (spec 23) : contenu + rail droit ------------------- */
-/* ≥ 64rem : rail de 20rem, sticky. S'il est plus haut que la fenêtre, il
-   défile pour lui-même afin qu'aucune carte ne reste inaccessible.
+/* ≥ 64rem : rail de 21rem qui défile avec la page (pas de défilement
+   interne ni de sticky : une seule barre, celle de la page).
    < 64rem : une colonne, rail sous le contenu. */
 
 .lpv-t-rail {
@@ -13,8 +13,8 @@
 
   @media (width >= 64rem) {
     align-items: start;
-    gap: 3rem;
-    grid-template-columns: minmax(0, 1fr) 20rem;
+    gap: 2.5rem;
+    grid-template-columns: minmax(0, 1fr) 21rem;
   }
 
   &__main {
@@ -26,18 +26,7 @@
     display: grid;
     gap: 1.5rem;
     min-width: 0;
-
-    @media (width >= 64rem) {
-      max-height: calc(100vh - 3rem);
-      overflow-y: auto;
-      overscroll-behavior: contain;
-      /* Marge pour que les anneaux de focus ne soient pas rognés */
-      margin: -4px;
-      padding: 4px;
-      position: sticky;
-      scrollbar-width: thin;
-      top: 1.5rem;
-    }
+    overflow-wrap: anywhere;
   }
 }
 

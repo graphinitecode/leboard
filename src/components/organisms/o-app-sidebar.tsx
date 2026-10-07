@@ -6,12 +6,13 @@ import { usePathname } from 'next/navigation'
 import { Icon } from '@/components/atoms/a-icon'
 import { initials, type AccountInfo } from '@/components/molecules/m-account-menu'
 import { logout } from '@/components/molecules/m-logout'
-import { ThemeToggle } from '@/components/molecules/m-theme-toggle'
+import { useThemeCycle } from '@/components/molecules/m-theme-toggle'
 import { isNavLinkActive, type AppNavItem } from '@/utilities/portalNav'
 
 // Organism : navigation principale du shell d'appli (≥ 48rem), colonne fixe
 // à gauche. Logo, sections du portail (icône monochrome + libellé en
-// capitales), puis Profil, bascule de thème et déconnexion. Entre 48 et 64rem
+// capitales), puis Profil, bouton de thème (fait défiler machine → clair →
+// sombre) et déconnexion. Entre 48 et 64rem
 // la colonne est compacte : libellés masqués visuellement mais conservés pour
 // l'accessibilité, title en infobulle.
 export function AppSidebar({
@@ -25,6 +26,7 @@ export function AppSidebar({
 }) {
   const pathname = usePathname() ?? ''
   const profileActive = pathname === account.profileHref
+  const theme = useThemeCycle()
 
   return (
     <nav aria-label="Navigation principale" className="lpv-o-app-sidebar">
@@ -45,7 +47,7 @@ export function AppSidebar({
                 href={item.href}
                 title={item.label}
               >
-                <Icon className="lpv-o-app-sidebar__icon" icon={item.icon} size={28} />
+                <Icon className="lpv-o-app-sidebar__icon" icon={item.icon} size={24} />
                 <span className="lpv-o-app-sidebar__label">{item.label}</span>
               </Link>
             </li>
@@ -67,14 +69,25 @@ export function AppSidebar({
             <span className="lpv-o-app-sidebar__label">Profil</span>
           </Link>
         </li>
-        <li className="lpv-o-app-sidebar__theme">
-          <ThemeToggle />
+        <li>
+          <button
+            aria-label={`${theme.label} (changer de thème)`}
+            className="lpv-o-app-sidebar__link"
+            onClick={theme.cycle}
+            title={`${theme.label} — cliquer pour changer`}
+            type="button"
+          >
+            <Icon className="lpv-o-app-sidebar__icon" icon={theme.icon} size={24} />
+            <span aria-hidden="true" className="lpv-o-app-sidebar__label">
+              {theme.label}
+            </span>
+          </button>
         </li>
         <li>
           <form action={logout}>
             <input name="redirectTo" type="hidden" value={account.logoutRedirect} />
             <button className="lpv-o-app-sidebar__link" title="Se déconnecter" type="submit">
-              <Icon className="lpv-o-app-sidebar__icon" icon="boxicons:power" size={28} />
+              <Icon className="lpv-o-app-sidebar__icon" icon="boxicons:power" size={24} />
               <span className="lpv-o-app-sidebar__label">Se déconnecter</span>
             </button>
           </form>

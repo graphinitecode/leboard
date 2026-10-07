@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
 import { AppSidebar } from '@/components/organisms/o-app-sidebar'
@@ -8,6 +8,13 @@ let pathname = '/profs/eleves/3'
 
 vi.mock('next/navigation', () => ({
   usePathname: () => pathname,
+}))
+
+const setTheme = vi.fn()
+let themeMode: 'auto' | 'light' | 'dark' = 'auto'
+
+vi.mock('@/providers/Theme', () => ({
+  useTheme: () => ({ setTheme, theme: undefined, themeMode }),
 }))
 
 vi.mock('@/components/molecules/m-logout', () => ({
@@ -48,9 +55,29 @@ describe('AppSidebar', () => {
     const { container } = renderSidebar()
 
     const nav = screen.getByRole('navigation', { name: 'Navigation principale' })
-    expect(within(nav).getByRole('group', { name: "Thème de l'interface" })).toBeDefined()
+    expect(within(nav).getByRole('button', { name: /changer de thème/ })).toBeDefined()
     expect(within(nav).getByRole('button', { name: /Se déconnecter/ })).toBeDefined()
     expect(container.querySelector('input[name="redirectTo"]')?.getAttribute('value')).toBe('/profs/login')
     expect(within(nav).queryByRole('button', { name: 'Plus' })).toBeNull()
+  })
+
+  it('fait défiler le thème machine → clair → sombre → machine', () => {
+    pathname = '/profs'
+    setTheme.mockClear()
+
+    themeMode = 'auto'
+    const { rerender } = renderSidebar()
+    fireEvent.click(screen.getByRole('button', { name: /Thème : machine/ }))
+    expect(setTheme).toHaveBeenLastCalledWith('light')
+
+    themeMode = 'light'
+    rerender(<AppSidebar account={account!} homeHref={homeHref} items={items} />)
+    fireEvent.click(screen.getByRole('button', { name: /Mode clair/ }))
+    expect(setTheme).toHaveBeenLastCalledWith('dark')
+
+    themeMode = 'dark'
+    rerender(<AppSidebar account={account!} homeHref={homeHref} items={items} />)
+    fireEvent.click(screen.getByRole('button', { name: /Mode sombre/ }))
+    expect(setTheme).toHaveBeenLastCalledWith(null)
   })
 })
