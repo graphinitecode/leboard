@@ -43,9 +43,8 @@ export function AppShell({
         <header className="lpv-t-app-shell__topbar">
           <Link className="lpv-t-app-shell__logo" href={homeHref}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="" height={36} src="/lpv-logo.svg" width={50} />
-            <span className="lpv-t-app-shell__brand">LPV Board</span>
-            <span className="lpv-visually-hidden">— accueil</span>
+            <img alt="" height={40} src="/lpv-logo.svg" width={56} />
+            <span className="lpv-visually-hidden">LPV Board — accueil</span>
           </Link>
         </header>
 

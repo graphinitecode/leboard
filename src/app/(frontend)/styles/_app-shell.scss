@@ -57,16 +57,11 @@ $tabbar-height: 4.25rem;
 
     img {
       display: block;
-      height: 2.25rem;
+      height: 2.5rem;
       width: auto;
     }
   }
 
-  &__brand {
-    font-size: 1.35rem;
-    font-weight: 800;
-    letter-spacing: -0.01em;
-  }
 
   &__main {
     flex: 1;
@@ -110,7 +105,7 @@ $tabbar-height: 4.25rem;
 
     img {
       display: block;
-      height: 2.25rem;
+      height: 2.5rem;
       width: auto;
     }
 
@@ -120,16 +115,6 @@ $tabbar-height: 4.25rem;
     }
   }
 
-  &__brand {
-    display: none;
-    font-size: 1.5rem;
-    font-weight: 800;
-    letter-spacing: -0.01em;
-
-    @media (width >= 64rem) {
-      display: inline;
-    }
-  }
 
   &__list {
     display: flex;
@@ -149,7 +134,7 @@ $tabbar-height: 4.25rem;
   }
 
   /* Lien de section : icône monochrome (couleur du texte) + libellé en capitales espacées.
-     Actif : pastille bordée couleur portail (motif Duolingo). */
+     Actif : pastille de fond doux couleur portail, sans bordure. */
   &__link,
   &__link:visited {
     align-items: center;
@@ -188,7 +173,6 @@ $tabbar-height: 4.25rem;
   &__link--active,
   &__link--active:visited {
     background-color: var(--lpv-portail-soft);
-    border-color: var(--lpv-portail);
     color: var(--lpv-portail-dark);
 
     &:hover {
@@ -299,7 +283,6 @@ $tabbar-height: 4.25rem;
   &__tab--active,
   &__tab--active:visited {
     background-color: var(--lpv-portail-soft);
-    border-color: var(--lpv-portail);
     color: var(--lpv-portail-dark);
   }
 

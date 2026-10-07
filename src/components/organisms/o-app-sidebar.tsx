@@ -30,9 +30,8 @@ export function AppSidebar({
     <nav aria-label="Navigation principale" className="lpv-o-app-sidebar">
       <Link className="lpv-o-app-sidebar__logo" href={homeHref}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" height={36} src="/lpv-logo.svg" width={50} />
-        <span className="lpv-o-app-sidebar__brand">LPV Board</span>
-        <span className="lpv-visually-hidden">— accueil</span>
+        <img alt="" height={40} src="/lpv-logo.svg" width={56} />
+        <span className="lpv-visually-hidden">LPV Board — accueil</span>
       </Link>
 
       <ul className="lpv-o-app-sidebar__list">
