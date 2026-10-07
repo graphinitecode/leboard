@@ -50,9 +50,7 @@ export function AppTabbar({
                 className={`lpv-o-app-tabbar__tab${active ? ' lpv-o-app-tabbar__tab--active' : ''}`}
                 href={item.href}
               >
-                <span className={`lpv-o-app-tabbar__icon lpv-o-app-sidebar__icon--${item.color}`}>
-                  <Icon icon={item.icon} size={26} />
-                </span>
+                <Icon className="lpv-o-app-tabbar__icon" icon={item.icon} size={26} />
                 <span className="lpv-o-app-tabbar__label">{item.shortLabel ?? item.label}</span>
               </Link>
             </li>
@@ -67,9 +65,11 @@ export function AppTabbar({
             ref={buttonRef}
             type="button"
           >
-            <span className="lpv-o-app-tabbar__icon lpv-o-app-sidebar__icon--violet">
-              <Icon icon="boxicons:dots-horizontal-rounded-circle-filled" size={26} />
-            </span>
+            <Icon
+              className="lpv-o-app-tabbar__icon"
+              icon="boxicons:dots-horizontal-rounded-circle-filled"
+              size={26}
+            />
             <span className="lpv-o-app-tabbar__label">Plus</span>
           </button>
         </li>
@@ -84,9 +84,7 @@ export function AppTabbar({
                 return (
                   <li key={item.href}>
                     <Link aria-current={active ? 'page' : undefined} href={item.href} onClick={close}>
-                      <span className={`lpv-o-app-sidebar__icon--${item.color}`}>
-                        <Icon icon={item.icon} size={20} />
-                      </span>
+                      <Icon icon={item.icon} size={20} />
                       {item.label}
                     </Link>
                   </li>

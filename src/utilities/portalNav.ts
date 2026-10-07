@@ -2,17 +2,12 @@ import type { User } from '@/payload-types'
 
 export type Portail = 'profs' | 'parents'
 
-// Couleurs d'icône : celles des tags (--lpv-a-tag--{color}), reprises des
-// raccourcis du tableau de bord pour qu'une section garde la même couleur partout.
-export type AppNavColor = 'blue' | 'green' | 'orange' | 'yellow' | 'magenta' | 'teal' | 'violet'
-
 export type AppNavItem = {
   href: string
   label: string
   // Libellé court de la barre d'onglets mobile (place réduite)
   shortLabel?: string
   icon: string
-  color: AppNavColor
   // Préfixes supplémentaires qui rendent l'élément actif (ex. le tableau de
   // bord reste actif sur le détail d'une séance qu'il liste)
   match?: string[]
@@ -44,24 +39,21 @@ export const PORTALS: Record<Portail, PortalConfig> = {
     roles: ['prof', 'admin', 'benevole-bibliotheque'],
     items: [
       {
-        color: 'blue',
         href: '/profs',
         icon: 'boxicons:home-alt-2-filled',
         label: 'Tableau de bord',
         match: ['/profs/seances'],
         shortLabel: 'Accueil',
       },
-      { color: 'green', href: '/profs/calendrier', icon: 'boxicons:calendar-week-filled', label: 'Calendrier' },
-      { color: 'orange', href: '/profs/eleves', icon: 'boxicons:group-filled', label: 'Élèves' },
+      { href: '/profs/calendrier', icon: 'boxicons:calendar-week-filled', label: 'Calendrier' },
+      { href: '/profs/eleves', icon: 'boxicons:group-filled', label: 'Élèves' },
       {
-        color: 'yellow',
         href: '/profs/bibliotheque',
         icon: 'boxicons:book-library-filled',
         label: 'Bibliothèque',
         shortLabel: 'Biblio',
       },
       {
-        color: 'magenta',
         href: '/profs/disponibilites',
         icon: 'boxicons:calendar-check-filled',
         label: 'Disponibilités',
@@ -76,7 +68,6 @@ export const PORTALS: Record<Portail, PortalConfig> = {
     roles: ['parent'],
     items: [
       {
-        color: 'violet',
         href: '/parents',
         icon: 'boxicons:face-child-filled',
         label: 'Mes enfants',

@@ -1,5 +1,4 @@
 import { render, screen, within } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
 import { AppSidebar } from '@/components/organisms/o-app-sidebar'
@@ -44,23 +43,14 @@ describe('AppSidebar', () => {
     expect(screen.getByRole('link', { name: /Profil/ }).getAttribute('aria-current')).toBe('page')
   })
 
-  it('le bouton « Plus » ouvre le menu du compte et Échap le referme', async () => {
+  it('porte la bascule de thème et la déconnexion vers la connexion du portail, sans menu « Plus »', () => {
     pathname = '/profs'
     const { container } = renderSidebar()
 
-    const plus = screen.getByRole('button', { name: 'Plus' })
-    expect(plus.getAttribute('aria-expanded')).toBe('false')
-    await userEvent.click(plus)
-    expect(plus.getAttribute('aria-expanded')).toBe('true')
-
-    const menu = container.querySelector('.lpv-m-account-menu') as HTMLElement
-    expect(within(menu).getByText('prof@lpv.fr')).toBeDefined()
-    expect(within(menu).getByRole('link', { name: /Mon profil/ }).getAttribute('href')).toBe('/profs/mon-profil')
-    expect(within(menu).getByRole('group', { name: "Thème de l'interface" })).toBeDefined()
-    expect(within(menu).getByRole('button', { name: /Se déconnecter/ })).toBeDefined()
-    expect(menu.querySelector('input[name="redirectTo"]')?.getAttribute('value')).toBe('/profs/login')
-
-    await userEvent.keyboard('{Escape}')
-    expect(container.querySelector('.lpv-m-account-menu')).toBeNull()
+    const nav = screen.getByRole('navigation', { name: 'Navigation principale' })
+    expect(within(nav).getByRole('group', { name: "Thème de l'interface" })).toBeDefined()
+    expect(within(nav).getByRole('button', { name: /Se déconnecter/ })).toBeDefined()
+    expect(container.querySelector('input[name="redirectTo"]')?.getAttribute('value')).toBe('/profs/login')
+    expect(within(nav).queryByRole('button', { name: 'Plus' })).toBeNull()
   })
 })

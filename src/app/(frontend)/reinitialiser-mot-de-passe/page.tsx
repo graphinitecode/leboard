@@ -1,6 +1,6 @@
 import { ReinitialiserMotDePasseForm } from '@/components/organisms/o-reinitialiser-mot-de-passe-form'
 import { AppShell, FormPage } from '@/components/templates'
-import { Footer } from '@/Footer/Component'
+import { AppFooter } from '@/Footer/Component'
 
 export const metadata = { title: 'Nouveau mot de passe — LPV Board' }
 export const dynamic = 'force-dynamic'
@@ -17,7 +17,7 @@ export default async function ReinitialiserMotDePassePage({
 
   // Shell déconnecté du portail concerné, comme ses pages de connexion
   return (
-    <AppShell footer={<Footer />} homeHref={`/${portail}`} portail={portail}>
+    <AppShell footer={<AppFooter />} homeHref={`/${portail}`} portail={portail}>
       <FormPage subtitle="Choisissez votre nouveau mot de passe." title="Nouveau mot de passe">
         <ReinitialiserMotDePasseForm portail={portail} tokenInitial={token ?? ''} />
       </FormPage>

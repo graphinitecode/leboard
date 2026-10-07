@@ -1,7 +1,7 @@
 import { AppShell } from '@/components/templates'
 
 import MotDePasseOublieView from './MotDePasseOublieView'
-import { Footer } from '@/Footer/Component'
+import { AppFooter } from '@/Footer/Component'
 
 export const metadata = { title: 'Mot de passe oublié — LPV Board' }
 export const dynamic = 'force-dynamic'
@@ -18,7 +18,7 @@ export default async function MotDePasseOubliePage({
 
   // Shell déconnecté du portail concerné, comme ses pages de connexion
   return (
-    <AppShell footer={<Footer />} homeHref={`/${portail}`} portail={portail}>
+    <AppShell footer={<AppFooter />} homeHref={`/${portail}`} portail={portail}>
       <MotDePasseOublieView portail={portail} />
     </AppShell>
   )

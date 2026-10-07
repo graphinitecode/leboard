@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 
 import { AppShell } from '@/components/templates'
-import { Footer } from '@/Footer/Component'
+import { AppFooter } from '@/Footer/Component'
 import { getMeUserServer } from '@/utilities/profAuth'
 import { getShellNav } from '@/utilities/portalNav'
 
@@ -20,7 +20,7 @@ export default async function ProfsLayout({ children }: { children: ReactNode })
   const user = await getMeUserServer()
 
   return (
-    <AppShell footer={<Footer />} portail="profs" {...getShellNav('profs', user)}>
+    <AppShell footer={<AppFooter />} portail="profs" {...getShellNav('profs', user)}>
       {children}
     </AppShell>
   )

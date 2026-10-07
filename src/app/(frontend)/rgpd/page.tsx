@@ -3,7 +3,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 import { getPayload } from 'payload'
 
 import { AppShell } from '@/components/templates'
-import { Footer } from '@/Footer/Component'
+import { AppFooter } from '@/Footer/Component'
 
 export const dynamic = 'force-dynamic'
 
@@ -12,7 +12,7 @@ export default async function RGPDPage() {
   const politique = await payload.findGlobal({ slug: 'politique-rgpd' })
 
   return (
-    <AppShell footer={<Footer />} homeHref="/">
+    <AppShell footer={<AppFooter />} homeHref="/">
       <h1 className="lpv-h1">Politique de protection des données</h1>
       {politique?.contenu ? (
         <RichText data={politique.contenu} />

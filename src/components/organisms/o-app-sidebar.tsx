@@ -2,17 +2,18 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useCallback, useRef, useState } from 'react'
 
 import { Icon } from '@/components/atoms/a-icon'
-import { AccountMenu, initials, type AccountInfo } from '@/components/molecules/m-account-menu'
-import { useCloseOnClickOutside } from '@/hooks/useCloseOnClickOutside'
+import { initials, type AccountInfo } from '@/components/molecules/m-account-menu'
+import { logout } from '@/components/molecules/m-logout'
+import { ThemeToggle } from '@/components/molecules/m-theme-toggle'
 import { isNavLinkActive, type AppNavItem } from '@/utilities/portalNav'
 
 // Organism : navigation principale du shell d'appli (≥ 48rem), colonne fixe
-// à gauche. Logo, sections du portail (icône + libellé en capitales), puis
-// Profil et « Plus » (menu du compte en popover). Entre 48 et 64rem la colonne
-// est compacte : libellés masqués visuellement mais conservés pour l'accessibilité.
+// à gauche. Logo, sections du portail (icône monochrome + libellé en
+// capitales), puis Profil, bascule de thème et déconnexion. Entre 48 et 64rem
+// la colonne est compacte : libellés masqués visuellement mais conservés pour
+// l'accessibilité, title en infobulle.
 export function AppSidebar({
   homeHref,
   items,
@@ -23,19 +24,6 @@ export function AppSidebar({
   account: AccountInfo
 }) {
   const pathname = usePathname() ?? ''
-  const [open, setOpen] = useState(false)
-  const moreRef = useRef<HTMLLIElement>(null)
-  const buttonRef = useRef<HTMLButtonElement>(null)
-
-  // Fermeture (Échap, clic extérieur, lien suivi) : si le focus était dans le
-  // popover, il revient au bouton « Plus » plutôt que de se perdre.
-  const close = useCallback(() => {
-    if (moreRef.current?.contains(document.activeElement)) buttonRef.current?.focus()
-    setOpen(false)
-  }, [])
-
-  useCloseOnClickOutside(moreRef, close)
-
   const profileActive = pathname === account.profileHref
 
   return (
@@ -58,9 +46,7 @@ export function AppSidebar({
                 href={item.href}
                 title={item.label}
               >
-                <span className={`lpv-o-app-sidebar__icon lpv-o-app-sidebar__icon--${item.color}`}>
-                  <Icon icon={item.icon} size={28} />
-                </span>
+                <Icon className="lpv-o-app-sidebar__icon" icon={item.icon} size={28} />
                 <span className="lpv-o-app-sidebar__label">{item.label}</span>
               </Link>
             </li>
@@ -74,7 +60,7 @@ export function AppSidebar({
             aria-current={profileActive ? 'page' : undefined}
             className={`lpv-o-app-sidebar__link${profileActive ? ' lpv-o-app-sidebar__link--active' : ''}`}
             href={account.profileHref}
-            title="Profil"
+            title={`Profil — ${account.nom}`}
           >
             <span aria-hidden="true" className="lpv-avatar lpv-o-app-sidebar__avatar">
               {initials(account.nom)}
@@ -82,25 +68,17 @@ export function AppSidebar({
             <span className="lpv-o-app-sidebar__label">Profil</span>
           </Link>
         </li>
-        <li className="lpv-o-app-sidebar__more" ref={moreRef}>
-          <button
-            aria-expanded={open}
-            className="lpv-o-app-sidebar__link"
-            onClick={() => setOpen(!open)}
-            ref={buttonRef}
-            title="Plus"
-            type="button"
-          >
-            <span className="lpv-o-app-sidebar__icon lpv-o-app-sidebar__icon--violet">
-              <Icon icon="boxicons:dots-horizontal-rounded-circle-filled" size={28} />
-            </span>
-            <span className="lpv-o-app-sidebar__label">Plus</span>
-          </button>
-          {open && (
-            <div className="lpv-o-app-sidebar__popover">
-              <AccountMenu account={account} onNavigate={close} />
-            </div>
-          )}
+        <li className="lpv-o-app-sidebar__theme">
+          <ThemeToggle />
+        </li>
+        <li>
+          <form action={logout}>
+            <input name="redirectTo" type="hidden" value={account.logoutRedirect} />
+            <button className="lpv-o-app-sidebar__link" title="Se déconnecter" type="submit">
+              <Icon className="lpv-o-app-sidebar__icon" icon="boxicons:power" size={28} />
+              <span className="lpv-o-app-sidebar__label">Se déconnecter</span>
+            </button>
+          </form>
         </li>
       </ul>
     </nav>

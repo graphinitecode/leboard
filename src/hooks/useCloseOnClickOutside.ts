@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 
 // Hook : ferme un panneau déroulant au clic extérieur ou à la touche Escape.
-// Partagé par le menu « Plus » de la sidebar et les dropdowns de la nav vitrine.
+// Utilisé par les dropdowns de la nav vitrine.
 // Args : ref sur le conteneur (bouton + panneau) et callback de fermeture.
 export function useCloseOnClickOutside(
   ref: React.RefObject<HTMLElement | null>,

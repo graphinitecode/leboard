@@ -7,7 +7,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ## [Unreleased]
 
 ### Modifié
-- Nouvelle navigation dans les espaces profs et parents : les sections sont toujours visibles dans une colonne à gauche, avec une icône par section. Sur téléphone, elles passent dans une barre en bas de l'écran ; le bouton « Plus » donne accès au profil, au thème et à la déconnexion.
+- Nouvelle navigation dans les espaces profs et parents : les sections sont toujours visibles dans une colonne à gauche, avec une icône par section. Le profil, le choix du thème et la déconnexion sont en bas de cette colonne. Sur téléphone, les sections passent dans une barre en bas de l'écran, avec un bouton « Plus » pour le reste. Le pied de page des espaces est allégé.
 
 ## [0.15.0] — 2026-10-07
 
