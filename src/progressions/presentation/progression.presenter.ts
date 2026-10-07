@@ -2,6 +2,7 @@ import type { NiveauProgression, Progression } from '@/progressions/domain/progr
 
 export interface ProgressionViewModel {
   id: number
+  eleveId: number
   eleveNom: string | null
   competenceLabel: string
   niveau: NiveauProgression
@@ -18,6 +19,7 @@ const niveauLabels: Record<NiveauProgression, string> = {
 
 export const presentProgression = (progression: Progression): ProgressionViewModel => ({
   id: progression.id,
+  eleveId: progression.eleveId,
   eleveNom: progression.eleveNom,
   competenceLabel: progression.competenceLabel ?? '—',
   niveau: progression.niveau,

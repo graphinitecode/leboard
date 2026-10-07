@@ -21,6 +21,7 @@ export interface PresenceViewModel {
   eleveNom: string
   presenceId: number | null
   statutInitial: StatutPresence | null
+  commentaire: string | null
 }
 
 export interface SeanceDetailViewModel {
@@ -124,6 +125,7 @@ export const presentSeanceDetail = (detail: SeanceDetail): SeanceDetailViewModel
         eleveNom: `${eleve.prenom} ${eleve.nom}`,
         presenceId: presence?.id ?? null,
         statutInitial: presence?.present ?? null,
+        commentaire: presence?.commentaire ?? null,
       }
     }),
     groupeLabel: labelsGroupes.length > 0 ? labelsGroupes.join(', ') : null,

@@ -70,7 +70,12 @@ export default async function EleveProfPage({
     overrideAccess: false,
     sort: '-createdAt',
     user,
-    where: { eleve: { equals: id } },
+    // Séances passées uniquement : les séries pré-créent les présences des
+    // séances à venir (« Présent » par défaut), qui fausseraient l'historique
+    // et le taux de présence.
+    where: {
+      and: [{ eleve: { equals: id } }, { 'seance.date': { less_than: new Date().toISOString() } }],
+    },
   })
 
   const progressions = await payload.find({
@@ -196,15 +201,25 @@ export default async function EleveProfPage({
     enteteDate,
     enteteTri('Matière', 'matiere', ordre === 'matiere', 'asc'),
     enteteTri('Statut', 'statut', ordre === 'statut', 'asc'),
+    { content: <span className="lpv-visually-hidden">Séance</span>, text: 'Séance' },
   ]
 
   const presencesRows: TableRowCell[][] = presencesPage.map((presence) => {
-    const seance = presence.seance as unknown as { date?: string; matiere?: string }
+    const seance = presence.seance as unknown as { date?: string; id?: number; matiere?: string }
     const statut = presenceStatus(presence.present)
+    const dateLabel = seance?.date ? new Date(String(seance.date)).toLocaleDateString('fr-FR') : '—'
     return [
-      { text: seance?.date ? new Date(String(seance.date)).toLocaleDateString('fr-FR') : '—' },
+      { text: dateLabel },
       { text: seance?.matiere ?? '—' },
       { content: <Tag color={statut.color}>{statut.label}</Tag> },
+      {
+        // Ouvre la séance sur le suivi de cet élève (statut, motif, notes).
+        content: seance?.id ? (
+          <Link className="lpv-link-inline" href={`/profs/seances/${seance.id}?eleve=${id}`}>
+            Voir<span className="lpv-visually-hidden"> la séance du {dateLabel}</span>
+          </Link>
+        ) : null,
+      },
     ]
   })
 

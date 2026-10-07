@@ -1,9 +1,9 @@
 import type {
   EleveLigne,
   Matiere,
+  Presence as PresenceEntity,
   Seance,
   SeanceDetail,
-  StatutPresence,
 } from '../domain/seance.entity'
 import type {
   GetSeanceQuery,
@@ -37,11 +37,12 @@ const mapDtoToSeance = (dto: SeanceDto): Seance => ({
       : null,
 })
 
-const mapDtoToPresence = (dto: Presence): { id: number; seanceId: number; eleveId: number; present: StatutPresence } => ({
+const mapDtoToPresence = (dto: Presence): PresenceEntity => ({
   id: dto.id,
   seanceId: typeof dto.seance === 'object' ? dto.seance.id : dto.seance,
   eleveId: typeof dto.eleve === 'object' ? dto.eleve.id : dto.eleve,
   present: dto.present,
+  commentaire: dto.commentaire ?? null,
 })
 
 const mapDtoToEleveLigne = (dto: Eleve): EleveLigne => ({
@@ -169,9 +170,7 @@ export const seancesRepository = {
     }
   },
 
-  async listPresencesParEleve(eleveId: number): Promise<
-    { id: number; seanceId: number; eleveId: number; present: StatutPresence }[]
-  > {
+  async listPresencesParEleve(eleveId: number): Promise<PresenceEntity[]> {
     try {
       const res = await httpClient.get<Paginated<Presence>>('/presences', {
         params: {
