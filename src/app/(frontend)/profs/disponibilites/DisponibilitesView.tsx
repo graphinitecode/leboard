@@ -1,10 +1,9 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 
 import { Button, InsetText } from '@/components/atoms'
-import { EmptyState, Toast } from '@/components/molecules'
+import { EmptyState } from '@/components/molecules'
 import { RailPage } from '@/components/templates'
 import { AvailabilityList, trierDisponibilites, useListMesDisponibilites } from '@/planning'
 
@@ -17,24 +16,7 @@ export default function DisponibilitesView() {
 }
 
 function VueDisponibilites() {
-  const router = useRouter()
-  const params = useSearchParams()
   const disponibilites = useListMesDisponibilites()
-
-  // Retour du parcours dédié (?enregistre=ajout|modification) : toast dérivé
-  // de l'URL, effacé à la fermeture (router.replace nettoie le paramètre).
-  const enregistre = params.get('enregistre')
-  const toast =
-    enregistre === 'ajout' || enregistre === 'modification'
-      ? {
-          message: enregistre === 'ajout' ? 'Disponibilité ajoutée' : 'Disponibilité modifiée',
-          type: 'success' as const,
-        }
-      : null
-
-  function fermerToast() {
-    router.replace('/profs/disponibilites')
-  }
 
   const dispos = trierDisponibilites(disponibilites.data ?? [])
 
@@ -67,7 +49,6 @@ function VueDisponibilites() {
 
   return (
     <>
-      {toast && <Toast message={toast.message} type={toast.type} onClose={fermerToast} />}
       <RailPage rail={rail}>
         <h1 className="lpv-h1">Mes disponibilités</h1>
         <p className="lpv-muted">

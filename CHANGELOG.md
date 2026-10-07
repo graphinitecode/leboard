@@ -12,6 +12,8 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 - Les rapports élèves sont accessibles depuis la navigation de l'espace profs ; l'ancienne adresse mène toujours à la bonne page.
 - La page Rapports liste directement vos élèves avec la période choisie ; chaque fiche élève propose aussi « Voir le rapport », et le rapport peut s'imprimer ou s'enregistrer en PDF.
 
+- L'ajout d'une disponibilité suit le même parcours que les autres formulaires : une question par écran, un récapitulatif « Vérifiez vos réponses » à la fin, puis une page de confirmation.
+
 ### Corrigé
 - Le bouton « Ajouter un créneau » est désormais visible sur la page des disponibilités même quand aucun créneau n'est encore déclaré.
 
