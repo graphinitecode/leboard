@@ -331,6 +331,25 @@
   }
 }
 
+/* --- Rapports : choix de la période (Du / Au / Appliquer) ------------------ */
+
+.lpv-o-rapports__periode {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+  margin-block: 1.5rem;
+
+  .lpv-form-group {
+    margin-bottom: 0;
+  }
+
+  .lpv-a-button {
+    margin-bottom: 0;
+    width: auto;
+  }
+}
+
 /* --- Complétion de séance (page modifier) — rangées présences -------------- */
 /* Respiration des lignes élèves : la card compense la bordure interne, les
    rangées gagnent un padding horizontal net (double-classe pour lever la

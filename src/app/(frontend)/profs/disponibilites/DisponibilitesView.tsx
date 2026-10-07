@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 
-import { InsetText } from '@/components/atoms'
+import { Button, InsetText } from '@/components/atoms'
 import { EmptyState, Toast } from '@/components/molecules'
 import { RailPage } from '@/components/templates'
 import { AvailabilityList, trierDisponibilites, useListMesDisponibilites } from '@/planning'
@@ -53,7 +53,7 @@ function VueDisponibilites() {
     )
   }
 
-  // Rail droit : aide sur l'usage des créneaux (sous le contenu en dessous de 64rem)
+  // Rail droit : aide sur l'usage des créneaux (sous le contenu en dessous de 80rem)
   const rail = (
     <div className="lpv-t-dashboard-page__aside-card">
       <h2 className="lpv-t-dashboard-page__aside-card__title">Comment ça marche</h2>
@@ -75,13 +75,17 @@ function VueDisponibilites() {
           utilise pour planifier les séances. Vous pouvez les modifier à tout moment.
         </p>
 
+        <p>
+          <Button href="/profs/disponibilites/nouvelle">Ajouter un créneau</Button>
+        </p>
+
         <section aria-labelledby="liste-dispos">
           <h2 className="lpv-h2" id="liste-dispos">
             Vos créneaux
           </h2>
           {dispos.length === 0 ? (
             <EmptyState
-              description="Ajoutez votre premier créneau ci-dessous : l'association l'utilise pour planifier vos séances."
+              description="Ajoutez votre premier créneau avec le bouton « Ajouter un créneau » : l'association l'utilise pour planifier vos séances."
               icon="rivet-icons:calendar"
               title="Aucune disponibilité déclarée"
               variant="warning"

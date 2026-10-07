@@ -2,7 +2,6 @@
 
 import { useState, useTransition } from 'react'
 
-import { Button } from '@/components/atoms/a-button'
 import { Toast } from '@/components/molecules'
 import type { ActionSummaryList } from '@/components/molecules'
 import { SummaryList } from '@/components/molecules/m-lists'
@@ -18,6 +17,7 @@ export interface DispoItem {
 }
 
 // Organisme : liste des disponibilités (summary-list GOV.UK) + modale + toast.
+// Le bouton d'ajout vit sur la page, pour rester visible quand la liste est vide.
 // Actions par row : Modifier (renvoie vers la page dédiée pré-remplie) et
 // Supprimer (confirmation via o-confirm-action). L'ajout et la modification
 // se font sur la page dédiée /profs/disponibilites/nouvelle (parcours
@@ -60,12 +60,6 @@ export function AvailabilityList({ dispos }: { dispos: DispoItem[] }) {
           title="Supprimer cette disponibilité ?"
         />
       )}
-
-      <p style={{ margin: '0 0 1rem' }}>
-        <Button href="/profs/disponibilites/nouvelle" type="button">
-          + Ajouter un créneau
-        </Button>
-      </p>
 
       {dispos.length > 0 && (
         <SummaryList

@@ -8,8 +8,12 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ### Modifié
 - Nouvelle navigation dans les espaces profs et parents : les sections sont toujours visibles dans une colonne à gauche, avec une icône par section. Le profil, le choix du thème et la déconnexion sont en bas de cette colonne. Sur téléphone, les sections passent dans une barre en bas de l'écran, avec un bouton « Plus » pour le reste. Le pied de page des espaces est allégé.
-- Les informations complémentaires (calendrier du mois, alertes, raccourcis, rappels) s'affichent dans une colonne à droite qui reste visible pendant le défilement ; sur tablette et téléphone, elles passent sous le contenu.
+- Les informations complémentaires (calendrier du mois, alertes, rappels) s'affichent dans une colonne à droite sur grand écran ; sur les écrans plus petits, elles passent sous le contenu. Les pages profitent de toute la largeur de l'écran.
 - Les rapports élèves sont accessibles depuis la navigation de l'espace profs ; l'ancienne adresse mène toujours à la bonne page.
+- La page Rapports liste directement vos élèves avec la période choisie ; chaque fiche élève propose aussi « Voir le rapport », et le rapport peut s'imprimer ou s'enregistrer en PDF.
+
+### Corrigé
+- Le bouton « Ajouter un créneau » est désormais visible sur la page des disponibilités même quand aucun créneau n'est encore déclaré.
 
 ## [0.15.0] — 2026-10-07
 
