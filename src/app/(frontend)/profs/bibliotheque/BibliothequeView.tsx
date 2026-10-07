@@ -10,7 +10,7 @@ import { ActionRow, AlertCard, EmptyState, Pagination, Table, Toast } from '@/co
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
 import { buildPaginationItems } from '@/components/molecules/m-pagination'
 import { ConfirmAction } from '@/components/organisms/o-confirm-action'
-import { StatsGrid } from '@/components/templates'
+import { RailPage, StatsGrid } from '@/components/templates'
 import { nomFichierCsv, telechargerCsv, versCsv } from '@/shared/csv'
 import type { DashboardStat } from '@/components/templates'
 import {
@@ -179,6 +179,58 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
     ]
   })
 
+  // Rail droit : rappels et actions de catalogue (sous le contenu en dessous de 64rem)
+  const rail = (
+    <>
+      <div className="lpv-t-dashboard-page__aside-card">
+        <h3 className="lpv-t-dashboard-page__aside-card__title">Rappels à venir</h3>
+        {rappels.length === 0 ? (
+          <p className="lpv-t-dashboard-page__aside-card__empty-text">
+            Aucun rappel pour les prochains jours.
+          </p>
+        ) : (
+          <div className="lpv-t-dashboard-page__aside-card__stack">
+            {rappels.map((pret) => (
+              <AlertCard
+                accent="blue"
+                icon={false}
+                key={pret.id}
+                titre={pret.eleveLabel ?? 'Élève'}
+              >
+                &laquo; {pret.livreLabel ?? pret.exemplaireCode} &raquo; / retour prévu le{' '}
+                {formatDate(pret.dateRetourPrevue)}
+              </AlertCard>
+            ))}
+          </div>
+        )}
+      </div>
+      {peutGerer ? (
+        <div className="lpv-t-dashboard-page__aside-card">
+          <h3 className="lpv-t-dashboard-page__aside-card__title">Alimenter le catalogue</h3>
+          <p className="lpv-t-dashboard-page__aside-card__empty-text" style={{ marginTop: 0 }}>
+            Nouvel ouvrage à référencer, ou plusieurs livres d&apos;un coup depuis un CSV.
+          </p>
+          <Button
+            href="/profs/bibliotheque/livres/nouveau"
+            variant="secondary"
+            className="w-full mt-7 flex justify-center items-start"
+          >
+            <Icon icon={'rivet-icons:plus-circle-solid'} size={19} className="inline-flex -translate-y-px" />
+            &nbsp;Nouveau livre
+          </Button>
+          <Button
+            href="/profs/bibliotheque/livres/import"
+            variant="secondary"
+            className="w-full mt-3 flex justify-center items-start"
+          >
+            <Icon icon={'rivet-icons:upload'} size={19} className="inline-flex -translate-y-px" />
+            &nbsp;Importer un CSV
+          </Button>
+        </div>
+      ) : null}
+    </>
+  )
+
   return (
     <>
       {(erreur || prets.isError || catalogue.isError) && (
@@ -220,193 +272,142 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
         />
       ) : null}
 
-      <h1 className="lpv-h1">Bibliothèque</h1>
-      <p
-        className="lpv-muted pb-7"
-        style={{
-          fontSize: '1.225rem',
-          paddingBottom: '1.75rem',
-          fontWeight: '500',
-        }}
-      >
-        Gérez le catalogue de livres de l&apos;association : suivez les prêts en cours, repérez les
-        retards et consultez les exemplaires disponibles.
-      </p>
-
-      <StatsGrid stats={stats} />
-
-      <div className="lpv-o-bibliotheque__searchbar">
-        <label className="lpv-visually-hidden" htmlFor="recherche-catalogue">
-          Rechercher un titre ou un auteur
-        </label>
-        <input
-          className="lpv-a-input"
-          id="recherche-catalogue"
-          onChange={(e) => setRecherche(e.target.value)}
-          placeholder="Rechercher un titre, un auteur…"
-          type="search"
-          value={recherche}
-        />
-        <label className="lpv-visually-hidden" htmlFor="filtre-niveau">
-          Filtrer par niveau
-        </label>
-        <select
-          className="lpv-a-select"
-          id="filtre-niveau"
-          onChange={(e) => setNiveauFiltre(e.target.value)}
-          value={niveauFiltre}
+      <RailPage rail={rail}>
+        <h1 className="lpv-h1">Bibliothèque</h1>
+        <p
+          className="lpv-muted pb-7"
+          style={{
+            fontSize: '1.225rem',
+            paddingBottom: '1.75rem',
+            fontWeight: '500',
+          }}
         >
-          <option value="">Tous les niveaux</option>
-          {NIVEAUX_LIVRE.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        <Button
-          disabled={!catalogue.data?.length}
-          onClick={() =>
-            telechargerCsv(nomFichierCsv('catalogue'), versCsv(lignesExportCatalogue(catalogue.data ?? [])))
-          }
-          type="button"
-          variant="secondary"
-        >
-          Exporter le catalogue (CSV)
-        </Button>
-        {peutGerer ? (
-          <Button href="/profs/bibliotheque/prets/nouveau" variant="success">
-            Enregistrer un prêt
+          Gérez le catalogue de livres de l&apos;association : suivez les prêts en cours, repérez les
+          retards et consultez les exemplaires disponibles.
+        </p>
+
+        <StatsGrid stats={stats} />
+
+        <div className="lpv-o-bibliotheque__searchbar">
+          <label className="lpv-visually-hidden" htmlFor="recherche-catalogue">
+            Rechercher un titre ou un auteur
+          </label>
+          <input
+            className="lpv-a-input"
+            id="recherche-catalogue"
+            onChange={(e) => setRecherche(e.target.value)}
+            placeholder="Rechercher un titre, un auteur…"
+            type="search"
+            value={recherche}
+          />
+          <label className="lpv-visually-hidden" htmlFor="filtre-niveau">
+            Filtrer par niveau
+          </label>
+          <select
+            className="lpv-a-select"
+            id="filtre-niveau"
+            onChange={(e) => setNiveauFiltre(e.target.value)}
+            value={niveauFiltre}
+          >
+            <option value="">Tous les niveaux</option>
+            {NIVEAUX_LIVRE.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <Button
+            disabled={!catalogue.data?.length}
+            onClick={() =>
+              telechargerCsv(nomFichierCsv('catalogue'), versCsv(lignesExportCatalogue(catalogue.data ?? [])))
+            }
+            type="button"
+            variant="secondary"
+          >
+            Exporter le catalogue (CSV)
           </Button>
-        ) : null}
-      </div>
-
-      <div className="lpv-t-dashboard-page__columns">
-        <div className="lpv-t-dashboard-page__main">
-          <section className="lpv-t-dashboard-page__section" aria-labelledby="retards-titre">
-            <h2 className="lpv-h2" id="retards">
-              Retards
-            </h2>
-            <p>
-              <Link className="lpv-link-inline" href="/profs/bibliotheque/prets">
-                Voir tous les prêts en cours
-              </Link>
-            </p>
-            {prets.isLoading ? (
-              <p className="lpv-muted">Chargement des prêts…</p>
-            ) : retards.length === 0 ? (
-              <InsetText>Aucun retard. Tous les prêts sont dans les temps.</InsetText>
-            ) : (
-              retards.map((pret) => (
-                <ActionRow
-                  accent="red"
-                  action={
-                    peutGerer
-                      ? {
-                          disabled: marquerRetourne.isPending,
-                          label: 'Marquer comme retourné',
-                          onClick: () =>
-                            setConfirmRetour({
-                              pretId: pret.id,
-                              titre: pret.livreLabel ?? pret.exemplaireCode ?? 'ce livre',
-                            }),
-                          variant: 'primary',
-                        }
-                      : undefined
-                  }
-                  key={pret.id}
-                  meta={`Retour prévu le ${formatDate(pret.dateRetourPrevue)} — ${joursDeRetard(pret.dateRetourPrevue)} jour(s) de retard`}
-                  title={`« ${pret.livreLabel ?? pret.exemplaireCode ?? 'Livre'} » emprunté par ${pret.eleveLabel ?? 'un élève'}`}
-                />
-              ))
-            )}
-          </section>
-
-          <section className="lpv-t-dashboard-page__section" aria-labelledby="catalogue">
-            <h2 className="lpv-h2" id="catalogue">
-              Catalogue
-            </h2>
-            {catalogue.isLoading ? (
-              <p className="lpv-muted">Chargement du catalogue…</p>
-            ) : catalogueFiltre.length === 0 ? (
-              <EmptyState
-                actions={
-                  recherche || niveauFiltre
-                    ? [{ label: 'Réinitialiser les filtres', onClick: () => {
-                        setRecherche('')
-                        setNiveauFiltre('')
-                      }, variant: 'secondary' }]
-                    : undefined
-                }
-                description="Essaie un autre titre, auteur ou niveau."
-                icon="boxicons:search"
-                title="Aucun livre ne correspond à ta recherche"
-                variant="neutral"
-              />
-            ) : (
-              <div style={{ overflowX: 'auto' }}>
-                <Table caption="" head={catalogueHead} rows={catalogueRows} />
-              </div>
-            )}
-            {totalPages > 1 && (
-              <Pagination
-                ariaLabel="Pagination du catalogue"
-                items={paginationItems}
-                next={page < totalPages ? { href: hrefPourPage(page + 1) } : undefined}
-                previous={page > 1 ? { href: hrefPourPage(page - 1) } : undefined}
-              />
-            )}
-          </section>
+          {peutGerer ? (
+            <Button href="/profs/bibliotheque/prets/nouveau" variant="success">
+              Enregistrer un prêt
+            </Button>
+          ) : null}
         </div>
 
-        <aside className="lpv-t-dashboard-page__aside">
-          <div className="lpv-t-dashboard-page__aside-card">
-            <h3 className="lpv-t-dashboard-page__aside-card__title">Rappels à venir</h3>
-            {rappels.length === 0 ? (
-              <p className="lpv-t-dashboard-page__aside-card__empty-text">
-                Aucun rappel pour les prochains jours.
-              </p>
-            ) : (
-              <div className="lpv-t-dashboard-page__aside-card__stack">
-                {rappels.map((pret) => (
-                  <AlertCard
-                    accent="blue"
-                    icon={false}
-                    key={pret.id}
-                    titre={pret.eleveLabel ?? 'Élève'}
-                  >
-                    &laquo; {pret.livreLabel ?? pret.exemplaireCode} &raquo; / retour prévu le{' '}
-                    {formatDate(pret.dateRetourPrevue)}
-                  </AlertCard>
-                ))}
-              </div>
-            )}
-          </div>
-          {peutGerer ? (
-            <div className="lpv-t-dashboard-page__aside-card">
-              <h3 className="lpv-t-dashboard-page__aside-card__title">Alimenter le catalogue</h3>
-              <p className="lpv-t-dashboard-page__aside-card__empty-text" style={{ marginTop: 0 }}>
-                Nouvel ouvrage à référencer, ou plusieurs livres d&apos;un coup depuis un CSV.
-              </p>
-              <Button
-                href="/profs/bibliotheque/livres/nouveau"
-                variant="secondary"
-                className="w-full mt-7 flex justify-center items-start"
-              >
-                <Icon icon={'rivet-icons:plus-circle-solid'} size={19} className="inline-flex -translate-y-px" />
-                &nbsp;Nouveau livre
-              </Button>
-              <Button
-                href="/profs/bibliotheque/livres/import"
-                variant="secondary"
-                className="w-full mt-3 flex justify-center items-start"
-              >
-                <Icon icon={'rivet-icons:upload'} size={19} className="inline-flex -translate-y-px" />
-                &nbsp;Importer un CSV
-              </Button>
+        <section className="lpv-t-dashboard-page__section" aria-labelledby="retards-titre">
+          <h2 className="lpv-h2" id="retards">
+            Retards
+          </h2>
+          <p>
+            <Link className="lpv-link-inline" href="/profs/bibliotheque/prets">
+              Voir tous les prêts en cours
+            </Link>
+          </p>
+          {prets.isLoading ? (
+            <p className="lpv-muted">Chargement des prêts…</p>
+          ) : retards.length === 0 ? (
+            <InsetText>Aucun retard. Tous les prêts sont dans les temps.</InsetText>
+          ) : (
+            retards.map((pret) => (
+              <ActionRow
+                accent="red"
+                action={
+                  peutGerer
+                    ? {
+                        disabled: marquerRetourne.isPending,
+                        label: 'Marquer comme retourné',
+                        onClick: () =>
+                          setConfirmRetour({
+                            pretId: pret.id,
+                            titre: pret.livreLabel ?? pret.exemplaireCode ?? 'ce livre',
+                          }),
+                        variant: 'primary',
+                      }
+                    : undefined
+                }
+                key={pret.id}
+                meta={`Retour prévu le ${formatDate(pret.dateRetourPrevue)} — ${joursDeRetard(pret.dateRetourPrevue)} jour(s) de retard`}
+                title={`« ${pret.livreLabel ?? pret.exemplaireCode ?? 'Livre'} » emprunté par ${pret.eleveLabel ?? 'un élève'}`}
+              />
+            ))
+          )}
+        </section>
+
+        <section className="lpv-t-dashboard-page__section" aria-labelledby="catalogue">
+          <h2 className="lpv-h2" id="catalogue">
+            Catalogue
+          </h2>
+          {catalogue.isLoading ? (
+            <p className="lpv-muted">Chargement du catalogue…</p>
+          ) : catalogueFiltre.length === 0 ? (
+            <EmptyState
+              actions={
+                recherche || niveauFiltre
+                  ? [{ label: 'Réinitialiser les filtres', onClick: () => {
+                      setRecherche('')
+                      setNiveauFiltre('')
+                    }, variant: 'secondary' }]
+                  : undefined
+              }
+              description="Essaie un autre titre, auteur ou niveau."
+              icon="boxicons:search"
+              title="Aucun livre ne correspond à ta recherche"
+              variant="neutral"
+            />
+          ) : (
+            <div style={{ overflowX: 'auto' }}>
+              <Table caption="" head={catalogueHead} rows={catalogueRows} />
             </div>
-          ) : null}
-        </aside>
-      </div>
+          )}
+          {totalPages > 1 && (
+            <Pagination
+              ariaLabel="Pagination du catalogue"
+              items={paginationItems}
+              next={page < totalPages ? { href: hrefPourPage(page + 1) } : undefined}
+              previous={page > 1 ? { href: hrefPourPage(page - 1) } : undefined}
+            />
+          )}
+        </section>
+      </RailPage>
     </>
   )
 }

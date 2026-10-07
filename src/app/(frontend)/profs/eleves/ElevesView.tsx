@@ -10,7 +10,7 @@ import { AlertCard, EmptyState, Input, Pagination, Table } from '@/components/mo
 import { Button } from '@/components/atoms/a-button'
 import { periodeAnneeScolaire } from '@/utilities/exportPresences'
 import type { TableHeadCell, TableRowCell } from '@/components/molecules'
-import { StatsGrid } from '@/components/templates'
+import { RailPage, StatsGrid } from '@/components/templates'
 import type { DashboardStat } from '@/components/templates'
 import { nomEleve, useListElevesDuProf } from '@/students'
 import { seancesRepository } from '@/seances'
@@ -222,8 +222,43 @@ export default function ElevesView({ profId, alertes, retour }: ElevesViewProps)
     )
   }
 
-  return (
+  // Rail droit : cartes secondaires (sous le contenu en dessous de 64rem)
+  const rail = (
     <>
+      <div className="lpv-t-dashboard-page__aside-card">
+        <h3 className="lpv-t-dashboard-page__aside-card__title">À surveiller</h3>
+        {nbSurveillance === 0 ? (
+          <EmptyState compact icon="rivet-icons:user" title="Aucun élève à surveiller pour le moment" variant="neutral" />
+        ) : (
+          <div className="lpv-t-dashboard-page__aside-card__stack">
+            {liste
+              .filter(
+                (e) => statutEleve(e.id, tauxQuery.data?.get(e.id) ?? null) === 'surveillance',
+              )
+              .map((eleve) => {
+                const alerte = alertes.find((a) => a.eleveId === eleve.id)
+                return (
+                  <AlertCard
+                    accent="red"
+                    href={`/profs/eleves/${eleve.id}`}
+                    hrefLabel="Voir la fiche"
+                    icon={false}
+                    key={eleve.id}
+                    titre={nomEleve(eleve)}
+                  >
+                    {alerte?.message ?? `Présence : ${tauxQuery.data?.get(eleve.id) ?? '—'}%`}
+                  </AlertCard>
+                )
+              })}
+          </div>
+        )}
+      </div>
+      <ExportPresences />
+    </>
+  )
+
+  return (
+    <RailPage rail={rail}>
       <BackLink href={retour}>
         {retour === '/profs' ? 'Retour au tableau de bord' : 'Retour'}
       </BackLink>
@@ -284,78 +319,42 @@ export default function ElevesView({ profId, alertes, retour }: ElevesViewProps)
         </select>
       </div>
 
-      <div className="lpv-t-dashboard-page__columns">
-        <div className="lpv-t-dashboard-page__main">
-          <section className="lpv-t-dashboard-page__section" aria-labelledby="tous-mes-eleves">
-            <h2 className="lpv-h2" id="tous-mes-eleves">
-              Tous mes élèves
-            </h2>
-            {tauxQuery.isLoading ? (
-              <p className="lpv-muted">Calcul des taux de présence…</p>
-            ) : listeFiltree.length === 0 ? (
-              <EmptyState
-                description={
-                  liste.length === 0
-                    ? 'Contactez l’association si cela vous semble anormal.'
-                    : 'Essaie un autre nom, niveau ou statut.'
+      <section className="lpv-t-dashboard-page__section" aria-labelledby="tous-mes-eleves">
+        <h2 className="lpv-h2" id="tous-mes-eleves">
+          Tous mes élèves
+        </h2>
+        {tauxQuery.isLoading ? (
+          <p className="lpv-muted">Calcul des taux de présence…</p>
+        ) : listeFiltree.length === 0 ? (
+          <EmptyState
+            description={
+              liste.length === 0
+                ? 'Contactez l’association si cela vous semble anormal.'
+                : 'Essaie un autre nom, niveau ou statut.'
+            }
+            icon="rivet-icons:user-group"
+            title={liste.length === 0 ? 'Aucun élève n’est relié à votre compte pour le moment' : 'Aucun élève ne correspond à votre recherche'}
+            variant={liste.length === 0 ? 'info' : 'neutral'}
+          />
+        ) : (
+          <>
+            <div style={{ overflowX: 'auto' }}>
+              <Table caption="" head={head} rows={rows} />
+            </div>
+            {nbPages > 1 ? (
+              <Pagination
+                ariaLabel="Pagination des élèves"
+                items={itemsPagination(nbPages, pageCourante, hrefPage)}
+                next={pageCourante < nbPages ? { href: hrefPage(pageCourante + 1) } : undefined}
+                previous={
+                  pageCourante > 1 ? { href: hrefPage(pageCourante - 1) } : undefined
                 }
-                icon="rivet-icons:user-group"
-                title={liste.length === 0 ? 'Aucun élève n’est relié à votre compte pour le moment' : 'Aucun élève ne correspond à votre recherche'}
-                variant={liste.length === 0 ? 'info' : 'neutral'}
               />
-            ) : (
-              <>
-                <div style={{ overflowX: 'auto' }}>
-                  <Table caption="" head={head} rows={rows} />
-                </div>
-                {nbPages > 1 ? (
-                  <Pagination
-                    ariaLabel="Pagination des élèves"
-                    items={itemsPagination(nbPages, pageCourante, hrefPage)}
-                    next={pageCourante < nbPages ? { href: hrefPage(pageCourante + 1) } : undefined}
-                    previous={
-                      pageCourante > 1 ? { href: hrefPage(pageCourante - 1) } : undefined
-                    }
-                  />
-                ) : null}
-              </>
-            )}
-          </section>
-        </div>
-
-        <aside className="lpv-t-dashboard-page__aside">
-          <div className="lpv-t-dashboard-page__aside-card">
-            <h3 className="lpv-t-dashboard-page__aside-card__title">À surveiller</h3>
-            {nbSurveillance === 0 ? (
-              <EmptyState compact icon="rivet-icons:user" title="Aucun élève à surveiller pour le moment" variant="neutral" />
-            ) : (
-              <div className="lpv-t-dashboard-page__aside-card__stack">
-                {liste
-                  .filter(
-                    (e) => statutEleve(e.id, tauxQuery.data?.get(e.id) ?? null) === 'surveillance',
-                  )
-                  .map((eleve) => {
-                    const alerte = alertes.find((a) => a.eleveId === eleve.id)
-                    return (
-                      <AlertCard
-                        accent="red"
-                        href={`/profs/eleves/${eleve.id}`}
-                        hrefLabel="Voir la fiche"
-                        icon={false}
-                        key={eleve.id}
-                        titre={nomEleve(eleve)}
-                      >
-                        {alerte?.message ?? `Présence : ${tauxQuery.data?.get(eleve.id) ?? '—'}%`}
-                      </AlertCard>
-                    )
-                  })}
-              </div>
-            )}
-          </div>
-          <ExportPresences />
-        </aside>
-      </div>
-    </>
+            ) : null}
+          </>
+        )}
+      </section>
+    </RailPage>
   )
 }
 

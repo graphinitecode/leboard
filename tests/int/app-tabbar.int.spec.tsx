@@ -44,6 +44,7 @@ describe('AppTabbar', () => {
     expect(within(sheet).getByRole('link', { name: 'Disponibilités' }).getAttribute('href')).toBe(
       '/profs/disponibilites',
     )
+    expect(within(sheet).getByRole('link', { name: 'Rapports' }).getAttribute('href')).toBe('/profs/rapports')
     expect(within(sheet).getByRole('link', { name: /Mon profil/ })).toBeDefined()
     expect(within(sheet).getByRole('button', { name: /Se déconnecter/ })).toBeDefined()
 

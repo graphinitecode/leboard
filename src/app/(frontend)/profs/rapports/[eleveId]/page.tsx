@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
-import { getMeUserServer } from '@/utilities/parentAuth'
+import { requireProf } from '@/utilities/profAuth'
 import {
   calculerPresencesEleve,
   niveauLabel,
@@ -25,13 +25,13 @@ export default async function RapportElevePage({
   const { eleveId } = await params
   const { debut, fin } = await searchParams
 
-  const user = await getMeUserServer()
-  if (!user || (user.role !== 'admin' && user.role !== 'prof')) {
+  const user = await requireProf()
+  if (user.role !== 'admin' && user.role !== 'prof') {
     return (
-      <main style={{ maxWidth: 720, margin: '2rem auto', padding: '0 1rem' }}>
-        <h1>Rapports</h1>
+      <>
+        <h1 className="lpv-h1">Rapports</h1>
         <p>Accès réservé aux administrateurs et aux profs de l’association.</p>
-      </main>
+      </>
     )
   }
 
@@ -113,9 +113,11 @@ export default async function RapportElevePage({
   const referent = eleve.profReferent as unknown as { name?: string } | null
 
   return (
-    <main className="rapport" style={{ maxWidth: 720, margin: '2rem auto', padding: '0 1rem' }}>
+    <div className="rapport" style={{ maxWidth: 720 }}>
       <p>
-        <Link href="/rapports">← Retour aux rapports</Link>
+        <Link className="lpv-link-inline" href="/profs/rapports">
+          ← Retour aux rapports
+        </Link>
       </p>
 
       <header>
@@ -201,6 +203,6 @@ export default async function RapportElevePage({
       <footer>
         <small>Document interne — ne pas diffuser · LPV Board</small>
       </footer>
-    </main>
+    </div>
   )
 }

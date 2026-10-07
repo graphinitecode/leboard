@@ -83,19 +83,22 @@ export default function ProfsDashboard({ prenom, alertes }: ProfsDashboardProps)
 
   return (
     <>
-      <h1 className="lpv-h1 mb-7">Tableau de bord</h1>
-      <p
-        className="lpv-muted pb-7"
-        style={{
-          fontSize: '1.225rem',
-          paddingBottom: '1.75rem',
-          fontWeight: '500',
-        }}
-      >
-        Bonjour {prenom} 👋🏾
-      </p>
-
       <DashboardPage
+        header={
+          <>
+            <h1 className="lpv-h1 mb-7">Tableau de bord</h1>
+            <p
+              className="lpv-muted pb-7"
+              style={{
+                fontSize: '1.225rem',
+                paddingBottom: '1.75rem',
+                fontWeight: '500',
+              }}
+            >
+              Bonjour {prenom} 👋🏾
+            </p>
+          </>
+        }
         sections={[
           {
             title: 'À traiter',

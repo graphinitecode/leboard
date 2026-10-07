@@ -1,14 +1,43 @@
-/* LPV Board Design System — Template tableau de bord (t-dashboard-page)
-   Variante à deux colonnes : sections principales + sidebar. */
+/* LPV Board Design System — Templates tableau de bord et rail droit
+   (t-dashboard-page, t-rail-page) et cartes du rail. */
 
-.lpv-t-dashboard-page__columns {
-  align-items: start;
+/* --- Template RailPage (spec 23) : contenu + rail droit ------------------- */
+/* ≥ 64rem : rail de 20rem, sticky. S'il est plus haut que la fenêtre, il
+   défile pour lui-même afin qu'aucune carte ne reste inaccessible.
+   < 64rem : une colonne, rail sous le contenu. */
+
+.lpv-t-rail {
   display: grid;
   gap: 2rem;
   grid-template-columns: minmax(0, 1fr);
 
-  @media (min-width: 760px) {
-    grid-template-columns: 2fr 1fr;
+  @media (width >= 64rem) {
+    align-items: start;
+    gap: 3rem;
+    grid-template-columns: minmax(0, 1fr) 20rem;
+  }
+
+  &__main {
+    min-width: 0;
+  }
+
+  &__aside {
+    align-content: start;
+    display: grid;
+    gap: 1.5rem;
+    min-width: 0;
+
+    @media (width >= 64rem) {
+      max-height: calc(100vh - 3rem);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      /* Marge pour que les anneaux de focus ne soient pas rognés */
+      margin: -4px;
+      padding: 4px;
+      position: sticky;
+      scrollbar-width: thin;
+      top: 1.5rem;
+    }
   }
 }
 

@@ -59,6 +59,12 @@ export const PORTALS: Record<Portail, PortalConfig> = {
         label: 'Disponibilités',
         shortLabel: 'Dispos',
       },
+      {
+        href: '/profs/rapports',
+        icon: 'boxicons:bar-chart-square-filled',
+        label: 'Rapports',
+        roles: ['admin', 'prof'],
+      },
     ],
   },
   parents: {

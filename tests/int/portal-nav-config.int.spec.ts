@@ -27,8 +27,9 @@ describe('getPortalNav', () => {
       'Élèves',
       'Bibliothèque',
       'Disponibilités',
+      'Rapports',
     ])
-    expect(getPortalNav('profs', 'benevole-bibliotheque')).toHaveLength(5)
+    expect(getPortalNav('profs', 'benevole-bibliotheque').map((i) => i.label)).not.toContain('Rapports')
     expect(getPortalNav('parents', 'parent').map((i) => i.label)).toEqual(['Mes enfants'])
   })
 

@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 
 import { AppShell } from '@/components/templates'
-import { AppFooter } from '@/Footer/Component'
+import { getAppFooterData } from '@/Footer/Component'
 import { getMeUserServer } from '@/utilities/parentAuth'
 import { getShellNav } from '@/utilities/portalNav'
 
@@ -20,7 +20,7 @@ export default async function ParentsLayout({ children }: { children: ReactNode 
   const user = await getMeUserServer()
 
   return (
-    <AppShell footer={<AppFooter />} portail="parents" {...getShellNav('parents', user)}>
+    <AppShell footer={await getAppFooterData()} portail="parents" {...getShellNav('parents', user)}>
       {children}
     </AppShell>
   )

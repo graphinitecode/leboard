@@ -34,7 +34,7 @@ describe('AppShell', () => {
 
   it('déconnecté : logo seul, ni sidebar ni barre d’onglets', () => {
     const { container } = render(
-      <AppShell homeHref="/profs" footer={<footer>Pied</footer>}>
+      <AppShell footer={{ copyright: 'LPV', links: [{ href: '/rgpd', label: 'Pied' }] }} homeHref="/profs">
         <p>Contenu</p>
       </AppShell>,
     )
