@@ -56,9 +56,12 @@ export const Presences: CollectionConfig = {
   hooks: {
     beforeValidate: [
       async (args) => {
-        const { data, req } = args
+        const { data, originalDoc, req } = args
         if (!data?.eleve || !data?.seance) return data
-        const result = await verifierUnicitePresence({ data, req })
+        // En mise à jour, Payload complète `data` avec eleve/seance du
+        // document : sans son id, la vérification trouverait la présence
+        // elle-même et bloquerait tout changement de statut.
+        const result = await verifierUnicitePresence({ data, id: originalDoc?.id, req })
         if (result !== true) {
           throw new Error(result)
         }
