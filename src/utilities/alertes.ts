@@ -33,11 +33,19 @@ export async function detecterDecrochage(payload: Payload): Promise<number> {
 
     if (seancesAttendues.docs.length === 0) continue
 
+    // Présences de CES séances uniquement : les séries pré-créent les
+    // présences des séances futures, qui sinon remplissent la fenêtre et
+    // font compter les séances passées comme des absences.
     const presences = await payload.find({
       collection: 'presences',
       depth: 0,
-      limit: FENETRE_SEANCES,
-      where: { eleve: { equals: eleve.id } },
+      limit: 0,
+      where: {
+        and: [
+          { eleve: { equals: eleve.id } },
+          { seance: { in: seancesAttendues.docs.map((seance) => seance.id) } },
+        ],
+      },
     })
 
     const parSeance = new Map(

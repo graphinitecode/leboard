@@ -68,11 +68,11 @@ const progressionsSeance: Progression[] = [
   },
 ]
 
-const rendre = () => {
+const rendre = (eleveFocusId?: number) => {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   return render(
     <QueryClientProvider client={client}>
-      <SeanceProfView seanceId={12} />
+      <SeanceProfView eleveFocusId={eleveFocusId} seanceId={12} />
     </QueryClientProvider>,
   )
 }
@@ -84,6 +84,36 @@ beforeEach(() => {
 })
 
 describe('SeanceProfView', () => {
+  it("ouvre sur le suivi de l'élève venu de sa fiche (statut, motif, notes)", () => {
+    retourGetSeance.data = {
+      ...seanceDetail,
+      presences: [
+        { id: 11, seanceId: 12, eleveId: 1, present: 'absent-justifie', commentaire: 'Maladie' },
+        { id: 12, seanceId: 12, eleveId: 2, present: 'absent' },
+      ],
+    }
+    const { container } = rendre(1)
+
+    const titres = Array.from(container.querySelectorAll('h2')).map((h2) => h2.textContent)
+    expect(titres[0]).toBe('Suivi de Lucas Martin')
+    expect(screen.getByText('Maladie')).toBeDefined()
+    expect(screen.getAllByText('Absent (justifié)').length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/Fractions : À revoir/).length).toBeGreaterThan(0)
+    expect(screen.getByRole('link', { name: /Fiche de Lucas Martin/ })).toHaveAttribute(
+      'href',
+      '/profs/eleves/1',
+    )
+  })
+
+  it("n'affiche pas de suivi d'élève sans élève demandé", () => {
+    const { container } = rendre()
+
+    expect(
+      Array.from(container.querySelectorAll('h2')).some((h2) => h2.textContent === 'Suivi de Lucas Martin'),
+    ).toBe(false)
+    expect(screen.getByRole('link', { name: /Mes séances/ })).toHaveAttribute('href', '/profs')
+  })
+
   it('commence par le retour de séance, puis les onglets présences/notes', () => {
     const { container } = rendre()
 

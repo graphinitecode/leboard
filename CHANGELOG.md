@@ -6,6 +6,14 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+### Ajouté
+- Dans l'historique de présence d'un élève, un lien « Voir » ouvre la séance sur le suivi de cet élève : son statut, le motif éventuel et ses notes de progression de la séance.
+
+### Corrigé
+- Le statut d'un élève (présent, absent, absent justifié) peut de nouveau être modifié après la saisie de la séance ; un message s'affiche si l'enregistrement échoue.
+- Certains élèves étaient signalés en décrochage alors qu'ils étaient présents aux dernières séances ; ces alertes se ferment d'elles-mêmes.
+- L'historique de présence d'un élève et son taux de présence ne comptent plus les séances à venir.
+
 ## [0.14.0] — 2026-10-07
 
 ### Modifié

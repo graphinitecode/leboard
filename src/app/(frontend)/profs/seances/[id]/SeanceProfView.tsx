@@ -22,9 +22,11 @@ import {
 
 interface SeanceProfViewProps {
   seanceId: number
+  /** Élève mis en avant (venue depuis l'historique de présence de sa fiche). */
+  eleveFocusId?: number
 }
 
-export default function SeanceProfView({ seanceId }: SeanceProfViewProps) {
+export default function SeanceProfView({ seanceId, eleveFocusId }: SeanceProfViewProps) {
   const { data: detail, isLoading } = useGetSeance(seanceId)
   const progressions = useListProgressionsParSeance({ seanceId })
 
@@ -133,6 +135,57 @@ export default function SeanceProfView({ seanceId }: SeanceProfViewProps) {
         </div>
       )
     )
+
+  // Suivi de l'élève venu de sa fiche : statut, motif et notes de la séance.
+  const presenceFocus = viewModel.presences.find((presence) => presence.eleveId === eleveFocusId)
+  const notesFocus = notesProgression.filter((progression) => progression.eleveId === eleveFocusId)
+  const sectionFocus = presenceFocus
+    ? {
+        title: `Suivi de ${presenceFocus.eleveNom}`,
+        children: (
+          <>
+            <dl className="lpv-m-infolist">
+              <dt>Statut</dt>
+              <dd>
+                {presenceFocus.statutInitial !== null ? (
+                  <Tag color={statutPresenceColor(presenceFocus.statutInitial)}>
+                    {statutPresenceLabel(presenceFocus.statutInitial)}
+                  </Tag>
+                ) : (
+                  <span className="lpv-muted">Non initialisée</span>
+                )}
+              </dd>
+              {presenceFocus.commentaire ? (
+                <>
+                  <dt>Motif</dt>
+                  <dd>{presenceFocus.commentaire}</dd>
+                </>
+              ) : null}
+            </dl>
+            {notesFocus.length > 0 ? (
+              <div className="lpv-m-progression-list">
+                {notesFocus.map((progression) => (
+                  <article
+                    className={`lpv-m-progression-card lpv-m-progression-card--${progression.niveau}`}
+                    key={progression.id}
+                  >
+                    <p className="lpv-m-progression-card__title">
+                      {progression.competenceLabel} : {progression.niveauLabel}
+                    </p>
+                    <div className="lpv-m-progression-card__meta">Ajoutée le {progression.dateLabel}</div>
+                    {progression.commentaire ? (
+                      <p className="lpv-m-progression-card__comment">{progression.commentaire}</p>
+                    ) : null}
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <p className="lpv-muted">Aucune note de progression pour cet élève sur cette séance.</p>
+            )}
+          </>
+        ),
+      }
+    : null
 
   const stats: DashboardStat[] = [
     {
@@ -252,14 +305,15 @@ export default function SeanceProfView({ seanceId }: SeanceProfViewProps) {
 
   return (
     <DetailPage
-      backHref="/profs"
-      backLabel="Mes séances"
+      backHref={presenceFocus ? `/profs/eleves/${presenceFocus.eleveId}` : '/profs'}
+      backLabel={presenceFocus ? `Fiche de ${presenceFocus.eleveNom}` : 'Mes séances'}
       caption={
         viewModel.seance.profLabel
           ? `${viewModel.seance.dateLongueLabel}, ${viewModel.seance.heureLabel} — ${viewModel.seance.profLabel}`
           : `${viewModel.seance.dateLongueLabel}, ${viewModel.seance.heureLabel}`
       }
       sections={[
+        ...(sectionFocus ? [sectionFocus] : []),
         {
           title: 'Retour de séance',
           children:
