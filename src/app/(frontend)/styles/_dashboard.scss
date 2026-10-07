@@ -2,18 +2,23 @@
    (t-dashboard-page, t-rail-page) et cartes du rail. */
 
 /* --- Template RailPage (spec 23) : contenu + rail droit ------------------- */
-/* ≥ 64rem : rail de 21rem qui défile avec la page (pas de défilement
-   interne ni de sticky : une seule barre, celle de la page).
-   < 64rem : une colonne, rail sous le contenu. */
+/* ≥ 80rem : rail de 18rem (21rem dès 90rem) à droite, qui défile avec la page (pas de
+   défilement interne ni de sticky : une seule barre, celle de la page).
+   En dessous, avec la sidebar, la colonne serait trop étroite pour les
+   tableaux : une colonne, rail sous le contenu. */
 
 .lpv-t-rail {
   display: grid;
   gap: 2rem;
   grid-template-columns: minmax(0, 1fr);
 
-  @media (width >= 64rem) {
+  @media (width >= 80rem) {
     align-items: start;
     gap: 2.5rem;
+    grid-template-columns: minmax(0, 1fr) 18rem;
+  }
+
+  @media (width >= 90rem) {
     grid-template-columns: minmax(0, 1fr) 21rem;
   }
 
@@ -288,33 +293,12 @@
   gap: 0.625rem;
 }
 
-/* --- Searchbar pleine largeur (bibliothèque) ------------------------------- */
-/* Motif maquette : input (flex 1, min 200px) + select + bouton, sous les stats */
+/* --- Barres de filtres (bibliothèque, mes élèves) -------------------------- */
+/* Recherche (absorbe la largeur) + selects à leur largeur naturelle, sur une
+   seule ligne dès que la colonne le permet. Les actions de la bibliothèque
+   vivent dans leur propre rangée, au-dessus. */
 
-.lpv-o-bibliotheque__searchbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.625rem;
-  margin-bottom: 1.75rem;
-
-  input {
-    flex: 1 1 200px;
-    min-width: 200px;
-    width: auto;
-  }
-
-  select {
-    max-width: none;
-    width: auto;
-  }
-
-  .lpv-a-button {
-    width: auto;
-  }
-}
-
-/* --- Searchbar à filtres (mes élèves) — même motif, sans bouton ------------ */
-
+.lpv-o-bibliotheque__searchbar,
 .lpv-o-eleves__searchbar {
   display: flex;
   flex-wrap: wrap;
@@ -322,13 +306,27 @@
   margin-bottom: 1.75rem;
 
   input {
-    flex: 1 1 200px;
-    min-width: 200px;
+    flex: 1 1 10rem;
+    min-width: 0;
     width: auto;
   }
 
   select {
+    flex: 0 1 auto;
     max-width: none;
+    min-width: 0;
+    width: auto;
+  }
+}
+
+.lpv-o-bibliotheque__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-bottom: 1.75rem;
+
+  .lpv-a-button {
+    margin-bottom: 0;
     width: auto;
   }
 }

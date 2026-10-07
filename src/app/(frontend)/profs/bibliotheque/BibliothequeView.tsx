@@ -286,6 +286,24 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
           retards et consultez les exemplaires disponibles.
         </p>
 
+        <div className="lpv-o-bibliotheque__actions">
+          {peutGerer ? (
+            <Button href="/profs/bibliotheque/prets/nouveau" variant="success">
+              Enregistrer un prêt
+            </Button>
+          ) : null}
+          <Button
+            disabled={!catalogue.data?.length}
+            onClick={() =>
+              telechargerCsv(nomFichierCsv('catalogue'), versCsv(lignesExportCatalogue(catalogue.data ?? [])))
+            }
+            type="button"
+            variant="secondary"
+          >
+            Exporter le catalogue (CSV)
+          </Button>
+        </div>
+
         <StatsGrid stats={stats} />
 
         <div className="lpv-o-bibliotheque__searchbar">
@@ -316,21 +334,6 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
               </option>
             ))}
           </select>
-          <Button
-            disabled={!catalogue.data?.length}
-            onClick={() =>
-              telechargerCsv(nomFichierCsv('catalogue'), versCsv(lignesExportCatalogue(catalogue.data ?? [])))
-            }
-            type="button"
-            variant="secondary"
-          >
-            Exporter le catalogue (CSV)
-          </Button>
-          {peutGerer ? (
-            <Button href="/profs/bibliotheque/prets/nouveau" variant="success">
-              Enregistrer un prêt
-            </Button>
-          ) : null}
         </div>
 
         <section className="lpv-t-dashboard-page__section" aria-labelledby="retards-titre">

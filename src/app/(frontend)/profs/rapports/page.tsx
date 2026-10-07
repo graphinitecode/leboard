@@ -26,18 +26,21 @@ export default async function RapportsPage() {
   return (
     <>
       <h1 className="lpv-h1">Rapports élèves</h1>
-      <p>
-        Choisissez un élève dans{' '}
-        <Link className="lpv-link-inline" href="/profs/eleves?retour=/profs/rapports">
-          la liste des élèves
-        </Link>{' '}
-        pour ouvrir sa fiche, ou utilisez l’adresse{' '}
-        <code>/profs/rapports/[eleveId]?debut=AAAA-MM-JJ&amp;fin=AAAA-MM-JJ</code>.
-      </p>
-      <ul className="list-disc pl-6">
-        <li>Admin : tous les élèves</li>
-        <li>Prof : uniquement ses élèves référents ou ceux de ses séances</li>
-      </ul>
+      <div style={{ maxWidth: '40rem' }}>
+        <p className="lpv-muted">
+          Un rapport rassemble les présences et la progression d’un élève sur une période.
+        </p>
+        <p>
+          {user.role === 'admin'
+            ? 'En tant qu’administrateur, vous pouvez consulter le rapport de tous les élèves.'
+            : 'Vous pouvez consulter le rapport de vos élèves référents et des élèves de vos séances.'}
+        </p>
+        <p>
+          <Link className="lpv-a-button" href="/profs/eleves?retour=/profs/rapports">
+            Choisir un élève
+          </Link>
+        </p>
+      </div>
     </>
   )
 }

@@ -7,7 +7,6 @@ import { ActionRow, AlertCard, MonthCalendarCard } from '@/components/molecules'
 import { DashboardPage } from '@/components/templates'
 import { presentSeanceLigne, useListMySeances } from '@/seances'
 import type { MarqueurJourCalendrier } from '@/calendrier'
-import { ActionIconcard } from '@/components/molecules/m-action-iconcard'
 
 interface ProfsDashboardProps {
   nom?: string
@@ -171,7 +170,7 @@ export default function ProfsDashboard({ prenom, alertes }: ProfsDashboardProps)
         ]}
         sidebar={
           <>
-            <div className="">
+            <div>
               <MonthCalendarCard
                 marqueurs={marqueurs}
                 mois={new Date()}
@@ -198,40 +197,6 @@ export default function ProfsDashboard({ prenom, alertes }: ProfsDashboardProps)
               </div>
             )}
 
-            <div className="gap-y-7 grid grid-cols-1">
-              <ActionIconcard
-                href="/profs/calendrier"
-                title={'Ma semaine de travail'}
-                icon={'rivet-icons:calendar-solid'}
-                color="green"
-                description="Voir la semaine et les eventuelles séances de cours"
-                key="cal"
-              />
-              <ActionIconcard
-                title={'Mes élèves'}
-                href="/profs/eleves"
-                icon={'rivet-icons:user-group-solid'}
-                color="orange"
-                description="Consulter la liste de tous les élèves."
-                key="students"
-              />
-              <ActionIconcard
-                href="/profs/disponibilites"
-                title={'Mes disponibilités'}
-                icon={'rivet-icons:check-all'}
-                color="magenta"
-                description="Consulter et gérer toutes vos disponiblités pour les cours."
-                key="dispo"
-              />
-              <ActionIconcard
-                href="/profs/bibliotheque"
-                title={'La Bibliotheque'}
-                icon={'rivet-icons:note-solid'}
-                color="yellow"
-                description="Tous les livres et support de cours disponibles."
-                key="biblio"
-              />
-            </div>
           </>
         }
         stats={[

@@ -13,20 +13,17 @@ describe('AppFooter', () => {
     expect(screen.getByRole('link', { name: 'Protection des données' }).getAttribute('href')).toBe('/rgpd')
   })
 
-  it('reprend les liens légaux du global (page référencée ou URL)', () => {
+  it('ignore les liens du site vitrine portés par le global', () => {
     const data = toAppFooterData({
       copyright: 'LPV',
       id: 1,
-      navItems: [
-        { id: 'a', link: { label: 'Mentions légales', reference: { relationTo: 'pages', value: { slug: 'mentions-legales' } }, type: 'reference' } },
-        { id: 'b', link: { label: 'Charte', type: 'custom', url: 'https://exemple.fr/charte' } },
-      ],
+      navItems: [{ id: 'a', link: { label: 'Admin', type: 'custom', url: '/admin' } }],
     } as never)
 
+    expect(data.copyright).toBe('LPV')
     expect(data.links.map((l) => [l.label, l.href])).toEqual([
       ['Site de l’association', '/'],
-      ['Mentions légales', '/mentions-legales'],
-      ['Charte', 'https://exemple.fr/charte'],
+      ['Protection des données', '/rgpd'],
     ])
   })
 })
