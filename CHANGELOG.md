@@ -187,8 +187,6 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 ### Corrigé
 - Présences pré-remplies à la création d'une séance : les feuilles de présence de chaque élève du groupe sont maintenant générées automatiquement (elles devaient être créées une à une)
 
-## [Unreleased]
-
 ## [0.5.0] — 2026-09-21
 
 ### Ajouté
