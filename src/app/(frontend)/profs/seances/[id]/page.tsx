@@ -6,8 +6,18 @@ import SeanceProfView from './SeanceProfView'
 
 export const dynamic = 'force-dynamic'
 
-export default async function SeanceProfPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function SeanceProfPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ eleve?: string }>
+}) {
   const { id } = await params
+  // ?eleve=<id> : venue depuis l'historique de présence d'une fiche élève —
+  // la séance s'ouvre sur le suivi de cet élève.
+  const { eleve } = await searchParams
+  const eleveFocusId = Number(eleve)
   await requireProf()
   const seanceId = Number(id)
 
@@ -15,5 +25,10 @@ export default async function SeanceProfPage({ params }: { params: Promise<{ id:
     notFound()
   }
 
-  return <SeanceProfView seanceId={seanceId} />
+  return (
+    <SeanceProfView
+      eleveFocusId={Number.isFinite(eleveFocusId) && eleveFocusId > 0 ? eleveFocusId : undefined}
+      seanceId={seanceId}
+    />
+  )
 }

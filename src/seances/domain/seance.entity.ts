@@ -30,6 +30,8 @@ export interface Presence {
   seanceId: number
   eleveId: number
   present: StatutPresence
+  /** Motif factuel saisi sur la présence (ex. maladie). */
+  commentaire?: string | null
 }
 
 export interface EleveLigne {
