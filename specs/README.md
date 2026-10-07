@@ -22,6 +22,13 @@ Les specs suivent le template `specs/_TEMPLATE.md`. Chaque spec est implémenté
 | 14 | [Type scale responsive des titres](14-type-scale.md) | Moyenne | 11 | Implémenté |
 | 15 | [Séances récurrentes](15-seances-recurrentes.md) | Haute | 01, 10, 12, 13 | Implémenté |
 | 16 | [Alertes par e-mail aux parents](16-alertes-email-parents.md) | Moyenne | 05, 06 | Implémenté |
+| 17 | [Site vitrine : fondations](17-site-vitrine-fondations.md) | Haute | — | Proposé |
+| 18 | [Site vitrine : blocs CMS au style GOV.UK](18-site-vitrine-blocs.md) | Haute | 17 | Proposé |
+| 19 | [Site vitrine : pages institutionnelles](19-site-vitrine-pages.md) | Haute | 17, 18 | Proposé |
+| 20 | [Site vitrine : blog / actualités](20-site-vitrine-blog.md) | Moyenne | 18 | Proposé |
+| 21 | [Page Nouveautés](21-page-nouveautes.md) | Basse | 17 | Proposé |
+| 22 | [Shell d'appli avec sidebar](22-app-shell-sidebar.md) | Haute | 10, 11 | Proposé |
+| 23 | [Appli : rail droit et réorganisation des écrans](23-app-rail-et-ecrans.md) | Moyenne | 22 | Proposé |
 
 ## Portail profs (découpage)
 
@@ -33,3 +40,10 @@ Les specs suivent le template `specs/_TEMPLATE.md`. Chaque spec est implémenté
 | Disponibilités (planning) | [10d-portail-profs-disponibilites.md](10d-portail-profs-disponibilites.md) | Implémenté |
 
 Le RGPD (09) est placé tôt : les champs de consentement et de rétention doivent exister dès la première mise en production, pas rétrofités plus tard.
+
+## Site vitrine et appli (deux pistes indépendantes)
+
+| Piste | Ordre | Remarque |
+|---|---|---|
+| Site vitrine (style GOV.UK, pages Payload + blocs) | 17 → 18 → 19 → 20, 21 dès 17 | La spec 17 retire le seed destructif du gabarit : à faire en premier, la base locale est la base de production |
+| Appli (sidebar façon Duolingo) | 22 → 23 | Aucune migration de base |
