@@ -6,6 +6,8 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+## [0.15.0] — 2026-10-07
+
 ### Ajouté
 - Dans l'historique de présence d'un élève, un lien « Voir » ouvre la séance sur le suivi de cet élève : son statut, le motif éventuel et ses notes de progression de la séance.
 
