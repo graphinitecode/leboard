@@ -151,8 +151,9 @@ Préfixe `lpv-*` (BEM léger). Les composants consomment uniquement les variable
 
 - **Atomes** : `lpv-bouton`, `lpv-tag`, `lpv-chip`, `lpv-avatar`, `lpv-input`, `lpv-label`, `lpv-hint`, `lpv-error-message`, `lpv-back-link`, `lpv-avertissement`, `lpv-fil-ariane`, `lpv-details`, `lpv-file-upload`
 - **Molécules** : `lpv-form-group`, `lpv-error-summary`, `lpv-modale`, `lpv-toast`, `lpv-recap`, `lpv-fieldset`, `lpv-cases`, `lpv-radios`, `lpv-champ-date`, `lpv-compteur`, `lpv-accordeon`, `lpv-onglets`, `lpv-liste-taches`, `lpv-tableau`, `lpv-pagination`
-- **Structures** : `lpv-shell`, `lpv-entete-bleue`, `lpv-pied`, `lpv-container`
-- **Templates** : `lpv-t-portal-page`, `lpv-t-detail-page`, `lpv-t-dashboard-page`, `lpv-t-form-page`, `lpv-t-question-page` — squelettes de pages assemblant les couches inférieures en slots, sans micro-copy ni fetch (cf. spec 11)
+- **Structures** : `lpv-shell`, `lpv-entete-bleue` (site vitrine), `lpv-pied`, `lpv-container`
+- **Shell d'appli** (portails, cf. spec 22) : `lpv-t-app-shell` (template), `lpv-o-app-sidebar` (sidebar ≥ 48rem, compacte jusqu'à 64rem, lien actif en pastille bordée couleur portail), `lpv-o-app-tabbar` (barre d'onglets fixe < 48rem, 4 sections + « Plus »), `lpv-m-account-menu` (menu « Plus »). Les sections, leurs icônes et les rôles qui les voient sont déclarés dans `src/utilities/portalNav.ts`
+- **Templates** : `lpv-t-app-shell`, `lpv-t-detail-page`, `lpv-t-dashboard-page`, `lpv-t-form-page`, `lpv-t-question-page` — squelettes de pages assemblant les couches inférieures en slots, sans micro-copy ni fetch (cf. spec 11)
 - Composants React correspondants : `src/components/atoms`, `molecules`, `organisms`, `templates`.
 - **Utilitaires** : `lpv-visually-hidden` (sr-only accessibilité)
 

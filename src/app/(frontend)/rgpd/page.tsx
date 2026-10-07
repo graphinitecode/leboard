@@ -2,8 +2,7 @@ import configPromise from '@payload-config'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { getPayload } from 'payload'
 
-import { ServiceHeader } from '@/components/molecules/m-service-header'
-import { PortalPage } from '@/components/templates'
+import { AppShell } from '@/components/templates'
 import { Footer } from '@/Footer/Component'
 
 export const dynamic = 'force-dynamic'
@@ -13,12 +12,8 @@ export default async function RGPDPage() {
   const politique = await payload.findGlobal({ slug: 'politique-rgpd' })
 
   return (
-    <PortalPage
-      footer={<Footer />}
-      header={
-        <ServiceHeader heroTitle="Politique de protection des données" />
-      }
-    >
+    <AppShell footer={<Footer />} homeHref="/">
+      <h1 className="lpv-h1">Politique de protection des données</h1>
       {politique?.contenu ? (
         <RichText data={politique.contenu} />
       ) : (
@@ -30,6 +25,6 @@ export default async function RGPDPage() {
           ? new Date(politique.datePublication).toLocaleDateString('fr-FR')
           : '—'}
       </p>
-    </PortalPage>
+    </AppShell>
   )
 }

@@ -1,5 +1,4 @@
-import { ServiceHeader } from '@/components/molecules/m-service-header'
-import { PortalPage } from '@/components/templates'
+import { AppShell } from '@/components/templates'
 
 import MotDePasseOublieView from './MotDePasseOublieView'
 import { Footer } from '@/Footer/Component'
@@ -17,10 +16,10 @@ export default async function MotDePasseOubliePage({
   const { portail: portailParam } = await searchParams
   const portail = portailParam === 'parents' ? 'parents' : 'profs'
 
-  // Shell du portail concerné (entête, pied de page) comme ses pages de connexion
+  // Shell déconnecté du portail concerné, comme ses pages de connexion
   return (
-    <PortalPage footer={<Footer />} header={<ServiceHeader homeHref={`/${portail}`} />} portail={portail}>
+    <AppShell footer={<Footer />} homeHref={`/${portail}`} portail={portail}>
       <MotDePasseOublieView portail={portail} />
-    </PortalPage>
+    </AppShell>
   )
 }
