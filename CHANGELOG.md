@@ -6,6 +6,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+## [0.16.3] — 2026-10-09
+
+### Modifié
+- Sur grand écran, la colonne d'informations à droite commence au niveau du contenu (compteurs, listes) et non plus en haut de la page, à côté du titre.
+
 ## [0.16.2] — 2026-10-08
 
 ### Modifié

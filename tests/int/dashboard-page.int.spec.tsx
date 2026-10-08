@@ -59,7 +59,7 @@ describe('DashboardPage', () => {
     expect(container.querySelectorAll('.lpv-stat.alert')).toHaveLength(2)
   })
 
-  it('passe en rail droit quand sidebar fournie, en-tête et sections dans la colonne principale', () => {
+  it('passe en rail droit quand sidebar fournie, en-tête au-dessus et sections dans la colonne principale', () => {
     const { container } = render(
       <DashboardPage
         header={<h1>Tableau de bord</h1>}
@@ -68,8 +68,10 @@ describe('DashboardPage', () => {
       />,
     )
     const main = container.querySelector('.lpv-t-rail__main')
-    expect(main?.textContent).toContain('Tableau de bord')
+    expect(main?.textContent).not.toContain('Tableau de bord')
     expect(main?.textContent).toContain('À traiter')
+    const grille = container.querySelector('.lpv-t-rail')
+    expect(grille?.previousElementSibling?.textContent).toBe('Tableau de bord')
     const rail = screen.getByRole('complementary', { name: 'Informations complémentaires' })
     expect(rail.textContent).toContain('Sidebar contenu')
   })
