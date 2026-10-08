@@ -33,7 +33,7 @@ describe('DetailPage', () => {
         sections={[
           {
             title: 'Historique de présence',
-            action: { download: true, href: '/export.csv', label: 'Exporter (CSV)' },
+            action: { download: true, href: '/export.csv', icon: 'rivet-icons:save', label: 'Exporter (CSV)' },
             children: <p>Tableau</p>,
           },
           { title: 'Progression', children: <p>Liste</p> },
@@ -44,6 +44,7 @@ describe('DetailPage', () => {
     const lien = screen.getByRole('link', { name: 'Exporter (CSV)' })
     expect(lien.getAttribute('href')).toBe('/export.csv')
     expect(lien.hasAttribute('download')).toBe(true)
+    expect(lien.querySelector('svg')).not.toBeNull()
     const entete = lien.closest('.lpv-t-detail-page__section-header')
     expect(entete?.querySelector('h2')?.textContent).toBe('Historique de présence')
     expect(document.querySelectorAll('.lpv-t-detail-page__section-header')).toHaveLength(1)

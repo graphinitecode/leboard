@@ -310,6 +310,7 @@ export default async function EleveProfPage({
           action: {
             download: true,
             href: `/profs/export/presences?eleve=${eleve.id}`,
+            icon: 'rivet-icons:save',
             label: 'Exporter (CSV)',
           },
           children:

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { BackLink } from '@/components/atoms/a-back-link'
+import { Icon } from '@/components/atoms/a-icon'
 import { RailPage } from '@/components/templates/t-rail-page'
 import { StatsGrid } from '@/components/templates/t-stats-grid'
 import type { DashboardStat } from '@/components/templates/t-stats-grid'
@@ -11,7 +12,8 @@ import type { DashboardStat } from '@/components/templates/t-stats-grid'
 // en tête ; `sidebar` passe la page en RailPage (toute la fiche à gauche, sidebar
 // dans le rail droit, dessous en mobile) ; `caption` est le sous-titre.
 // Chaque section peut porter une `action` (lien + libellé) alignée à droite du
-// titre ; `download` en fait un lien de téléchargement (export CSV…).
+// titre ; `download` en fait un lien de téléchargement (export CSV…) et
+// `icon` (Iconify, ex. rivet-icons:save) précède le libellé.
 export function DetailPage({
   backHref,
   backLabel,
@@ -67,6 +69,7 @@ export interface DetailSectionAction {
   href: string
   label: string
   download?: boolean
+  icon?: string
 }
 
 export function DetailSection({
@@ -89,6 +92,7 @@ export function DetailSection({
             download={action.download || undefined}
             href={action.href}
           >
+            {action.icon && <Icon icon={action.icon} size={18} />}
             {action.label}
           </a>
         </div>
