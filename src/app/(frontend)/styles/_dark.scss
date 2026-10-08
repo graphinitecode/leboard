@@ -10,6 +10,7 @@ html[data-theme='dark'] {
   --lpv-mix-color: black;
   --lpv-mix-color-invert: white;
   --lpv-text: #f2eef2;
+  --lpv-secondary: #cbd2d7;
   --lpv-text-muted: #cbd2d7;
   --lpv-grey-bg: #1e1a1e;
   --lpv-darkgrey-bg: #312a31;
@@ -110,7 +111,7 @@ html[data-theme='dark'] {
   /* Rôles sémantiques → familles de couleurs (map $lpv-color-families) :
      portal→blue, secondary→gray, warning→orange, danger→red. La mixin émet
      base, --hover, -dark, -shadow, -shadow--hover pour chaque rôle. */
-  @include mixins.lpv-color-families;
+  //@include mixins.lpv-color-families;
 
   /* Boutons : fond tag identique, ombre assombrie pour le fond sombre */
   --lpv-a-button-primary-shadow: #004080;
