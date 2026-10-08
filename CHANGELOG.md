@@ -6,6 +6,9 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+### Modifié
+- Sur la fiche d'un élève, le lien d'export CSV de l'historique de présence est placé à droite du titre de la section.
+
 ## [0.16.1] — 2026-10-08
 
 ### Modifié
