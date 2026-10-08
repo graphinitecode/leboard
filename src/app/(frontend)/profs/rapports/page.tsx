@@ -106,15 +106,20 @@ export default async function RapportsPage({
   )
 
   return (
-    <RailPage rail={rail}>
-      <h1 className="lpv-h1">Rapports élèves</h1>
-      <p className="lpv-muted">
-        Choisissez une période, puis l’élève dont vous voulez le rapport.
-        {user.role === 'admin'
-          ? ' En tant qu’administrateur, vous voyez tous les élèves.'
-          : ' Vous voyez vos élèves référents et les élèves de vos séances.'}
-      </p>
-
+    <RailPage
+      header={
+        <>
+          <h1 className="lpv-h1">Rapports élèves</h1>
+          <p className="lpv-muted">
+            Choisissez une période, puis l’élève dont vous voulez le rapport.
+            {user.role === 'admin'
+              ? ' En tant qu’administrateur, vous voyez tous les élèves.'
+              : ' Vous voyez vos élèves référents et les élèves de vos séances.'}
+          </p>
+        </>
+      }
+      rail={rail}
+    >
       <form className="lpv-o-rapports__periode" method="get">
         <Input defaultValue={debut} id="rapport-debut" label="Du" name="debut" type="date" />
         <Input defaultValue={fin} id="rapport-fin" label="Au" name="fin" type="date" />

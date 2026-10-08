@@ -70,9 +70,7 @@ export default function ElevesView({ profId, alertes, retour }: ElevesViewProps)
     queryFn: async () => {
       const entrees = await Promise.all(
         liste.map(async (eleve) => {
-          const presences = await seancesRepository
-            .listPresencesParEleve(eleve.id)
-            .catch(() => [])
+          const presences = await seancesRepository.listPresencesParEleve(eleve.id).catch(() => [])
           const presentes = presences.filter((p) => p.present === 'present').length
           const taux =
             presences.length > 0 ? Math.round((presentes / presences.length) * 100) : null
@@ -228,7 +226,12 @@ export default function ElevesView({ profId, alertes, retour }: ElevesViewProps)
       <div className="lpv-t-dashboard-page__aside-card">
         <h3 className="lpv-t-dashboard-page__aside-card__title">À surveiller</h3>
         {nbSurveillance === 0 ? (
-          <EmptyState compact icon="rivet-icons:user" title="Aucun élève à surveiller pour le moment" variant="neutral" />
+          <EmptyState
+            compact
+            icon="rivet-icons:user"
+            title="Aucun élève à surveiller pour le moment"
+            variant="neutral"
+          />
         ) : (
           <div className="lpv-t-dashboard-page__aside-card__stack">
             {liste
@@ -258,22 +261,27 @@ export default function ElevesView({ profId, alertes, retour }: ElevesViewProps)
   )
 
   return (
-    <RailPage rail={rail}>
-      <BackLink href={retour}>
-        {retour === '/profs' ? 'Retour au tableau de bord' : 'Retour'}
-      </BackLink>
-      <h1 className="lpv-h1">Mes élèves</h1>
-      <p
-        className="lpv-muted pb-7"
-        style={{
-          fontSize: '1.225rem',
-          paddingBottom: '1.75rem',
-          fontWeight: '500',
-        }}
-      >
-        Les élèves dont vous êtes référent : présence, statut de suivi et accès aux fiches.
-      </p>
-
+    <RailPage
+      header={
+        <>
+          <BackLink href={retour}>
+            {retour === '/profs' ? 'Retour au tableau de bord' : 'Retour'}
+          </BackLink>
+          <h1 className="lpv-h1">Mes élèves</h1>
+          <p
+            className="lpv-muted pb-7"
+            style={{
+              fontSize: '1.225rem',
+              paddingBottom: '1.75rem',
+              fontWeight: '500',
+            }}
+          >
+            Les élèves dont vous êtes référent : présence, statut de suivi et accès aux fiches.
+          </p>
+        </>
+      }
+      rail={rail}
+    >
       <StatsGrid stats={stats} />
 
       <div className="lpv-o-eleves__searchbar">
@@ -333,7 +341,11 @@ export default function ElevesView({ profId, alertes, retour }: ElevesViewProps)
                 : 'Essaie un autre nom, niveau ou statut.'
             }
             icon="rivet-icons:user-group"
-            title={liste.length === 0 ? 'Aucun élève n’est relié à votre compte pour le moment' : 'Aucun élève ne correspond à votre recherche'}
+            title={
+              liste.length === 0
+                ? 'Aucun élève n’est relié à votre compte pour le moment'
+                : 'Aucun élève ne correspond à votre recherche'
+            }
             variant={liste.length === 0 ? 'info' : 'neutral'}
           />
         ) : (
@@ -346,9 +358,7 @@ export default function ElevesView({ profId, alertes, retour }: ElevesViewProps)
                 ariaLabel="Pagination des élèves"
                 items={itemsPagination(nbPages, pageCourante, hrefPage)}
                 next={pageCourante < nbPages ? { href: hrefPage(pageCourante + 1) } : undefined}
-                previous={
-                  pageCourante > 1 ? { href: hrefPage(pageCourante - 1) } : undefined
-                }
+                previous={pageCourante > 1 ? { href: hrefPage(pageCourante - 1) } : undefined}
               />
             ) : null}
           </>
@@ -410,7 +420,7 @@ function ExportPresences() {
           type="date"
           value={periode.fin}
         />
-        <Button disabled={invalide} type="submit" variant="secondary">
+        <Button disabled={invalide} type="submit" variant="secondary" className="w-full">
           Télécharger le fichier CSV
         </Button>
       </form>

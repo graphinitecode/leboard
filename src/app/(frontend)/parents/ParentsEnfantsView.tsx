@@ -48,10 +48,17 @@ export default function ParentsEnfantsView({ parentId }: { parentId: number }) {
   }
 
   return (
-    <RailPage rail={<ParentsRail />}>
-      <h1 className="lpv-h1">Espace parents</h1>
+    <RailPage
+      header={<h1 className="lpv-h1">Espace parents</h1>}
+      rail={<ParentsRail />}
+    >
       {liste.map((enfant) => (
-        <ResumeEnfantCard eleveId={enfant.id} key={enfant.id} nomComplet={nomEleve(enfant)} niveau={enfant.niveau} />
+        <ResumeEnfantCard
+          eleveId={enfant.id}
+          key={enfant.id}
+          nomComplet={nomEleve(enfant)}
+          niveau={enfant.niveau}
+        />
       ))}
     </RailPage>
   )
@@ -63,8 +70,8 @@ function ParentsRail() {
     <div className="lpv-t-dashboard-page__aside-card">
       <h2 className="lpv-t-dashboard-page__aside-card__title">À savoir</h2>
       <p>
-        Vous êtes prévenu par e-mail quand un livre emprunté est à rendre ou en cas
-        d&rsquo;absences répétées.
+        Vous êtes prévenu par e-mail quand un livre emprunté est à rendre ou en cas d&rsquo;absences
+        répétées.
       </p>
       <p>
         <Link className="lpv-link-inline" href="/parents/mon-profil">
