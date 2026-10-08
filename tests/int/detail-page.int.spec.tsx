@@ -25,6 +25,31 @@ describe('DetailPage', () => {
     expect(container.querySelectorAll('h2')).toHaveLength(2)
   })
 
+  it('aligne l’action de section à côté du titre', () => {
+    render(
+      <DetailPage
+        backHref="/profs"
+        backLabel="Retour"
+        sections={[
+          {
+            title: 'Historique de présence',
+            action: { download: true, href: '/export.csv', icon: 'rivet-icons:save', label: 'Exporter (CSV)' },
+            children: <p>Tableau</p>,
+          },
+          { title: 'Progression', children: <p>Liste</p> },
+        ]}
+        title="Léa Martin"
+      />,
+    )
+    const lien = screen.getByRole('link', { name: 'Exporter (CSV)' })
+    expect(lien.getAttribute('href')).toBe('/export.csv')
+    expect(lien.hasAttribute('download')).toBe(true)
+    expect(lien.querySelector('svg')).not.toBeNull()
+    const entete = lien.closest('.lpv-t-detail-page__section-header')
+    expect(entete?.querySelector('h2')?.textContent).toBe('Historique de présence')
+    expect(document.querySelectorAll('.lpv-t-detail-page__section-header')).toHaveLength(1)
+  })
+
   it('rend le tag et la meta quand fournis', () => {
     render(
       <DetailPage
