@@ -59,9 +59,7 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
   const [niveauFiltre, setNiveauFiltre] = useState('')
   const [erreur, setErreur] = useState<string | null>(null)
   const [pretRetourne, setPretRetourne] = useState(false)
-  const [confirmRetour, setConfirmRetour] = useState<{ pretId: number; titre: string } | null>(
-    null,
-  )
+  const [confirmRetour, setConfirmRetour] = useState<{ pretId: number; titre: string } | null>(null)
 
   // Retour de l'assistant prêt (?pret=enregistre) : toast dérivé de l'URL.
   const pretEnregistre = params.get('pret') === 'enregistre'
@@ -80,8 +78,7 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
     if (!q) return liste
     return liste.filter(
       (livre) =>
-        livre.titre.toLowerCase().includes(q) ||
-        (livre.auteur ?? '').toLowerCase().includes(q),
+        livre.titre.toLowerCase().includes(q) || (livre.auteur ?? '').toLowerCase().includes(q),
     )
   }, [catalogue.data, recherche, niveauFiltre])
 
@@ -163,11 +160,7 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
       { text: livre.auteur ?? '—' },
       { text: livre.niveau ? (labelNiveauLivre(livre.niveau) ?? livre.niveau) : '—' },
       {
-        content: (
-          <Tag color={dispo ? 'green' : 'red'}>
-            {dispo ? 'Disponible' : 'Emprunté'}
-          </Tag>
-        ),
+        content: <Tag color={dispo ? 'green' : 'red'}>{dispo ? 'Disponible' : 'Emprunté'}</Tag>,
       },
       {
         content: (
@@ -215,7 +208,11 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
             variant="secondary"
             className="w-full mt-7 flex justify-center items-start"
           >
-            <Icon icon={'rivet-icons:plus-circle-solid'} size={19} className="inline-flex -translate-y-px" />
+            <Icon
+              icon={'rivet-icons:plus-circle-solid'}
+              size={19}
+              className="inline-flex -translate-y-px"
+            />
             &nbsp;Nouveau livre
           </Button>
           <Button
@@ -272,38 +269,46 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
         />
       ) : null}
 
-      <RailPage rail={rail}>
-        <h1 className="lpv-h1">Bibliothèque</h1>
-        <p
-          className="lpv-muted pb-7"
-          style={{
-            fontSize: '1.225rem',
-            paddingBottom: '1.75rem',
-            fontWeight: '500',
-          }}
-        >
-          Gérez le catalogue de livres de l&apos;association : suivez les prêts en cours, repérez les
-          retards et consultez les exemplaires disponibles.
-        </p>
+      <RailPage
+        header={
+          <>
+            <h1 className="lpv-h1">Bibliothèque</h1>
+            <p
+              className="lpv-muted pb-7"
+              style={{
+                fontSize: '1.225rem',
+                paddingBottom: '1.75rem',
+                fontWeight: '500',
+              }}
+            >
+              Gérez le catalogue de livres de l&apos;association : suivez les prêts en cours,
+              repérez les retards et consultez les exemplaires disponibles.
+            </p>
 
-        <div className="lpv-o-bibliotheque__actions">
-          {peutGerer ? (
-            <Button href="/profs/bibliotheque/prets/nouveau" variant="success">
-              Enregistrer un prêt
-            </Button>
-          ) : null}
-          <Button
-            disabled={!catalogue.data?.length}
-            onClick={() =>
-              telechargerCsv(nomFichierCsv('catalogue'), versCsv(lignesExportCatalogue(catalogue.data ?? [])))
-            }
-            type="button"
-            variant="secondary"
-          >
-            Exporter le catalogue (CSV)
-          </Button>
-        </div>
-
+            <div className="lpv-o-bibliotheque__actions">
+              {peutGerer ? (
+                <Button href="/profs/bibliotheque/prets/nouveau" variant="success">
+                  Enregistrer un prêt
+                </Button>
+              ) : null}
+              <Button
+                disabled={!catalogue.data?.length}
+                onClick={() =>
+                  telechargerCsv(
+                    nomFichierCsv('catalogue'),
+                    versCsv(lignesExportCatalogue(catalogue.data ?? [])),
+                  )
+                }
+                type="button"
+                variant="secondary"
+              >
+                Exporter le catalogue (CSV)
+              </Button>
+            </div>
+          </>
+        }
+        rail={rail}
+      >
         <StatsGrid stats={stats} />
 
         <div className="lpv-o-bibliotheque__searchbar">
@@ -385,10 +390,16 @@ function VueBibliotheque({ peutGerer }: { peutGerer: boolean }) {
             <EmptyState
               actions={
                 recherche || niveauFiltre
-                  ? [{ label: 'Réinitialiser les filtres', onClick: () => {
-                      setRecherche('')
-                      setNiveauFiltre('')
-                    }, variant: 'secondary' }]
+                  ? [
+                      {
+                        label: 'Réinitialiser les filtres',
+                        onClick: () => {
+                          setRecherche('')
+                          setNiveauFiltre('')
+                        },
+                        variant: 'secondary',
+                      },
+                    ]
                   : undefined
               }
               description="Essaie un autre titre, auteur ou niveau."

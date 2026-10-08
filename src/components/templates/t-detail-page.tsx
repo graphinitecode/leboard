@@ -10,7 +10,7 @@ import type { DashboardStat } from '@/components/templates/t-stats-grid'
 // optionnel, meta optionnelle (ex. SummaryList), puis sections h2 + contenu.
 // Variante riche (maquette fiche élève) : `stats` affiche la grille de compteurs
 // en tête ; `sidebar` passe la page en RailPage (toute la fiche à gauche, sidebar
-// dans le rail droit, dessous en mobile) ; `caption` est le sous-titre.
+// dans le rail droit, dessous en mobile ; le rail débute sous le titre) ; `caption` est le sous-titre.
 // Chaque section peut porter une `action` (lien + libellé) alignée à droite du
 // titre ; `download` en fait un lien de téléchargement (export CSV…) et
 // `icon` (Iconify, ex. rivet-icons:save) précède le libellé.
@@ -35,11 +35,16 @@ export function DetailPage({
   sections: { title: string; action?: DetailSectionAction; children: ReactNode }[]
   sidebar?: ReactNode
 }) {
-  const content = (
+  const header = (
     <>
       <BackLinkRow backHref={backHref} backLabel={backLabel} />
       <h1 className="lpv-h2">{title}{tag && <span className='pl-4'>{tag}</span>}</h1>
       {caption ? <p className="lpv-t-detail-page__caption">{caption}</p> : null}
+    </>
+  )
+
+  const body = (
+    <>
       {meta}
       {stats && stats.length > 0 && <StatsGrid stats={stats} />}
       {sections.map((section) => (
@@ -52,7 +57,16 @@ export function DetailPage({
 
   return (
     <div className="lpv-t-detail-page">
-      {sidebar ? <RailPage rail={sidebar}>{content}</RailPage> : content}
+      {sidebar ? (
+        <RailPage header={header} rail={sidebar}>
+          {body}
+        </RailPage>
+      ) : (
+        <>
+          {header}
+          {body}
+        </>
+      )}
     </div>
   )
 }

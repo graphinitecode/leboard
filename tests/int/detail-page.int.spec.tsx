@@ -103,7 +103,10 @@ describe('DetailPage', () => {
       />,
     )
     expect(container.querySelector('.lpv-cards-grid')).not.toBeNull()
-    expect(container.querySelector('.lpv-t-rail__main')?.textContent).toContain('Lucas M.')
+    // Le titre est au-dessus de la grille : le rail débute au niveau des stats
+    const main = container.querySelector('.lpv-t-rail__main')
+    expect(main?.textContent).not.toContain('Lucas M.')
+    expect(main?.firstElementChild?.classList.contains('lpv-cards-grid')).toBe(true)
     expect(screen.getByText('62%')).toBeDefined()
     expect(screen.getByText('Taux de présence')).toBeDefined()
     expect(screen.getByText('Informations élève')).toBeDefined()

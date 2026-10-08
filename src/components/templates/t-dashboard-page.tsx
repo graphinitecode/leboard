@@ -13,8 +13,8 @@ export type { DashboardStat } from './t-stats-grid'
 // Chaque section rend children ; empty fournit un contenu alternatif
 // (état vide) piloté par l'appelant.
 // Avec `sidebar`, la page passe en RailPage : en-tête (`header`, ex. titre
-// et salutation), stats et sections dans la colonne principale, sidebar dans
-// le rail droit (sous le contenu en dessous de 64rem).
+// et salutation) pleine largeur, puis stats et sections dans la colonne
+// principale et sidebar dans le rail droit, qui débute au niveau des stats.
 export function DashboardPage({
   header,
   stats,
@@ -29,8 +29,7 @@ export function DashboardPage({
   if (sidebar) {
     return (
       <div className="lpv-t-dashboard-page">
-        <RailPage rail={sidebar}>
-          {header}
+        <RailPage header={header} rail={sidebar}>
           {stats && stats.length > 0 && <StatsGrid stats={stats} />}
           {sections.map((section) => (
             <section className="lpv-t-dashboard-page__section" key={section.title}>

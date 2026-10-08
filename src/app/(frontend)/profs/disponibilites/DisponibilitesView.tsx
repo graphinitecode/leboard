@@ -49,13 +49,18 @@ function VueDisponibilites() {
 
   return (
     <>
-      <RailPage rail={rail}>
-        <h1 className="lpv-h1">Mes disponibilités</h1>
-        <p className="lpv-muted">
-          Indiquez les créneaux hebdomadaires où vous êtes disponible : l&apos;association les
-          utilise pour planifier les séances. Vous pouvez les modifier à tout moment.
-        </p>
-
+      <RailPage
+        header={
+          <>
+            <h1 className="lpv-h1">Mes disponibilités</h1>
+            <p className="lpv-muted">
+              Indiquez les créneaux hebdomadaires où vous êtes disponible : l&apos;association les
+              utilise pour planifier les séances. Vous pouvez les modifier à tout moment.
+            </p>
+          </>
+        }
+        rail={rail}
+      >
         <p>
           <Button href="/profs/disponibilites/nouvelle">Ajouter un créneau</Button>
         </p>
