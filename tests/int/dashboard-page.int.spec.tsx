@@ -59,24 +59,25 @@ describe('DashboardPage', () => {
     expect(container.querySelectorAll('.lpv-stat.alert')).toHaveLength(2)
   })
 
-  it('pose les sections et la sidebar en deux colonnes quand sidebar fournie', () => {
+  it('passe en rail droit quand sidebar fournie, en-tête et sections dans la colonne principale', () => {
     const { container } = render(
       <DashboardPage
+        header={<h1>Tableau de bord</h1>}
         sections={[{ title: 'À traiter', children: <p>2 retours.</p> }]}
         sidebar={<p>Sidebar contenu</p>}
       />,
     )
-    expect(container.querySelector('.lpv-t-dashboard-page__columns')).not.toBeNull()
-    expect(container.querySelector('.lpv-t-dashboard-page__main')).not.toBeNull()
-    const aside = container.querySelector('.lpv-t-dashboard-page__aside')
-    expect(aside?.textContent).toContain('Sidebar contenu')
-    expect(screen.getByText('À traiter')).toBeDefined()
+    const main = container.querySelector('.lpv-t-rail__main')
+    expect(main?.textContent).toContain('Tableau de bord')
+    expect(main?.textContent).toContain('À traiter')
+    const rail = screen.getByRole('complementary', { name: 'Informations complémentaires' })
+    expect(rail.textContent).toContain('Sidebar contenu')
   })
 
   it('reste en une colonne sans sidebar', () => {
     const { container } = render(
       <DashboardPage sections={[{ title: 'Sections', children: <p>Contenu</p> }]} />,
     )
-    expect(container.querySelector('.lpv-t-dashboard-page__columns')).toBeNull()
+    expect(container.querySelector('.lpv-t-rail')).toBeNull()
   })
 })

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { Button, BackLink, Breadcrumbs, InsetText, Panel, Progress, Tag, WarningText, Details, FileUpload } from '@/components/atoms'
 import { Label } from '@/components/atoms/a-label'
-import { Accordion, Avatar, Checkbox, DateInput, EmptyState, InputField, Input, CharacterCount, TaskList, NotificationBanner, Tabs, Pagination, PortalNav, ErrorSummary, SummaryList, Table, ThemeToggle } from '@/components/molecules'
+import { Accordion, AccountMenu, Checkbox, DateInput, EmptyState, InputField, Input, CharacterCount, TaskList, NotificationBanner, Tabs, Pagination, ErrorSummary, SummaryList, Table, ThemeToggle } from '@/components/molecules'
 import type { AccordionSection, Tab, CheckboxOption, TableHeadCell, TableRowCell, Task, PageNumber } from '@/components/molecules'
 
 import { DemoCombobox, DemoModale, DemoRadio, DemoToggle, DemoToast, DemoMonthCalendars } from './DemoClient'
@@ -135,7 +135,6 @@ export default function DesignSystemPage() {
           {/*<EnterText hrf={'#calendrier'}>Le Calendrier</EnterText>*/}
           <EnterText hrf={'/design-system/colors'}>Les Couleurs</EnterText>
           <EnterText hrf={'/design-system/typography'}>La Typographie</EnterText>
-          <EnterText hrf={'/design-system/sidebar'}>Esquisse — sidebar menu</EnterText>
         </div>
       </section>
 
@@ -607,8 +606,8 @@ export default function DesignSystemPage() {
           <code>/parents</code>) et leurs pages.
         </p>
         <p className="lpv-muted">
-          <strong>PortalPage</strong> (shell de portail : skip link, header, main, footer, couleur
-          par <code>data-lpv-portail</code>) n&apos;est pas démontré ici — il enveloppe entièrement
+          <strong>AppShell</strong> (shell d&apos;appli : skip link, sidebar, barre d&apos;onglets
+          mobile, main, footer, couleur par <code>data-lpv-portail</code>) n&apos;est pas démontré ici — il enveloppe entièrement
           une page et serait destructeur dans la vitrine ; voir les portails réels (
           <code>/profs</code>, <code>/parents</code>).
         </p>
@@ -718,53 +717,22 @@ export default function DesignSystemPage() {
       <section id="surfaces">
         <h2 className="lpv-h2">Surfaces</h2>
 
-        <h3 className="lpv-h3">Menu du compte (entête portail)</h3>
+        <h3 className="lpv-h3">Menu du compte (shell d&apos;appli)</h3>
         <p className="lpv-muted">
-          Seul menu de l&apos;entête, affiché quand une session est active : prénom, cercle
-          d&apos;initiales et chevron. Le panneau présente l&apos;identité, « Mon profil », la
-          bascule de thème et la déconnexion (retour à la page de connexion du portail). En
-          desktop, la navigation du portail est portée par les onglets sous le logo ; en mobile
-          (&lt; 48rem), le prénom disparaît et le panneau reprend aussi les liens de navigation. Se ferme au clic extérieur ou à Escape.
+          Contenu du bouton « Plus » : popover de la sidebar (≥ 48rem) ou feuille de la barre
+          d&apos;onglets (&lt; 48rem). Identité, « Mon profil », bascule de thème, retour au site
+          et déconnexion (retour à la page de connexion du portail). La sidebar et la barre
+          d&apos;onglets elles-mêmes enveloppent toute la page : voir les portails réels (
+          <code>/profs</code>, <code>/parents</code>).
         </p>
-        <div
-          className="lpv-card"
-          style={{
-            alignItems: 'center',
-            backgroundColor: 'var(--lpv-portail)',
-            display: 'flex',
-            gap: '1rem',
-            justifyContent: 'flex-end',
-            maxWidth: '32rem',
-          }}
-        >
-          <Avatar
-            email="olivier.durand@lpv.fr"
-            homeHref="/profs"
-            navLinks={[
-              { href: '/profs', label: 'Tableau de bord' },
-              { href: '/profs/eleves', label: 'Élèves' },
-            ]}
-            nom="Olivier Durand"
-            profileHref="/profs/mon-profil"
-          />
-        </div>
-
-        <h3 className="lpv-h3">Navigation du portail</h3>
-        <p className="lpv-muted">
-          Onglets sous le logo (≥ 48rem), actifs par préfixe de segment : « Élèves » reste actif
-          sur la fiche d&apos;un élève. L&apos;onglet d&apos;accueil n&apos;est actif qu&apos;à
-          l&apos;identique, ou sur les préfixes déclarés dans <code>match</code>.
-        </p>
-        <div className="lpv-card" style={{ backgroundColor: 'var(--lpv-portail)' }}>
-          <PortalNav
-            homeHref="/profs"
-            links={[
-              { href: '/profs', label: 'Tableau de bord' },
-              { href: '/profs/calendrier', label: 'Calendrier' },
-              { href: '/profs/eleves', label: 'Élèves' },
-              { href: '/profs/bibliotheque', label: 'Bibliothèque' },
-              { href: '/profs/disponibilites', label: 'Disponibilités' },
-            ]}
+        <div className="lpv-card" style={{ maxWidth: '22rem' }}>
+          <AccountMenu
+            account={{
+              email: 'olivier.durand@lpv.fr',
+              logoutRedirect: '/profs/login',
+              nom: 'Olivier Durand',
+              profileHref: '/profs/mon-profil',
+            }}
           />
         </div>
 
@@ -773,7 +741,7 @@ export default function DesignSystemPage() {
           Le mode sombre s&apos;applique à tout le design system via <code>data-theme</code> sur{' '}
           <code>&lt;html&gt;</code>. Le choix est mémorisé (localStorage) et suit{' '}
           <code>prefers-color-scheme</code> par défaut. Dans l&apos;entête des portails, la bascule
-          vit dans le menu du compte (variante « panneau »).
+          vit dans le menu « Plus » du shell (variante « panneau »).
         </p>
         <div
           className="lpv-card"

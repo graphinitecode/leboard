@@ -1,0 +1,471 @@
+/* LPV Board Design System — Shell d'appli des portails (spec 22)
+   Sidebar à gauche (≥ 48rem, compacte jusqu'à 64rem), barre d'onglets fixe
+   en bas (< 48rem) avec feuille « Plus », pied de page minimaliste. */
+
+@use 'mixins';
+
+$tabbar-height: 4.25rem;
+
+/* --- Barres de défilement façon appli ------------------------------------ */
+/* Une seule barre (celle de la page), fine et aux couleurs du thème ; la
+   gouttière stable évite que la mise en page saute d'une page à l'autre. */
+
+html:has(.lpv-shell) {
+  scrollbar-color: var(--lpv-grey-border) transparent;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+
+  /* Safari ignore scrollbar-color */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--lpv-grey-border);
+    border-radius: 999px;
+  }
+}
+
+/* --- Template : grille du shell ------------------------------------------- */
+
+.lpv-t-app-shell {
+  /* Conteneur de l'appli, plus large que celui du site vitrine */
+  --lpv-container-app: 75rem;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  &--connected {
+    /* Place pour la barre d'onglets fixe (et l'encoche des iPhone) */
+    padding-bottom: calc(#{$tabbar-height} + env(safe-area-inset-bottom));
+
+    @media (width >= 48rem) {
+      display: grid;
+      grid-template-columns: 5.5rem minmax(0, 1fr);
+      padding-bottom: 0;
+    }
+
+    @media (width >= 64rem) {
+      grid-template-columns: 16rem minmax(0, 1fr);
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    /* Garde-fou : aucun débordement horizontal (clip ne crée pas de
+       conteneur de défilement) */
+    overflow-x: clip;
+  }
+
+  /* En-tête fin : seul chrome en mode déconnecté ; en mode connecté, mobile
+     uniquement (la sidebar porte le logo dès 48rem). */
+  &__topbar {
+    border-bottom: 2px solid var(--lpv-grey-border);
+    padding: 0.75rem 1rem;
+  }
+
+  &--connected &__topbar {
+    @media (width >= 48rem) {
+      display: none;
+    }
+  }
+
+  &__logo {
+    align-items: center;
+    color: var(--lpv-portail);
+    display: inline-flex;
+    gap: 0.6rem;
+    text-decoration: none;
+
+    img {
+      display: block;
+      height: 2.5rem;
+      width: auto;
+    }
+  }
+
+
+  &__main {
+    flex: 1;
+    max-width: var(--lpv-container-app);
+    padding-bottom: var(--lpv-spacing-2xl);
+    padding-top: var(--lpv-spacing-2xl);
+    width: 100%;
+
+    @media (width >= 64rem) {
+      padding-inline: 1.5rem;
+    }
+  }
+}
+
+/* --- Organism : sidebar ---------------------------------------------------- */
+
+.lpv-o-app-sidebar {
+  display: none;
+
+  @media (width >= 48rem) {
+    align-self: start;
+    border-right: 2px solid var(--lpv-grey-border);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100vh;
+    /* Défile seulement sur les fenêtres très basses, sans barre visible */
+    overflow-y: auto;
+    padding: 1rem 0.75rem;
+    position: sticky;
+    scrollbar-width: none;
+    top: 0;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  @media (width >= 64rem) {
+    padding-inline: 1rem;
+  }
+
+  &__logo {
+    align-items: center;
+    align-self: center;
+    color: var(--lpv-portail);
+    display: inline-flex;
+    gap: 0.6rem;
+    padding: 0.25rem;
+    text-decoration: none;
+
+    img {
+      display: block;
+      height: 2.5rem;
+      width: auto;
+    }
+
+    @media (width >= 64rem) {
+      align-self: flex-start;
+      padding-inline: 0.75rem;
+    }
+  }
+
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    &--bottom {
+      margin-top: auto;
+    }
+  }
+
+  &__list form {
+    display: block;
+  }
+
+  /* Lien de section : icône monochrome (couleur du texte) + libellé en capitales espacées.
+     Actif : pastille de fond doux couleur portail, sans bordure. */
+  &__link,
+  &__link:visited {
+    align-items: center;
+    background: none;
+    border: 2px solid transparent;
+    border-radius: var(--lpv-border-radius-lg);
+    color: var(--lpv-text);
+    cursor: pointer;
+    display: flex;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    gap: 1rem;
+    justify-content: center;
+    letter-spacing: 0.06em;
+    min-height: 2.75rem;
+    padding: 0.4rem 0.75rem;
+    text-align: left;
+    text-decoration: none;
+    text-transform: uppercase;
+    width: 100%;
+
+    @media (width >= 64rem) {
+      justify-content: flex-start;
+    }
+
+    &:hover {
+      background-color: var(--lpv-grey-bg);
+    }
+
+    &:focus-visible {
+      @include mixins.lpv-focus;
+    }
+  }
+
+  &__link--active,
+  &__link--active:visited {
+    background-color: var(--lpv-portail-soft);
+    color: var(--lpv-portail-dark);
+
+    &:hover {
+      background-color: var(--lpv-portail-soft);
+    }
+  }
+
+  /* Compact (48–64rem) : libellé masqué visuellement, gardé pour les
+     lecteurs d'écran ; le title du lien sert d'infobulle. */
+  &__label {
+    @media (width < 64rem) {
+      border: 0;
+      clip-path: inset(50%);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
+    }
+  }
+
+  &__icon {
+    flex-shrink: 0;
+  }
+
+  &__avatar {
+    font-size: 0.8rem;
+    height: 1.75rem;
+    width: 1.75rem;
+  }
+}
+
+/* --- Organism : barre d'onglets mobile ------------------------------------ */
+
+.lpv-o-app-tabbar {
+  background-color: var(--lpv-surface);
+  border-top: 2px solid var(--lpv-grey-border);
+  bottom: 0;
+  left: 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  position: fixed;
+  right: 0;
+  z-index: 40;
+
+  @media (width >= 48rem) {
+    display: none;
+  }
+
+  &__list {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    height: $tabbar-height;
+    list-style: none;
+    margin: 0;
+    padding: 0.25rem;
+  }
+
+  &__tab,
+  &__tab:visited {
+    align-items: center;
+    background: none;
+    border: 2px solid transparent;
+    border-radius: var(--lpv-border-radius-lg);
+    color: var(--lpv-text-muted);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    font: inherit;
+    font-size: 0.7rem;
+    font-weight: 700;
+    gap: 0.15rem;
+    height: 100%;
+    justify-content: center;
+    letter-spacing: 0.04em;
+    min-width: 44px;
+    padding: 0.2rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    width: 100%;
+
+    &:focus-visible {
+      @include mixins.lpv-focus;
+    }
+  }
+
+  &__tab--active,
+  &__tab--active:visited {
+    background-color: var(--lpv-portail-soft);
+    color: var(--lpv-portail-dark);
+  }
+
+  &__label {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__overflow {
+    border-bottom: 1px solid var(--lpv-grey-border);
+  }
+}
+
+/* --- Molecule : pied de page minimaliste --------------------------------- */
+
+.lpv-m-app-footer {
+  align-items: center;
+  border-top: 1px solid var(--lpv-grey-border);
+  color: var(--lpv-text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  gap: 0.5rem 1.5rem;
+  /* Filet sur toute la largeur de la page, contenu aligné sur le conteneur */
+  padding: 1rem max(1rem, calc((100% - var(--lpv-container-app)) / 2 + 1.5rem));
+  width: 100%;
+
+  &__copyright {
+    margin: 0;
+    margin-right: auto;
+  }
+
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+  }
+
+  &__link,
+  &__link:visited {
+    color: var(--lpv-text-muted);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    &:hover {
+      color: var(--lpv-text);
+      text-decoration: underline;
+      text-underline-offset: var(--lpv-text-underline-offset-hover);
+    }
+  }
+}
+
+/* --- Molecule : menu du compte (feuille « Plus » mobile) --------------------------------- */
+
+.lpv-m-account-menu {
+  &__identity {
+    border-bottom: 1px solid var(--lpv-grey-border);
+    padding: 0.75rem 1rem;
+  }
+
+  &__name {
+    font-weight: 700;
+    margin: 0;
+  }
+
+  &__email {
+    color: var(--lpv-text-muted);
+    font-size: 0.9rem;
+    margin: 0.15rem 0 0;
+    overflow-wrap: anywhere;
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
+  }
+
+  &__list form {
+    display: block;
+  }
+
+  &__theme {
+    padding: 0 0.75rem;
+
+    > div > span {
+      white-space: nowrap;
+    }
+  }
+
+  &__list a,
+  &__list a:visited,
+  &__list button {
+    align-items: center;
+    background: none;
+    border: 0;
+    color: var(--lpv-portail-dark);
+    cursor: pointer;
+    display: flex;
+    font-size: 1rem;
+    font-weight: 400;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0 1rem;
+    text-align: left;
+    text-decoration: none;
+    width: 100%;
+
+    &:hover {
+      background-color: var(--lpv-portail-soft);
+    }
+
+    &:focus {
+      @include mixins.lpv-focus;
+    }
+  }
+
+  &__list a[aria-current='page'] {
+    font-weight: 700;
+  }
+}
+
+/* --- Feuille (variante sheet de la modale) --------------------------------- */
+
+.lpv-m-modal-overlay--sheet {
+  align-items: flex-end;
+}
+
+.lpv-m-modal--sheet {
+  border-radius: var(--lpv-border-radius-lg) var(--lpv-border-radius-lg) 0 0;
+  max-height: 85vh;
+  max-width: none;
+  overflow-y: auto;
+  padding: 1rem 0 calc(1rem + env(safe-area-inset-bottom));
+  width: 100%;
+
+  .lpv-m-modal__title {
+    padding-inline: 1rem;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+/* --- Impression : seul le contenu ---------------------------------------- */
+
+@media print {
+  .lpv-o-app-sidebar,
+  .lpv-o-app-tabbar,
+  .lpv-t-app-shell__topbar,
+  .lpv-m-app-footer,
+  .lpv-t-rail__aside {
+    display: none !important;
+  }
+
+  .lpv-t-app-shell--connected {
+    display: block;
+    padding-bottom: 0;
+  }
+}

@@ -506,7 +506,7 @@
   &__grid {
     display: grid;
     /* Colonnes égales et stables : le contenu ne peut pas pousser la grille */
-    grid-template-columns: repeat(7, minmax(2.75rem, 1fr));
+    grid-template-columns: repeat(7, minmax(2.25rem, 1fr));
     row-gap: 0.35rem;
     padding-inline: 1rem;
     border-inline:1px solid var(--lpv-grey-border);
