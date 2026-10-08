@@ -3,7 +3,9 @@
 import { Suspense, useMemo, useState, useTransition } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
+import { Panel } from '@/components/atoms'
 import { Button } from '@/components/atoms/a-button'
+import { EnterText } from '@/components/atoms/a-enter-text'
 import { ErrorSummary, Input } from '@/components/molecules'
 import { QuestionPage, QuestionPageAnswers } from '@/components/templates'
 
@@ -25,11 +27,12 @@ const OPTIONS_JOUR = [
   { label: 'Dimanche', value: 'dimanche' },
 ]
 
-type Etape = 1 | 2 | 3
+type Etape = 1 | 2 | 3 | 4 | 5
 
 // Parcours dédié d'ajout/modification d'un créneau de disponibilité,
-// « une question par écran » (pattern GOV.UK question pages) :
-// jour → heure de début (avec « Vos réponses ») → heure de fin + récap.
+// « une question par écran » (pattern GOV.UK question pages), comme les
+// parcours prêt et séance : jour → heure de début → heure de fin →
+// « Vérifiez vos réponses » → page de confirmation.
 // Préremplissage par URL pour l'édition :
 // /profs/disponibilites/nouvelle?jour=lundi&debut=14:00&fin=16:00
 // Les trois params présents et valides basculent en mode modification.
@@ -60,12 +63,27 @@ function ParcoursDisponibilite() {
     router.push('/profs/disponibilites')
   }
 
-  function enregistrer() {
+  // Heure de fin validée avant le récapitulatif : l'erreur s'affiche sur la
+  // question concernée, pas après coup.
+  function continuerVersRecap() {
     const invalide = validerHeures(heureDebut, heureFin)
     if (invalide) {
       setErreur(invalide)
       return
     }
+    setErreur(null)
+    setStep(4)
+  }
+
+  function recommencer() {
+    setJour('')
+    setHeureDebut('')
+    setHeureFin('')
+    setErreur(null)
+    setStep(1)
+  }
+
+  function enregistrer() {
     setErreur(null)
     startTransition(async () => {
       const nouveau: Disponibilite = { heureDebut, heureFin, jour: jour as JourSemaine }
@@ -80,8 +98,7 @@ function ParcoursDisponibilite() {
         } else {
           await ajouterDispo.mutateAsync(nouveau)
         }
-        const resultat = estModification ? 'modification' : 'ajout'
-        router.push(`/profs/disponibilites?enregistre=${resultat}`)
+        setStep(5)
       } catch (err) {
         setErreur(err instanceof Error ? err.message : 'La disponibilité n’a pas pu être enregistrée.')
       }
@@ -96,7 +113,7 @@ function ParcoursDisponibilite() {
         <QuestionPage
           actions={
             <>
-              <Button disabled={!jour} onClick={() => setStep(2)} type="button">
+              <Button disabled={!jour} onClick={() => setStep(2)} type="button" variant="success">
                 Continuer
               </Button>
               <Button onClick={annuler} type="button" variant="secondary">
@@ -107,7 +124,7 @@ function ParcoursDisponibilite() {
           question={estModification ? 'Quel jour pour cet horaire ?' : 'Quel jour vous convient ?'}
           retour={{ href: '/profs/disponibilites', label: 'Retour aux disponibilités' }}
           step={1}
-          stepSize={3}
+          stepSize={4}
         >
           <div className="lpv-o-availability-wizard__days">
             {OPTIONS_JOUR.map((option) => (
@@ -128,7 +145,6 @@ function ParcoursDisponibilite() {
         <QuestionPage
           actions={
             <>
-              {erreur && <ErrorSummary errors={[erreur]} />}
               <Button
                 disabled={!heureDebut}
                 onClick={() => {
@@ -136,17 +152,18 @@ function ParcoursDisponibilite() {
                   setStep(3)
                 }}
                 type="button"
+                variant="success"
               >
                 Continuer
               </Button>
             </>
           }
           question="Quelle heure de début ?"
-          reponses={[{ question: 'Jour', valeur: dayLabel, onClick: () => setStep(1) }]}
           retour={{ href: '#', onClick: () => { setErreur(null); setStep(1) } }}
           step={2}
-          stepSize={3}
+          stepSize={4}
         >
+          {erreur && <ErrorSummary errors={[erreur]} />}
           <Input
             hint={`Début du créneau le ${dayLabel.toLowerCase()}.`}
             id="step-debut"
@@ -164,25 +181,17 @@ function ParcoursDisponibilite() {
         <QuestionPage
           actions={
             <>
-              {erreur && <ErrorSummary errors={[erreur]} />}
-              <Button disabled={!heureFin || pending} onClick={enregistrer} type="button">
-                {pending
-                  ? 'Enregistrement…'
-                  : estModification
-                    ? 'Enregistrer la modification'
-                    : 'Valider'}
+              <Button disabled={!heureFin} onClick={continuerVersRecap} type="button" variant="success">
+                Continuer
               </Button>
             </>
           }
           question="Quelle heure de fin ?"
-          reponses={[
-            { question: 'Jour', valeur: dayLabel, onClick: () => setStep(1) },
-            { question: 'Heure de début', valeur: heureDebut || '—', onClick: () => setStep(2) },
-          ]}
           retour={{ href: '#', onClick: () => { setErreur(null); setStep(2) } }}
           step={3}
-          stepSize={3}
+          stepSize={4}
         >
+          {erreur && <ErrorSummary errors={[erreur]} />}
           <Input
             hint={`Fin du créneau le ${dayLabel.toLowerCase()}.`}
             id="step-fin"
@@ -193,12 +202,56 @@ function ParcoursDisponibilite() {
             type="time"
             value={heureFin}
           />
+        </QuestionPage>
+      )}
+
+      {step === 4 && (
+        <QuestionPage
+          actions={
+            <>
+              <Button disabled={pending} onClick={enregistrer} type="button" variant="success">
+                {pending
+                  ? 'Enregistrement…'
+                  : estModification
+                    ? 'Enregistrer la modification'
+                    : 'Ajouter ce créneau'}
+              </Button>
+            </>
+          }
+          question="Vérifiez vos réponses"
+          retour={{ href: '#', onClick: () => { setErreur(null); setStep(3) } }}
+          step={4}
+          stepSize={4}
+        >
+          {erreur && <ErrorSummary errors={[erreur]} />}
           <QuestionPageAnswers
-            titre="Récapitulatif"
             reponses={[
-              { question: 'Créneau', valeur: `${dayLabel} · ${heureDebut} → ${heureFin || '…'}` },
+              { question: 'Jour', valeur: dayLabel, onClick: () => setStep(1) },
+              { question: 'Heure de début', valeur: heureDebut, onClick: () => setStep(2) },
+              { question: 'Heure de fin', valeur: heureFin, onClick: () => setStep(3) },
             ]}
+            titre=""
           />
+        </QuestionPage>
+      )}
+
+      {step === 5 && (
+        <QuestionPage question={estModification ? 'Disponibilité modifiée' : 'Disponibilité ajoutée'}>
+          <Panel variante="success" title="Votre créneau est enregistré">
+            {dayLabel} · {heureDebut} → {heureFin}
+          </Panel>
+          <p className="pb-7">
+            L&rsquo;association s&rsquo;en servira pour vous proposer des séances.
+          </p>
+
+          <div className="lpv-t-question-page__actions">
+            <EnterText hrf="/profs/disponibilites">Retour à mes disponibilités</EnterText>
+            {!estModification && (
+              <Button onClick={recommencer} type="button" variant="secondary">
+                Ajouter un autre créneau
+              </Button>
+            )}
+          </div>
         </QuestionPage>
       )}
     </div>

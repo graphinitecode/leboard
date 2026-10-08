@@ -1,9 +1,9 @@
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
-import { getMeUserServer } from '@/utilities/parentAuth'
+import { BackLink, PrintButton } from '@/components/atoms'
+import { requireProf } from '@/utilities/profAuth'
 import {
   calculerPresencesEleve,
   niveauLabel,
@@ -25,13 +25,13 @@ export default async function RapportElevePage({
   const { eleveId } = await params
   const { debut, fin } = await searchParams
 
-  const user = await getMeUserServer()
-  if (!user || (user.role !== 'admin' && user.role !== 'prof')) {
+  const user = await requireProf()
+  if (user.role !== 'admin' && user.role !== 'prof') {
     return (
-      <main style={{ maxWidth: 720, margin: '2rem auto', padding: '0 1rem' }}>
-        <h1>Rapports</h1>
+      <>
+        <h1 className="lpv-h1">Rapports</h1>
         <p>Accès réservé aux administrateurs et aux profs de l’association.</p>
-      </main>
+      </>
     )
   }
 
@@ -69,6 +69,7 @@ export default async function RapportElevePage({
   }
 
   const defaut = trimestreCourant()
+  const retourListe = `/profs/rapports${debut || fin ? `?${new URLSearchParams({ ...(debut ? { debut } : {}), ...(fin ? { fin } : {}) })}` : ''}`
   const periodeDebut = debut ? new Date(debut) : defaut.debut
   const periodeFin = fin ? new Date(fin) : defaut.fin
 
@@ -113,26 +114,29 @@ export default async function RapportElevePage({
   const referent = eleve.profReferent as unknown as { name?: string } | null
 
   return (
-    <main className="rapport" style={{ maxWidth: 720, margin: '2rem auto', padding: '0 1rem' }}>
-      <p>
-        <Link href="/rapports">← Retour aux rapports</Link>
+    <div className="rapport" style={{ maxWidth: '45rem' }}>
+      <p className="no-print">
+        <BackLink href={retourListe}>Retour aux rapports</BackLink>
       </p>
 
       <header>
-        <h1>
-          {eleve.prenom} {eleve.nom} <small>({eleve.niveau})</small>
+        <h1 className="lpv-h1">
+          {eleve.prenom} {eleve.nom} <small className="lpv-muted">({eleve.niveau})</small>
         </h1>
-        <p>
+        <p className="lpv-muted">
           Groupe : {eleve.groupe ?? '—'} · Référent : {referent?.name ?? '—'}
           <br />
           Période : {periodeDebut.toLocaleDateString('fr-FR')} →{' '}
           {periodeFin.toLocaleDateString('fr-FR')} · généré le{' '}
           {new Date().toLocaleDateString('fr-FR')}
         </p>
+        <p className="no-print">
+          <PrintButton />
+        </p>
       </header>
 
       <section>
-        <h2>Présence</h2>
+        <h2 className="lpv-h2">Présence</h2>
         {presences.taux === null ? (
           <p>Aucune séance sur cette période.</p>
         ) : (
@@ -145,7 +149,7 @@ export default async function RapportElevePage({
       </section>
 
       <section>
-        <h2>Progressions</h2>
+        <h2 className="lpv-h2">Progressions</h2>
         {progressions.docs.length === 0 ? (
           <p>Aucune progression sur cette période.</p>
         ) : (
@@ -164,14 +168,14 @@ export default async function RapportElevePage({
       </section>
 
       <section>
-        <h2>Retours de séance</h2>
+        <h2 className="lpv-h2">Retours de séance</h2>
         {seances.docs.filter((s) => s.retour).length === 0 ? (
           <p>Aucun retour de séance sur cette période.</p>
         ) : (
           seances.docs
             .filter((s) => s.retour)
             .map((s) => (
-              <article key={String(s.id)} style={{ borderTop: '1px solid #eee', padding: '0.5rem 0' }}>
+              <article key={String(s.id)} style={{ borderTop: '1px solid var(--lpv-grey-border)', padding: '0.5rem 0' }}>
                 <strong>
                   {new Date(String(s.date)).toLocaleDateString('fr-FR')} · {s.matiere}
                 </strong>
@@ -182,7 +186,7 @@ export default async function RapportElevePage({
       </section>
 
       <section>
-        <h2>Prêts</h2>
+        <h2 className="lpv-h2">Prêts</h2>
         {prets.docs.length === 0 ? (
           <p>Aucun prêt.</p>
         ) : (
@@ -201,6 +205,6 @@ export default async function RapportElevePage({
       <footer>
         <small>Document interne — ne pas diffuser · LPV Board</small>
       </footer>
-    </main>
+    </div>
   )
 }

@@ -226,6 +226,7 @@ export default async function EleveProfPage({
   // Carte des prêts : l'action « Rendre » est réservée aux gestionnaires de
   // bibliothèque (admin, bénévole) — un prof ne peut que consulter.
   const peutGererBiblio = user.role === 'admin' || user.role === 'benevole-bibliotheque'
+  const peutVoirRapport = user.role === 'admin' || user.role === 'prof'
 
   const sidebar = (
     <>
@@ -245,6 +246,17 @@ export default async function EleveProfPage({
         eleveNom={`${eleve.prenom} ${eleve.nom}`}
         peutGerer={peutGererBiblio}
       />
+      {peutVoirRapport ? (
+        <section className="lpv-t-dashboard-page__aside-card">
+          <h3 className="lpv-t-dashboard-page__aside-card__title">Rapport</h3>
+          <p>Présences, progression, retours de séance et prêts, sur le trimestre en cours.</p>
+          <p>
+            <Link className="lpv-link-inline" href={`/profs/rapports/${eleve.id}`}>
+              Voir le rapport
+            </Link>
+          </p>
+        </section>
+      ) : null}
       <section className="lpv-t-dashboard-page__aside-card">
         <h3 className="lpv-t-dashboard-page__aside-card__title">Informations</h3>
         <dl className="lpv-m-infolist">

@@ -29,6 +29,19 @@ const STATE_BY_MODE: Record<ThemeMode, { icon: string; label: string }> = {
 
 const MODES: ThemeMode[] = ['auto', 'light', 'dark']
 
+// Variante compacte (sidebar) : un seul bouton qui fait défiler les modes
+// machine → clair → sombre. Renvoie l'icône et le libellé du mode courant.
+export function useThemeCycle() {
+  const { setTheme, themeMode } = useTheme()
+  const mode: ThemeMode = themeMode ?? 'auto'
+  const nextMode = MODES[(MODES.indexOf(mode) + 1) % MODES.length]
+
+  return {
+    ...STATE_BY_MODE[mode],
+    cycle: () => setTheme(nextMode === 'auto' ? null : (nextMode as 'dark' | 'light')),
+  }
+}
+
 export function ThemeToggle({ variant = 'bar' }: { variant?: 'bar' | 'panel' }) {
   const { setTheme, themeMode } = useTheme()
   // Premier rendu neutre (SSR) : le mode réel arrive avec l'hydratation du provider.

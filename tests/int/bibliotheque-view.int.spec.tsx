@@ -263,16 +263,16 @@ describe('BibliothequeView', () => {
     })
   })
 
-  it('conforme a la maquette : searchbar sous les stats, retards en action-row, sidebar en cards bordure haute', () => {
+  it('conforme a la maquette : actions sous l\'intro, searchbar sous les stats, retards en action-row, sidebar en cards bordure haute', () => {
     pretsRetour.data = PRETS
     catalogueRetour.data = CATALOGUE
     const { container } = rendre()
 
-    // Searchbar pleine largeur (hors section catalogue)
+    // Searchbar pleine largeur (hors section catalogue) ; actions dans leur rangée
     expect(container.querySelector('.lpv-o-bibliotheque__searchbar')).not.toBeNull()
     expect(screen.getByText('Enregistrer un prêt')).toBeDefined()
     expect(
-      container.querySelector('.lpv-o-bibliotheque__searchbar .lpv-a-button--success'),
+      container.querySelector('.lpv-o-bibliotheque__actions .lpv-a-button--success'),
     ).not.toBeNull()
 
     // Catalogue : molécule Table GOV.UK, pleine largeur

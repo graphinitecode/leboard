@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
 
 import { InsetText, Panel, Tag } from '@/components/atoms'
+import { RailPage } from '@/components/templates'
 import { nomEleve, useListEnfantsDuParent } from '@/students'
 import { progressionsRepository } from '@/progressions'
 import { seancesRepository } from '@/seances'
@@ -47,12 +48,30 @@ export default function ParentsEnfantsView({ parentId }: { parentId: number }) {
   }
 
   return (
-    <>
+    <RailPage rail={<ParentsRail />}>
       <h1 className="lpv-h1">Espace parents</h1>
       {liste.map((enfant) => (
         <ResumeEnfantCard eleveId={enfant.id} key={enfant.id} nomComplet={nomEleve(enfant)} niveau={enfant.niveau} />
       ))}
-    </>
+    </RailPage>
+  )
+}
+
+// Rail droit : rappels utiles aux parents (sous le contenu en dessous de 64rem)
+function ParentsRail() {
+  return (
+    <div className="lpv-t-dashboard-page__aside-card">
+      <h2 className="lpv-t-dashboard-page__aside-card__title">À savoir</h2>
+      <p>
+        Vous êtes prévenu par e-mail quand un livre emprunté est à rendre ou en cas
+        d&rsquo;absences répétées.
+      </p>
+      <p>
+        <Link className="lpv-link-inline" href="/parents/mon-profil">
+          Gérer ces e-mails dans Mon profil
+        </Link>
+      </p>
+    </div>
   )
 }
 

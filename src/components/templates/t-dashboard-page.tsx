@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { RailPage } from '@/components/templates/t-rail-page'
 import { StatsGrid } from '@/components/templates/t-stats-grid'
 import type { DashboardStat } from '@/components/templates/t-stats-grid'
 
@@ -11,13 +12,16 @@ export type { DashboardStat } from './t-stats-grid'
 // Template : tableau de bord — grille de stats puis sections titrées.
 // Chaque section rend children ; empty fournit un contenu alternatif
 // (état vide) piloté par l'appelant.
-// Avec `sidebar`, les sections sont posées dans une colonne principale
-// et la sidebar dans une colonne latérale (empilées en mobile).
+// Avec `sidebar`, la page passe en RailPage : en-tête (`header`, ex. titre
+// et salutation), stats et sections dans la colonne principale, sidebar dans
+// le rail droit (sous le contenu en dessous de 64rem).
 export function DashboardPage({
+  header,
   stats,
   sections,
   sidebar,
 }: {
+  header?: ReactNode
   stats?: DashboardStat[]
   sections: DashboardSection[]
   sidebar?: ReactNode
@@ -25,24 +29,23 @@ export function DashboardPage({
   if (sidebar) {
     return (
       <div className="lpv-t-dashboard-page">
-        {stats && stats.length > 0 && <StatsGrid stats={stats} />}
-        <div className="lpv-t-dashboard-page__columns">
-          <div className="lpv-t-dashboard-page__main">
-            {sections.map((section) => (
-              <section className="lpv-t-dashboard-page__section" key={section.title}>
-                <h2 className="lpv-h2">{section.title}</h2>
-                {section.empty ?? section.children}
-              </section>
-            ))}
-          </div>
-          <aside className="lpv-t-dashboard-page__aside">{sidebar}</aside>
-        </div>
+        <RailPage rail={sidebar}>
+          {header}
+          {stats && stats.length > 0 && <StatsGrid stats={stats} />}
+          {sections.map((section) => (
+            <section className="lpv-t-dashboard-page__section" key={section.title}>
+              <h2 className="lpv-h2">{section.title}</h2>
+              {section.empty ?? section.children}
+            </section>
+          ))}
+        </RailPage>
       </div>
     )
   }
 
   return (
     <div className="lpv-t-dashboard-page">
+      {header}
       {stats && stats.length > 0 && <StatsGrid stats={stats} />}
       {sections.map((section) => (
         <section className="lpv-t-dashboard-page__section" key={section.title}>

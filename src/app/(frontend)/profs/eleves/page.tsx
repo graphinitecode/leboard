@@ -17,7 +17,7 @@ export default async function ElevesPage({
   const user = await requireProf()
   const payload = await getPayload({ config: configPromise })
 
-  // Origine de navigation (?retour=/rapports) : le lien « Retour » renvoie au
+  // Origine de navigation (?retour=/profs/rapports) : le lien « Retour » renvoie au
   // tableau de bord par défaut, ou à l'écran d'où l'utilisateur vient —
   // chemin interne uniquement (anti open-redirect : doit commencer par « / »).
   const { retour: retourParam } = await searchParams

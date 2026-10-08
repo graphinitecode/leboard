@@ -6,6 +6,18 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+## [0.16.0] — 2026-10-08
+
+### Modifié
+- Nouvelle navigation dans les espaces profs et parents : les sections sont toujours visibles dans une colonne à gauche, avec une icône par section. Le profil, le choix du thème et la déconnexion sont en bas de cette colonne. Sur téléphone, les sections passent dans une barre en bas de l'écran, avec un bouton « Plus » pour le reste. Le pied de page des espaces est allégé.
+- Les informations complémentaires (calendrier du mois, alertes, rappels) s'affichent dans une colonne à droite sur grand écran ; sur les écrans plus petits, elles passent sous le contenu. Les pages profitent de toute la largeur de l'écran.
+- Les rapports élèves sont accessibles depuis la navigation de l'espace profs ; l'ancienne adresse mène toujours à la bonne page.
+- La page Rapports liste directement vos élèves avec la période choisie ; chaque fiche élève propose aussi « Voir le rapport », et le rapport peut s'imprimer ou s'enregistrer en PDF.
+- L'ajout d'une disponibilité suit le même parcours que les autres formulaires : une question par écran, un récapitulatif « Vérifiez vos réponses » à la fin, puis une page de confirmation.
+
+### Corrigé
+- Le bouton « Ajouter un créneau » est désormais visible sur la page des disponibilités même quand aucun créneau n'est encore déclaré.
+
 ## [0.15.0] — 2026-10-07
 
 ### Ajouté
@@ -186,8 +198,6 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ### Corrigé
 - Présences pré-remplies à la création d'une séance : les feuilles de présence de chaque élève du groupe sont maintenant générées automatiquement (elles devaient être créées une à une)
-
-## [Unreleased]
 
 ## [0.5.0] — 2026-09-21
 

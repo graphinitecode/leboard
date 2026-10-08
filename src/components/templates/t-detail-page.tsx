@@ -1,14 +1,15 @@
 import type { ReactNode } from 'react'
 
 import { BackLink } from '@/components/atoms/a-back-link'
+import { RailPage } from '@/components/templates/t-rail-page'
 import { StatsGrid } from '@/components/templates/t-stats-grid'
 import type { DashboardStat } from '@/components/templates/t-stats-grid'
 
 // Template : squelette de page détail (fiche entité) — back link, titre + tag
 // optionnel, meta optionnelle (ex. SummaryList), puis sections h2 + contenu.
 // Variante riche (maquette fiche élève) : `stats` affiche la grille de compteurs
-// en tête ; `sidebar` pose les sections en 2 colonnes (2fr/1fr) avec une colonne
-// latérale (empilées en mobile) ; `caption` est le sous-titre sous le titre.
+// en tête ; `sidebar` passe la page en RailPage (toute la fiche à gauche, sidebar
+// dans le rail droit, dessous en mobile) ; `caption` est le sous-titre.
 export function DetailPage({
   backHref,
   backLabel,
@@ -30,32 +31,25 @@ export function DetailPage({
   sections: { title: string; children: ReactNode }[]
   sidebar?: ReactNode
 }) {
-  return (
-    <div className="lpv-t-detail-page">
+  const content = (
+    <>
       <BackLinkRow backHref={backHref} backLabel={backLabel} />
       <h1 className="lpv-h2">{title}{tag && <span className='pl-4'>{tag}</span>}</h1>
       {caption ? <p className="lpv-t-detail-page__caption">{caption}</p> : null}
 
       {meta}
       {stats && stats.length > 0 && <StatsGrid stats={stats} />}
-      {sidebar ? (
-        <div className="lpv-t-dashboard-page__columns">
-          <div className="lpv-t-dashboard-page__main">
-            {sections.map((section) => (
-              <DetailSection key={section.title} title={section.title}>
-                {section.children}
-              </DetailSection>
-            ))}
-          </div>
-          <aside className="lpv-t-dashboard-page__aside">{sidebar}</aside>
-        </div>
-      ) : (
-        sections.map((section) => (
-          <DetailSection key={section.title} title={section.title}>
-            {section.children}
-          </DetailSection>
-        ))
-      )}
+      {sections.map((section) => (
+        <DetailSection key={section.title} title={section.title}>
+          {section.children}
+        </DetailSection>
+      ))}
+    </>
+  )
+
+  return (
+    <div className="lpv-t-detail-page">
+      {sidebar ? <RailPage rail={sidebar}>{content}</RailPage> : content}
     </div>
   )
 }
