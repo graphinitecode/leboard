@@ -6,6 +6,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ## [Unreleased]
 
+## [0.16.1] — 2026-10-08
+
+### Modifié
+- Les couleurs du mode sombre sont ajustées pour une meilleure lisibilité.
+
 ## [0.16.0] — 2026-10-08
 
 ### Modifié
