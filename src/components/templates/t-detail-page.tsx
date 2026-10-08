@@ -10,6 +10,8 @@ import type { DashboardStat } from '@/components/templates/t-stats-grid'
 // Variante riche (maquette fiche élève) : `stats` affiche la grille de compteurs
 // en tête ; `sidebar` passe la page en RailPage (toute la fiche à gauche, sidebar
 // dans le rail droit, dessous en mobile) ; `caption` est le sous-titre.
+// Chaque section peut porter une `action` (lien + libellé) alignée à droite du
+// titre ; `download` en fait un lien de téléchargement (export CSV…).
 export function DetailPage({
   backHref,
   backLabel,
@@ -28,7 +30,7 @@ export function DetailPage({
   caption?: ReactNode
   meta?: ReactNode
   stats?: DashboardStat[]
-  sections: { title: string; children: ReactNode }[]
+  sections: { title: string; action?: DetailSectionAction; children: ReactNode }[]
   sidebar?: ReactNode
 }) {
   const content = (
@@ -36,11 +38,10 @@ export function DetailPage({
       <BackLinkRow backHref={backHref} backLabel={backLabel} />
       <h1 className="lpv-h2">{title}{tag && <span className='pl-4'>{tag}</span>}</h1>
       {caption ? <p className="lpv-t-detail-page__caption">{caption}</p> : null}
-
       {meta}
       {stats && stats.length > 0 && <StatsGrid stats={stats} />}
       {sections.map((section) => (
-        <DetailSection key={section.title} title={section.title}>
+        <DetailSection action={section.action} key={section.title} title={section.title}>
           {section.children}
         </DetailSection>
       ))}
@@ -62,10 +63,38 @@ function BackLinkRow({ backHref, backLabel }: { backHref: string; backLabel: str
   )
 }
 
-export function DetailSection({ title, children }: { title: string; children: ReactNode }) {
+export interface DetailSectionAction {
+  href: string
+  label: string
+  download?: boolean
+}
+
+export function DetailSection({
+  title,
+  action,
+  children,
+}: {
+  title: string
+  action?: DetailSectionAction
+  children: ReactNode
+}) {
   return (
     <section className="lpv-t-detail-page__section">
-      <h2 className="lpv-h2">{title}</h2>
+      {action ? (
+        <div className="lpv-t-detail-page__section-header">
+          <h2 className="lpv-h2">{title}</h2>
+          {/* Lien simple (pas de navigation client) : la cible peut être un fichier */}
+          <a
+            className="lpv-link-inline lpv-t-detail-page__section-action"
+            download={action.download || undefined}
+            href={action.href}
+          >
+            {action.label}
+          </a>
+        </div>
+      ) : (
+        <h2 className="lpv-h2">{title}</h2>
+      )}
       {children}
     </section>
   )

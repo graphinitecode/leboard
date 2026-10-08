@@ -307,6 +307,11 @@ export default async function EleveProfPage({
       sections={[
         {
           title: 'Historique de présence',
+          action: {
+            download: true,
+            href: `/profs/export/presences?eleve=${eleve.id}`,
+            label: 'Exporter (CSV)',
+          },
           children:
             presences.docs.length === 0 ? (
               <EmptyState icon="rivet-icons:check-circle" title="Aucune présence enregistrée" variant="neutral" />
@@ -324,12 +329,6 @@ export default async function EleveProfPage({
                     previous={pageCourante > 1 ? { href: lienPage(pageCourante - 1) } : undefined}
                   />
                 )}
-                {/* Lien simple (pas de navigation client) : la route renvoie un fichier */}
-                <p>
-                  <a className="lpv-link-inline" download href={`/profs/export/presences?eleve=${eleve.id}`}>
-                    Exporter l’historique de présence (CSV)
-                  </a>
-                </p>
               </>
             ),
         },
